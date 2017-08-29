@@ -7,7 +7,7 @@ namespace BetterConsole
         public Func<ConsoleKey, bool> ValidatationFn { get; internal set; }
         public Func<ConsoleKey, T> ParseFn { get; internal set; }
 
-        public override T Prompt()
+        public override void Prompt()
         {
             bool tryAgain = true;
             T result = DefaultValue;
@@ -23,10 +23,9 @@ namespace BetterConsole
                     tryAgain = Confirm(result);
                 }
             }
-
+            ResultFn(result);
             Console.WriteLine();
-            this.NavigateFn(result);
-            return result;
+            NavigateFn(result);
         }
     }
 }

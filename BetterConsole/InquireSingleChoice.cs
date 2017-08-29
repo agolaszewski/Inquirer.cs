@@ -9,8 +9,8 @@ namespace BetterConsole
         public Func<T, string> ChoiceToStringFn { get; internal set; }
         public Func<string, bool> ValidatationFn { get; internal set; }
         public Func<string, T> ParseFn { get; internal set; }
-
-        public override T Prompt()
+       
+        public override void Prompt()
         {
             bool tryAgain = true;
             T result = DefaultValue;
@@ -34,9 +34,8 @@ namespace BetterConsole
                     tryAgain = Confirm(result);
                 }
             }
-
+            ResultFn(result);
             Console.WriteLine();
-            return result;
         }
 
         private void DisplayChoices()

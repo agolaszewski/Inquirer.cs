@@ -2,15 +2,24 @@
 
 namespace BetterConsole
 {
-    public abstract class InquireBase<T>
+    public abstract class InquireBase
     {
-        public string Question { get; internal set; }
+        public string Question { get; set; }
+        public abstract void Prompt();
+    }
+
+    public abstract class InquireBase<T> : InquireBase
+    {
         public T DefaultValue { get; internal set; }
         public bool HasDefaultValue { get; internal set; }
         public bool HasConfirmation { get; internal set; }
         public Action<T> NavigateFn { get; internal set; } = v => { };
+        public Action<T> ResultFn { get; internal set; } = v => { };
 
-        public abstract T Prompt();
+        public void HasAnswer(Action<T> p)
+        {
+            ResultFn = p;
+        }
 
         protected bool Confirm(T result)
         {
@@ -48,9 +57,21 @@ namespace BetterConsole
             return this;
         }
 
+        public InquireBase<T> Navigate(Action navigateFn)
+        {
+            NavigateFn = x => { navigateFn(); };
+            return this;
+        }
+
         public InquireBase<T> Navigate(Action<T> navigateFn)
         {
             NavigateFn = navigateFn;
+            return this;
+        }
+
+        public InquireBase<T> Navigate(InquireBase navigateTo)
+        {
+            NavigateFn = x => { navigateTo.Prompt(); };
             return this;
         }
 
