@@ -16,9 +16,10 @@ namespace BetterConsole
         public Action<T> NavigateFn { get; internal set; } = v => { };
         public Action<T> ResultFn { get; internal set; } = v => { };
 
-        public void HasAnswer(Action<T> p)
+        public InquireBase<T> HasAnswer(Action<T> p)
         {
             ResultFn = p;
+            return this;
         }
 
         protected bool Confirm(T result)

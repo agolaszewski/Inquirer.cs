@@ -14,7 +14,7 @@ namespace Demo
             {
                 if (x)
                 {
-                    AddQuestion("1.1", (new Inquire("2").Input().WithDefault("MyNewResourceGroup").WithConfirmation()).Navigate(Question("3"))).Prompt();
+                    new Inquire("2").Input().WithDefault("MyNewResourceGroup").WithConfirmation().HasAnswer(xx => { Answers.SampleStr = xx; }).Navigate
                 }
                 else
                 {
@@ -22,7 +22,7 @@ namespace Demo
                 }
             });
 
-            AddQuestion("3", (new Inquire("3").Input().WithDefault("MyNewResourceGroup").WithConfirmation()).Navigate(Question("1.1")));
+            AddQuestion("3", (new Inquire("3").Input().WithDefault("MyNewResourceGroup").WithConfirmation()).Navigate(Question("1.1"))).HasAnswer(x => { Answers.SampleStr = x; });
             Prompt("1");
         }
 
