@@ -26,6 +26,19 @@ namespace ConsoleWizard
             return this;
         }
 
+        public WizardFluentInterface<TAnswers, T> Navigate(Func<T, string> navigateFn)
+        {
+            _question.Navigate(x =>
+            {
+                var questionNumber = navigateFn(x);
+                if (string.IsNullOrWhiteSpace(questionNumber) == false)
+                {
+                    _wizzard.Questions[questionNumber].Prompt();
+                }
+            });
+            return this;
+        }
+
         public WizardFluentInterface<TAnswers, T> Navigate(FluentInquire<T> navigateTo)
         {
             _question.Navigate(x => { navigateTo.Prompt(); });
@@ -46,7 +59,6 @@ namespace ConsoleWizard
                 _wizzard.Questions[next.Key].Prompt();
             });
 
-        
             return this;
         }
     }
