@@ -14,7 +14,7 @@ namespace Demo
             {
                 if (x)
                 {
-                    new Inquire("2").Input().WithDefault("MyNewResourceGroup").WithConfirmation().HasAnswer(xx => { Answers.SampleStr = xx; }).Navigate
+                    new Inquire("2").Input().WithDefault("MyNewResourceGroup").WithConfirmation().HasAnswer(xx => { Answers.SampleStr = xx; });
                 }
                 else
                 {

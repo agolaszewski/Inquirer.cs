@@ -58,6 +58,7 @@ namespace BetterConsole
                         return true;
                     }
                 }
+
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Choose value from 1 to {_choices.Count}");
                 Console.ResetColor();
