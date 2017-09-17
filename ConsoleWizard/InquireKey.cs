@@ -30,6 +30,7 @@ namespace ConsoleWizard
             ResultFn(answer);
             Answer = answer;
             Console.WriteLine();
+            NavigateFn(answer);
             return answer;
         }
     }

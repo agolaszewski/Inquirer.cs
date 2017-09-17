@@ -8,29 +8,36 @@ namespace ConsoleWizard
     public class Wizard<TAnswers> where TAnswers : new()
     {
         private TAnswers _anwers;
-        private Dictionary<string, ConsoleWizardFluentInterface> _questions;
+        public SortedDictionary<string, FluentInquire> Questions { get; private set; }
 
         public Wizard()
         {
             _anwers = new TAnswers();
-            _questions = new Dictionary<string, ConsoleWizardFluentInterface>();
+            Questions = new SortedDictionary<string, FluentInquire>();
         }
 
-        public void AddQuestion<T>(string number, ConsoleWizardFluentInterface<T> question, Expression<Func<TAnswers, object>> answerProperty)
+        public WizardFluentInterface<TAnswers, T> AddQuestion<T>(string number, FluentInquire<T> question, Expression<Func<TAnswers, object>> answerProperty)
         {
             var propertyInfo = ((MemberExpression)answerProperty.Body).Member as PropertyInfo;
             if (propertyInfo == null)
             {
                 throw new ArgumentException("The lambda expression 'property' should point to a valid Property");
             }
-
+            question.Number = number;
             question.HasAnswer(x => { propertyInfo.SetValue(_anwers, x); });
-            _questions.Add(number, question);
+            Questions.Add(number, question);
+            return new WizardFluentInterface<TAnswers, T>(this, question);
+        }
+
+        public WizardFluentInterface<TAnswers, T> AddQuestion<T>(string number, InquireBase<T> question, Expression<Func<TAnswers, object>> answerProperty)
+        {
+            var inquire = new FluentInquire<T>(question);
+            return AddQuestion<T>(number, inquire, answerProperty);
         }
 
         public void Run(string number)
         {
-            _questions[number].Prompt();
+            Questions[number].Prompt();
         }
 
         public TAnswers Answers
