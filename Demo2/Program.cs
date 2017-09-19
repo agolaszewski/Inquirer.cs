@@ -8,7 +8,7 @@ namespace Demo2
         private static void Main(string[] args)
         {
             var wizard = new Wizard<Answers>();
-            wizard.AddQuestion("1", new Inquire("1").Input(), a => a.One).Navigate(x =>
+            wizard.AddQuestion("1", new Inquire("1").Input().WithDefaultValue("asda"), a => a.One).Navigate(x =>
             {
                 if (x == "Hello")
                 {

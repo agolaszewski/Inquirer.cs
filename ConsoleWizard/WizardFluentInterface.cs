@@ -14,50 +14,35 @@ namespace ConsoleWizard
             _question = question;
         }
 
-        public WizardFluentInterface<TAnswers, T> Navigate(Action navigateFn)
-        {
-            _question.Navigate(x => { navigateFn(); });
-            return this;
-        }
-
-        public WizardFluentInterface<TAnswers, T> Navigate(Action<T> navigateFn)
-        {
-            _question.Navigate(navigateFn);
-            return this;
-        }
-
         public WizardFluentInterface<TAnswers, T> Navigate(Func<T, string> navigateFn)
         {
-            _question.Navigate(x =>
-            {
-                var questionNumber = navigateFn(x);
-                if (string.IsNullOrWhiteSpace(questionNumber) == false)
-                {
-                    _wizzard.Questions[questionNumber].Prompt();
-                }
-            });
-            return this;
-        }
-
-        public WizardFluentInterface<TAnswers, T> Navigate(FluentInquire<T> navigateTo)
-        {
-            _question.Navigate(x => { navigateTo.Prompt(); });
+            //var questionNumber = navigateFn(_question);
+            //if (string.IsNullOrWhiteSpace(questionNumber) == false)
+            //{
+            //    _wizzard.Flow.Push(_wizzard.Questions[questionNumber]);
+            //    _wizzard.Questions[questionNumber].Prompt();
+            //}
             return this;
         }
 
         public WizardFluentInterface<TAnswers, T> Navigate(string number)
         {
-            _question.Navigate(x => { _wizzard.Questions[number].Prompt(); });
+            //_question.Navigate(x =>
+            //{
+            //    _wizzard.Flow.Push(_wizzard.Questions[number]);
+            //    _wizzard.Questions[number].Prompt();
+            //});
             return this;
         }
 
         public WizardFluentInterface<TAnswers, T> NavigateNext()
         {
-            _question.Navigate(x =>
-            {
-                var next = _wizzard.Questions.SkipWhile(k => k.Key != _question.Number).Skip(1).FirstOrDefault();
-                _wizzard.Questions[next.Key].Prompt();
-            });
+            //_question.Navigate(x =>
+            //{
+            //    var next = _wizzard.Questions.SkipWhile(k => k.Key != _question.Number).Skip(1).FirstOrDefault();
+            //    _wizzard.Flow.Push(_wizzard.Questions[next.Key]);
+            //    _wizzard.Questions[next.Key].Prompt();
+            //});
 
             return this;
         }

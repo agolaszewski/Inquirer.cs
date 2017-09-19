@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleWizard.Events;
+using System;
 
 namespace ConsoleWizard
 {
@@ -11,7 +12,7 @@ namespace ConsoleWizard
         {
         }
 
-        public override T Prompt()
+        public override IEvent Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
@@ -20,6 +21,11 @@ namespace ConsoleWizard
             {
                 DisplayQuestion();
                 var value = Console.ReadKey().Key;
+                
+                if(value == ConsoleKey.UpArrow)
+                {
+                    return new SpecialKeyReturnedEvent(value);
+                }
 
                 if ((value == ConsoleKey.Enter && HasDefaultValue) || ValidatationFn(value))
                 {
@@ -27,11 +33,8 @@ namespace ConsoleWizard
                     tryAgain = Confirm(answer);
                 }
             }
-            ResultFn(answer);
             Answer = answer;
-            Console.WriteLine();
-            NavigateFn(answer);
-            return answer;
+            return new AnswerReturnedEvent<T>(answer);
         }
     }
 }

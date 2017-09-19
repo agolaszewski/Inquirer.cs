@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\AnswerReturnedEvent.cs" />
+    <Compile Include="Events\IEvent.cs" />
+    <Compile Include="Events\SpecialKeyReturnedEvent.cs" />
     <Compile Include="Wizard.cs" />
     <Compile Include="InquireKey.cs" />
     <Compile Include="FluentInquire.cs" />

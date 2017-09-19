@@ -1,12 +1,12 @@
-﻿using System;
+﻿using ConsoleWizard.Events;
+using System;
+using System.Reflection;
 
 namespace ConsoleWizard
 {
     public abstract class FluentInquire
     {
-        public string Number { get; internal set; }
-
-        public abstract void Prompt();
+        public abstract IEvent Prompt();
     }
 
     public class FluentInquire<T> : FluentInquire
@@ -31,33 +31,9 @@ namespace ConsoleWizard
             return this;
         }
 
-        internal FluentInquire HasAnswer(Action<T> resultFn)
+        public override IEvent Prompt()
         {
-            _inquire.ResultFn = resultFn;
-            return this;
-        }
-
-        public FluentInquire<T> Navigate(Action navigateFn)
-        {
-            _inquire.NavigateFn = x => { navigateFn(); };
-            return this;
-        }
-
-        public FluentInquire<T> Navigate(Action<T> navigateFn)
-        {
-            _inquire.NavigateFn = navigateFn;
-            return this;
-        }
-
-        public FluentInquire<T> Navigate(FluentInquire<T> navigateTo)
-        {
-            _inquire.NavigateFn = x => { navigateTo.Prompt(); };
-            return this;
-        }
-
-        public override void Prompt()
-        {
-            _inquire.Prompt();
+            return _inquire.Prompt();
         }
     }
 }

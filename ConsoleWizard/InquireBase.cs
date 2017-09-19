@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleWizard.Events;
+using System;
 
 namespace ConsoleWizard
 {
@@ -6,11 +7,9 @@ namespace ConsoleWizard
     {
         public InquireBase(string question)
         {
-            WithOptions = new FluentInquire<T>(this);
             Question = question;
         }
 
-        public FluentInquire<T> WithOptions { get; private set; }
         public string Question { get; private set; }
 
         internal bool HasDefaultValue { get; set; }
@@ -18,10 +17,6 @@ namespace ConsoleWizard
 
         public T Answer { get; internal set; }
         internal bool HasConfirmation { get; set; }
-
-        public Action<T> NavigateFn { get; internal set; } = v => { };
-
-        public Action<T> ResultFn { get; internal set; } = v => { };
 
         protected bool Confirm(T result)
         {
@@ -56,6 +51,6 @@ namespace ConsoleWizard
             Console.Write(question);
         }
 
-        public abstract T Prompt();
+        public abstract IEvent Prompt();
     }
 }

@@ -12,7 +12,7 @@ namespace ConsoleWizard
             _question = question;
         }
 
-        public InquireBase<string> Input()
+        public FluentInquire<string> Input()
         {
             var inquire = new InquireText<string>(_question);
             inquire.ValidatationFn = v =>
@@ -32,10 +32,10 @@ namespace ConsoleWizard
                 return v;
             };
 
-            return inquire;
+            return new FluentInquire<string>(inquire);
         }
 
-        public InquireBase<ConsoleKey> ConsoleKey(params ConsoleKey[] @params)
+        public FluentInquire<ConsoleKey> ConsoleKey(params ConsoleKey[] @params)
         {
             var inquire = new InquireKey<ConsoleKey>(_question);
             inquire.ValidatationFn = v =>
@@ -61,7 +61,7 @@ namespace ConsoleWizard
                 return v;
             };
 
-            return inquire;
+            return new FluentInquire<ConsoleKey>(inquire);
         }
     }
 }
