@@ -7,6 +7,7 @@ namespace Demo2
     {
         private static void Main(string[] args)
         {
+            
             var wizard = new Wizard<Answers>();
             wizard.AddQuestion("1", new Inquire("1").Input().WithDefaultValue("asda"), a => a.One).Navigate(x =>
             {
@@ -15,13 +16,14 @@ namespace Demo2
                     return "2";
                 }
 
-                return null;
+                return "2";
             });
-            wizard.AddQuestion("2", new Inquire("2").Input(), a => a.Two).NavigateNext();
+            wizard.AddQuestion("2", new Inquire("2").Input(), a => a.Two);
             wizard.AddQuestion("3", new Inquire("3").Input(), a => a.Three).NavigateNext();
-            wizard.AddQuestion("4", new Inquire("4").Input(), a => a.Four);
+            //wizard.AddQuestion("4", new Inquire("4").Input(), a => a.Four);
             wizard.Run("1");
-            Console.ReadKey();
+            var derp = wizard.Answers;
+            //Console.ReadKey();
         }
     }
 }

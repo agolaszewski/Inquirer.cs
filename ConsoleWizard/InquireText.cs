@@ -1,5 +1,4 @@
-﻿using ConsoleWizard.Events;
-using System;
+﻿using System;
 
 namespace ConsoleWizard
 {
@@ -12,7 +11,7 @@ namespace ConsoleWizard
         {
         }
 
-        public override IEvent Prompt()
+        public override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
@@ -37,7 +36,7 @@ namespace ConsoleWizard
             }
             Answer = answer;
             Console.WriteLine();
-            return new AnswerReturnedEvent<T>(answer);
+            return answer;
         }
     }
 }

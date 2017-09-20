@@ -1,15 +1,7 @@
-﻿using ConsoleWizard.Events;
-using System;
-using System.Reflection;
-
-namespace ConsoleWizard
+﻿namespace ConsoleWizard
 {
-    public abstract class FluentInquire
-    {
-        public abstract IEvent Prompt();
-    }
-
-    public class FluentInquire<T> : FluentInquire
+    
+    public class FluentInquire<T>
     {
         private InquireBase<T> _inquire;
 
@@ -31,7 +23,7 @@ namespace ConsoleWizard
             return this;
         }
 
-        public override IEvent Prompt()
+        public T Prompt()
         {
             return _inquire.Prompt();
         }
