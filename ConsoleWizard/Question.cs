@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace ConsoleWizard
 {
@@ -9,7 +8,6 @@ namespace ConsoleWizard
         public FluentInquire<T> _inquire { get; set; }
         public PropertyInfo _propertyInfo { get; set; }
 
- 
         public Question(string number, FluentInquire<T> inquire, PropertyInfo propertyInfo)
         {
             Number = number;
@@ -17,7 +15,6 @@ namespace ConsoleWizard
             _propertyInfo = propertyInfo;
         }
 
-       
         public T Prompt()
         {
             return _inquire.Prompt();

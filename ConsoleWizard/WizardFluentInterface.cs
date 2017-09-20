@@ -3,7 +3,12 @@ using System.Linq;
 
 namespace ConsoleWizard
 {
-    public class WizardFluentInterface<TAnswers, T> where TAnswers : new()
+    public abstract class WizardFluentInterface
+    {
+        public abstract void Prompt();
+    }
+
+    public class WizardFluentInterface<TAnswers, T> : WizardFluentInterface where TAnswers : new() 
     {
         private Wizard<TAnswers> _wizzard;
         private Question<T> _question;
@@ -51,9 +56,9 @@ namespace ConsoleWizard
             NavigateFn = navigationFn;
         }
 
-
-        public void Prompt()
+        public override void Prompt()
         {
+            _wizzard.Flow.Push(this);
             T answer = _question.Prompt();
             NavigateFn(answer);
         }

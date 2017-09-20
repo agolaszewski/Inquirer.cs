@@ -1,6 +1,5 @@
 ﻿namespace ConsoleWizard
 {
-    
     public class FluentInquire<T>
     {
         private InquireBase<T> _inquire;

@@ -9,7 +9,9 @@ namespace ConsoleWizard
     {
         public TAnswers Answers { get; private set; }
 
-        public SortedDictionary<string, dynamic> Questions { get; private set; } = new SortedDictionary<string, dynamic>();
+        public SortedDictionary<string, WizardFluentInterface> Questions { get; private set; } = new SortedDictionary<string, WizardFluentInterface>();
+
+        public Stack<WizardFluentInterface> Flow { get; private set; } = new Stack<WizardFluentInterface>();
 
         public Wizard()
         {
