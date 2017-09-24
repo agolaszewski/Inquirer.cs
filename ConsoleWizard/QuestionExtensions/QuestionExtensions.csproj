@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9DDAD9B0-9B35-41AB-A331-A09346AEB496}</ProjectGuid>
+    <ProjectGuid>{33A1413E-BF4F-4BE5-82FD-B1762ABB83EA}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Demo</RootNamespace>
-    <AssemblyName>Demo</AssemblyName>
+    <RootNamespace>QuestionExtensions</RootNamespace>
+    <AssemblyName>QuestionExtensions</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,20 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Answers.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuestionOne.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ConsoleWizard\ConsoleWizard.csproj">
-      <Project>{D7C4B103-C3B3-45EE-9C6B-6E3F9ED8E7C9}</Project>
-      <Name>ConsoleWizard</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
