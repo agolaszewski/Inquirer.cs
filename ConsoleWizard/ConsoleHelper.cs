@@ -23,5 +23,6 @@ namespace ConsoleWizard
             Write(">> ", ConsoleColor.Red);
             Write(error);
         }
+
     }
 }

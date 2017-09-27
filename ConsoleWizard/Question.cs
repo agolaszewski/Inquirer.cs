@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleWizard
@@ -42,6 +43,38 @@ namespace ConsoleWizard
             inquire.ParseFn = v =>
             {
                 return v.To<long>();
+            };
+
+            return inquire;
+        }
+
+        public static QuestionBase<T> List<T>(string message, List<T> choices)
+        {
+            var inquire = new QuestionList<T>(message);
+            inquire.Choices = choices;
+
+            inquire.DisplayQuestionAnswersFn = (index, choice) =>
+            {
+                Console.WriteLine($"[{index}] {choice}");
+            };
+
+            inquire.ValidatationFn = v =>
+            {
+                if (v > 0 && v <= inquire.Choices.Count)
+                {
+                    return true;
+                }
+                return false;
+            };
+
+            inquire.ParseFn = v =>
+            {
+                return inquire.Choices[v - 1];
+            };
+
+            inquire.ReadFn = () =>
+            {
+                return Console.ReadLine().ToN<int>();
             };
 
             return inquire;

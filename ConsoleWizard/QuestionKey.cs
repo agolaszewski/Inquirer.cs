@@ -27,6 +27,7 @@ namespace ConsoleWizard
                     tryAgain = Confirm(answer);
                 }
             }
+
             Answer = answer;
             Console.WriteLine();
             return answer;
