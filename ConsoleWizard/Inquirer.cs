@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -31,14 +30,5 @@ namespace ConsoleWizard
 
             return new InquirerFor<TAnswers, TResult>(this);
         }
-
-        
-       
-    }
-
-    public class AppAction
-    {
-        public PropertyInfo PropertyInfo { get; set; }
-        public Action<PropertyInfo> Action { get; set; }
     }
 }

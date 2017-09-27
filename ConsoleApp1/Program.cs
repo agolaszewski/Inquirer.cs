@@ -10,15 +10,13 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
-            Herp();
+            ConfirmTest();
+            Console.WriteLine(_test.Answers.One);
         }
 
-        private static void Hur()
+        private static void ConfirmTest()
         {
-            _test.For(x => x.One).Prompt(Question.ConsoleKeyInput("[[Z]] or [[A]]", ConsoleKey.Z, ConsoleKey.A)).Then(answers =>
-            {
-                Herp();
-            });
+            _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?")).Prompt();
         }
 
         private static void Herp()
@@ -29,7 +27,6 @@ namespace ConsoleApp1
                 {
                     Herp();
                 }
-                Hur();
             });
         }
     }
