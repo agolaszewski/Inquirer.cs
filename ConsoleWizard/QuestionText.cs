@@ -21,19 +21,17 @@ namespace ConsoleWizard
                 DisplayQuestion();
                 var value = Console.ReadLine();
 
-                if ((string.IsNullOrWhiteSpace(value) && HasDefaultValue) || ValidatationFn(value))
+                if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
-                    if (string.IsNullOrWhiteSpace(value))
-                    {
-                        answer = DefaultValue;
-                    }
-                    else
-                    {
-                        answer = ParseFn(value);
-                    }
-                    tryAgain = Confirm(answer);
+                    answer = DefaultValue;
                 }
+                else if (ValidatationFn(value))
+                {
+                    answer = ParseFn(value);
+                }
+                tryAgain = Confirm(answer);
             }
+
             return answer;
         }
     }

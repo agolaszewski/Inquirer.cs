@@ -21,11 +21,15 @@ namespace ConsoleWizard
                 DisplayQuestion();
                 var value = Console.ReadKey().Key;
 
-                if ((value == ConsoleKey.Enter && HasDefaultValue) || ValidatationFn(value))
+                if (value == ConsoleKey.Enter && HasDefaultValue)
+                {
+                    answer = DefaultValue;
+                }
+                else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
-                    tryAgain = Confirm(answer);
                 }
+                tryAgain = Confirm(answer);
             }
 
             Answer = answer;

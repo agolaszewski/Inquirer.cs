@@ -1,5 +1,6 @@
 ﻿using ConsoleWizard;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp1
 {
@@ -10,8 +11,8 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
-            ConfirmTest();
-            Console.WriteLine(_test.Answers.One);
+            ListTest();
+            Console.WriteLine(_test.Answers.Two);
         }
 
         private static void ConfirmTest()
@@ -19,9 +20,15 @@ namespace ConsoleApp1
             _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?")).Prompt();
         }
 
+        private static void ListTest()
+        {
+            var list = new List<ConsoleColor> { ConsoleColor.Yellow, ConsoleColor.Magenta, ConsoleColor.DarkYellow };
+            _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkBlue)).Prompt();
+        }
+
         private static void Herp()
         {
-            _test.For(x => x.One).Prompt(Question.ConsoleKeyInput("[[W]] or [[A]]", ConsoleKey.A, ConsoleKey.W)).Then(answers =>
+            _test.For(x => x.One).Prompt(Question.ConsoleKey("[[W]] or [[A]]", ConsoleKey.A, ConsoleKey.W)).Then(answers =>
             {
                 if (answers.One == ConsoleKey.A)
                 {

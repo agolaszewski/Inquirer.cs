@@ -33,7 +33,7 @@ namespace ConsoleWizard
             inquire.Message += " [y/n]";
             inquire.ValidatationFn = v =>
             {
-                if (v == ConsoleKey.Y || v == ConsoleKey.N)
+                if (v == System.ConsoleKey.Y || v == System.ConsoleKey.N)
                 {
                     return true;
                 }
@@ -50,9 +50,9 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<T> List<T>(string message, List<T> choices)
+        public static QuestionRawList<T> RawList<T>(string message, List<T> choices)
         {
-            var inquire = new QuestionList<T>(message);
+            var inquire = new QuestionRawList<T>(message);
             inquire.Choices = choices;
 
             inquire.DisplayQuestionAnswersFn = (index, choice) =>
@@ -74,15 +74,10 @@ namespace ConsoleWizard
                 return inquire.Choices[v - 1];
             };
 
-            inquire.ReadFn = () =>
-            {
-                return Console.ReadLine().ToN<int>();
-            };
-
             return inquire;
         }
 
-        public static QuestionBase<ConsoleKey> ConsoleKeyInput(string message, params ConsoleKey[] @params)
+        public static QuestionBase<ConsoleKey> ConsoleKey(string message, params ConsoleKey[] @params)
         {
             var inquire = new QuestionKey<ConsoleKey>(message);
             inquire.ValidatationFn = v =>
