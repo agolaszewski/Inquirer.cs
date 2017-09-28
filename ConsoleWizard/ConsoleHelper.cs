@@ -11,7 +11,7 @@ namespace ConsoleWizard
             Console.ResetColor();
         }
 
-        public static void WriteLine(string text, ConsoleColor color = ConsoleColor.White)
+        public static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);
@@ -20,9 +20,10 @@ namespace ConsoleWizard
 
         public static void WriteError(string error)
         {
+            WriteLine();
             Write(">> ", ConsoleColor.Red);
             Write(error);
+            WriteLine();
         }
-
     }
 }
