@@ -27,22 +27,24 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<long> IntegerInput(string message)
+        public static QuestionBase<ConsoleKey> Confirm(string message)
         {
-            var inquire = new QuestionText<long>(message);
+            var inquire = new QuestionKey<ConsoleKey>(message);
+            inquire.Message += " [y/n]";
             inquire.ValidatationFn = v =>
             {
-                if (v.ToN<long>().HasValue)
+                if (v == ConsoleKey.Y || v == ConsoleKey.N)
                 {
                     return true;
                 }
-                ConsoleHelper.WriteError("Not a integer");
+
+                ConsoleHelper.WriteError("Press [[Y]] or [[N]]");
                 return false;
             };
 
             inquire.ParseFn = v =>
             {
-                return v.To<long>();
+                return v;
             };
 
             return inquire;

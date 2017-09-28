@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 
 namespace ConsoleWizard
 {
@@ -17,7 +16,7 @@ namespace ConsoleWizard
 
         public TAnswer Answer { get; set; }
         internal bool HasConfirmation { get; set; }
-      
+
         protected bool Confirm(TAnswer result)
         {
             if (HasConfirmation)
