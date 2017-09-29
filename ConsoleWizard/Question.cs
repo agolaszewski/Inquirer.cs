@@ -78,9 +78,9 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionRawList<T> List<T>(string message, List<T> choices)
+        public static QuestionList<T> List<T>(string message, List<T> choices)
         {
-            var inquire = new QuestionRawList<T>(message);
+            var inquire = new QuestionList<T>(message);
             inquire.Choices = choices;
 
             inquire.DisplayQuestionAnswersFn = (index, choice) =>

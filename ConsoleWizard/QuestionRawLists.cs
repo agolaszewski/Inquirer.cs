@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
-    public class QuestionList<T> : QuestionBase<T>
+    public class QuestionRawList<T> : QuestionBase<T>
     {
         public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
         public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public Action<int, T> DisplayQuestionAnswersFn { get; set; }
+        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
 
         public List<T> Choices { get; internal set; }
 
-        public QuestionList(string question) : base(question)
+        public QuestionRawList(string question) : base(question)
         {
         }
 
@@ -30,7 +30,7 @@ namespace ConsoleWizard
 
                 for (int i = 0; i < Choices.Count; i++)
                 {
-                    DisplayQuestionAnswersFn(i + 1, Choices[i]);
+                    ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(i + 1, Choices[i]));
                 }
 
                 Console.WriteLine();
