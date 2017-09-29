@@ -20,10 +20,16 @@ namespace ConsoleApp1
             _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?")).Prompt();
         }
 
-        private static void ListTest()
+        private static void RawListTest()
         {
             var list = new List<ConsoleColor> { ConsoleColor.Yellow, ConsoleColor.Magenta, ConsoleColor.DarkYellow };
             _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow)).Prompt();
+        }
+
+        private static void ListTest()
+        {
+            var list = new List<ConsoleColor> { ConsoleColor.Yellow, ConsoleColor.Magenta, ConsoleColor.DarkYellow };
+            _test.For(x => x.Two).Prompt(Question.List("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow)).Prompt();
         }
 
         private static void Herp()

@@ -57,7 +57,7 @@ namespace ConsoleWizard
 
             inquire.DisplayQuestionAnswersFn = (index, choice) =>
             {
-                Console.WriteLine($"[{index}] {choice}");
+                return $"[{index}] {choice}";
             };
 
             inquire.ValidatationFn = v =>
@@ -66,7 +66,26 @@ namespace ConsoleWizard
                 {
                     return true;
                 }
+                ConsoleHelper.WriteError($"Choosen number must be between 1 and {inquire.Choices.Count}");
                 return false;
+            };
+
+            inquire.ParseFn = v =>
+            {
+                return inquire.Choices[v - 1];
+            };
+
+            return inquire;
+        }
+
+        public static QuestionRawList<T> List<T>(string message, List<T> choices)
+        {
+            var inquire = new QuestionRawList<T>(message);
+            inquire.Choices = choices;
+
+            inquire.DisplayQuestionAnswersFn = (index, choice) =>
+            {
+                return $"{choice}";
             };
 
             inquire.ParseFn = v =>

@@ -7,9 +7,7 @@ namespace ConsoleWizard
     {
         public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
         public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
-
-        public Action<int, T> DisplayQuestionAnswersFn { get; set; }
-
+        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
         public List<T> Choices { get; internal set; }
 
         public QuestionRawList(string question) : base(question)
@@ -30,21 +28,58 @@ namespace ConsoleWizard
 
                 for (int i = 0; i < Choices.Count; i++)
                 {
-                    DisplayQuestionAnswersFn(i + 1, Choices[i]);
+                    ConsoleHelper.WriteLine("  " + DisplayQuestionAnswersFn(i + 1, Choices[i]));
                 }
 
-                Console.WriteLine();
-                ConsoleHelper.Write("Answer: ");
-                var value = Console.ReadLine().ToN<int>();
+                Console.CursorVisible = false;
 
-                if (value.HasValue == false && HasDefaultValue)
+                int boundryTop = Console.CursorTop - Choices.Count;
+                int boundryBottom = boundryTop + Choices.Count - 1;
+
+
+                Console.SetCursorPosition(0, boundryTop);
+                Console.Write("→");
+                Console.SetCursorPosition(0, boundryTop);
+
+                while (true)
                 {
-                    tryAgain = Confirm(answer);
-                }
-                else if (value.HasValue && ValidatationFn(value.Value))
-                {
-                    answer = ParseFn(value.Value);
-                    tryAgain = Confirm(answer);
+                    int y = Console.CursorTop;
+                    var key = Console.ReadKey().Key;
+
+                    Console.SetCursorPosition(0, y);
+                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]));
+                    Console.SetCursorPosition(0, y);
+
+                    switch (key)
+                    {
+                        case (ConsoleKey.UpArrow):
+                            {
+                                if (y > boundryTop)
+                                {
+                                    y -= 1;
+                                }
+                                break;
+                            }
+                        case (ConsoleKey.DownArrow):
+                            {
+                                if (y < boundryBottom)
+                                {
+                                    y += 1;
+                                }
+                                break;
+                            }
+                        case (ConsoleKey.Enter):
+                            {
+                                Console.CursorVisible = true;
+                                return Choices[Console.CursorTop - boundryTop];
+                            }
+                    }
+
+                    Console.SetCursorPosition(0, y);
+                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
+                    Console.SetCursorPosition(0, y);
+                    Console.Write("→");
+                    Console.SetCursorPosition(0, y);
                 }
             }
             Answer = answer;
