@@ -17,13 +17,13 @@ namespace ConsoleApp1
 
         private static void ConfirmTest()
         {
-            _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?")).Prompt();
+            _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?"));
         }
 
         private static void ListTest()
         {
             var list = new List<ConsoleColor> { ConsoleColor.Yellow, ConsoleColor.Magenta, ConsoleColor.DarkYellow };
-            _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkBlue)).Prompt();
+            _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkBlue));
         }
 
         private static void Herp()
