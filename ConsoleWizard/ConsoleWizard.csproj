@@ -45,6 +45,7 @@
     <Compile Include="Inquirer.cs" />
     <Compile Include="InquirerFor.cs" />
     <Compile Include="InquirerPrompt.cs" />
+    <Compile Include="MathHelper.cs" />
     <Compile Include="QuestionList.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="QuestionExtensions.cs" />

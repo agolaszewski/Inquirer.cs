@@ -29,18 +29,25 @@ namespace ConsoleWizard
             }
             else
             {
-                question.Choices.Insert(0,defaultValue);
+                question.Choices.Insert(0, defaultValue);
                 question.DefaultValue = defaultValue;
                 question.HasDefaultValue = true;
             }
             return question;
         }
 
-        public static QuestionBase<T> WithDefaultValue<T>(this QuestionRawList<T> question, int index) 
+        public static QuestionBase<T> WithDefaultValue<T>(this QuestionRawList<T> question, int index)
         {
             question.DefaultValue = question.Choices[index];
             question.HasDefaultValue = true;
             return question;
         }
+
+        public static QuestionBase<T> Paging<T>(this QuestionRawList<T> question, int pageSize)
+        {
+            question.PageSize = pageSize;
+            return question;
+        }
+
     }
 }
