@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleWizard
 {
@@ -6,6 +8,7 @@ namespace ConsoleWizard
     {
         public int PageSize { get; internal set; } = 0;
         private int _skipChoices = 0;
+        private List<T> _pageChoices = new List<T>();
 
         public QuestionPagedList(QuestionList<T> question) : base(question.Message)
         {
@@ -19,6 +22,7 @@ namespace ConsoleWizard
         {
             bool tryAgain = true;
             T answer = DefaultValue;
+            _pageChoices = Choices.Skip(_skipChoices).Take(PageSize).ToList();
 
             while (tryAgain)
             {
@@ -27,15 +31,12 @@ namespace ConsoleWizard
                 Console.WriteLine();
                 Console.WriteLine();
 
-                for (int i = 0; i < Choices.Count; i++)
-                {
-                    ConsoleHelper.WriteLine("  " + DisplayQuestionAnswersFn(i + 1, Choices[i]));
-                }
+                DisplayChoices();
 
                 Console.CursorVisible = false;
 
-                int boundryTop = Console.CursorTop - Choices.Count;
-                int boundryBottom = boundryTop + Choices.Count - 1;
+                int boundryTop = Console.CursorTop - _pageChoices.Count;
+                int boundryBottom = boundryTop + _pageChoices.Count - 1;
 
                 Console.SetCursorPosition(0, boundryTop);
                 Console.Write("→");
@@ -47,24 +48,21 @@ namespace ConsoleWizard
                     var key = Console.ReadKey().Key;
 
                     Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]));
+                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, _pageChoices[y - boundryTop]));
                     Console.SetCursorPosition(0, y);
 
                     switch (key)
                     {
-                        case (ConsoleKey.LeftArrow):
-                            {
-                                break;
-                            }
-                        case (ConsoleKey.RightArrow):
-                            {
-                                break;
-                            }
                         case (ConsoleKey.UpArrow):
                             {
                                 if (y > boundryTop)
                                 {
                                     y -= 1;
+                                }
+                                else
+                                {
+                                    _skipChoices -= PageSize;
+                                    return Prompt();
                                 }
                                 break;
                             }
@@ -74,17 +72,22 @@ namespace ConsoleWizard
                                 {
                                     y += 1;
                                 }
+                                else
+                                {
+                                    _skipChoices += PageSize;
+                                    return Prompt();
+                                }
                                 break;
                             }
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
-                                return Choices[Console.CursorTop - boundryTop];
+                                return _pageChoices[Console.CursorTop - boundryTop];
                             }
                     }
 
                     Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
+                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, _pageChoices[y - boundryTop]), ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                     Console.Write("→");
                     Console.SetCursorPosition(0, y);
@@ -97,20 +100,9 @@ namespace ConsoleWizard
 
         private void DisplayChoices()
         {
-            if (_skipChoices != 0)
+            for (int i = 0; i < _pageChoices.Count; i++)
             {
-                ConsoleHelper.WriteLine("[←] Previous Page");
-            }
-
-            int max = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
-            for (int i = _skipChoices; i < max; i++)
-            {
-                ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(i + 1, Choices[i]));
-            }
-
-            if (max != Choices.Count)
-            {
-                ConsoleHelper.WriteLine("[→] Next Page");
+                ConsoleHelper.WriteLine("  " + DisplayQuestionAnswersFn(i + 1, _pageChoices[i]));
             }
         }
     }

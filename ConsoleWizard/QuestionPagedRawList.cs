@@ -6,7 +6,7 @@ namespace ConsoleWizard
     {
         public int PageSize { get; internal set; } = 0;
         private int _skipChoices = 0;
-
+        
         public QuestionPagedRawList(QuestionRawList<T> question) : base(question.Message)
         {
             ValidatationFn = question.ValidatationFn;
