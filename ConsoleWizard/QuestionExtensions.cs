@@ -45,11 +45,10 @@ namespace ConsoleWizard
             return question;
         }
 
-        public static QuestionBase<T> Paging<T>(this QuestionRawList<T> question, int pageSize)
-        {
-            question.PageSize = pageSize;
-            return question;
-        }
-
+        //public static QuestionBase<T> Paging<T>(this QuestionRawList<T> question, int pageSize)
+        //{
+        //    question.PageSize = pageSize;
+        //    return question;
+        //}
     }
 }
