@@ -98,7 +98,7 @@ namespace ConsoleWizard
                 ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(i + 1, Choices[i]));
             }
 
-            if (PageSize != 0 && max != Choices.Count)
+            if (max != Choices.Count)
             {
                 ConsoleHelper.WriteLine("[→] Next Page");
             }
