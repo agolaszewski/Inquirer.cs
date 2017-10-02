@@ -1,29 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
-    internal class QuestionPagedList<T> : QuestionBase<T>
+    internal class QuestionPagedRawList<T> : QuestionRawList<T>
     {
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
-        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
-
-        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
-
-        public List<T> Choices { get; internal set; }
-
         public int PageSize { get; internal set; } = 0;
-
         private int _skipChoices = 0;
 
-        public QuestionPagedList(string question) : base(question)
+        public QuestionPagedRawList(QuestionRawList<T> question) : base(question.Message)
         {
+            ValidatationFn = question.ValidatationFn;
+            ParseFn = question.ParseFn;
+            DisplayQuestionAnswersFn = question.DisplayQuestionAnswersFn;
+            Choices = question.Choices;
         }
 
         public override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
+
+            DisplayQuestion();
 
             while (tryAgain)
             {
@@ -40,30 +37,37 @@ namespace ConsoleWizard
                 do
                 {
                     key = Console.ReadKey().Key;
-                    if (key == ConsoleKey.LeftArrow)
+                    switch (key)
                     {
-                        _skipChoices = MathHelper.Clamp(_skipChoices - PageSize, 0, Choices.Count);
-                        if (_skipChoices - PageSize >= 0)
-                        {
-                            return Prompt();
-                        }
-                    }
-                    else if (key == ConsoleKey.RightArrow)
-                    {
-                        _skipChoices = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
-                        if (_skipChoices != Choices.Count)
-                        {
-                            return Prompt();
-                        }
-                    }
-                    else if (key != ConsoleKey.Enter)
-                    {
-                        result += (char)key;
+                        case (ConsoleKey.LeftArrow):
+                            {
+                                if (_skipChoices - PageSize >= 0)
+                                {
+                                    _skipChoices = _skipChoices - PageSize;
+                                    return Prompt();
+                                }
+                                break;
+                            }
+                        case (ConsoleKey.RightArrow):
+                            {
+                                _skipChoices = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
+                                if (_skipChoices != Choices.Count)
+                                {
+                                    return Prompt();
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                result += (char)key;
+                                break;
+                            }
                     }
                 } while (key != ConsoleKey.Enter);
 
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
+
                 var value = result.ToN<int>();
 
                 if (value.HasValue == false && HasDefaultValue)
@@ -89,10 +93,9 @@ namespace ConsoleWizard
             }
 
             int max = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
-
             for (int i = _skipChoices; i < max; i++)
             {
-                DisplayQuestionAnswersFn(i + 1, Choices[i]);
+                ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(i + 1, Choices[i]));
             }
 
             if (PageSize != 0 && max != Choices.Count)
