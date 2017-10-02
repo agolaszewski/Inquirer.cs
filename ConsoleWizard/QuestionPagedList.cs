@@ -2,12 +2,12 @@
 
 namespace ConsoleWizard
 {
-    internal class QuestionPagedRawList<T> : QuestionRawList<T>
+    public class QuestionPagedList<T> : QuestionList<T>
     {
         public int PageSize { get; internal set; } = 0;
         private int _skipChoices = 0;
 
-        public QuestionPagedRawList(QuestionRawList<T> question) : base(question.Message)
+        public QuestionPagedList(QuestionList<T> question) : base(question.Message)
         {
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
@@ -20,64 +20,74 @@ namespace ConsoleWizard
             bool tryAgain = true;
             T answer = DefaultValue;
 
-            DisplayQuestion();
-
             while (tryAgain)
             {
+                DisplayQuestion();
+
                 Console.WriteLine();
                 Console.WriteLine();
 
-                DisplayChoices();
-
-                Console.WriteLine();
-                ConsoleHelper.Write("Answer: ");
-
-                string result = string.Empty;
-                ConsoleKey key;
-                do
+                for (int i = 0; i < Choices.Count; i++)
                 {
-                    key = Console.ReadKey().Key;
+                    ConsoleHelper.WriteLine("  " + DisplayQuestionAnswersFn(i + 1, Choices[i]));
+                }
+
+                Console.CursorVisible = false;
+
+                int boundryTop = Console.CursorTop - Choices.Count;
+                int boundryBottom = boundryTop + Choices.Count - 1;
+
+                Console.SetCursorPosition(0, boundryTop);
+                Console.Write("→");
+                Console.SetCursorPosition(0, boundryTop);
+
+                while (true)
+                {
+                    int y = Console.CursorTop;
+                    var key = Console.ReadKey().Key;
+
+                    Console.SetCursorPosition(0, y);
+                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]));
+                    Console.SetCursorPosition(0, y);
+
                     switch (key)
                     {
                         case (ConsoleKey.LeftArrow):
                             {
-                                if (_skipChoices - PageSize >= 0)
-                                {
-                                    _skipChoices = _skipChoices - PageSize;
-                                    return Prompt();
-                                }
                                 break;
                             }
                         case (ConsoleKey.RightArrow):
                             {
-                                _skipChoices = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
-                                if (_skipChoices != Choices.Count)
+                                break;
+                            }
+                        case (ConsoleKey.UpArrow):
+                            {
+                                if (y > boundryTop)
                                 {
-                                    return Prompt();
+                                    y -= 1;
                                 }
                                 break;
                             }
-                        default:
+                        case (ConsoleKey.DownArrow):
                             {
-                                result += (char)key;
+                                if (y < boundryBottom)
+                                {
+                                    y += 1;
+                                }
                                 break;
                             }
+                        case (ConsoleKey.Enter):
+                            {
+                                Console.CursorVisible = true;
+                                return Choices[Console.CursorTop - boundryTop];
+                            }
                     }
-                } while (key != ConsoleKey.Enter);
 
-                Console.WriteLine();
-                ConsoleHelper.Write("Answer: ");
-
-                var value = result.ToN<int>();
-
-                if (value.HasValue == false && HasDefaultValue)
-                {
-                    tryAgain = Confirm(answer);
-                }
-                else if (value.HasValue && ValidatationFn(value.Value))
-                {
-                    answer = ParseFn(value.Value);
-                    tryAgain = Confirm(answer);
+                    Console.SetCursorPosition(0, y);
+                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
+                    Console.SetCursorPosition(0, y);
+                    Console.Write("→");
+                    Console.SetCursorPosition(0, y);
                 }
             }
             Answer = answer;

@@ -47,9 +47,16 @@ namespace ConsoleWizard
 
         public static QuestionRawList<T> Paging<T>(this QuestionRawList<T> question, int pageSize)
         {
-            var question2 = new QuestionPagedRawList<T>(question);
-            question2.PageSize = pageSize;
-            return question2;
+            var pagedQuestion = new QuestionPagedRawList<T>(question);
+            pagedQuestion.PageSize = pageSize;
+            return pagedQuestion;
+        }
+
+        public static QuestionList<T> Paging<T>(this QuestionList<T> question, int pageSize)
+        {
+            var pagedQuestion = new QuestionPagedList<T>(question);
+            pagedQuestion.PageSize = pageSize;
+            return pagedQuestion;
         }
     }
 }
