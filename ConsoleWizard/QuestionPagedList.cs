@@ -20,6 +20,8 @@ namespace ConsoleWizard
 
         public override T Prompt()
         {
+            Console.Clear();
+
             bool tryAgain = true;
             T answer = DefaultValue;
             _pageChoices = Choices.Skip(_skipChoices).Take(PageSize).ToList();
@@ -61,8 +63,11 @@ namespace ConsoleWizard
                                 }
                                 else
                                 {
-                                    _skipChoices -= PageSize;
-                                    return Prompt();
+                                    if (_skipChoices - PageSize >= 0)
+                                    {
+                                        _skipChoices -= PageSize;
+                                        return Prompt();
+                                    }
                                 }
                                 break;
                             }
@@ -74,8 +79,11 @@ namespace ConsoleWizard
                                 }
                                 else
                                 {
-                                    _skipChoices += PageSize;
-                                    return Prompt();
+                                    if (_skipChoices + PageSize <= Choices.Count)
+                                    {
+                                        _skipChoices += PageSize;
+                                        return Prompt();
+                                    }
                                 }
                                 break;
                             }

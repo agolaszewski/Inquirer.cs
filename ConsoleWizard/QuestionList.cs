@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
-    public class QuestionList<T> : QuestionBase<T>
+    public class QuestionList<T> : QuestionListBase<T>
     {
         public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
         public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
         public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
-        public List<T> Choices { get; internal set; }
-
+      
         public QuestionList(string question) : base(question)
         {
         }

@@ -18,7 +18,7 @@ namespace ConsoleWizard
             return question;
         }
 
-        public static QuestionBase<T> WithDefaultValue<T>(this QuestionRawList<T> question, T defaultValue) where T : IComparable
+        public static QuestionBase<T> WithDefaultValue<T>(this QuestionListBase<T> question, T defaultValue) where T : IComparable
         {
             if (question.Choices.Where(x => x.CompareTo(defaultValue) == 0).Any())
             {
@@ -37,6 +37,7 @@ namespace ConsoleWizard
             }
             return question;
         }
+
 
         public static QuestionBase<T> WithDefaultValue<T>(this QuestionRawList<T> question, int index)
         {
