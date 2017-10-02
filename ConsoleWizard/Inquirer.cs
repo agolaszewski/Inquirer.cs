@@ -6,7 +6,7 @@ namespace ConsoleWizard
 {
     public class Inquirer<TAnswers> where TAnswers : class, new()
     {
-        public AppAction CurrentQuestion { get; set; }
+        public PropertyInfo PropertyInfo { get; set; }
 
         public Inquirer()
         {
@@ -23,10 +23,7 @@ namespace ConsoleWizard
                 throw new ArgumentException("The lambda expression 'property' should point to a valid Property");
             }
 
-            CurrentQuestion = new AppAction()
-            {
-                PropertyInfo = propertyInfo
-            };
+            PropertyInfo = propertyInfo;
 
             return new InquirerFor<TAnswers, TResult>(this);
         }

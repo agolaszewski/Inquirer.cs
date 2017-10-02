@@ -45,57 +45,11 @@ namespace ConsoleWizard
             return question;
         }
 
-        //public static QuestionRawList<T> WithNavigation<T>(this QuestionRawList<T> question)
-        //{
-        //    question.DisplayQuestionAnswersFn = (index, choice) =>
-        //    {
-        //        Console.WriteLine($"  {choice.ToString()}");
-        //    };
+        public static QuestionBase<T> Paging<T>(this QuestionRawList<T> question, int pageSize)
+        {
+            question.PageSize = pageSize;
+            return question;
+        }
 
-        //    question.ReadFn = () =>
-        //    {
-        //        Console.CursorVisible = false;
-
-        //        int boundryTop = Console.CursorTop - question.Choices.Count;
-        //        int boundryBottom = boundryTop + question.Choices.Count - 1;
-
-        //        while (true)
-        //        {
-        //            int y = Console.CursorTop;
-        //            var key = Console.ReadKey().Key;
-
-        //            switch (key)
-        //            {
-        //                case (ConsoleKey.UpArrow):
-        //                    {
-        //                        if (y > boundryTop)
-        //                        {
-        //                            y -= 1;
-        //                        }
-        //                        break;
-        //                    }
-        //                case (ConsoleKey.DownArrow):
-        //                    {
-        //                        if (y < boundryBottom)
-        //                        {
-        //                            y += 1;
-        //                        }
-        //                        break;
-        //                    }
-        //                case (ConsoleKey.Enter):
-        //                    {
-        //                        Console.CursorVisible = true;
-        //                        return Console.CursorTop - boundryTop;
-        //                    }
-        //            }
-
-        //            Console.SetCursorPosition(0, y);
-        //            Console.Write("→");
-        //            Console.SetCursorPosition(0, y);
-        //        }
-        //    };
-
-        //    return question;
-        //}
     }
 }

@@ -13,13 +13,7 @@ namespace ConsoleWizard
 
         public void Then(Action<TAnswers> thenFn)
         {
-            _inquirer.CurrentQuestion.Action(_inquirer.CurrentQuestion.PropertyInfo);
             thenFn(_inquirer.Answers);
-        }
-
-        public void Prompt()
-        {
-            _inquirer.CurrentQuestion.Action(_inquirer.CurrentQuestion.PropertyInfo);
         }
     }
 }

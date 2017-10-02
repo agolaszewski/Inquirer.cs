@@ -9,9 +9,13 @@ namespace ConsoleWizard
         public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
         public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
         public List<T> Choices { get; internal set; }
+        public int PageSize { get; internal set; } = 0;
 
-        public QuestionList(string question) : base(question)
+        private int _skipChoices = 0;
+
+        public QuestionRawList(string question) : base(question)
         {
+
         }
 
         public override T Prompt()
@@ -26,10 +30,37 @@ namespace ConsoleWizard
                 Console.WriteLine();
                 Console.WriteLine();
 
-                for (int i = 0; i < Choices.Count; i++)
+                DisplayChoices();
+
+                Console.WriteLine();
+                ConsoleHelper.Write("Answer: ");
+
+                string result = string.Empty;
+                ConsoleKey key;
+                do
                 {
-                    ConsoleHelper.WriteLine("  " + DisplayQuestionAnswersFn(i + 1, Choices[i]));
-                }
+                    key = Console.ReadKey().Key;
+                    if (key == ConsoleKey.LeftArrow)
+                    {
+                        _skipChoices = MathHelper.Clamp(_skipChoices - PageSize, 0, Choices.Count);
+                        if (_skipChoices - PageSize >= 0)
+                        {
+                            return Prompt();
+                        }
+                    }
+                    else if (key == ConsoleKey.RightArrow)
+                    {
+                        _skipChoices = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
+                        if (_skipChoices != Choices.Count)
+                        {
+                            return Prompt();
+                        }
+                    }
+                    else if (key != ConsoleKey.Enter)
+                    {
+                        result += (char)key;
+                    }
+                } while (key != ConsoleKey.Enter);
 
                 Console.CursorVisible = false;
 
@@ -84,6 +115,26 @@ namespace ConsoleWizard
             Answer = answer;
             Console.WriteLine();
             return answer;
+        }
+
+        private void DisplayChoices()
+        {
+            if (_skipChoices != 0)
+            {
+                ConsoleHelper.WriteLine("[←] Previous Page");
+            }
+
+            int max = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
+
+            for (int i = _skipChoices; i < max; i++)
+            {
+                DisplayQuestionAnswersFn(i + 1, Choices[i]);
+            }
+
+            if (PageSize != 0 && max != Choices.Count)
+            {
+                ConsoleHelper.WriteLine("[→] Next Page");
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using ConsoleWizard;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ConsoleApp1
 {
@@ -18,25 +17,13 @@ namespace ConsoleApp1
 
         private static void ConfirmTest()
         {
-            _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?")).Prompt();
-        }
-
-        private static void RawListWithPagingTest()
-        {
-            var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow)).Prompt();
-        }
-
-        private static void RawListTest()
-        {
-            var list = new List<ConsoleColor> { ConsoleColor.Yellow, ConsoleColor.Magenta, ConsoleColor.DarkYellow };
-            _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow)).Prompt();
+            _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?"));
         }
 
         private static void ListTest()
         {
             var list = new List<ConsoleColor> { ConsoleColor.Yellow, ConsoleColor.Magenta, ConsoleColor.DarkYellow };
-            _test.For(x => x.Two).Prompt(Question.List("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow)).Prompt();
+            _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).Paging(2).WithDefaultValue(ConsoleColor.DarkBlue));
         }
 
         private static void Herp()
