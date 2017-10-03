@@ -6,7 +6,39 @@ namespace ConsoleWizard
 {
     public static class Question
     {
-        public static QuestionBase<string> TextInput(string message)
+        public static QuestionBase<T> Input<T>(string message) where T : struct
+        {
+            var inquire = new QuestionText<T>(message);
+            inquire.ValidatationFn = v =>
+            {
+                if (string.IsNullOrEmpty(v) == false || inquire.HasDefaultValue)
+                {
+                    if (v.ToN<T>().HasValue)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        ConsoleHelper.WriteError($"Cannot parse {v} to {nameof(T)}");
+                        return false;
+                    }
+                }
+                else
+                {
+                    ConsoleHelper.WriteError("Empty line");
+                    return false;
+                }
+            };
+
+            inquire.ParseFn = v =>
+            {
+                return v.To<T>();
+            };
+
+            return inquire;
+        }
+
+        public static QuestionBase<string> Input(string message)
         {
             var inquire = new QuestionText<string>(message);
             inquire.ValidatationFn = v =>
@@ -15,6 +47,7 @@ namespace ConsoleWizard
                 {
                     return true;
                 }
+
                 ConsoleHelper.WriteError("Empty line");
                 return false;
             };

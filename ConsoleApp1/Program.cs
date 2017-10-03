@@ -11,13 +11,25 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
-            ListTest();
-            Console.WriteLine(_test.Answers.Two);
+            InputTest();
+            InputTestNumber();
+            Console.WriteLine(_test.Answers.Input);
+            Console.ReadKey();
         }
 
         private static void ConfirmTest()
         {
             _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?"));
+        }
+
+        private static void InputTest()
+        {
+            _test.For(x => x.Input).Prompt(Question.Input("How are you?"));
+        }
+
+        private static void InputTestNumber()
+        {
+            _test.For(x => x.InputNumber).Prompt(Question.Input<int>("2+2"));
         }
 
         private static void ListTest()
