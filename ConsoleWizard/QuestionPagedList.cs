@@ -79,7 +79,7 @@ namespace ConsoleWizard
                                 }
                                 else
                                 {
-                                    if (_skipChoices + PageSize <= Choices.Count)
+                                    if (_skipChoices + PageSize < Choices.Count)
                                     {
                                         _skipChoices += PageSize;
                                         return Prompt();
