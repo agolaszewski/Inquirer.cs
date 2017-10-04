@@ -50,6 +50,7 @@
     <Compile Include="MathHelper.cs" />
     <Compile Include="QuestionList.cs" />
     <Compile Include="QuestionPagedRawList.cs" />
+    <Compile Include="QuestionPassword.cs" />
     <Compile Include="QuestionRawLists.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="QuestionExtensions.cs" />

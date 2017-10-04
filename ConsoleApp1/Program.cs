@@ -16,7 +16,8 @@ namespace ConsoleApp1
             //InputTestNumber();
             //ConfirmTest();
             //ListTest();
-            ListRawTest();
+            //ListRawTest();
+            PasswordTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
         }
@@ -29,6 +30,11 @@ namespace ConsoleApp1
         private static void InputTest()
         {
             _test.For(x => x.Input).Prompt(Question.Input("How are you?"));
+        }
+
+        private static void PasswordTest()
+        {
+            _test.For(x => x.Input).Prompt(Question.Password("How are you?"));
         }
 
         private static void InputTestNumber()

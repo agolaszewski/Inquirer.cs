@@ -155,5 +155,27 @@ namespace ConsoleWizard
 
             return inquire;
         }
+
+        public static QuestionBase<string> Password(string message)
+        {
+            var inquire = new QuestionPassword<string>(message);
+            inquire.ValidatationFn = v =>
+            {
+                if (string.IsNullOrEmpty(v) == false || inquire.HasDefaultValue)
+                {
+                    return true;
+                }
+
+                ConsoleHelper.WriteError("Empty line");
+                return false;
+            };
+
+            inquire.ParseFn = v =>
+            {
+                return v;
+            };
+
+            return inquire;
+        }
     }
 }
