@@ -1,4 +1,7 @@
-﻿namespace ConsoleWizard
+﻿using System;
+using System.Collections.Generic;
+
+namespace ConsoleWizard
 {
     public class InquirerFor<TAnswers, TResult> where TAnswers : class, new()
     {

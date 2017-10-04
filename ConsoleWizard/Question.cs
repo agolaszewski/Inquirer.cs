@@ -129,6 +129,26 @@ namespace ConsoleWizard
             return inquire;
         }
 
+        public static QuestionCheckbox<List<T>, T> Checkbox<T>(string message, List<T> choices)
+        {
+            var inquire = new QuestionCheckbox<List<T>, T>(message);
+            inquire.Choices = choices;
+            inquire.Selected = new bool[choices.Count];
+            inquire.Selected[0] = true;
+
+            inquire.DisplayQuestionAnswersFn = (index, choice) =>
+            {
+                return $"{choice}";
+            };
+
+            inquire.ParseFn = v =>
+            {
+                return inquire.Choices[v - 1];
+            };
+
+            return inquire;
+        }
+
         public static QuestionBase<ConsoleKey> ConsoleKey(string message, params ConsoleKey[] @params)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);

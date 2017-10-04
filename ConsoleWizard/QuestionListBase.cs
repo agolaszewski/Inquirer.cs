@@ -14,4 +14,13 @@ namespace ConsoleWizard
         {
         }
     }
+
+    public abstract class QuestionMultipleListBase<TList,T> : QuestionBase<TList> where TList : List<T>  
+    {
+        public TList Choices { get; set; }
+
+        public QuestionMultipleListBase(string message) : base(message)
+        {
+        }
+    }
 }

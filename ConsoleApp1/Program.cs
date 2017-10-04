@@ -17,7 +17,8 @@ namespace ConsoleApp1
             //ConfirmTest();
             //ListTest();
             //ListRawTest();
-            PasswordTest();
+            //PasswordTest();
+            ListCheckboxTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
         }
@@ -54,15 +55,11 @@ namespace ConsoleApp1
             _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list));
         }
 
-        private static void Herp()
+        private static void ListCheckboxTest()
         {
-            _test.For(x => x.One).Prompt(Question.ConsoleKey("[[W]] or [[A]]", ConsoleKey.A, ConsoleKey.W)).Then(answers =>
-            {
-                if (answers.One == ConsoleKey.A)
-                {
-                    Herp();
-                }
-            });
+            var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            _test.For(x => x.Colors).Prompt(Question.Checkbox("sdada", list));
+           ;
         }
     }
 }

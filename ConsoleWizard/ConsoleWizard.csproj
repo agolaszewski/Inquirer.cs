@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppAction.cs" />
+    <Compile Include="QuestionCheckbox.cs" />
     <Compile Include="QuestionListBase.cs" />
     <Compile Include="QuestionPagedList.cs" />
     <Compile Include="ConsoleHelper.cs" />
