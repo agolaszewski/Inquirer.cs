@@ -27,14 +27,26 @@ namespace ConsoleWizard
                 Console.WriteLine();
                 Console.WriteLine();
 
-                for (int i = 0; i < Choices.Count; i++)
-                {
-                    ConsoleHelper.WriteLine("    " + DisplayQuestionAnswersFn(i + 1, Choices[i]));
-                }
-
                 Console.CursorVisible = false;
 
-                int boundryTop = Console.CursorTop - Choices.Count;
+                int boundryTop = Console.CursorTop;
+                for (int i = 0; i < Choices.Count; i++)
+                {
+                    Console.SetCursorPosition(2, i + boundryTop);
+                    if (Selected[i])
+                    {
+                        Console.Write("*");
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+
+                    Console.SetCursorPosition(4, i + boundryTop);
+                    ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(i + 1, Choices[i]));
+                }
+
+                boundryTop = Console.CursorTop - Choices.Count;
                 int boundryBottom = boundryTop + Choices.Count - 1;
 
                 Console.SetCursorPosition(0, boundryTop);
@@ -55,12 +67,10 @@ namespace ConsoleWizard
                     {
                         Console.Write(" ");
                     }
-                    Console.SetCursorPosition(2, y);
-
-                    //Console.SetCursorPosition(0, y);
-                    //ConsoleHelper.Write("    " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]));
-                    //Console.SetCursorPosition(0, y);
-
+                   
+                    Console.SetCursorPosition(4, y);
+                    ConsoleHelper.Write(DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]));
+                 
                     switch (key)
                     {
                         case (ConsoleKey.RightArrow):
@@ -111,10 +121,12 @@ namespace ConsoleWizard
                             }
                     }
 
-                    //Console.SetCursorPosition(0, y);
-                    //ConsoleHelper.Write("    " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                     Console.Write("→");
+                    Console.SetCursorPosition(0, y);
+
+                    Console.SetCursorPosition(4, y);
+                    ConsoleHelper.Write(DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                 }
             }
