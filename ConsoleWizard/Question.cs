@@ -19,7 +19,7 @@ namespace ConsoleWizard
                     }
                     else
                     {
-                        ConsoleHelper.WriteError($"Cannot parse {v} to {nameof(T)}");
+                        ConsoleHelper.WriteError($"Cannot parse {v} to {typeof(T)}");
                         return false;
                     }
                 }

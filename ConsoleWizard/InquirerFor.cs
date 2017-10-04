@@ -12,7 +12,6 @@
         public InquirerPrompt<TAnswers> Prompt(QuestionBase<TResult> question)
         {
             _inquirer.PropertyInfo.SetValue(_inquirer.Answers, question.Prompt());
-
             return new InquirerPrompt<TAnswers>(_inquirer);
         }
     }
