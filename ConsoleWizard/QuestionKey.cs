@@ -2,12 +2,12 @@
 
 namespace ConsoleWizard
 {
-    public class QuestionKey<T> : QuestionBase<T>
+    public class QuestionInputKey<T> : QuestionBase<T>
     {
         public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
         public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public QuestionKey(string question) : base(question)
+        public QuestionInputKey(string question) : base(question)
         {
         }
 
@@ -28,8 +28,8 @@ namespace ConsoleWizard
                 else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
+                    tryAgain = Confirm(answer);
                 }
-                tryAgain = Confirm(answer);
             }
 
             Answer = answer;

@@ -11,8 +11,9 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
-            InputTest();
-            InputTestNumber();
+            //InputTest();
+            //InputTestNumber();
+            ConfirmTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
         }

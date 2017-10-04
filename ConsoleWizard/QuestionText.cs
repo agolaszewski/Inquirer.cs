@@ -2,12 +2,12 @@
 
 namespace ConsoleWizard
 {
-    public class QuestionText<T> : QuestionBase<T>
+    public class QuestionInput<T> : QuestionBase<T>
     {
         public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
         public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public QuestionText(string message) : base(message)
+        public QuestionInput(string message) : base(message)
         {
         }
 

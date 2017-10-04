@@ -8,7 +8,7 @@ namespace ConsoleWizard
     {
         public static QuestionBase<T> Input<T>(string message) where T : struct
         {
-            var inquire = new QuestionText<T>(message);
+            var inquire = new QuestionInput<T>(message);
             inquire.ValidatationFn = v =>
             {
                 if (string.IsNullOrEmpty(v) == false || inquire.HasDefaultValue)
@@ -40,7 +40,7 @@ namespace ConsoleWizard
 
         public static QuestionBase<string> Input(string message)
         {
-            var inquire = new QuestionText<string>(message);
+            var inquire = new QuestionInput<string>(message);
             inquire.ValidatationFn = v =>
             {
                 if (string.IsNullOrEmpty(v) == false || inquire.HasDefaultValue)
@@ -62,7 +62,7 @@ namespace ConsoleWizard
 
         public static QuestionBase<ConsoleKey> Confirm(string message)
         {
-            var inquire = new QuestionKey<ConsoleKey>(message);
+            var inquire = new QuestionInputKey<ConsoleKey>(message);
             inquire.Message += " [y/n]";
             inquire.ValidatationFn = v =>
             {
@@ -131,7 +131,7 @@ namespace ConsoleWizard
 
         public static QuestionBase<ConsoleKey> ConsoleKey(string message, params ConsoleKey[] @params)
         {
-            var inquire = new QuestionKey<ConsoleKey>(message);
+            var inquire = new QuestionInputKey<ConsoleKey>(message);
             inquire.ValidatationFn = v =>
             {
                 if (@params.Any(p => p == v))
