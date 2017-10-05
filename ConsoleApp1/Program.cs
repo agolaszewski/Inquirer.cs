@@ -18,7 +18,8 @@ namespace ConsoleApp1
             //ListTest();
             //ListRawTest();
             //PasswordTest();
-            ListCheckboxTest();
+            //ListCheckboxTest();
+            //ListExtendedTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
         }
@@ -59,7 +60,16 @@ namespace ConsoleApp1
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             _test.For(x => x.Colors).Prompt(Question.Checkbox("sdada", list));
-           ;
+        }
+
+        private static void ListExtendedTest()
+        {
+            var list = new Dictionary<ConsoleKey, ConsoleColor>();
+            list.Add(ConsoleKey.B, ConsoleColor.Blue);
+            list.Add(ConsoleKey.C, ConsoleColor.Cyan);
+            list.Add(ConsoleKey.D, ConsoleColor.DarkBlue);
+
+            _test.For(x => x.Two).Prompt(Question.ExtendedList("sdada", list));
         }
     }
 }

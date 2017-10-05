@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleWizard
 {
@@ -15,11 +12,20 @@ namespace ConsoleWizard
         }
     }
 
-    public abstract class QuestionMultipleListBase<TList,T> : QuestionBase<TList> where TList : List<T>  
+    public abstract class QuestionMultipleListBase<TList, T> : QuestionBase<TList> where TList : List<T>
     {
         public TList Choices { get; set; }
 
         public QuestionMultipleListBase(string message) : base(message)
+        {
+        }
+    }
+
+    public abstract class QuestionDictionaryListBase<TDictionary, T> : QuestionBase<T> where TDictionary : Dictionary<ConsoleKey, T>
+    {
+        public TDictionary Choices { get; set; }
+
+        public QuestionDictionaryListBase(string message) : base(message)
         {
         }
     }

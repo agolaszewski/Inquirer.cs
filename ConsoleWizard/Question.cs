@@ -134,7 +134,6 @@ namespace ConsoleWizard
             var inquire = new QuestionCheckbox<List<T>, T>(message);
             inquire.Choices = choices;
             inquire.Selected = new bool[choices.Count];
-            inquire.Selected[0] = true;
 
             inquire.DisplayQuestionAnswersFn = (index, choice) =>
             {
@@ -149,7 +148,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<ConsoleKey> ConsoleKey(string message, params ConsoleKey[] @params)
+        public static QuestionBase<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
             inquire.ValidatationFn = v =>
@@ -193,6 +192,35 @@ namespace ConsoleWizard
             inquire.ParseFn = v =>
             {
                 return v;
+            };
+
+            return inquire;
+        }
+
+        public static QuestionExtendedList<Dictionary<ConsoleKey,T>, T> ExtendedList<T>(string message, Dictionary<ConsoleKey, T> choices)
+        {
+            var inquire = new QuestionExtendedList<Dictionary<ConsoleKey, T>, T>(message);
+            inquire.Choices = choices;
+
+            inquire.ValidatationFn = v =>
+            {
+                if (inquire.Choices.ContainsKey(v))
+                {
+                    return true;
+                }
+                ConsoleHelper.WriteError($"Invalid key");
+                return false;
+            };
+
+
+            inquire.DisplayQuestionAnswersFn = (index, choice) =>
+            {
+                return $"[{index}] {choice}";
+            };
+
+            inquire.ParseFn = v =>
+            {
+                return inquire.Choices[v];
             };
 
             return inquire;

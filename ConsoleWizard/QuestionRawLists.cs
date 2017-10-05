@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
@@ -9,8 +8,6 @@ namespace ConsoleWizard
         public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
 
         public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
-
-      
 
         public QuestionRawList(string question) : base(question)
         {
