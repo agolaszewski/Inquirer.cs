@@ -36,18 +36,16 @@ namespace ConsoleWizard
                             {
                                 Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                                 ConsoleHelper.Write("*");
-                                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop);
-
                                 value += (char)key;
                                 break;
                             }
                     }
-
                 } while (key != ConsoleKey.Enter);
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
                     answer = DefaultValue;
+                    tryAgain = Confirm(answer);
                 }
                 else if (ValidatationFn(value))
                 {

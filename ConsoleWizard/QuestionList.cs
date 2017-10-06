@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
@@ -8,7 +7,7 @@ namespace ConsoleWizard
         public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
         public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
         public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
-      
+
         public QuestionList(string question) : base(question)
         {
         }
@@ -39,7 +38,8 @@ namespace ConsoleWizard
                 Console.Write("→");
                 Console.SetCursorPosition(0, boundryTop);
 
-                while (true)
+                bool move = true;
+                while (move)
                 {
                     int y = Console.CursorTop;
                     var key = Console.ReadKey().Key;
@@ -69,7 +69,9 @@ namespace ConsoleWizard
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
-                                return Choices[Console.CursorTop - boundryTop];
+                                answer = Choices[Console.CursorTop - boundryTop];
+                                move = false;
+                                break;
                             }
                     }
 
@@ -79,6 +81,7 @@ namespace ConsoleWizard
                     Console.Write("→");
                     Console.SetCursorPosition(0, y);
                 }
+                tryAgain = Confirm(answer);
             }
             Answer = answer;
             Console.WriteLine();

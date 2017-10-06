@@ -24,6 +24,7 @@ namespace ConsoleWizard
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
                     answer = DefaultValue;
+                    tryAgain = Confirm(answer);
                 }
                 else if (ValidatationFn(value))
                 {

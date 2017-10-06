@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleWizard
@@ -31,13 +32,47 @@ namespace ConsoleWizard
             }
             else
             {
-                question.Choices.Insert(0, defaultValue);
-                question.DefaultValue = defaultValue;
-                question.HasDefaultValue = true;
+                throw new Exception("No default values in choices");
             }
             return question;
         }
 
+        public static QuestionCheckbox<List<T>, T> WithDefaultValue<T>(this QuestionCheckbox<List<T>, T> question, T defaultValue) where T : IComparable
+        {
+            question.DefaultValue = new List<T> { defaultValue };
+            if (question.Choices.Where(x => x.CompareTo(defaultValue) == 0).Any())
+            {
+                var index = question.Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(defaultValue) == 0).Index;
+                question.Selected[index] = true;
+            }
+            else
+            {
+                throw new Exception("No default values in choices");
+            }
+
+            question.HasDefaultValue = true;
+            return question;
+        }
+
+        public static QuestionCheckbox<List<T>, T> WithDefaultValue<T>(this QuestionCheckbox<List<T>, T> question, List<T> defaultValues) where T : IComparable
+        {
+            question.DefaultValue = defaultValues;
+            foreach (var value in defaultValues)
+            {
+                if (question.Choices.Where(x => x.CompareTo(value) == 0).Any())
+                {
+                    var index = question.Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(value) == 0).Index;
+                    question.Selected[index] = true;
+                }
+                else
+                {
+                    throw new Exception("No default values in choices");
+                }
+            }
+
+            question.HasDefaultValue = true;
+            return question;
+        }
 
         public static QuestionBase<T> WithDefaultValue<T>(this QuestionRawList<T> question, int index)
         {

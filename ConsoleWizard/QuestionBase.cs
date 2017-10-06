@@ -24,11 +24,13 @@ namespace ConsoleWizard
         {
             if (HasConfirmation)
             {
+                Console.Clear();
                 Console.WriteLine($"Are you sure? [y/n] : {ToStringFn(result)} ");
                 ConsoleKeyInfo key = default(ConsoleKeyInfo);
                 do
                 {
                     key = Console.ReadKey();
+                    Console.SetCursorPosition(0, Console.CursorTop);
                 }
                 while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N);
 
@@ -47,7 +49,7 @@ namespace ConsoleWizard
             var question = $"{Message} : ";
             if (HasDefaultValue)
             {
-                question += $"[{ToStringFn(DefaultValue)}]";
+                question += $"[{ToStringFn(DefaultValue)}] ";
             }
 
             ConsoleHelper.Write(question);
