@@ -19,48 +19,47 @@ namespace ConsoleApp1
             //ListTest();
             //ListRawTest();
             //ListCheckboxTest();
-            ListExtendedTest();
+            //ListExtendedTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
         }
 
         private static void InputTest()
         {
-            _test.For(x => x.Input).Prompt(Question.Input("How are you?").WithDefaultValue("fine"));
+            _test.For(x => x.Input).Prompt(Question.Input("How are you?").WithDefaultValue("fine").WithConfirmation());
         }
 
         private static void InputTestNumber()
         {
-            _test.For(x => x.InputNumber).Prompt(Question.Input<int>("2+2").WithDefaultValue(4));
+            _test.For(x => x.InputNumber).Prompt(Question.Input<int>("2+2").WithDefaultValue(4).WithConfirmation());
         }
 
         private static void ConfirmTest()
         {
-            _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?").WithDefaultValue(ConsoleKey.Y));
+            _test.For(x => x.One).Prompt(Question.Confirm("Are you sure?").WithDefaultValue(ConsoleKey.Y).WithConfirmation());
         }
 
         private static void PasswordTest()
         {
-            _test.For(x => x.Input).Prompt(Question.Password("How are you?").WithDefaultValue("123456"));
+            _test.For(x => x.Input).Prompt(Question.Password("How are you?").WithDefaultValue("123456").WithConfirmation());
         }
 
-     
         private static void ListTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.For(x => x.Two).Prompt(Question.List("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow));
+            _test.For(x => x.Two).Prompt(Question.List("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
         }
 
         private static void ListRawTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkRed));
+            _test.For(x => x.Two).Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkRed).WithConfirmation());
         }
 
         private static void ListCheckboxTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.For(x => x.Colors).Prompt(Question.Checkbox("Chose favourite colors", list).WithDefaultValue(ConsoleColor.DarkBlue));
+            _test.For(x => x.Colors).Prompt(Question.Checkbox("Chose favourite colors", list).WithDefaultValue(ConsoleColor.DarkBlue).WithConfirmation());
         }
 
         private static void ListExtendedTest()
@@ -70,7 +69,7 @@ namespace ConsoleApp1
             list.Add(ConsoleKey.C, ConsoleColor.Cyan);
             list.Add(ConsoleKey.D, ConsoleColor.DarkBlue);
 
-            _test.For(x => x.Two).Prompt(Question.ExtendedList("sdada", list).WithDefaultValue(ConsoleColor.DarkBlue));
+            _test.For(x => x.Two).Prompt(Question.ExtendedList("sdada", list).WithDefaultValue(ConsoleColor.DarkBlue).WithConfirmation());
         }
     }
 }

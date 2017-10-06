@@ -54,9 +54,22 @@ namespace ConsoleWizard
             return question;
         }
 
-        public static QuestionCheckbox<List<T>, T> WithDefaultValue<T>(this QuestionCheckbox<List<T>, T> question, List<T> defaultValue)
+        public static QuestionCheckbox<List<T>, T> WithDefaultValue<T>(this QuestionCheckbox<List<T>, T> question, List<T> defaultValues) where T : IComparable
         {
-            question.DefaultValue = defaultValue;
+            question.DefaultValue = defaultValues;
+            foreach (var value in defaultValues)
+            {
+                if (question.Choices.Where(x => x.CompareTo(value) == 0).Any())
+                {
+                    var index = question.Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(value) == 0).Index;
+                    question.Selected[index] = true;
+                }
+                else
+                {
+                    throw new Exception("No default values in choices");
+                }
+            }
+
             question.HasDefaultValue = true;
             return question;
         }

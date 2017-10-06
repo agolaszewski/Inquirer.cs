@@ -24,12 +24,13 @@ namespace ConsoleWizard
                 if (value == ConsoleKey.Enter && HasDefaultValue)
                 {
                     answer = DefaultValue;
+                    tryAgain = Confirm(answer);
                 }
                 else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
+                    tryAgain = Confirm(answer);
                 }
-                tryAgain = Confirm(answer);
             }
 
             Answer = answer;

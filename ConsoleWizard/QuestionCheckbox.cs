@@ -53,7 +53,8 @@ namespace ConsoleWizard
                 Console.Write("→");
                 Console.SetCursorPosition(0, boundryTop);
 
-                while (true)
+                bool move = true;
+                while (move)
                 {
                     int y = Console.CursorTop;
                     var key = Console.ReadKey().Key;
@@ -117,7 +118,9 @@ namespace ConsoleWizard
                                         result.Add(Choices[i]);
                                     }
                                 }
-                                return result;
+                                answer = result;
+                                move = false;
+                                break;
                             }
                     }
 
@@ -129,6 +132,7 @@ namespace ConsoleWizard
                     ConsoleHelper.Write(DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                 }
+                tryAgain = Confirm(answer);
             }
             Answer = answer;
             Console.WriteLine();
