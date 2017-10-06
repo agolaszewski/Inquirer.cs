@@ -42,7 +42,6 @@ namespace ConsoleWizard
                                 break;
                             }
                     }
-
                 } while (key != ConsoleKey.Enter);
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
@@ -52,8 +51,8 @@ namespace ConsoleWizard
                 else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
-                    tryAgain = Confirm(answer);
                 }
+                tryAgain = Confirm(answer);
             }
 
             return answer;

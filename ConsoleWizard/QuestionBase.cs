@@ -47,7 +47,7 @@ namespace ConsoleWizard
             var question = $"{Message} : ";
             if (HasDefaultValue)
             {
-                question += $"[{ToStringFn(DefaultValue)}]";
+                question += $"[{ToStringFn(DefaultValue)}] ";
             }
 
             ConsoleHelper.Write(question);

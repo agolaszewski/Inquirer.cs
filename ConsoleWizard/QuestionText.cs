@@ -28,8 +28,8 @@ namespace ConsoleWizard
                 else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
-                    tryAgain = Confirm(answer);
                 }
+                tryAgain = Confirm(answer);
             }
 
             return answer;

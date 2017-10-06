@@ -145,6 +145,8 @@ namespace ConsoleWizard
                 return inquire.Choices[v - 1];
             };
 
+            inquire.ToStringFn = v => { return string.Join(",", v); };
+
             return inquire;
         }
 
@@ -197,7 +199,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionExtendedList<Dictionary<ConsoleKey,T>, T> ExtendedList<T>(string message, Dictionary<ConsoleKey, T> choices)
+        public static QuestionExtendedList<Dictionary<ConsoleKey, T>, T> ExtendedList<T>(string message, Dictionary<ConsoleKey, T> choices)
         {
             var inquire = new QuestionExtendedList<Dictionary<ConsoleKey, T>, T>(message);
             inquire.Choices = choices;
@@ -211,7 +213,6 @@ namespace ConsoleWizard
                 ConsoleHelper.WriteError($"Invalid key");
                 return false;
             };
-
 
             inquire.DisplayQuestionAnswersFn = (index, choice) =>
             {

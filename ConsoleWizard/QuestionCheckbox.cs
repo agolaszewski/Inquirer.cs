@@ -19,7 +19,7 @@ namespace ConsoleWizard
         {
             bool tryAgain = true;
             TList answer = DefaultValue;
-
+            
             while (tryAgain)
             {
                 DisplayQuestion();
