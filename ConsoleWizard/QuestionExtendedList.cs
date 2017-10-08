@@ -5,14 +5,15 @@ namespace ConsoleWizard
 {
     public class QuestionExtendedList<TDictionary, T> : QuestionDictionaryListBase<TDictionary, T> where TDictionary : Dictionary<ConsoleKey, T>, new()
     {
-        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
-        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
-
-        public Func<ConsoleKey, T, string> DisplayQuestionAnswersFn { get; set; }
-
         public QuestionExtendedList(string question) : base(question)
         {
         }
+
+        public Func<ConsoleKey, T, string> DisplayQuestionAnswersFn { get; set; }
+
+        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
+
+        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
         public override T Prompt()
         {
@@ -45,6 +46,7 @@ namespace ConsoleWizard
                     tryAgain = Confirm(answer);
                 }
             }
+
             Answer = answer;
             Console.WriteLine();
             return answer;

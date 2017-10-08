@@ -6,9 +6,9 @@ namespace ConsoleWizard
 {
     public class QuestionPagedList<T> : QuestionList<T>
     {
-        public int PageSize { get; internal set; } = 0;
-        private int _skipChoices = 0;
         private List<T> _pageChoices = new List<T>();
+
+        private int _skipChoices = 0;
 
         public QuestionPagedList(QuestionList<T> question) : base(question.Message)
         {
@@ -17,6 +17,10 @@ namespace ConsoleWizard
             DisplayQuestionAnswersFn = question.DisplayQuestionAnswersFn;
             Choices = question.Choices;
         }
+
+        public int PageSize { get; internal set; }
+
+= 0;
 
         public override T Prompt()
         {
@@ -69,8 +73,10 @@ namespace ConsoleWizard
                                         return Prompt();
                                     }
                                 }
+
                                 break;
                             }
+
                         case (ConsoleKey.DownArrow):
                             {
                                 if (y < boundryBottom)
@@ -85,8 +91,10 @@ namespace ConsoleWizard
                                         return Prompt();
                                     }
                                 }
+
                                 break;
                             }
+
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
@@ -101,6 +109,7 @@ namespace ConsoleWizard
                     Console.SetCursorPosition(0, y);
                 }
             }
+
             Answer = answer;
             Console.WriteLine();
             return answer;

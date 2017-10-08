@@ -4,12 +4,17 @@ namespace ConsoleWizard
 {
     public class QuestionPassword<T> : QuestionBase<T>
     {
-        public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
-        public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
-
         public QuestionPassword(string message) : base(message)
         {
         }
+
+        public Func<string, T> ParseFn { get; set; }
+
+= v => { return default(T); };
+
+        public Func<string, bool> ValidatationFn { get; set; }
+
+= v => { return true; };
 
         public override T Prompt()
         {
@@ -32,6 +37,7 @@ namespace ConsoleWizard
                             {
                                 break;
                             }
+
                         default:
                             {
                                 Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
@@ -40,7 +46,8 @@ namespace ConsoleWizard
                                 break;
                             }
                     }
-                } while (key != ConsoleKey.Enter);
+                }
+                while (key != ConsoleKey.Enter);
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {

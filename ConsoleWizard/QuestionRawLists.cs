@@ -4,14 +4,19 @@ namespace ConsoleWizard
 {
     public class QuestionRawList<T> : QuestionListBase<T>
     {
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
-        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
-
-        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
-
         public QuestionRawList(string question) : base(question)
         {
         }
+
+        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
+
+        public Func<int, T> ParseFn { get; set; }
+
+= v => { return default(T); };
+
+        public Func<int, bool> ValidatationFn { get; set; }
+
+= v => { return true; };
 
         public override T Prompt()
         {
@@ -44,6 +49,7 @@ namespace ConsoleWizard
                     tryAgain = Confirm(answer);
                 }
             }
+
             Answer = answer;
             Console.WriteLine();
             return answer;

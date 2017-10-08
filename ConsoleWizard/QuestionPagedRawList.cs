@@ -4,9 +4,8 @@ namespace ConsoleWizard
 {
     internal class QuestionPagedRawList<T> : QuestionRawList<T>
     {
-        public int PageSize { get; internal set; } = 0;
         private int _skipChoices = 0;
-        
+
         public QuestionPagedRawList(QuestionRawList<T> question) : base(question.Message)
         {
             ValidatationFn = question.ValidatationFn;
@@ -14,6 +13,10 @@ namespace ConsoleWizard
             DisplayQuestionAnswersFn = question.DisplayQuestionAnswersFn;
             Choices = question.Choices;
         }
+
+        public int PageSize { get; internal set; }
+
+= 0;
 
         public override T Prompt()
         {
@@ -46,8 +49,10 @@ namespace ConsoleWizard
                                     _skipChoices = _skipChoices - PageSize;
                                     return Prompt();
                                 }
+
                                 break;
                             }
+
                         case (ConsoleKey.RightArrow):
                             {
                                 _skipChoices = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
@@ -55,15 +60,18 @@ namespace ConsoleWizard
                                 {
                                     return Prompt();
                                 }
+
                                 break;
                             }
+
                         default:
                             {
                                 result += (char)key;
                                 break;
                             }
                     }
-                } while (key != ConsoleKey.Enter);
+                }
+                while (key != ConsoleKey.Enter);
 
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
@@ -80,6 +88,7 @@ namespace ConsoleWizard
                     tryAgain = Confirm(answer);
                 }
             }
+
             Answer = answer;
             Console.WriteLine();
             return answer;

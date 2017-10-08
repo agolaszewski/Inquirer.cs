@@ -22,6 +22,7 @@ namespace ConsoleWizard
                     return null;
                 }
             }
+
             return null;
         }
     }

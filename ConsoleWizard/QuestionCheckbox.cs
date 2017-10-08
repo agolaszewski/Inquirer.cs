@@ -5,21 +5,23 @@ namespace ConsoleWizard
 {
     public class QuestionCheckbox<TList, T> : QuestionMultipleListBase<TList, T> where TList : List<T>, new()
     {
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
-        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
-        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
-
-        public bool[] Selected { get; set; }
-
         public QuestionCheckbox(string question) : base(question)
         {
         }
+
+        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
+
+        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
+
+        public bool[] Selected { get; set; }
+
+        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
         public override TList Prompt()
         {
             bool tryAgain = true;
             TList answer = DefaultValue;
-            
+
             while (tryAgain)
             {
                 DisplayQuestion();
@@ -68,10 +70,10 @@ namespace ConsoleWizard
                     {
                         Console.Write(" ");
                     }
-                   
+
                     Console.SetCursorPosition(4, y);
                     ConsoleHelper.Write(DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]));
-                 
+
                     switch (key)
                     {
                         case (ConsoleKey.RightArrow):
@@ -87,26 +89,31 @@ namespace ConsoleWizard
                                 {
                                     Console.Write(" ");
                                 }
-                                Console.SetCursorPosition(2, y);
 
+                                Console.SetCursorPosition(2, y);
                                 break;
                             }
+
                         case (ConsoleKey.UpArrow):
                             {
                                 if (y > boundryTop)
                                 {
                                     y -= 1;
                                 }
+
                                 break;
                             }
+
                         case (ConsoleKey.DownArrow):
                             {
                                 if (y < boundryBottom)
                                 {
                                     y += 1;
                                 }
+
                                 break;
                             }
+
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
@@ -118,6 +125,7 @@ namespace ConsoleWizard
                                         result.Add(Choices[i]);
                                     }
                                 }
+
                                 answer = result;
                                 move = false;
                                 break;
@@ -132,8 +140,10 @@ namespace ConsoleWizard
                     ConsoleHelper.Write(DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                 }
+
                 tryAgain = Confirm(answer);
             }
+
             Answer = answer;
             Console.WriteLine();
             return answer;

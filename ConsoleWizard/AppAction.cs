@@ -5,7 +5,8 @@ namespace ConsoleWizard
 {
     public class AppAction
     {
-        public PropertyInfo PropertyInfo { get; set; }
         public Action<PropertyInfo> Action { get; set; }
+
+        public PropertyInfo PropertyInfo { get; set; }
     }
 }

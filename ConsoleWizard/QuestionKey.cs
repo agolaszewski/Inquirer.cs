@@ -4,12 +4,13 @@ namespace ConsoleWizard
 {
     public class QuestionInputKey<T> : QuestionBase<T>
     {
-        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
-        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
-
         public QuestionInputKey(string question) : base(question)
         {
         }
+
+        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
+
+        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
         public override T Prompt()
         {

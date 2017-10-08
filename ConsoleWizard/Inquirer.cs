@@ -6,14 +6,14 @@ namespace ConsoleWizard
 {
     public class Inquirer<TAnswers> where TAnswers : class, new()
     {
-        public PropertyInfo PropertyInfo { get; set; }
-
         public Inquirer()
         {
             Answers = new TAnswers();
         }
 
         public TAnswers Answers { get; set; }
+
+        public PropertyInfo PropertyInfo { get; set; }
 
         public InquirerFor<TAnswers, TResult> For<TResult>(Expression<Func<TAnswers, TResult>> answerProperty)
         {
