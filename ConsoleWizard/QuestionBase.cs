@@ -4,8 +4,6 @@ namespace ConsoleWizard
 {
     public abstract class QuestionBase<TAnswer>
     {
-        public string Message { get; set; }
-
         public QuestionBase(string message)
         {
             Message = message;
@@ -13,12 +11,17 @@ namespace ConsoleWizard
 
         public TAnswer Answer { get; set; }
 
-        internal bool HasDefaultValue { get; set; }
         public TAnswer DefaultValue { get; set; }
+
+        public string Message { get; set; }
+
+        public Func<TAnswer, string> ToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal bool HasConfirmation { get; set; }
 
-        public Func<TAnswer, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+        internal bool HasDefaultValue { get; set; }
+
+        public abstract TAnswer Prompt();
 
         protected bool Confirm(TAnswer result)
         {
@@ -40,6 +43,7 @@ namespace ConsoleWizard
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -54,7 +58,5 @@ namespace ConsoleWizard
 
             ConsoleHelper.Write(question);
         }
-
-        public abstract TAnswer Prompt();
     }
 }
