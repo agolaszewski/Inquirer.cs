@@ -4,15 +4,15 @@ namespace ConsoleWizard
 {
     public class QuestionInputKey<T> : QuestionBase<T>
     {
-        public QuestionInputKey(string question) : base(question)
+        internal QuestionInputKey(string question) : base(question)
         {
         }
 
-        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
+        internal Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
+        internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        public override T Prompt()
+        internal override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
@@ -34,7 +34,6 @@ namespace ConsoleWizard
                 }
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
         }

@@ -4,17 +4,17 @@ namespace ConsoleWizard
 {
     public class QuestionList<T> : QuestionListBase<T>
     {
-        public QuestionList(string question) : base(question)
+        internal QuestionList(string question) : base(question)
         {
         }
 
-        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
+        internal Func<int, T, string> ChoicesDisplayFn { get; set; }
 
-        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
+        internal Func<int, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
+        internal Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        public override T Prompt()
+        internal override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
@@ -28,7 +28,7 @@ namespace ConsoleWizard
 
                 for (int i = 0; i < Choices.Count; i++)
                 {
-                    ConsoleHelper.WriteLine("  " + DisplayQuestionAnswersFn(i + 1, Choices[i]));
+                    ConsoleHelper.WriteLine("  " + ChoicesDisplayFn(i + 1, Choices[i]));
                 }
 
                 Console.CursorVisible = false;
@@ -36,9 +36,7 @@ namespace ConsoleWizard
                 int boundryTop = Console.CursorTop - Choices.Count;
                 int boundryBottom = boundryTop + Choices.Count - 1;
 
-                Console.SetCursorPosition(0, boundryTop);
-                Console.Write("→");
-                Console.SetCursorPosition(0, boundryTop);
+                ConsoleHelper.PositionWrite("→", 0, boundryTop);
 
                 bool move = true;
                 while (move)
@@ -47,7 +45,7 @@ namespace ConsoleWizard
                     var key = Console.ReadKey().Key;
 
                     Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]));
+                    ConsoleHelper.Write("  " + ChoicesDisplayFn(y - boundryTop, Choices[y - boundryTop]));
                     Console.SetCursorPosition(0, y);
 
                     switch (key)
@@ -81,17 +79,14 @@ namespace ConsoleWizard
                             }
                     }
 
-                    Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
-                    Console.SetCursorPosition(0, y);
-                    Console.Write("→");
+                    ConsoleHelper.PositionWrite("  " + ChoicesDisplayFn(y - boundryTop, Choices[y - boundryTop]), 0, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite("→", 0, y);
                     Console.SetCursorPosition(0, y);
                 }
 
                 tryAgain = Confirm(answer);
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
         }

@@ -11,9 +11,9 @@ namespace ConsoleWizard
             Answers = new TAnswers();
         }
 
-        public TAnswers Answers { get; set; }
+        public TAnswers Answers { get; private set; }
 
-        public PropertyInfo PropertyInfo { get; set; }
+        internal PropertyInfo PropertyInfo { get; set; }
 
         public InquirerFor<TAnswers, TResult> For<TResult>(Expression<Func<TAnswers, TResult>> answerProperty)
         {

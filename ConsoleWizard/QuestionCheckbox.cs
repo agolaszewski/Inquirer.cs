@@ -3,21 +3,23 @@ using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
-    public class QuestionCheckbox<TList, T> : QuestionMultipleListBase<TList, T> where TList : List<T>, new()
+    public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new()
     {
-        public QuestionCheckbox(string question) : base(question)
+        private int _boundryBottom;
+
+        private int _boundryTop;
+
+        internal QuestionCheckbox(string question) : base(question)
         {
         }
 
-        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
+        internal Func<int, TResult, string> ChoicesDisplayFn { get; set; }
 
-        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
+        internal Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
-        public bool[] Selected { get; set; }
+        internal Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
-
-        public override TList Prompt()
+        internal override TList Prompt()
         {
             bool tryAgain = true;
             TList answer = DefaultValue;
@@ -26,34 +28,17 @@ namespace ConsoleWizard
             {
                 DisplayQuestion();
 
-                Console.WriteLine();
-                Console.WriteLine();
-
+                ConsoleHelper.WriteLine();
+                ConsoleHelper.WriteLine();
                 Console.CursorVisible = false;
 
-                int boundryTop = Console.CursorTop;
-                for (int i = 0; i < Choices.Count; i++)
-                {
-                    Console.SetCursorPosition(2, i + boundryTop);
-                    if (Selected[i])
-                    {
-                        Console.Write("*");
-                    }
-                    else
-                    {
-                        Console.Write(" ");
-                    }
+                _boundryTop = Console.CursorTop;
+                DisplayChoices();
 
-                    Console.SetCursorPosition(4, i + boundryTop);
-                    ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(i + 1, Choices[i]));
-                }
+                _boundryBottom = _boundryTop + Choices.Count - 1;
 
-                boundryTop = Console.CursorTop - Choices.Count;
-                int boundryBottom = boundryTop + Choices.Count - 1;
-
-                Console.SetCursorPosition(0, boundryTop);
-                Console.Write("→");
-                Console.SetCursorPosition(0, boundryTop);
+                ConsoleHelper.PositionWrite("→", 0, _boundryTop);
+                ConsoleHelper.PositionWrite(ChoicesDisplayFn(0, Choices[0]), 4, _boundryTop, ConsoleColor.DarkYellow);
 
                 bool move = true;
                 while (move)
@@ -61,42 +46,22 @@ namespace ConsoleWizard
                     int y = Console.CursorTop;
                     var key = Console.ReadKey().Key;
 
-                    Console.SetCursorPosition(2, y);
-                    if (Selected[y - boundryTop])
-                    {
-                        Console.Write("*");
-                    }
-                    else
-                    {
-                        Console.Write(" ");
-                    }
-
-                    Console.SetCursorPosition(4, y);
-                    ConsoleHelper.Write(DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]));
+                    DisplayCheckbox(y - _boundryTop, 2, y);
+                    ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y);
 
                     switch (key)
                     {
                         case (ConsoleKey.RightArrow):
                             {
-                                Selected[y - boundryTop] = !Selected[y - boundryTop];
+                                Selected[y - _boundryTop] = !Selected[y - _boundryTop];
+                                DisplayCheckbox(y - _boundryTop, 2, y);
 
-                                Console.SetCursorPosition(2, y);
-                                if (Selected[y - boundryTop])
-                                {
-                                    Console.Write("*");
-                                }
-                                else
-                                {
-                                    Console.Write(" ");
-                                }
-
-                                Console.SetCursorPosition(2, y);
                                 break;
                             }
 
                         case (ConsoleKey.UpArrow):
                             {
-                                if (y > boundryTop)
+                                if (y > _boundryTop)
                                 {
                                     y -= 1;
                                 }
@@ -106,7 +71,7 @@ namespace ConsoleWizard
 
                         case (ConsoleKey.DownArrow):
                             {
-                                if (y < boundryBottom)
+                                if (y < _boundryBottom)
                                 {
                                     y += 1;
                                 }
@@ -117,36 +82,53 @@ namespace ConsoleWizard
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
-                                var result = new TList();
+                                var selectedChoices = new TList();
                                 for (int i = 0; i < Selected.Length; i++)
                                 {
                                     if (Selected[i])
                                     {
-                                        result.Add(Choices[i]);
+                                        selectedChoices.Add(Choices[i]);
                                     }
                                 }
 
-                                answer = result;
+                                answer = selectedChoices;
                                 move = false;
                                 break;
                             }
                     }
 
-                    Console.SetCursorPosition(0, y);
-                    Console.Write("→");
-                    Console.SetCursorPosition(0, y);
-
-                    Console.SetCursorPosition(4, y);
-                    ConsoleHelper.Write(DisplayQuestionAnswersFn(y - boundryTop, Choices[y - boundryTop]), ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite(" ", 0, y - 1);
+                    ConsoleHelper.PositionWrite("→", 0, y);
+                    ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y, ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                 }
 
                 tryAgain = Confirm(answer);
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
+        }
+
+        private void DisplayCheckbox(int selectedIndex, int x, int y)
+        {
+            if (Selected[selectedIndex])
+            {
+                ConsoleHelper.PositionWrite("*", x, y);
+            }
+            else
+            {
+                ConsoleHelper.PositionWrite(" ", x, y);
+            }
+        }
+
+        private void DisplayChoices()
+        {
+            for (int i = 0; i < Choices.Count; i++)
+            {
+                DisplayCheckbox(i, 2, i + _boundryTop);
+                ConsoleHelper.PositionWriteLine(ChoicesDisplayFn(i + 1, Choices[i]), 4, i + _boundryTop);
+            }
         }
     }
 }

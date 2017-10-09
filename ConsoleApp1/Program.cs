@@ -18,7 +18,7 @@ namespace ConsoleApp1
             //PasswordTest();
             //ListTest();
             //ListRawTest();
-            //ListCheckboxTest();
+            ListCheckboxTest();
             //ListExtendedTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
@@ -60,6 +60,8 @@ namespace ConsoleApp1
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             _test.For(x => x.Colors).Prompt(Question.Checkbox("Chose favourite colors", list).WithDefaultValue(ConsoleColor.DarkBlue).WithConfirmation());
+
+            _test.For(x => x.Input).Prompt(Question.Input("sadasd"));
         }
 
         private static void ListExtendedTest()

@@ -4,19 +4,15 @@ namespace ConsoleWizard
 {
     public class QuestionInput<T> : QuestionBase<T>
     {
-        public QuestionInput(string message) : base(message)
+        internal QuestionInput(string message) : base(message)
         {
         }
 
-        public Func<string, T> ParseFn { get; set; }
+        internal Func<string, T> ParseFn { get; set; } = v => { return default(T); };
 
-= v => { return default(T); };
+        internal Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        public Func<string, bool> ValidatationFn { get; set; }
-
-= v => { return true; };
-
-        public override T Prompt()
+        internal override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;

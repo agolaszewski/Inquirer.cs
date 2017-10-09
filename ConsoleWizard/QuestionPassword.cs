@@ -4,19 +4,15 @@ namespace ConsoleWizard
 {
     public class QuestionPassword<T> : QuestionBase<T>
     {
-        public QuestionPassword(string message) : base(message)
+        internal QuestionPassword(string message) : base(message)
         {
         }
 
-        public Func<string, T> ParseFn { get; set; }
+        internal Func<string, T> ParseFn { get; set; } = v => { return default(T); };
 
-= v => { return default(T); };
+        internal Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        public Func<string, bool> ValidatationFn { get; set; }
-
-= v => { return true; };
-
-        public override T Prompt()
+        internal override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
@@ -40,8 +36,7 @@ namespace ConsoleWizard
 
                         default:
                             {
-                                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                                ConsoleHelper.Write("*");
+                                ConsoleHelper.PositionWrite("*", Console.CursorLeft - 1, Console.CursorTop);
                                 value += (char)key;
                                 break;
                             }

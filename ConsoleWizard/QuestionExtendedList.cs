@@ -5,17 +5,17 @@ namespace ConsoleWizard
 {
     public class QuestionExtendedList<TDictionary, T> : QuestionDictionaryListBase<TDictionary, T> where TDictionary : Dictionary<ConsoleKey, T>, new()
     {
-        public QuestionExtendedList(string question) : base(question)
+        internal QuestionExtendedList(string question) : base(question)
         {
         }
 
-        public Func<ConsoleKey, T, string> DisplayQuestionAnswersFn { get; set; }
+        internal Func<ConsoleKey, T, string> ChoicesDisplayFn { get; set; }
 
-        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
+        internal Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
+        internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        public override T Prompt()
+        internal override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
@@ -29,7 +29,7 @@ namespace ConsoleWizard
 
                 foreach (var item in Choices)
                 {
-                    ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(item.Key, item.Value));
+                    ConsoleHelper.WriteLine(ChoicesDisplayFn(item.Key, item.Value));
                 }
 
                 Console.WriteLine();
@@ -47,7 +47,6 @@ namespace ConsoleWizard
                 }
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
         }

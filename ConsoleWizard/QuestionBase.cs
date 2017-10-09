@@ -4,31 +4,29 @@ namespace ConsoleWizard
 {
     public abstract class QuestionBase<TAnswer>
     {
-        public QuestionBase(string message)
+        protected QuestionBase(string message)
         {
             Message = message;
         }
 
-        public TAnswer Answer { get; set; }
-
-        public TAnswer DefaultValue { get; set; }
-
-        public string Message { get; set; }
-
         public Func<TAnswer, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+
+        internal TAnswer DefaultValue { get; set; }
 
         internal bool HasConfirmation { get; set; }
 
         internal bool HasDefaultValue { get; set; }
 
-        public abstract TAnswer Prompt();
+        internal string Message { get; set; }
+
+        internal abstract TAnswer Prompt();
 
         protected bool Confirm(TAnswer result)
         {
             if (HasConfirmation)
             {
                 Console.Clear();
-                Console.WriteLine($"Are you sure? [y/n] : {ToStringFn(result)} ");
+                ConsoleHelper.WriteLine($"Are you sure? [y/n] : {ToStringFn(result)} ");
                 ConsoleKeyInfo key = default(ConsoleKeyInfo);
                 do
                 {
@@ -49,6 +47,7 @@ namespace ConsoleWizard
 
         protected void DisplayQuestion()
         {
+            Console.Clear();
             ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
             var question = $"{Message} : ";
             if (HasDefaultValue)

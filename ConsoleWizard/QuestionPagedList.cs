@@ -10,19 +10,17 @@ namespace ConsoleWizard
 
         private int _skipChoices = 0;
 
-        public QuestionPagedList(QuestionList<T> question) : base(question.Message)
+        internal QuestionPagedList(QuestionList<T> question) : base(question.Message)
         {
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
-            DisplayQuestionAnswersFn = question.DisplayQuestionAnswersFn;
+            ChoicesDisplayFn = question.ChoicesDisplayFn;
             Choices = question.Choices;
         }
 
-        public int PageSize { get; internal set; }
+        internal int PageSize { get; set; } = 0;
 
-= 0;
-
-        public override T Prompt()
+        internal override T Prompt()
         {
             Console.Clear();
 
@@ -44,9 +42,7 @@ namespace ConsoleWizard
                 int boundryTop = Console.CursorTop - _pageChoices.Count;
                 int boundryBottom = boundryTop + _pageChoices.Count - 1;
 
-                Console.SetCursorPosition(0, boundryTop);
-                Console.Write("→");
-                Console.SetCursorPosition(0, boundryTop);
+                ConsoleHelper.PositionWrite("→", 0, boundryTop);
 
                 while (true)
                 {
@@ -54,7 +50,7 @@ namespace ConsoleWizard
                     var key = Console.ReadKey().Key;
 
                     Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, _pageChoices[y - boundryTop]));
+                    ConsoleHelper.Write("  " + ChoicesDisplayFn(y - boundryTop, _pageChoices[y - boundryTop]));
                     Console.SetCursorPosition(0, y);
 
                     switch (key)
@@ -102,15 +98,11 @@ namespace ConsoleWizard
                             }
                     }
 
-                    Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + DisplayQuestionAnswersFn(y - boundryTop, _pageChoices[y - boundryTop]), ConsoleColor.DarkYellow);
-                    Console.SetCursorPosition(0, y);
-                    Console.Write("→");
-                    Console.SetCursorPosition(0, y);
+                    ConsoleHelper.PositionWrite("→", 0, y);
+                    ConsoleHelper.PositionWrite("  " + ChoicesDisplayFn(y - boundryTop, _pageChoices[y - boundryTop]), 0, y, ConsoleColor.DarkYellow);
                 }
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
         }
@@ -119,7 +111,7 @@ namespace ConsoleWizard
         {
             for (int i = 0; i < _pageChoices.Count; i++)
             {
-                ConsoleHelper.WriteLine("  " + DisplayQuestionAnswersFn(i + 1, _pageChoices[i]));
+                ConsoleHelper.WriteLine("  " + ChoicesDisplayFn(i + 1, _pageChoices[i]));
             }
         }
     }

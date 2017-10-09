@@ -4,10 +4,10 @@ namespace ConsoleWizard
 {
     public abstract class QuestionListBase<T> : QuestionBase<T>
     {
-        public QuestionListBase(string message) : base(message)
+        internal QuestionListBase(string message) : base(message)
         {
         }
 
-        public List<T> Choices { get; set; }
+        internal List<T> Choices { get; set; }
     }
 }
