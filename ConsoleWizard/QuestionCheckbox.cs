@@ -5,19 +5,17 @@ namespace ConsoleWizard
 {
     public class QuestionCheckbox<TList, T> : QuestionMultipleListBase<TList, T> where TList : List<T>, new()
     {
-        public QuestionCheckbox(string question) : base(question)
+        internal QuestionCheckbox(string question) : base(question)
         {
         }
 
-        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
+        internal Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
 
-        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
+        internal Func<int, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public bool[] Selected { get; set; }
+        internal Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
-
-        public override TList Prompt()
+        internal override TList Prompt()
         {
             bool tryAgain = true;
             TList answer = DefaultValue;
@@ -144,7 +142,6 @@ namespace ConsoleWizard
                 tryAgain = Confirm(answer);
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
         }

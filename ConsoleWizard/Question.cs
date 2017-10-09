@@ -10,8 +10,7 @@ namespace ConsoleWizard
         {
             var inquire = new QuestionCheckbox<List<T>, T>(message);
             inquire.Choices = choices;
-            inquire.Selected = new bool[choices.Count];
-
+            
             inquire.DisplayQuestionAnswersFn = (index, choice) =>
             {
                 return $"{choice}";

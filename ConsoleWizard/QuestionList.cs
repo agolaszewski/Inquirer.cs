@@ -4,17 +4,17 @@ namespace ConsoleWizard
 {
     public class QuestionList<T> : QuestionListBase<T>
     {
-        public QuestionList(string question) : base(question)
+        internal QuestionList(string question) : base(question)
         {
         }
 
-        public Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
+        internal Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
 
-        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
+        internal Func<int, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
+        internal Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        public override T Prompt()
+        internal override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
@@ -91,7 +91,6 @@ namespace ConsoleWizard
                 tryAgain = Confirm(answer);
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
         }

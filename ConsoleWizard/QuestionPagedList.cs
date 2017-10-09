@@ -10,7 +10,7 @@ namespace ConsoleWizard
 
         private int _skipChoices = 0;
 
-        public QuestionPagedList(QuestionList<T> question) : base(question.Message)
+        internal QuestionPagedList(QuestionList<T> question) : base(question.Message)
         {
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
@@ -18,11 +18,9 @@ namespace ConsoleWizard
             Choices = question.Choices;
         }
 
-        public int PageSize { get; internal set; }
+        internal int PageSize { get;  set; } = 0;
 
-= 0;
-
-        public override T Prompt()
+        internal override T Prompt()
         {
             Console.Clear();
 
@@ -110,7 +108,6 @@ namespace ConsoleWizard
                 }
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
         }

@@ -14,11 +14,9 @@ namespace ConsoleWizard
             Choices = question.Choices;
         }
 
-        public int PageSize { get; internal set; }
+        public int PageSize { get; internal set; } = 0;
 
-= 0;
-
-        public override T Prompt()
+        internal override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
@@ -89,7 +87,6 @@ namespace ConsoleWizard
                 }
             }
 
-            Answer = answer;
             Console.WriteLine();
             return answer;
         }
