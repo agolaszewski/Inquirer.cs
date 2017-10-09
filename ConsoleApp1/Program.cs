@@ -12,13 +12,13 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
-            InputTest();
+            //InputTest();
             //InputTestNumber();
             //ConfirmTest();
             //PasswordTest();
             //ListTest();
             //ListRawTest();
-            //ListCheckboxTest();
+            ListCheckboxTest();
             //ListExtendedTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();

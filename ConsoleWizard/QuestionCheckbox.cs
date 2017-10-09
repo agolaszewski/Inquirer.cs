@@ -32,9 +32,9 @@ namespace ConsoleWizard
                 ConsoleHelper.WriteLine();
                 Console.CursorVisible = false;
 
+                _boundryTop = Console.CursorTop;
                 DisplayChoices();
 
-                _boundryTop = Console.CursorTop - Choices.Count;
                 _boundryBottom = _boundryTop + Choices.Count - 1;
 
                 ConsoleHelper.PositionWrite("→", 0, _boundryTop);
@@ -70,7 +70,7 @@ namespace ConsoleWizard
 
                         case (ConsoleKey.DownArrow):
                             {
-                                if (y < _boundryTop)
+                                if (y < _boundryBottom)
                                 {
                                     y += 1;
                                 }
@@ -97,7 +97,7 @@ namespace ConsoleWizard
                     }
 
                     ConsoleHelper.PositionWrite("→", 0, y);
-                    ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 0, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y, ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                 }
 
@@ -116,7 +116,7 @@ namespace ConsoleWizard
             }
             else
             {
-                ConsoleHelper.PositionWrite(" ", y, x);
+                ConsoleHelper.PositionWrite(" ", x, y);
             }
         }
 
