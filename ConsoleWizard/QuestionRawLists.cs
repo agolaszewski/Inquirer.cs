@@ -8,7 +8,7 @@ namespace ConsoleWizard
         {
         }
 
-        internal Func<int, T, string> DisplayQuestionAnswersFn { get; set; }
+        internal Func<int, T, string> ChoicesDisplayFn { get; set; }
 
         internal Func<int, T> ParseFn { get; set; } = v => { return default(T); };
 
@@ -28,7 +28,7 @@ namespace ConsoleWizard
 
                 for (int i = 0; i < Choices.Count; i++)
                 {
-                    ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(i + 1, Choices[i]));
+                    ConsoleHelper.WriteLine(ChoicesDisplayFn(i + 1, Choices[i]));
                 }
 
                 Console.WriteLine();

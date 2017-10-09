@@ -11,7 +11,7 @@ namespace ConsoleWizard
             var inquire = new QuestionCheckbox<List<T>, T>(message);
             inquire.Choices = choices;
             
-            inquire.DisplayQuestionAnswersFn = (index, choice) =>
+            inquire.ChoicesDisplayFn = (index, choice) =>
             {
                 return $"{choice}";
             };
@@ -93,7 +93,7 @@ namespace ConsoleWizard
                 return false;
             };
 
-            inquire.DisplayQuestionAnswersFn = (index, choice) =>
+            inquire.ChoicesDisplayFn = (index, choice) =>
             {
                 return $"[{index}] {choice}";
             };
@@ -165,7 +165,7 @@ namespace ConsoleWizard
             var inquire = new QuestionList<T>(message);
             inquire.Choices = choices;
 
-            inquire.DisplayQuestionAnswersFn = (index, choice) =>
+            inquire.ChoicesDisplayFn = (index, choice) =>
             {
                 return $"{choice}";
             };
@@ -205,7 +205,7 @@ namespace ConsoleWizard
             var inquire = new QuestionRawList<T>(message);
             inquire.Choices = choices;
 
-            inquire.DisplayQuestionAnswersFn = (index, choice) =>
+            inquire.ChoicesDisplayFn = (index, choice) =>
             {
                 return $"[{index}] {choice}";
             };

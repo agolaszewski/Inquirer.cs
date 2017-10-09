@@ -10,7 +10,7 @@ namespace ConsoleWizard
         {
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
-            DisplayQuestionAnswersFn = question.DisplayQuestionAnswersFn;
+            ChoicesDisplayFn = question.ChoicesDisplayFn;
             Choices = question.Choices;
         }
 
@@ -101,7 +101,7 @@ namespace ConsoleWizard
             int max = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
             for (int i = _skipChoices; i < max; i++)
             {
-                ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(i + 1, Choices[i]));
+                ConsoleHelper.WriteLine(ChoicesDisplayFn(i + 1, Choices[i]));
             }
 
             if (max != Choices.Count)

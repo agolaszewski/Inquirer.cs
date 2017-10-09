@@ -12,7 +12,7 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
-            //InputTest();
+            InputTest();
             //InputTestNumber();
             //ConfirmTest();
             //PasswordTest();

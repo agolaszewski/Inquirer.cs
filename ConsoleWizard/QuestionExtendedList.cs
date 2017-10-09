@@ -9,7 +9,7 @@ namespace ConsoleWizard
         {
         }
 
-        internal Func<ConsoleKey, T, string> DisplayQuestionAnswersFn { get; set; }
+        internal Func<ConsoleKey, T, string> ChoicesDisplayFn { get; set; }
 
         internal Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
 
@@ -29,7 +29,7 @@ namespace ConsoleWizard
 
                 foreach (var item in Choices)
                 {
-                    ConsoleHelper.WriteLine(DisplayQuestionAnswersFn(item.Key, item.Value));
+                    ConsoleHelper.WriteLine(ChoicesDisplayFn(item.Key, item.Value));
                 }
 
                 Console.WriteLine();

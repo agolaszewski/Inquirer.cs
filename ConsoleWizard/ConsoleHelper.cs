@@ -25,5 +25,17 @@ namespace ConsoleWizard
             Console.WriteLine(text);
             Console.ResetColor();
         }
+
+        public static void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
+        {
+            Console.SetCursorPosition(x, y);
+            Write(text, color);
+        }
+
+        public static void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
+        {
+            Console.SetCursorPosition(x, y);
+            WriteLine(text, color);
+        }
     }
 }

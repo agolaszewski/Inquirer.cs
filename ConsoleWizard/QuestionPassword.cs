@@ -36,8 +36,7 @@ namespace ConsoleWizard
 
                         default:
                             {
-                                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                                ConsoleHelper.Write("*");
+                                ConsoleHelper.PositionWrite("*", Console.CursorLeft - 1, Console.CursorTop);
                                 value += (char)key;
                                 break;
                             }

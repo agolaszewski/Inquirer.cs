@@ -26,7 +26,7 @@ namespace ConsoleWizard
             if (HasConfirmation)
             {
                 Console.Clear();
-                Console.WriteLine($"Are you sure? [y/n] : {ToStringFn(result)} ");
+                ConsoleHelper.WriteLine($"Are you sure? [y/n] : {ToStringFn(result)} ");
                 ConsoleKeyInfo key = default(ConsoleKeyInfo);
                 do
                 {
@@ -47,6 +47,7 @@ namespace ConsoleWizard
 
         protected void DisplayQuestion()
         {
+            Console.Clear();
             ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
             var question = $"{Message} : ";
             if (HasDefaultValue)

@@ -9,6 +9,6 @@ namespace ConsoleWizard
         {
         }
 
-        public TDictionary Choices { get; set; }
+        internal TDictionary Choices { get; set; }
     }
 }
