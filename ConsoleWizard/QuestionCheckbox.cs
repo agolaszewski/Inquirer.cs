@@ -38,6 +38,7 @@ namespace ConsoleWizard
                 _boundryBottom = _boundryTop + Choices.Count - 1;
 
                 ConsoleHelper.PositionWrite("→", 0, _boundryTop);
+                ConsoleHelper.PositionWrite(ChoicesDisplayFn(0, Choices[0]), 4, _boundryTop, ConsoleColor.DarkYellow);
 
                 bool move = true;
                 while (move)
