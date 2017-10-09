@@ -96,6 +96,7 @@ namespace ConsoleWizard
                             }
                     }
 
+                    ConsoleHelper.PositionWrite(" ", 0, y - 1);
                     ConsoleHelper.PositionWrite("→", 0, y);
                     ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y, ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
