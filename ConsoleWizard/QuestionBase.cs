@@ -9,6 +9,8 @@ namespace ConsoleWizard
             Message = message;
         }
 
+        public bool IsCanceled { get; private set; }
+
         public Func<TAnswer, string> ToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal TAnswer DefaultValue { get; set; }

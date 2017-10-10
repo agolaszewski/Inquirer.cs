@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleReaderProvider.cs" />
     <Compile Include="QuestionMultipleListBase.cs" />
     <Compile Include="QuestionDictionaryListBase.cs" />
     <Compile Include="QuestionCheckbox.cs" />
@@ -68,7 +69,7 @@
     <Compile Include="Question.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestionBase.cs" />
-    <Compile Include="QuestionText.cs" />
+    <Compile Include="QuestionInput.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

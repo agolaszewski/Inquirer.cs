@@ -12,13 +12,14 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
+            InputTest();
             //InputTest();
             //InputTestNumber();
             //ConfirmTest();
             //PasswordTest();
             //ListTest();
             //ListRawTest();
-            ListCheckboxTest();
+            //ListCheckboxTest();
             //ListExtendedTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
@@ -26,7 +27,10 @@ namespace ConsoleApp1
 
         private static void InputTest()
         {
-            _test.For(x => x.Input).Prompt(Question.Input("How are you?").WithDefaultValue("fine").WithConfirmation());
+            _test.For(x => x.Input).Prompt(Question.Input("How are you?").WithDefaultValue("fine").WithConfirmation()).Then(x =>
+            {
+                InputTestNumber();
+            });
         }
 
         private static void InputTestNumber()
