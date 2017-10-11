@@ -20,7 +20,14 @@ namespace ConsoleWizard
             while (tryAgain)
             {
                 DisplayQuestion();
-                var value = Console.ReadLine();
+
+                bool isCanceled = false;
+                var value = ConsoleHelper.Read(out isCanceled);
+                if (isCanceled)
+                {
+                    IsCanceled = isCanceled;
+                    return default(T);
+                }
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {

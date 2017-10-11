@@ -20,16 +20,23 @@ namespace ConsoleWizard
             while (tryAgain)
             {
                 DisplayQuestion();
-                var value = Console.ReadKey().Key;
 
-                if (value == ConsoleKey.Enter && HasDefaultValue)
+                bool isCanceled = false;
+                var key = ConsoleHelper.ReadKey(out isCanceled);
+                if (isCanceled)
+                {
+                    IsCanceled = isCanceled;
+                    return default(T);
+                }
+
+                if (key == ConsoleKey.Enter && HasDefaultValue)
                 {
                     answer = DefaultValue;
                     tryAgain = Confirm(answer);
                 }
-                else if (ValidatationFn(value))
+                else if (ValidatationFn(key))
                 {
-                    answer = ParseFn(value);
+                    answer = ParseFn(key);
                     tryAgain = Confirm(answer);
                 }
             }

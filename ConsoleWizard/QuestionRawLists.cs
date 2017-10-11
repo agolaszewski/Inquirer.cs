@@ -33,7 +33,14 @@ namespace ConsoleWizard
 
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
-                var value = Console.ReadLine().ToN<int>();
+
+                bool isCanceled = false;
+                var value = ConsoleHelper.Read(out isCanceled).ToN<int>();
+                if (isCanceled)
+                {
+                    IsCanceled = isCanceled;
+                    return default(T);
+                }
 
                 if (value.HasValue == false && HasDefaultValue)
                 {

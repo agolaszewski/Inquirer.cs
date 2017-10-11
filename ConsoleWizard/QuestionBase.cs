@@ -9,6 +9,8 @@ namespace ConsoleWizard
             Message = message;
         }
 
+        public bool IsCanceled { get; protected set; }
+
         public Func<TAnswer, string> ToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal TAnswer DefaultValue { get; set; }
@@ -33,9 +35,9 @@ namespace ConsoleWizard
                     key = Console.ReadKey();
                     Console.SetCursorPosition(0, Console.CursorTop);
                 }
-                while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N);
+                while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape);
 
-                if (key.Key == ConsoleKey.N)
+                if (key.Key == ConsoleKey.N || key.Key == ConsoleKey.Escape)
                 {
                     Console.WriteLine();
                     return true;

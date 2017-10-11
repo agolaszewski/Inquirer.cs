@@ -37,7 +37,14 @@ namespace ConsoleWizard
                 ConsoleKey key;
                 do
                 {
-                    key = Console.ReadKey().Key;
+                    bool isCanceled = false;
+                    key = ConsoleHelper.ReadKey(out isCanceled);
+                    if (isCanceled)
+                    {
+                        IsCanceled = isCanceled;
+                        return default(T);
+                    }
+
                     switch (key)
                     {
                         case (ConsoleKey.LeftArrow):

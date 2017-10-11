@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -12,6 +13,8 @@ namespace ConsoleWizard
         }
 
         public TAnswers Answers { get; private set; }
+
+        internal Stack<MethodBase> History { get; set; } = new Stack<MethodBase>();
 
         internal PropertyInfo PropertyInfo { get; set; }
 

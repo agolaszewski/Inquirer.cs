@@ -37,5 +37,44 @@ namespace ConsoleWizard
             Console.SetCursorPosition(x, y);
             WriteLine(text, color);
         }
+
+        public static string Read(out bool isCanceled)
+        {
+            isCanceled = false;
+
+            string result = string.Empty;
+            ConsoleKeyInfo keyInfo;
+
+            do
+            {
+                keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    isCanceled = true;
+                    return result;
+                }
+
+                if (keyInfo.Key != ConsoleKey.Enter)
+                {
+                    result += keyInfo.KeyChar;
+                }
+            }
+            while (keyInfo.Key != ConsoleKey.Enter);
+
+            return result;
+        }
+
+        public static ConsoleKey ReadKey(out bool isCanceled)
+        {
+            isCanceled = false;
+
+            var key = Console.ReadKey().Key;
+            if (key == ConsoleKey.Escape)
+            {
+                isCanceled = true;
+            }
+
+            return key;
+        }
     }
 }
