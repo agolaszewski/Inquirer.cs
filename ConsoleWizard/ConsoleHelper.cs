@@ -43,20 +43,23 @@ namespace ConsoleWizard
             isCanceled = false;
 
             string result = string.Empty;
-            ConsoleKey key;
+            ConsoleKeyInfo keyInfo;
 
             do
             {
-                key = Console.ReadKey().Key;
-                if (key == ConsoleKey.Escape)
+                keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Escape)
                 {
                     isCanceled = true;
                     return result;
                 }
 
-                result += (char)key;
+                if (keyInfo.Key != ConsoleKey.Enter)
+                {
+                    result += keyInfo.KeyChar;
+                }
             }
-            while (key == ConsoleKey.Enter);
+            while (keyInfo.Key != ConsoleKey.Enter);
 
             return result;
         }

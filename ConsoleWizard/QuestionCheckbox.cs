@@ -44,7 +44,14 @@ namespace ConsoleWizard
                 while (move)
                 {
                     int y = Console.CursorTop;
-                    var key = Console.ReadKey().Key;
+
+                    bool isCanceled = false;
+                    var key = ConsoleHelper.ReadKey(out isCanceled);
+                    if (isCanceled)
+                    {
+                        IsCanceled = isCanceled;
+                        return default(TList);
+                    }
 
                     DisplayCheckbox(y - _boundryTop, 2, y);
                     ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y);

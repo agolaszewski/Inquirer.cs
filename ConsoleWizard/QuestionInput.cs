@@ -23,9 +23,9 @@ namespace ConsoleWizard
 
                 bool isCanceled = false;
                 var value = ConsoleHelper.Read(out isCanceled);
-                if(isInterupted)
+                if (isCanceled)
                 {
-                    IsCanceled = isInterupted
+                    IsCanceled = isCanceled;
                     return default(T);
                 }
 

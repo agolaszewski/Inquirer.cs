@@ -47,7 +47,14 @@ namespace ConsoleWizard
                 while (true)
                 {
                     int y = Console.CursorTop;
-                    var key = Console.ReadKey().Key;
+
+                    bool isCanceled = false;
+                    var key = ConsoleHelper.ReadKey(out isCanceled);
+                    if (isCanceled)
+                    {
+                        IsCanceled = isCanceled;
+                        return default(T);
+                    }
 
                     Console.SetCursorPosition(0, y);
                     ConsoleHelper.Write("  " + ChoicesDisplayFn(y - boundryTop, _pageChoices[y - boundryTop]));
