@@ -12,5 +12,11 @@ namespace ConsoleWizard
         public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal List<T> Choices { get; set; }
+
+        public QuestionListBase<T> ToString(Func<T, string> toStringFn)
+        {
+            ToStringFn = toStringFn;
+            return this;
+        }
     }
 }

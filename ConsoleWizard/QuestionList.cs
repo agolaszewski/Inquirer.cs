@@ -21,7 +21,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                 DisplayQuestion(ToStringFn(answer));
+                DisplayQuestion(ToStringFn(answer));
 
                 Console.WriteLine();
                 Console.WriteLine();
