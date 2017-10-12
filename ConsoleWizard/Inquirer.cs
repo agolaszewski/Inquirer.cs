@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -29,6 +30,33 @@ namespace ConsoleWizard
             PropertyInfo = propertyInfo;
 
             return new InquirerFor<TAnswers, TResult>(this);
+        }
+
+        public TResult Prompt<TResult>(QuestionBase<TResult> question)
+        {
+            StackTrace stackTrace = new StackTrace();
+            StackFrame[] stackFrames = stackTrace.GetFrames();
+            StackFrame callingFrame = stackFrames[1];
+
+            var answer = question.Prompt();
+            if (question.IsCanceled)
+            {
+                if (History.Count > 0)
+                {
+                    var method = History.Pop();
+                    method.Invoke(null, null);
+                }
+                else
+                {
+                    return Prompt(question);
+                }
+            }
+            else
+            {
+                History.Push(callingFrame.GetMethod());
+            }
+
+            return answer;
         }
     }
 }
