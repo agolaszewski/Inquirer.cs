@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
@@ -7,6 +8,8 @@ namespace ConsoleWizard
         internal QuestionListBase(string message) : base(message)
         {
         }
+
+        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal List<T> Choices { get; set; }
     }

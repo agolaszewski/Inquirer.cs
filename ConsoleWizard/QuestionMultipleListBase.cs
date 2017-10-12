@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
@@ -9,6 +10,8 @@ namespace ConsoleWizard
         internal QuestionMultipleListBase(string message) : base(message)
         {
         }
+
+        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal TList Choices
         {

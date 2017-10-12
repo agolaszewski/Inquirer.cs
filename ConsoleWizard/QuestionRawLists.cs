@@ -21,7 +21,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion();
+                 DisplayQuestion(ToStringFn(answer));
 
                 Console.WriteLine();
                 Console.WriteLine();
@@ -44,12 +44,12 @@ namespace ConsoleWizard
 
                 if (value.HasValue == false && HasDefaultValue)
                 {
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ToStringFn(answer));
                 }
                 else if (value.HasValue && ValidatationFn(value.Value))
                 {
                     answer = ParseFn(value.Value);
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ToStringFn(answer));
                 }
             }
 

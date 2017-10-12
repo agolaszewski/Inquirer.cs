@@ -11,8 +11,6 @@ namespace ConsoleWizard
 
         public bool IsCanceled { get; protected set; }
 
-        public Func<TAnswer, string> ToStringFn { get; set; } = value => { return value.ToString(); };
-
         internal TAnswer DefaultValue { get; set; }
 
         internal bool HasConfirmation { get; set; }
@@ -23,12 +21,12 @@ namespace ConsoleWizard
 
         internal abstract TAnswer Prompt();
 
-        protected bool Confirm(TAnswer result)
+        protected bool Confirm(string result)
         {
             if (HasConfirmation)
             {
                 Console.Clear();
-                ConsoleHelper.WriteLine($"Are you sure? [y/n] : {ToStringFn(result)} ");
+                ConsoleHelper.WriteLine($"Are you sure? [y/n] : {result} ");
                 ConsoleKeyInfo key = default(ConsoleKeyInfo);
                 do
                 {
@@ -47,14 +45,14 @@ namespace ConsoleWizard
             return false;
         }
 
-        protected void DisplayQuestion()
+        protected void DisplayQuestion(string defaultValue)
         {
             Console.Clear();
             ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
             var question = $"{Message} : ";
             if (HasDefaultValue)
             {
-                question += $"[{ToStringFn(DefaultValue)}] ";
+                question += $"[{defaultValue}] ";
             }
 
             ConsoleHelper.Write(question);

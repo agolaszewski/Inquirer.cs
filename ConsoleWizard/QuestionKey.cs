@@ -8,6 +8,8 @@ namespace ConsoleWizard
         {
         }
 
+        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+
         internal Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
 
         internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
@@ -19,7 +21,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion();
+                DisplayQuestion(ToStringFn(answer));
 
                 bool isCanceled = false;
                 var key = ConsoleHelper.ReadKey(out isCanceled);
@@ -32,12 +34,12 @@ namespace ConsoleWizard
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {
                     answer = DefaultValue;
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ToStringFn(answer));
                 }
                 else if (ValidatationFn(key))
                 {
                     answer = ParseFn(key);
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ToStringFn(answer));
                 }
             }
 

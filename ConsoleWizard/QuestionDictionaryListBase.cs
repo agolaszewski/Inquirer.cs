@@ -9,6 +9,8 @@ namespace ConsoleWizard
         {
         }
 
+        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+
         internal TDictionary Choices { get; set; }
     }
 }

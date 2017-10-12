@@ -21,7 +21,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion();
+                 DisplayQuestion(ToStringFn(answer));
 
                 Console.WriteLine();
                 Console.WriteLine();
@@ -91,7 +91,7 @@ namespace ConsoleWizard
                     Console.SetCursorPosition(0, y);
                 }
 
-                tryAgain = Confirm(answer);
+                tryAgain = Confirm(ToStringFn(answer));
             }
 
             Console.WriteLine();

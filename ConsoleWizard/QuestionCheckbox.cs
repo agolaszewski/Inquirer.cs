@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleWizard
 {
@@ -26,7 +27,8 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion();
+                var defaultValueName = answer.Select(x => ToStringFn(x)).ToList();
+                DisplayQuestion(string.Join(",", defaultValueName));
 
                 ConsoleHelper.WriteLine();
                 ConsoleHelper.WriteLine();
@@ -110,7 +112,8 @@ namespace ConsoleWizard
                     Console.SetCursorPosition(0, y);
                 }
 
-                tryAgain = Confirm(answer);
+                var answerNames = answer.Select(x => ToStringFn(x)).ToList();
+                tryAgain = Confirm(string.Join(",", answerNames));
             }
 
             Console.WriteLine();

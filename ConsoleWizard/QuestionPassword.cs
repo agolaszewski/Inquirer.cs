@@ -8,6 +8,8 @@ namespace ConsoleWizard
         {
         }
 
+        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+
         internal Func<string, T> ParseFn { get; set; } = v => { return default(T); };
 
         internal Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
@@ -19,7 +21,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion();
+                DisplayQuestion(ToStringFn(answer));
                 string value = string.Empty;
 
                 ConsoleKey key;
@@ -53,12 +55,12 @@ namespace ConsoleWizard
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
                     answer = DefaultValue;
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ToStringFn(answer));
                 }
                 else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ToStringFn(answer));
                 }
             }
 
