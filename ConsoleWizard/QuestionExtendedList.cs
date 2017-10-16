@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionExtendedList<TDictionary, T> : QuestionDictionaryListBase<TDictionary, T> where TDictionary : Dictionary<ConsoleKey, T>, new()
+    public class QuestionExtendedList<TDictionary, T> : QuestionDictionaryListBase<TDictionary, T>, IConvertToResult<ConsoleKey, T>, IValidation<ConsoleKey> where TDictionary : Dictionary<ConsoleKey, T>, new()
     {
         internal QuestionExtendedList(string question) : base(question)
         {
         }
 
-        internal Func<ConsoleKey, T, string> ChoicesDisplayFn { get; set; }
+        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
 
-        internal Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
-
-        internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
+        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
         internal override T Prompt()
         {
@@ -29,7 +28,7 @@ namespace ConsoleWizard
 
                 foreach (var item in Choices)
                 {
-                    ConsoleHelper.WriteLine(ChoicesDisplayFn(item.Key, item.Value));
+                    ConsoleHelper.WriteLine(DisplayChoice(item.Key));
                 }
 
                 Console.WriteLine();
@@ -56,6 +55,11 @@ namespace ConsoleWizard
 
             Console.WriteLine();
             return answer;
+        }
+
+        private string DisplayChoice(ConsoleKey key)
+        {
+            return $"[{key}] {Choices[key]}";
         }
     }
 }

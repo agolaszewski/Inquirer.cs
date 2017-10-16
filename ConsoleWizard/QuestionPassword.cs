@@ -1,8 +1,9 @@
 ﻿using System;
+using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionPassword<T> : QuestionBase<T>
+    public class QuestionPassword<T> : QuestionBase<T>, IConvertToString<T>, IConvertToResult<string, T>, IValidation<string>
     {
         internal QuestionPassword(string message) : base(message)
         {
@@ -10,9 +11,9 @@ namespace ConsoleWizard
 
         public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
 
-        internal Func<string, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
 
-        internal Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
+        public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
 
         internal override T Prompt()
         {

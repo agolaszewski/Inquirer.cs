@@ -23,6 +23,10 @@ namespace ConsoleApp1
             //ListExtendedTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
+
+            var derp = new C();
+            derp.Test().Test2();
+            
         }
 
         private static void InputTest()

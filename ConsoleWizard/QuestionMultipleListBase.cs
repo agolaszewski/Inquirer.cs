@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public abstract class QuestionMultipleListBase<TList, T> : QuestionBase<TList> where TList : List<T>
+    public abstract class QuestionMultipleListBase<TList, T> : QuestionBase<TList>, IConvertToString<T> where TList : List<T>
     {
         private TList _choices;
 

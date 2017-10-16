@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public abstract class QuestionDictionaryListBase<TDictionary, T> : QuestionBase<T> where TDictionary : Dictionary<ConsoleKey, T>
+    public abstract class QuestionDictionaryListBase<TDictionary, T> : QuestionBase<T>, IConvertToString<T> where TDictionary : Dictionary<ConsoleKey, T>
     {
         protected QuestionDictionaryListBase(string message) : base(message)
         {

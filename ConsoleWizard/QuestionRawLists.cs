@@ -1,18 +1,19 @@
 ﻿using System;
+using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionRawList<T> : QuestionListBase<T>
+    public class QuestionRawList<T> : QuestionListBase<T>, IConvertToResult<int, T>, IValidation<int>
     {
         internal QuestionRawList(string question) : base(question)
         {
         }
 
+        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
+
+        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
+
         internal Func<int, T, string> ChoicesDisplayFn { get; set; }
-
-        internal Func<int, T> ParseFn { get; set; } = v => { return default(T); };
-
-        internal Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
         internal override T Prompt()
         {
@@ -21,7 +22,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                 DisplayQuestion(ToStringFn(answer));
+                DisplayQuestion(ToStringFn(answer));
 
                 Console.WriteLine();
                 Console.WriteLine();

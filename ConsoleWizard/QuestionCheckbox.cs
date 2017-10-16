@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new()
+    public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult>, IConvertToResult<int, TResult>, IValidation<int> where TList : List<TResult>, new()
     {
         private int _boundryBottom;
 
@@ -14,11 +15,9 @@ namespace ConsoleWizard
         {
         }
 
-        internal Func<int, TResult, string> ChoicesDisplayFn { get; set; }
+        public Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
-        internal Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
-
-        internal Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
+        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
         internal override TList Prompt()
         {
@@ -40,7 +39,7 @@ namespace ConsoleWizard
                 _boundryBottom = _boundryTop + Choices.Count - 1;
 
                 ConsoleHelper.PositionWrite("→", 0, _boundryTop);
-                ConsoleHelper.PositionWrite(ChoicesDisplayFn(0, Choices[0]), 4, _boundryTop, ConsoleColor.DarkYellow);
+                ConsoleHelper.PositionWrite(DisplayChoice(0), 4, _boundryTop, ConsoleColor.DarkYellow);
 
                 bool move = true;
                 while (move)
@@ -56,7 +55,7 @@ namespace ConsoleWizard
                     }
 
                     DisplayCheckbox(y - _boundryTop, 2, y);
-                    ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - _boundryTop), 4, y);
 
                     switch (key)
                     {
@@ -108,7 +107,7 @@ namespace ConsoleWizard
 
                     ConsoleHelper.PositionWrite(" ", 0, y - 1);
                     ConsoleHelper.PositionWrite("→", 0, y);
-                    ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - _boundryTop), 4, y, ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                 }
 
@@ -118,6 +117,11 @@ namespace ConsoleWizard
 
             Console.WriteLine();
             return answer;
+        }
+
+        private string DisplayChoice(int index)
+        {
+            return $"{Choices[index]}";
         }
 
         private void DisplayCheckbox(int selectedIndex, int x, int y)
@@ -137,7 +141,7 @@ namespace ConsoleWizard
             for (int i = 0; i < Choices.Count; i++)
             {
                 DisplayCheckbox(i, 2, i + _boundryTop);
-                ConsoleHelper.PositionWriteLine(ChoicesDisplayFn(i + 1, Choices[i]), 4, i + _boundryTop);
+                ConsoleHelper.PositionWriteLine(DisplayChoice(i), 4, i + _boundryTop);
             }
         }
     }

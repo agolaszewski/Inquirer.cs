@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Components\ConvertToString.cs" />
+    <Compile Include="Components\IConvertToResult.cs" />
+    <Compile Include="Components\IValidation.cs" />
     <Compile Include="QuestionMultipleListBase.cs" />
     <Compile Include="QuestionDictionaryListBase.cs" />
     <Compile Include="QuestionCheckbox.cs" />

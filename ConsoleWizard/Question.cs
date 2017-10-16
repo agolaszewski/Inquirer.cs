@@ -10,11 +10,6 @@ namespace ConsoleWizard
         {
             var inquire = new QuestionCheckbox<List<T>, T>(message);
             inquire.Choices = choices;
-            
-            inquire.ChoicesDisplayFn = (index, choice) =>
-            {
-                return $"{choice}";
-            };
 
             inquire.ParseFn = v =>
             {
@@ -91,11 +86,6 @@ namespace ConsoleWizard
 
                 ConsoleHelper.WriteError($"Invalid key");
                 return false;
-            };
-
-            inquire.ChoicesDisplayFn = (index, choice) =>
-            {
-                return $"[{index}] {choice}";
             };
 
             inquire.ParseFn = v =>

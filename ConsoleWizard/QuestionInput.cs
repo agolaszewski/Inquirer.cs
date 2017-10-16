@@ -1,18 +1,19 @@
 ﻿using System;
+using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionInput<T> : QuestionBase<T>
+    public class QuestionInput<T> : QuestionBase<T>, IConvertToString<T>, IConvertToResult<string, T>, IValidation<string>
     {
         internal QuestionInput(string message) : base(message)
         {
         }
 
+        public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
+
         public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
 
-        internal Func<string, T> ParseFn { get; set; } = v => { return default(T); };
-
-        internal Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
+        public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
 
         internal override T Prompt()
         {
