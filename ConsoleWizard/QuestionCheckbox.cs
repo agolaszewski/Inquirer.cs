@@ -26,8 +26,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                var defaultValueName = answer.Select(x => ToStringFn(x)).ToList();
-                DisplayQuestion(string.Join(",", defaultValueName));
+                DisplayQuestion(this);
 
                 ConsoleHelper.WriteLine();
                 ConsoleHelper.WriteLine();

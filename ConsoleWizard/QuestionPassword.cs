@@ -22,7 +22,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion(ToStringFn(answer));
+                DisplayQuestion(this);
                 string value = string.Empty;
 
                 ConsoleKey key;

@@ -64,7 +64,7 @@ namespace ConsoleApp1
         private static void ListTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.For(x => x.Two).Prompt(Question.List("Choose color?", list).ToString(x=> { return "sada"; }).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation()).Then(x =>
+            _test.For(x => x.Two).Prompt(Question.List("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation()).Then(x =>
             {
                 ListRawTest();
             });

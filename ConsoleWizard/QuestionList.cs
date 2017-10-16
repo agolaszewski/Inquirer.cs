@@ -20,7 +20,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion(ToStringFn(answer));
+                DisplayQuestion(this);
 
                 Console.WriteLine();
                 Console.WriteLine();

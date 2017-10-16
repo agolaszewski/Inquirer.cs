@@ -22,7 +22,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion(ToStringFn(answer));
+                DisplayQuestion(this);
 
                 bool isCanceled = false;
                 var key = ConsoleHelper.ReadKey(out isCanceled);

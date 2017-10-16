@@ -29,11 +29,5 @@ namespace ConsoleWizard
         }
 
         internal bool[] Selected { get; private set; }
-
-        public QuestionMultipleListBase<TList, T> ToString(Func<T, string> toStringFn)
-        {
-            ToStringFn = toStringFn;
-            return this;
-        }
     }
 }
