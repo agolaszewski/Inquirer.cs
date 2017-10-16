@@ -13,8 +13,6 @@ namespace ConsoleWizard
 
         public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal Func<int, T, string> ChoicesDisplayFn { get; set; }
-
         internal override T Prompt()
         {
             bool tryAgain = true;
@@ -29,7 +27,7 @@ namespace ConsoleWizard
 
                 for (int i = 0; i < Choices.Count; i++)
                 {
-                    ConsoleHelper.WriteLine(ChoicesDisplayFn(i + 1, Choices[i]));
+                    ConsoleHelper.WriteLine(DisplayChoice(i + 1, Choices[i]));
                 }
 
                 Console.WriteLine();
@@ -56,6 +54,11 @@ namespace ConsoleWizard
 
             Console.WriteLine();
             return answer;
+        }
+
+        protected string DisplayChoice(int index, T choice)
+        {
+            return $"[{index}] {choice}";
         }
     }
 }

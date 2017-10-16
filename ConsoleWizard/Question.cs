@@ -195,11 +195,6 @@ namespace ConsoleWizard
             var inquire = new QuestionRawList<T>(message);
             inquire.Choices = choices;
 
-            inquire.ChoicesDisplayFn = (index, choice) =>
-            {
-                return $"[{index}] {choice}";
-            };
-
             inquire.ValidatationFn = v =>
             {
                 if (v > 0 && v <= inquire.Choices.Count)
