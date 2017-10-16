@@ -155,11 +155,6 @@ namespace ConsoleWizard
             var inquire = new QuestionList<T>(message);
             inquire.Choices = choices;
 
-            inquire.ChoicesDisplayFn = (index, choice) =>
-            {
-                return $"{choice}";
-            };
-
             inquire.ParseFn = v =>
             {
                 return inquire.Choices[v - 1];
