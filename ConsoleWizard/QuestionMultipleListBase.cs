@@ -29,5 +29,19 @@ namespace ConsoleWizard
         }
 
         internal bool[] Selected { get; private set; }
+
+        public void DisplayQuestion()
+        {
+            Console.Clear();
+            ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
+            var question = $"{Message} : ";
+            if (HasDefaultValue)
+            {
+                foreach (var item in DefaultValue)
+                {
+                    question += $"[{ConvertToStringFn(item)}] ";
+                }
+            }
+        }
     }
 }

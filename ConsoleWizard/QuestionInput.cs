@@ -3,18 +3,13 @@ using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionInput<T> : QuestionBase<T>, IConvertToString<T>, IConvertToResult<string, T>, IValidation<string>
+    public class QuestionInput<T> : QuestionSingleChoiceBase<T>, IConvertToString<T>, IConvertToResult<string, T>, IValidation<string>
     {
-        private DisplayQuestionSingleChoiceComponent<QuestionInput<T>, T> _displayQuestionComponent;
-
         internal QuestionInput(string message) : base(message)
         {
-            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionInput<T>, T>(this);
         }
 
         public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
-
-        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
 
@@ -25,7 +20,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                _displayQuestionComponent.DisplayQuestion();
+                DisplayQuestion();
 
                 bool isCanceled = false;
                 var value = ConsoleHelper.Read(out isCanceled);

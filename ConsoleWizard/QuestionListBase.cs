@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using ConsoleWizard.Components;
+﻿using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
-    public abstract class QuestionListBase<T> : QuestionBase<T>, IConvertToString<T>
+    public abstract class QuestionListBase<T> : QuestionSingleChoiceBase<T>
     {
         internal QuestionListBase(string message) : base(message)
         {
         }
-
-        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal List<T> Choices { get; set; }
     }

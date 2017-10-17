@@ -11,11 +11,8 @@ namespace ConsoleWizard
 
         private int _boundryTop;
 
-        private DisplayQuestionMultipleChoiceComponent<QuestionCheckbox<TList, TResult>, TList, TResult> _displayQuestionComponent;
-
         internal QuestionCheckbox(string question) : base(question)
         {
-            _displayQuestionComponent = new DisplayQuestionMultipleChoiceComponent<QuestionCheckbox<TList, TResult>, TList, TResult>(this);
         }
 
         public Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
@@ -29,7 +26,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                _displayQuestionComponent.DisplayQuestion();
+                ////_displayQuestionComponent.DisplayQuestion();
 
                 ConsoleHelper.WriteLine();
                 ConsoleHelper.WriteLine();

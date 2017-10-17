@@ -6,8 +6,6 @@ namespace ConsoleWizard
 {
     public class QuestionPagedList<T> : QuestionList<T>
     {
-        private DisplayQuestionSingleChoiceComponent<QuestionPagedList<T>, T> _displayQuestionComponent;
-
         private List<T> _pageChoices = new List<T>();
 
         private int _skipChoices = 0;
@@ -17,7 +15,6 @@ namespace ConsoleWizard
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
             Choices = question.Choices;
-            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionPagedList<T>, T>(this);
         }
 
         internal int PageSize { get; set; } = 0;
@@ -32,7 +29,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                _displayQuestionComponent.DisplayQuestion();
+                ////_displayQuestionComponent.DisplayQuestion();
 
                 Console.WriteLine();
                 Console.WriteLine();

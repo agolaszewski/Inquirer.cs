@@ -4,8 +4,6 @@ namespace ConsoleWizard
 {
     internal class QuestionPagedRawList<T> : QuestionRawList<T>
     {
-        private DisplayQuestionSingleChoiceComponent<QuestionPagedRawList<T>, T> _displayQuestionComponent;
-
         private int _skipChoices = 0;
 
         public QuestionPagedRawList(QuestionRawList<T> question) : base(question.Message)
@@ -13,7 +11,6 @@ namespace ConsoleWizard
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
             Choices = question.Choices;
-            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionPagedRawList<T>, T>(this);
         }
 
         public int PageSize { get; internal set; } = 0;
@@ -23,7 +20,7 @@ namespace ConsoleWizard
             bool tryAgain = true;
             T answer = DefaultValue;
 
-            _displayQuestionComponent.DisplayQuestion();
+            ////_displayQuestionComponent.DisplayQuestion();
 
             while (tryAgain)
             {

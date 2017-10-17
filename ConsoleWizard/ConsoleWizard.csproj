@@ -47,12 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DisplayQuestionMultipleChoiceComponent.cs" />
     <Compile Include="Components\IConvertToString.cs" />
     <Compile Include="Components\IConvertToResult.cs" />
-    <Compile Include="Components\IDisplayQuestion.cs" />
     <Compile Include="Components\IValidation.cs" />
-    <Compile Include="DisplayQuestionSingleChoiceComponent.cs" />
     <Compile Include="QuestionMultipleListBase.cs" />
     <Compile Include="QuestionDictionaryListBase.cs" />
     <Compile Include="QuestionCheckbox.cs" />
@@ -68,6 +65,7 @@
     <Compile Include="QuestionPagedRawList.cs" />
     <Compile Include="QuestionPassword.cs" />
     <Compile Include="QuestionRawLists.cs" />
+    <Compile Include="QuestionSingleChoiceBase.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="QuestionExtensions.cs" />
     <Compile Include="QuestionKey.cs" />

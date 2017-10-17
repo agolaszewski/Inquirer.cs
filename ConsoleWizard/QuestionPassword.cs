@@ -3,16 +3,11 @@ using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionPassword<T> : QuestionBase<T>, IConvertToString<T>, IConvertToResult<string, T>, IValidation<string>
+    public class QuestionPassword<T> : QuestionSingleChoiceBase<T>, IConvertToResult<string, T>, IValidation<string>
     {
-        private DisplayQuestionSingleChoiceComponent<QuestionPassword<T>, T> _displayQuestionComponent;
-
         internal QuestionPassword(string question) : base(question)
         {
-            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionPassword<T>, T>(this);
         }
-
-        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
 
@@ -25,7 +20,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                _displayQuestionComponent.DisplayQuestion();
+                ////_displayQuestionComponent.DisplayQuestion();
                 string value = string.Empty;
 
                 ConsoleKey key;

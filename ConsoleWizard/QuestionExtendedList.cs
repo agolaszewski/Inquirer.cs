@@ -6,11 +6,8 @@ namespace ConsoleWizard
 {
     public class QuestionExtendedList<TDictionary, T> : QuestionDictionaryListBase<TDictionary, T>, IConvertToResult<ConsoleKey, T>, IValidation<ConsoleKey> where TDictionary : Dictionary<ConsoleKey, T>, new()
     {
-        private DisplayQuestionSingleChoiceComponent<QuestionExtendedList<TDictionary, T>, T> _displayQuestionComponent;
-
         internal QuestionExtendedList(string question) : base(question)
         {
-            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionExtendedList<TDictionary, T>, T>(this);
         }
 
         public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
@@ -24,7 +21,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                _displayQuestionComponent.DisplayQuestion();
+                ////_displayQuestionComponent.DisplayQuestion();
 
                 Console.WriteLine();
                 Console.WriteLine();
