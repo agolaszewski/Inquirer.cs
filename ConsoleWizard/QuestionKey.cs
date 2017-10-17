@@ -5,8 +5,11 @@ namespace ConsoleWizard
 {
     public class QuestionInputKey<T> : QuestionBase<T>, IConvertToString<T>, IConvertToResult<ConsoleKey, T>, IValidation<ConsoleKey>
     {
+        private DisplayQuestionSingleChoiceComponent<QuestionInputKey<T>, T> _displayQuestionComponent;
+
         internal QuestionInputKey(string question) : base(question)
         {
+            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionInputKey<T>, T>(this);
         }
 
         public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
@@ -22,7 +25,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion(this);
+                _displayQuestionComponent.DisplayQuestion();
 
                 bool isCanceled = false;
                 var key = ConsoleHelper.ReadKey(out isCanceled);

@@ -5,8 +5,11 @@ namespace ConsoleWizard
 {
     public class QuestionPassword<T> : QuestionBase<T>, IConvertToString<T>, IConvertToResult<string, T>, IValidation<string>
     {
-        internal QuestionPassword(string message) : base(message)
+        private DisplayQuestionSingleChoiceComponent<QuestionPassword<T>, T> _displayQuestionComponent;
+
+        internal QuestionPassword(string question) : base(question)
         {
+            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionPassword<T>, T>(this);
         }
 
         public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
@@ -22,7 +25,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion(this);
+                _displayQuestionComponent.DisplayQuestion();
                 string value = string.Empty;
 
                 ConsoleKey key;

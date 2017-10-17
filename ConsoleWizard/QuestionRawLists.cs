@@ -5,8 +5,11 @@ namespace ConsoleWizard
 {
     public class QuestionRawList<T> : QuestionListBase<T>, IConvertToResult<int, T>, IValidation<int>
     {
+        private DisplayQuestionSingleChoiceComponent<QuestionRawList<T>, T> _displayQuestionComponent;
+
         internal QuestionRawList(string question) : base(question)
         {
+            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionRawList<T>, T>(this);
         }
 
         public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
@@ -20,7 +23,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion(this);
+                _displayQuestionComponent.DisplayQuestion();
 
                 Console.WriteLine();
                 Console.WriteLine();

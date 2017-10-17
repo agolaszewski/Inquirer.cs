@@ -5,8 +5,11 @@ namespace ConsoleWizard
 {
     public class QuestionInput<T> : QuestionBase<T>, IConvertToString<T>, IConvertToResult<string, T>, IValidation<string>
     {
+        private DisplayQuestionSingleChoiceComponent<QuestionInput<T>, T> _displayQuestionComponent;
+
         internal QuestionInput(string message) : base(message)
         {
+            _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionInput<T>, T>(this);
         }
 
         public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
@@ -22,7 +25,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                DisplayQuestion(this);
+                _displayQuestionComponent.DisplayQuestion();
 
                 bool isCanceled = false;
                 var value = ConsoleHelper.Read(out isCanceled);

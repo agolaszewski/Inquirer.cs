@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
@@ -45,17 +43,6 @@ namespace ConsoleWizard
             }
 
             return false;
-        }
-
-        protected void DisplayQuestion(IConvertToString<TAnswer> converter)
-        {
-            Console.Clear();
-            ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
-            var question = $"{Message} : ";
-            if (HasDefaultValue)
-            {
-                question += $"[{converter.ToStringFn(DefaultValue)}] ";
-            }
         }
     }
 }
