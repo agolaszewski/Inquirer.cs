@@ -20,7 +20,7 @@ namespace ConsoleWizard
             bool tryAgain = true;
             T answer = DefaultValue;
 
-            ////_displayQuestionComponent.DisplayQuestion();
+           DisplayQuestion();
 
             while (tryAgain)
             {

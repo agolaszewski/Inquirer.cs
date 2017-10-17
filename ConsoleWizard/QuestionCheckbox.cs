@@ -26,7 +26,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                ////_displayQuestionComponent.DisplayQuestion();
+               DisplayQuestion();
 
                 ConsoleHelper.WriteLine();
                 ConsoleHelper.WriteLine();

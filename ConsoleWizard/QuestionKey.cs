@@ -20,7 +20,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                ////_displayQuestionComponent.DisplayQuestion();
+               DisplayQuestion();
 
                 bool isCanceled = false;
                 var key = ConsoleHelper.ReadKey(out isCanceled);

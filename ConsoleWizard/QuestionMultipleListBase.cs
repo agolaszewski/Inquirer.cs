@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ConsoleWizard.Components;
 
 namespace ConsoleWizard
@@ -37,11 +38,10 @@ namespace ConsoleWizard
             var question = $"{Message} : ";
             if (HasDefaultValue)
             {
-                foreach (var item in DefaultValue)
-                {
-                    question += $"[{ConvertToStringFn(item)}] ";
-                }
+                question += $"[{string.Join(",", DefaultValue.Select(x => ConvertToStringFn(x)))}] ";
             }
+
+            ConsoleHelper.Write(question);
         }
     }
 }

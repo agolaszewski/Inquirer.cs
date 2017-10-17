@@ -9,7 +9,7 @@ namespace ConsoleWizard
         {
         }
 
-        public Func<T, string> ConvertToStringFn { get; set; }
+        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         public void DisplayQuestion()
         {
@@ -20,6 +20,8 @@ namespace ConsoleWizard
             {
                 question += $"[{ConvertToStringFn(DefaultValue)}] ";
             }
+
+            ConsoleHelper.Write(question);
         }
     }
 }

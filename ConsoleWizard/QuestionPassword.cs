@@ -20,7 +20,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-                ////_displayQuestionComponent.DisplayQuestion();
+               DisplayQuestion();
                 string value = string.Empty;
 
                 ConsoleKey key;
