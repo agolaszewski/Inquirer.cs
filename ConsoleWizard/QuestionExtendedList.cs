@@ -47,12 +47,12 @@ namespace ConsoleWizard
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (ValidatationFn(key))
                 {
                     answer = ParseFn(key);
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 

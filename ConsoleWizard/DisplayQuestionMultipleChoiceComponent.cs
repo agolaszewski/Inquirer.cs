@@ -22,7 +22,7 @@ namespace ConsoleWizard
             {
                 foreach (var item in _questionBase.DefaultValue)
                 {
-                    question += $"[{_questionBase.ToStringFn(item)}] ";
+                    question += $"[{_questionBase.ConvertToStringFn(item)}] ";
                 }
             }
         }

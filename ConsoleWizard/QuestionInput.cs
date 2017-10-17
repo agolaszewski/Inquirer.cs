@@ -14,7 +14,7 @@ namespace ConsoleWizard
 
         public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
 
-        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
 
@@ -38,12 +38,12 @@ namespace ConsoleWizard
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
                     answer = DefaultValue;
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 

@@ -16,7 +16,7 @@ namespace ConsoleWizard
                 return inquire.Choices[v - 1];
             };
 
-            inquire.ToStringFn = v => { return string.Join(",", v); };
+            inquire.ConvertToStringFn = v => { return string.Join(",", v); };
 
             return inquire;
         }
@@ -128,7 +128,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<string> Input(string message)
+        public static QuestionInput<string> Input(string message)
         {
             var inquire = new QuestionInput<string>(message);
             inquire.ValidatationFn = v =>

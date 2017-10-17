@@ -19,7 +19,7 @@ namespace ConsoleWizard
             var question = $"{_questionBase.Message} : ";
             if (_questionBase.HasDefaultValue)
             {
-                question += $"[{_questionBase.ToStringFn(_questionBase.DefaultValue)}] ";
+                question += $"[{_questionBase.ConvertToStringFn(_questionBase.DefaultValue)}] ";
             }
         }
     }

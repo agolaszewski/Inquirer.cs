@@ -4,6 +4,6 @@ namespace ConsoleWizard.Components
 {
     public interface IConvertToString<TIn>
     {
-        Func<TIn, string> ToStringFn { get; set; }
+        Func<TIn, string> ConvertToStringFn { get; set; }
     }
 }

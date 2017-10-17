@@ -10,13 +10,13 @@ namespace ConsoleWizard
         {
         }
 
-        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal TDictionary Choices { get; set; }
 
         public QuestionDictionaryListBase<TDictionary, T> ToString(Func<T, string> toStringFn)
         {
-            ToStringFn = toStringFn;
+            ConvertToStringFn = toStringFn;
             return this;
         }
     }

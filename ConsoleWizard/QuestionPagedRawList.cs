@@ -87,12 +87,12 @@ namespace ConsoleWizard
 
                 if (value.HasValue == false && HasDefaultValue)
                 {
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (value.HasValue && ValidatationFn(value.Value))
                 {
                     answer = ParseFn(value.Value);
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 

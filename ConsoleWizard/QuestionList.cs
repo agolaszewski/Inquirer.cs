@@ -93,7 +93,7 @@ namespace ConsoleWizard
                     Console.SetCursorPosition(0, y);
                 }
 
-                tryAgain = Confirm(ToStringFn(answer));
+                tryAgain = Confirm(ConvertToStringFn(answer));
             }
 
             Console.WriteLine();

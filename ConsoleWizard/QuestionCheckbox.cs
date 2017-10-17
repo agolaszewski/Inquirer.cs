@@ -113,17 +113,12 @@ namespace ConsoleWizard
                     Console.SetCursorPosition(0, y);
                 }
 
-                var answerNames = answer.Select(x => ToStringFn(x)).ToList();
+                var answerNames = answer.Select(x => ConvertToStringFn(x)).ToList();
                 tryAgain = Confirm(string.Join(",", answerNames));
             }
 
             Console.WriteLine();
             return answer;
-        }
-
-        private string DisplayChoice(int index)
-        {
-            return $"{Choices[index]}";
         }
 
         private void DisplayCheckbox(int selectedIndex, int x, int y)
@@ -136,6 +131,11 @@ namespace ConsoleWizard
             {
                 ConsoleHelper.PositionWrite(" ", x, y);
             }
+        }
+
+        private string DisplayChoice(int index)
+        {
+            return $"{Choices[index]}";
         }
 
         private void DisplayChoices()

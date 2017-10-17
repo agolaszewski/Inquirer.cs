@@ -12,7 +12,7 @@ namespace ConsoleWizard
             _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionInputKey<T>, T>(this);
         }
 
-        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
 
@@ -38,12 +38,12 @@ namespace ConsoleWizard
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {
                     answer = DefaultValue;
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (ValidatationFn(key))
                 {
                     answer = ParseFn(key);
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 

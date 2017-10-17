@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
     public static class QuestionExtensions
     {
+        public static T ConvertTypeToString<T, TType>(this T question, Func<TType, string> convertToStringFn) where T : IConvertToString<TType>
+        {
+            question.ConvertToStringFn = convertToStringFn;
+            return question;
+        }
+
         public static QuestionList<T> Paging<T>(this QuestionList<T> question, int pageSize)
         {
             var pagedQuestion = new QuestionPagedList<T>(question);

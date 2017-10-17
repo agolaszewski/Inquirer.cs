@@ -12,7 +12,7 @@ namespace ConsoleWizard
         {
         }
 
-        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal TList Choices
         {

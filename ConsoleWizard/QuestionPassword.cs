@@ -12,7 +12,7 @@ namespace ConsoleWizard
             _displayQuestionComponent = new DisplayQuestionSingleChoiceComponent<QuestionPassword<T>, T>(this);
         }
 
-        public Func<T, string> ToStringFn { get; set; } = value => { return value.ToString(); };
+        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
 
@@ -59,12 +59,12 @@ namespace ConsoleWizard
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
                     answer = DefaultValue;
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
-                    tryAgain = Confirm(ToStringFn(answer));
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 
