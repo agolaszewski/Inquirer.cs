@@ -3,20 +3,51 @@ using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionInput<T> : QuestionSingleChoiceBase<T>, IConvertToString<T>, IConvertToResult<string, T>, IValidation<string>
+    public class QuestionInput<TResult> : QuestionSingleChoiceBase<TResult>, IConvertToString<TResult>, IConvertToResult<string, TResult>, IValidation<string>
     {
         internal QuestionInput(string message) : base(message)
         {
         }
 
-        public Func<string, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<string, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
         public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal override T Prompt()
+        public QuestionInput<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
+
+        public QuestionInput<TResult> Parse(Func<string, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionInput<TResult> Validation(Func<string, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionInput<TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionInput<TResult> WithDefaultValue(TResult defaultValue)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
+
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
@@ -27,7 +58,7 @@ namespace ConsoleWizard
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
-                    return default(T);
+                    return default(TResult);
                 }
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)

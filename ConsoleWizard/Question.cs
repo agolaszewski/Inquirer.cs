@@ -6,7 +6,7 @@ namespace ConsoleWizard
 {
     public static class Question
     {
-        public static QuestionCheckbox<List<T>, T> Checkbox<T>(string message, List<T> choices)
+        public static QuestionCheckbox<List<T>, T> Checkbox<T>(string message, List<T> choices) where T : IComparable
         {
             var inquire = new QuestionCheckbox<List<T>, T>(message);
             inquire.Choices = choices;
@@ -150,7 +150,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionList<T> List<T>(string message, List<T> choices)
+        public static QuestionList<T> List<T>(string message, List<T> choices) where T : IComparable
         {
             var inquire = new QuestionList<T>(message);
             inquire.Choices = choices;
@@ -185,7 +185,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionRawList<T> RawList<T>(string message, List<T> choices)
+        public static QuestionRawList<T> RawList<T>(string message, List<T> choices) where T : IComparable
         {
             var inquire = new QuestionRawList<T>(message);
             inquire.Choices = choices;

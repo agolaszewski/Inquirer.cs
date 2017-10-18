@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ConsoleWizard
 {
-    public class QuestionPagedList<T> : QuestionList<T>
+    public class QuestionPagedList<T> : QuestionList<T> where T : IComparable
     {
         private List<T> _pageChoices = new List<T>();
 

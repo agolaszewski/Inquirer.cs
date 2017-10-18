@@ -2,7 +2,7 @@
 
 namespace ConsoleWizard
 {
-    internal class QuestionPagedRawList<T> : QuestionRawList<T>
+    internal class QuestionPagedRawList<T> : QuestionRawList<T> where T : IComparable
     {
         private int _skipChoices = 0;
 

@@ -4,24 +4,55 @@ using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionExtendedList<TDictionary, T> : QuestionDictionaryListBase<TDictionary, T>, IConvertToResult<ConsoleKey, T>, IValidation<ConsoleKey> where TDictionary : Dictionary<ConsoleKey, T>, new()
+    public class QuestionExtendedList<TDictionary, TResult> : QuestionDictionaryListBase<TDictionary, TResult>, IConvertToResult<ConsoleKey, TResult>, IValidation<ConsoleKey> where TDictionary : Dictionary<ConsoleKey, TResult>, new()
     {
         internal QuestionExtendedList(string question) : base(question)
         {
         }
 
-        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<ConsoleKey, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
         public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal override T Prompt()
+        public QuestionExtendedList<TDictionary, TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
+
+        public QuestionExtendedList<TDictionary, TResult> Parse(Func<ConsoleKey, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionExtendedList<TDictionary, TResult> Validation(Func<ConsoleKey, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionExtendedList<TDictionary, TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionExtendedList<TDictionary, TResult> WithDefaultValue(TResult defaultValue)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
+
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
-               DisplayQuestion();
+                DisplayQuestion();
 
                 Console.WriteLine();
                 Console.WriteLine();
@@ -39,7 +70,7 @@ namespace ConsoleWizard
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
-                    return default(T);
+                    return default(TResult);
                 }
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)

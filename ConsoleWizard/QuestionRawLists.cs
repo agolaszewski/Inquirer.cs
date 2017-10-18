@@ -1,26 +1,69 @@
 ﻿using System;
-using ConsoleWizard.Components;
+using System.Linq;
 
 namespace ConsoleWizard
 {
-    public class QuestionRawList<T> : QuestionListBase<T>, IConvertToResult<int, T>, IValidation<int>
+    public class QuestionRawList<TResult> : QuestionListBase<TResult> where TResult : IComparable
     {
         internal QuestionRawList(string question) : base(question)
         {
         }
 
-        public Func<int, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
         public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal override T Prompt()
+        public QuestionRawList<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
+
+        public QuestionRawList<TResult> Parse(Func<int, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionRawList<TResult> Validation(Func<int, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionRawList<TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionRawList<TResult> WithDefaultValue<T>(T defaultValue) where T : IComparable
+        {
+            if (Choices.Where(x => x.CompareTo(defaultValue) == 0).Any())
+            {
+                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(defaultValue) == 0).Index;
+                Choices.Insert(0, Choices[index]);
+                Choices.RemoveAt(index + 1);
+
+                DefaultValue = Choices[0];
+                HasDefaultValue = true;
+            }
+            else
+            {
+                throw new Exception("No default values in choices");
+            }
+
+            return this;
+        }
+
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
-               DisplayQuestion();
+                DisplayQuestion();
 
                 Console.WriteLine();
                 Console.WriteLine();
@@ -38,7 +81,7 @@ namespace ConsoleWizard
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
-                    return default(T);
+                    return default(TResult);
                 }
 
                 if (value.HasValue == false && HasDefaultValue)
@@ -56,7 +99,7 @@ namespace ConsoleWizard
             return answer;
         }
 
-        protected string DisplayChoice(int index, T choice)
+        protected string DisplayChoice(int index, TResult choice)
         {
             return $"[{index}] {choice}";
         }

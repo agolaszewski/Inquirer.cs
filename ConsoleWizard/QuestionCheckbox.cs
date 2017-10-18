@@ -5,7 +5,7 @@ using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult>, IConvertToResult<int, TResult>, IValidation<int> where TList : List<TResult>, new()
+    public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new() where TResult : IComparable
     {
         private int _boundryBottom;
 
@@ -19,6 +19,67 @@ namespace ConsoleWizard
 
         public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
+        public QuestionCheckbox<TList, TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> Parse(Func<int, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> Validation(Func<int, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> WithDefaultValue(TList defaultValue)
+        {
+            DefaultValue = defaultValue;
+            foreach (var value in defaultValue)
+            {
+                if (Choices.Where(x => x.CompareTo(value) == 0).Any())
+                {
+                    var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(value) == 0).Index;
+                    Selected[index] = true;
+                }
+                else
+                {
+                    throw new Exception("No default values in choices");
+                }
+            }
+
+            HasDefaultValue = true;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> WithDefaultValue<T>(TResult defaultValue) where T : IComparable
+        {
+            DefaultValue = new TList { defaultValue };
+            if (Choices.Where(x => x.CompareTo(defaultValue) == 0).Any())
+            {
+                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(defaultValue) == 0).Index;
+                Selected[index] = true;
+            }
+            else
+            {
+                throw new Exception("No default values in choices");
+            }
+
+            HasDefaultValue = true;
+            return this;
+        }
+
         internal override TList Prompt()
         {
             bool tryAgain = true;
@@ -26,7 +87,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-               DisplayQuestion();
+                DisplayQuestion();
 
                 ConsoleHelper.WriteLine();
                 ConsoleHelper.WriteLine();
