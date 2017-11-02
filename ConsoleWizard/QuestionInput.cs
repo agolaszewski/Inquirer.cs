@@ -1,9 +1,8 @@
 ﻿using System;
-using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionInput<TResult> : QuestionSingleChoiceBase<TResult>, IConvertToString<TResult>, IConvertToResult<string, TResult>, IValidation<string>
+    public class QuestionInput<TResult> : QuestionSingleChoiceBase<TResult>
     {
         internal QuestionInput(string message) : base(message)
         {

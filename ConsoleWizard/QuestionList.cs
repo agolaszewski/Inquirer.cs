@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionList<TResult> : QuestionListBase<TResult> where TResult : IComparable
+    public class QuestionList<TResult> : QuestionListBase<TResult>
     {
         internal QuestionList(string question) : base(question)
         {
@@ -38,11 +37,25 @@ namespace ConsoleWizard
             return this;
         }
 
-        public QuestionList<TResult> WithDefaultValue<T>(T defaultValue) where T : IComparable
+        public QuestionList<TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
-            if (Choices.Where(x => x.CompareTo(defaultValue) == 0).Any())
+            if (typeof(TResult) is IComparable && compareFn == null)
             {
-                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(defaultValue) == 0).Index;
+                compareFn = (x, y) =>
+                {
+                    var x1 = x as IComparable;
+                    var y1 = y as IComparable;
+                    return x1.CompareTo(y1);
+                };
+            }
+            else if (compareFn == null)
+            {
+                throw new Exception("compareFn not defined");
+            }
+
+            if (Choices.Where(x => compareFn(x, defaultValue) == 0).Any())
+            {
+                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
                 Choices.Insert(0, Choices[index]);
                 Choices.RemoveAt(index + 1);
 
@@ -143,7 +156,7 @@ namespace ConsoleWizard
 
         protected string DisplayChoice(int index)
         {
-            return $"{Choices[index]}";
+            return $"{ConvertToStringFn(Choices[index])}";
         }
     }
 }

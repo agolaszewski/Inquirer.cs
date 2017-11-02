@@ -1,33 +1,63 @@
 ﻿using System;
-using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionInputKey<T> : QuestionSingleChoiceBase<T>, IConvertToResult<ConsoleKey, T>, IValidation<ConsoleKey>
+    public class QuestionInputKey<TResult> : QuestionSingleChoiceBase<TResult>
     {
         internal QuestionInputKey(string question) : base(question)
         {
         }
 
-        public Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<ConsoleKey, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
         public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal override T Prompt()
+        public QuestionInputKey<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
+
+        public QuestionInputKey<TResult> Parse(Func<ConsoleKey, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionInputKey<TResult> Validation(Func<ConsoleKey, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionInputKey<TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionInputKey<TResult> WithDefaultValue(TResult defaultValue)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
+
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
-               DisplayQuestion();
+                DisplayQuestion();
 
                 bool isCanceled = false;
                 var key = ConsoleHelper.ReadKey(out isCanceled);
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
-                    return default(T);
+                    return default(TResult);
                 }
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)

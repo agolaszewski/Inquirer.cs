@@ -1,9 +1,8 @@
 ﻿using System;
-using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public abstract class QuestionSingleChoiceBase<T> : QuestionBase<T>, IConvertToString<T>
+    public abstract class QuestionSingleChoiceBase<T> : QuestionBase<T>
     {
         public QuestionSingleChoiceBase(string question) : base(question)
         {

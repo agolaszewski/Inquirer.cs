@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionExtendedList<TDictionary, TResult> : QuestionDictionaryListBase<TDictionary, TResult>, IConvertToResult<ConsoleKey, TResult>, IValidation<ConsoleKey> where TDictionary : Dictionary<ConsoleKey, TResult>, new()
+    public class QuestionExtendedList<TDictionary, TResult> : QuestionDictionaryListBase<TDictionary, TResult> where TDictionary : Dictionary<ConsoleKey, TResult>, new()
     {
         internal QuestionExtendedList(string question) : base(question)
         {

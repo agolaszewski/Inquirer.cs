@@ -21,7 +21,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<ConsoleKey> Confirm(string message)
+        public static QuestionInputKey<ConsoleKey> Confirm(string message)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
             inquire.Message += " [y/n]";
@@ -44,7 +44,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
+        public static QuestionInputKey<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
             inquire.ValidatationFn = v =>
@@ -150,7 +150,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionList<T> List<T>(string message, List<T> choices) where T : IComparable
+        public static QuestionList<T> List<T>(string message, List<T> choices)
         {
             var inquire = new QuestionList<T>(message);
             inquire.Choices = choices;
@@ -163,7 +163,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<string> Password(string message)
+        public static QuestionPassword<string> Password(string message)
         {
             var inquire = new QuestionPassword<string>(message);
             inquire.ValidatationFn = v =>

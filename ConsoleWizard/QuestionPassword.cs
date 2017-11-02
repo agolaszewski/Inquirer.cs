@@ -1,9 +1,8 @@
 ﻿using System;
-using ConsoleWizard.Components;
 
 namespace ConsoleWizard
 {
-    public class QuestionPassword<TResult> : QuestionSingleChoiceBase<TResult>, IConvertToResult<string, TResult>, IValidation<string>
+    public class QuestionPassword<TResult> : QuestionSingleChoiceBase<TResult>
     {
         internal QuestionPassword(string question) : base(question)
         {

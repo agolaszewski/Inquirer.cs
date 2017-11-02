@@ -29,7 +29,7 @@ namespace ConsoleWizard
 
             while (tryAgain)
             {
-               DisplayQuestion();
+                DisplayQuestion();
 
                 Console.WriteLine();
                 Console.WriteLine();

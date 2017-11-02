@@ -20,7 +20,7 @@ namespace ConsoleWizard
             bool tryAgain = true;
             T answer = DefaultValue;
 
-           DisplayQuestion();
+            DisplayQuestion();
 
             while (tryAgain)
             {
