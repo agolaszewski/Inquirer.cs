@@ -19,9 +19,9 @@ namespace ConsoleWizard
 
         internal PropertyInfo PropertyInfo { get; set; }
 
-        public InquirerMenu Menu(string header)
+        public InquirerMenu<TAnswers> Menu(string header)
         {
-            return new InquirerMenu(header);
+            return new InquirerMenu<TAnswers>(header, this);
         }
 
         public InquirerFor<TAnswers, TResult> For<TResult>(Expression<Func<TAnswers, TResult>> answerProperty)

@@ -10,10 +10,6 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
-            _test.Menu("sadasd")
-                .AddOption("asdasd", () => { InputTest(); })
-                .AddOption("asdasd", () => { InputTest(); })
-                .AddOption("asdsssasd", () => { InputTestNumber(); }).Create();
             //InputTest();
             //InputTest();
             //InputTestNumber();
@@ -23,8 +19,17 @@ namespace ConsoleApp1
             //ListRawTest();
             //ListCheckboxTest();
             //ListExtendedTest();
+            MenuTest();
             Console.WriteLine(_test.Answers.Input);
             Console.ReadKey();
+        }
+
+        private static void MenuTest()
+        {
+            _test.Menu("sadasd")
+               .AddOption("asdasd", () => { InputTest(); })
+               .AddOption("asdasd", () => { InputTest(); })
+               .AddOption("asdsssasd", () => { InputTestNumber(); }).Prompt();
         }
 
         private static void InputTest()

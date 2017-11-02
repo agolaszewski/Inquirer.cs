@@ -1,31 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ConsoleWizard
 {
-    public class InquirerMenu
+    public class InquirerMenu<TAnswers> where TAnswers : class, new()
     {
         private string _header;
-
+        private Inquirer<TAnswers> _inquirer;
         private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
 
-        public InquirerMenu(string header)
+        public InquirerMenu(string header, Inquirer<TAnswers> inquirer)
         {
+            _inquirer = inquirer;
             _header = header;
         }
 
-        public InquirerMenu AddOption(string description, Action option)
+        public InquirerMenu<TAnswers> AddOption(string description, Action option)
         {
             _options.Add(new Tuple<string, Action>(description, option));
             return this;
         }
 
-        public void Create()
+        public void Prompt()
         {
-            ConsoleHelper.WriteLine(_header);
+            StackTrace stackTrace = new StackTrace();
+            StackFrame[] stackFrames = stackTrace.GetFrames();
+            StackFrame callingFrame = stackFrames[1];
 
-            Console.WriteLine();
-            Console.WriteLine();
+            Console.Clear();
+            ConsoleHelper.WriteLine(_header + " :");
 
             for (int i = 0; i < _options.Count; i++)
             {
@@ -48,6 +52,12 @@ namespace ConsoleWizard
                 var key = ConsoleHelper.ReadKey(out isCanceled);
                 if (isCanceled)
                 {
+                    if (_inquirer.History.Count > 0)
+                    {
+                        var method = _inquirer.History.Pop();
+                        method.Invoke(null, null);
+                    }
+
                     return;
                 }
 
@@ -82,6 +92,7 @@ namespace ConsoleWizard
                             Console.CursorVisible = true;
                             var answer = _options[Console.CursorTop - boundryTop];
                             move = false;
+                            _inquirer.History.Push(callingFrame.GetMethod());
                             answer.Item2();
                             break;
                         }
