@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InquirerConvert.cs" />
+    <Compile Include="InquirerMenu.cs" />
     <Compile Include="QuestionMultipleListBase.cs" />
     <Compile Include="QuestionDictionaryListBase.cs" />
     <Compile Include="QuestionCheckbox.cs" />

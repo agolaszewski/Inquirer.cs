@@ -10,6 +10,10 @@ namespace ConsoleApp1
         private static void Main(string[] args)
         {
             _test = new Inquirer<Answers>();
+            _test.Menu("sadasd")
+                .AddOption("asdasd", () => { InputTest(); })
+                .AddOption("asdasd", () => { InputTest(); })
+                .AddOption("asdsssasd", () => { InputTestNumber(); }).Create();
             //InputTest();
             //InputTest();
             //InputTestNumber();
@@ -23,21 +27,21 @@ namespace ConsoleApp1
             Console.ReadKey();
         }
 
-        //private static void InputTest()
-        //{
-        //    _test.For(x => x.Input).Prompt(Question.Input("How are you?").WithDefaultValue("fine").WithConfirmation()).Then(x =>
-        //   {
-        //       InputTestNumber();
-        //   });
-        //}
+        private static void InputTest()
+        {
+            _test.For(x => x.Input).Prompt(Question.Input("How are you?").WithDefaultValue("fine").WithConfirmation()).Then(x =>
+           {
+               InputTestNumber();
+           });
+        }
 
-        //private static void InputTestNumber()
-        //{
-        //    _test.For(x => x.InputNumber).Prompt(Question.Input<int>("2+2").WithDefaultValue(4).WithConfirmation()).Then(x =>
-        //    {
-        //        ConfirmTest();
-        //    });
-        //}
+        private static void InputTestNumber()
+        {
+            _test.For(x => x.InputNumber).Prompt(Question.Input<int>("2+2")).Then(x =>
+            {
+                //ConfirmTest();
+            });
+        }
 
         //private static void ConfirmTest()
         //{

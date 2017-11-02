@@ -96,7 +96,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<T> Input<T>(string message) where T : struct
+        public static QuestionInput<T> Input<T>(string message) where T : struct
         {
             var inquire = new QuestionInput<T>(message);
             inquire.ValidatationFn = v =>

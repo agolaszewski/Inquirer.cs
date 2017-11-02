@@ -19,6 +19,11 @@ namespace ConsoleWizard
 
         internal PropertyInfo PropertyInfo { get; set; }
 
+        public InquirerMenu Menu(string header)
+        {
+            return new InquirerMenu(header);
+        }
+
         public InquirerFor<TAnswers, TResult> For<TResult>(Expression<Func<TAnswers, TResult>> answerProperty)
         {
             var propertyInfo = ((MemberExpression)answerProperty.Body).Member as PropertyInfo;
