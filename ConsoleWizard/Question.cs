@@ -6,27 +6,22 @@ namespace ConsoleWizard
 {
     public static class Question
     {
-        public static QuestionCheckbox<List<T>, T> Checkbox<T>(string message, List<T> choices)
+        public static QuestionCheckbox<List<T>, T> Checkbox<T>(string message, List<T> choices) where T : IComparable
         {
             var inquire = new QuestionCheckbox<List<T>, T>(message);
             inquire.Choices = choices;
-            
-            inquire.ChoicesDisplayFn = (index, choice) =>
-            {
-                return $"{choice}";
-            };
 
             inquire.ParseFn = v =>
             {
                 return inquire.Choices[v - 1];
             };
 
-            inquire.ToStringFn = v => { return string.Join(",", v); };
+            inquire.ConvertToStringFn = v => { return string.Join(",", v); };
 
             return inquire;
         }
 
-        public static QuestionBase<ConsoleKey> Confirm(string message)
+        public static QuestionInputKey<ConsoleKey> Confirm(string message)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
             inquire.Message += " [y/n]";
@@ -49,7 +44,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
+        public static QuestionInputKey<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
             inquire.ValidatationFn = v =>
@@ -93,11 +88,6 @@ namespace ConsoleWizard
                 return false;
             };
 
-            inquire.ChoicesDisplayFn = (index, choice) =>
-            {
-                return $"[{index}] {choice}";
-            };
-
             inquire.ParseFn = v =>
             {
                 return inquire.Choices[v];
@@ -106,7 +96,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<T> Input<T>(string message) where T : struct
+        public static QuestionInput<T> Input<T>(string message) where T : struct
         {
             var inquire = new QuestionInput<T>(message);
             inquire.ValidatationFn = v =>
@@ -138,7 +128,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<string> Input(string message)
+        public static QuestionInput<string> Input(string message)
         {
             var inquire = new QuestionInput<string>(message);
             inquire.ValidatationFn = v =>
@@ -165,11 +155,6 @@ namespace ConsoleWizard
             var inquire = new QuestionList<T>(message);
             inquire.Choices = choices;
 
-            inquire.ChoicesDisplayFn = (index, choice) =>
-            {
-                return $"{choice}";
-            };
-
             inquire.ParseFn = v =>
             {
                 return inquire.Choices[v - 1];
@@ -178,7 +163,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionBase<string> Password(string message)
+        public static QuestionPassword<string> Password(string message)
         {
             var inquire = new QuestionPassword<string>(message);
             inquire.ValidatationFn = v =>
@@ -200,15 +185,10 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionRawList<T> RawList<T>(string message, List<T> choices)
+        public static QuestionRawList<T> RawList<T>(string message, List<T> choices) where T : IComparable
         {
             var inquire = new QuestionRawList<T>(message);
             inquire.Choices = choices;
-
-            inquire.ChoicesDisplayFn = (index, choice) =>
-            {
-                return $"[{index}] {choice}";
-            };
 
             inquire.ValidatationFn = v =>
             {

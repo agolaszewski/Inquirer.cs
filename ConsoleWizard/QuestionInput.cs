@@ -2,20 +2,51 @@
 
 namespace ConsoleWizard
 {
-    public class QuestionInput<T> : QuestionBase<T>
+    public class QuestionInput<TResult> : QuestionSingleChoiceBase<TResult>
     {
         internal QuestionInput(string message) : base(message)
         {
         }
 
-        internal Func<string, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<string, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
-        internal Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
+        public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal override T Prompt()
+        public QuestionInput<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
+
+        public QuestionInput<TResult> Parse(Func<string, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionInput<TResult> Validation(Func<string, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionInput<TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionInput<TResult> WithDefaultValue(TResult defaultValue)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
+
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
@@ -26,18 +57,18 @@ namespace ConsoleWizard
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
-                    return default(T);
+                    return default(TResult);
                 }
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
                     answer = DefaultValue;
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (ValidatationFn(value))
                 {
                     answer = ParseFn(value);
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 

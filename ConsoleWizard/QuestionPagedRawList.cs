@@ -2,7 +2,7 @@
 
 namespace ConsoleWizard
 {
-    internal class QuestionPagedRawList<T> : QuestionRawList<T>
+    internal class QuestionPagedRawList<T> : QuestionRawList<T> where T : IComparable
     {
         private int _skipChoices = 0;
 
@@ -10,7 +10,6 @@ namespace ConsoleWizard
         {
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
-            ChoicesDisplayFn = question.ChoicesDisplayFn;
             Choices = question.Choices;
         }
 
@@ -85,12 +84,12 @@ namespace ConsoleWizard
 
                 if (value.HasValue == false && HasDefaultValue)
                 {
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (value.HasValue && ValidatationFn(value.Value))
                 {
                     answer = ParseFn(value.Value);
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 
@@ -108,7 +107,7 @@ namespace ConsoleWizard
             int max = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
             for (int i = _skipChoices; i < max; i++)
             {
-                ConsoleHelper.WriteLine(ChoicesDisplayFn(i + 1, Choices[i]));
+                ConsoleHelper.WriteLine(DisplayChoice(i + 1, Choices[i]));
             }
 
             if (max != Choices.Count)

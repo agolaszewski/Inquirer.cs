@@ -11,6 +11,11 @@ namespace ConsoleWizard
             _inquirer = inquirer;
         }
 
+        public InquirerConvert<TAnswers, TAnswer, TResult> Prompt<TAnswer>(QuestionBase<TAnswer> question)
+        {
+            return new InquirerConvert<TAnswers, TAnswer, TResult>(_inquirer, question);
+        }
+
         public InquirerPrompt<TAnswers> Prompt(QuestionBase<TResult> question)
         {
             StackTrace stackTrace = new StackTrace();

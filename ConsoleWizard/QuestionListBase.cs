@@ -2,7 +2,7 @@
 
 namespace ConsoleWizard
 {
-    public abstract class QuestionListBase<T> : QuestionBase<T>
+    public abstract class QuestionListBase<T> : QuestionSingleChoiceBase<T>
     {
         internal QuestionListBase(string message) : base(message)
         {

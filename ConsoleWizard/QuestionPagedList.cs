@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ConsoleWizard
 {
-    public class QuestionPagedList<T> : QuestionList<T>
+    public class QuestionPagedList<T> : QuestionList<T> where T : IComparable
     {
         private List<T> _pageChoices = new List<T>();
 
@@ -14,7 +14,6 @@ namespace ConsoleWizard
         {
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
-            ChoicesDisplayFn = question.ChoicesDisplayFn;
             Choices = question.Choices;
         }
 
@@ -57,7 +56,7 @@ namespace ConsoleWizard
                     }
 
                     Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + ChoicesDisplayFn(y - boundryTop, _pageChoices[y - boundryTop]));
+                    ConsoleHelper.Write("  " + DisplayChoice(y - boundryTop));
                     Console.SetCursorPosition(0, y);
 
                     switch (key)
@@ -106,7 +105,7 @@ namespace ConsoleWizard
                     }
 
                     ConsoleHelper.PositionWrite("→", 0, y);
-                    ConsoleHelper.PositionWrite("  " + ChoicesDisplayFn(y - boundryTop, _pageChoices[y - boundryTop]), 0, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite("  " + DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
                 }
             }
 
@@ -118,7 +117,7 @@ namespace ConsoleWizard
         {
             for (int i = 0; i < _pageChoices.Count; i++)
             {
-                ConsoleHelper.WriteLine("  " + ChoicesDisplayFn(i + 1, _pageChoices[i]));
+                ConsoleHelper.WriteLine("  " + DisplayChoice(i));
             }
         }
     }
