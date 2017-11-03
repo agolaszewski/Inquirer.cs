@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ConsoleWizard
 {
-    public class QuestionRawList<TResult> : QuestionListBase<TResult> where TResult : IComparable
+    public class QuestionRawList<TResult> : QuestionListBase<TResult>
     {
         internal QuestionRawList(string question) : base(question)
         {
@@ -37,11 +37,25 @@ namespace ConsoleWizard
             return this;
         }
 
-        public QuestionRawList<TResult> WithDefaultValue<T>(T defaultValue) where T : IComparable
+        public QuestionRawList<TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
-            if (Choices.Where(x => x.CompareTo(defaultValue) == 0).Any())
+            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
             {
-                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(defaultValue) == 0).Index;
+                compareFn = (x, y) =>
+                {
+                    var x1 = x as IComparable;
+                    var y1 = y as IComparable;
+                    return x1.CompareTo(y1);
+                };
+            }
+            else if (compareFn == null)
+            {
+                throw new Exception("compareFn not defined");
+            }
+
+            if (Choices.Where(x => compareFn(x, defaultValue) == 0).Any())
+            {
+                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
                 Choices.Insert(0, Choices[index]);
                 Choices.RemoveAt(index + 1);
 
@@ -56,7 +70,7 @@ namespace ConsoleWizard
             return this;
         }
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;

@@ -44,7 +44,7 @@ namespace ConsoleWizard
             return this;
         }
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;

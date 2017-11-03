@@ -13,10 +13,9 @@ namespace ConsoleWizard
 
         public static void WriteError(string error)
         {
-            WriteLine();
+            WriteLine(string.Empty);
             Write(">> ", ConsoleColor.Red);
             Write(error);
-            WriteLine();
         }
 
         public static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
@@ -44,19 +43,68 @@ namespace ConsoleWizard
 
             string result = string.Empty;
             ConsoleKeyInfo keyInfo;
+            var moveLine = false;
 
             do
             {
                 keyInfo = Console.ReadKey();
-                if (keyInfo.Key == ConsoleKey.Escape)
+                switch (keyInfo.Key)
                 {
-                    isCanceled = true;
-                    return result;
-                }
+                    case (ConsoleKey.Escape):
+                        {
+                            isCanceled = true;
+                            return result;
+                        }
 
-                if (keyInfo.Key != ConsoleKey.Enter)
-                {
-                    result += keyInfo.KeyChar;
+                    case (ConsoleKey.Backspace):
+                        {
+                            if (result.Length > 0)
+                            {
+                                if (moveLine)
+                                {
+                                    Console.SetCursorPosition(Console.BufferWidth - 1, Console.CursorTop - 1);
+                                    moveLine = false;
+                                }
+
+                                result = result.Remove(result.Length - 1, 1);
+
+                                int oldL = Console.CursorLeft;
+                                int oldT = Console.CursorTop;
+                                PositionWrite(" ", oldL, oldT);
+                                Console.SetCursorPosition(oldL, oldT);
+
+                                if (Console.CursorLeft == 0)
+                                {
+                                    moveLine = true;
+                                }
+                            }
+                            else
+                            {
+                                Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                            }
+
+                            break;
+                        }
+
+                    case (ConsoleKey.Enter):
+                        {
+                            break;
+                        }
+
+                    default:
+                        {
+                            if (keyInfo.Key >= ConsoleKey.A && keyInfo.Key <= ConsoleKey.Z)
+                            {
+                                result += keyInfo.KeyChar;
+                                moveLine = false;
+                            }
+                            else
+                            {
+                                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                            }
+
+                            break;
+                        }
                 }
             }
             while (keyInfo.Key != ConsoleKey.Enter);

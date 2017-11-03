@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ConsoleWizard
 {
-    public class QuestionPagedList<T> : QuestionList<T> where T : IComparable
+    public class QuestionPagedList<T> : QuestionList<T> 
     {
         private List<T> _pageChoices = new List<T>();
 
@@ -19,7 +19,7 @@ namespace ConsoleWizard
 
         internal int PageSize { get; set; } = 0;
 
-        internal override T Prompt()
+        public override T Prompt()
         {
             Console.Clear();
 

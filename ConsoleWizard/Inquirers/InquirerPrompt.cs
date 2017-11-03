@@ -13,7 +13,10 @@ namespace ConsoleWizard
 
         public void Then(Action<TAnswers> thenFn)
         {
-            thenFn(_inquirer.Answers);
+            if (_inquirer != null)
+            {
+                thenFn(_inquirer.Answers);
+            }
         }
     }
 }
