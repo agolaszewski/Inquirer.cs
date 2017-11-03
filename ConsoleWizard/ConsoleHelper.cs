@@ -13,7 +13,8 @@ namespace ConsoleWizard
 
         public static void WriteError(string error)
         {
-            WriteLine(">> ", ConsoleColor.Red);
+            WriteLine(string.Empty);
+            Write(">> ", ConsoleColor.Red);
             Write(error);
         }
 

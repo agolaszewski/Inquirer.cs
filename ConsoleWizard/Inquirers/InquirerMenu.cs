@@ -95,7 +95,7 @@ namespace ConsoleWizard
                             move = false;
                             _inquirer.History.Push(callingFrame.GetMethod());
                             answer.Item2();
-                            break;
+                            return;
                         }
                 }
 
