@@ -19,7 +19,7 @@ namespace ConsoleWizard
 
         internal string Message { get; set; }
 
-        internal abstract TAnswer Prompt();
+        public abstract TAnswer Prompt();
 
         protected bool Confirm(string result)
         {

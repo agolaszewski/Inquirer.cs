@@ -6,7 +6,7 @@ namespace ConsoleWizard
 {
     public static class Question
     {
-        public static QuestionCheckbox<List<T>, T> Checkbox<T>(string message, List<T> choices) where T : IComparable
+        public static QuestionCheckbox<List<T>, T> Checkbox<T>(string message, List<T> choices) 
         {
             var inquire = new QuestionCheckbox<List<T>, T>(message);
             inquire.Choices = choices;
@@ -21,9 +21,9 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionInputKey<ConsoleKey> Confirm(string message)
+        public static QuestionInputKey<bool> Confirm(string message)
         {
-            var inquire = new QuestionInputKey<ConsoleKey>(message);
+            var inquire = new QuestionInputKey<bool>(message);
             inquire.Message += " [y/n]";
             inquire.ValidatationFn = v =>
             {
@@ -38,7 +38,7 @@ namespace ConsoleWizard
 
             inquire.ParseFn = v =>
             {
-                return v;
+                return v == System.ConsoleKey.Y;
             };
 
             return inquire;
@@ -185,7 +185,7 @@ namespace ConsoleWizard
             return inquire;
         }
 
-        public static QuestionRawList<T> RawList<T>(string message, List<T> choices) where T : IComparable
+        public static QuestionRawList<T> RawList<T>(string message, List<T> choices) 
         {
             var inquire = new QuestionRawList<T>(message);
             inquire.Choices = choices;

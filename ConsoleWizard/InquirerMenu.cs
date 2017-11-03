@@ -31,7 +31,8 @@ namespace ConsoleWizard
             Console.Clear();
             ConsoleHelper.WriteLine(_header + " :");
 
-            for (int i = 0; i < _options.Count; i++)
+            ConsoleHelper.WriteLine("  " + DisplayChoice(0), ConsoleColor.DarkYellow);
+            for (int i = 1; i < _options.Count; i++)
             {
                 ConsoleHelper.WriteLine("  " + DisplayChoice(i));
             }

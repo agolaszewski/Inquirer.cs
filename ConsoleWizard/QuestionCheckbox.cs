@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ConsoleWizard
 {
-    public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new() where TResult : IComparable
+    public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new()
     {
         private int _boundryBottom;
 
@@ -42,14 +42,28 @@ namespace ConsoleWizard
             return this;
         }
 
-        public QuestionCheckbox<TList, TResult> WithDefaultValue(TList defaultValue)
+        public QuestionCheckbox<TList, TResult> WithDefaultValue(TList defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
+            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
+            {
+                compareFn = (x, y) =>
+                {
+                    var x1 = x as IComparable;
+                    var y1 = y as IComparable;
+                    return x1.CompareTo(y1);
+                };
+            }
+            else if (compareFn == null)
+            {
+                throw new Exception("compareFn not defined");
+            }
+
             DefaultValue = defaultValue;
             foreach (var value in defaultValue)
             {
-                if (Choices.Where(x => x.CompareTo(value) == 0).Any())
+                if (Choices.Where(x => compareFn(x, value) == 0).Any())
                 {
-                    var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(value) == 0).Index;
+                    var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, value) == 0).Index;
                     Selected[index] = true;
                 }
                 else
@@ -62,12 +76,26 @@ namespace ConsoleWizard
             return this;
         }
 
-        public QuestionCheckbox<TList, TResult> WithDefaultValue<T>(TResult defaultValue) where T : IComparable
+        public QuestionCheckbox<TList, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
-            DefaultValue = new TList { defaultValue };
-            if (Choices.Where(x => x.CompareTo(defaultValue) == 0).Any())
+            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
             {
-                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => x.Value.CompareTo(defaultValue) == 0).Index;
+                compareFn = (x, y) =>
+                {
+                    var x1 = x as IComparable;
+                    var y1 = y as IComparable;
+                    return x1.CompareTo(y1);
+                };
+            }
+            else if (compareFn == null)
+            {
+                throw new Exception("compareFn not defined");
+            }
+
+            DefaultValue = new TList { defaultValue };
+            if (Choices.Where(x => compareFn(x, defaultValue) == 0).Any())
+            {
+                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
                 Selected[index] = true;
             }
             else
@@ -79,7 +107,7 @@ namespace ConsoleWizard
             return this;
         }
 
-        internal override TList Prompt()
+        public override TList Prompt()
         {
             bool tryAgain = true;
             TList answer = DefaultValue;

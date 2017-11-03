@@ -30,6 +30,8 @@ namespace ConsoleWizard
                     var method = _inquirer.History.Pop();
                     method.Invoke(null, null);
                 }
+
+                return new InquirerPrompt<TAnswers>(null);
             }
             else
             {

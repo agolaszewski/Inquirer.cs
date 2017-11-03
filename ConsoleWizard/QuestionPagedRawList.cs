@@ -2,7 +2,7 @@
 
 namespace ConsoleWizard
 {
-    internal class QuestionPagedRawList<T> : QuestionRawList<T> where T : IComparable
+    internal class QuestionPagedRawList<T> : QuestionRawList<T> 
     {
         private int _skipChoices = 0;
 
@@ -15,7 +15,7 @@ namespace ConsoleWizard
 
         public int PageSize { get; internal set; } = 0;
 
-        internal override T Prompt()
+        public override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;

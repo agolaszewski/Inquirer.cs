@@ -48,15 +48,43 @@ namespace ConsoleWizard
             do
             {
                 keyInfo = Console.ReadKey();
-                if (keyInfo.Key == ConsoleKey.Escape)
+                switch (keyInfo.Key)
                 {
-                    isCanceled = true;
-                    return result;
-                }
+                    case (ConsoleKey.Escape):
+                        {
+                            isCanceled = true;
+                            return result;
+                        }
 
-                if (keyInfo.Key != ConsoleKey.Enter)
-                {
-                    result += keyInfo.KeyChar;
+                    case (ConsoleKey.Backspace):
+                        {
+                            if (result.Length > 0)
+                            {
+                                result = result.Remove(result.Length - 1, 1);
+                                PositionWrite(" ", Console.CursorLeft, Console.CursorTop);
+                                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                            }
+                            else
+                            {
+                                Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                            }
+
+                            break;
+                        }
+
+                    default:
+                        {
+                            if (keyInfo.Key >= ConsoleKey.A && keyInfo.Key <= ConsoleKey.Z)
+                            {
+                                result += keyInfo.KeyChar;
+                            }
+                            else
+                            {
+                                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                            }
+
+                            break;
+                        }
                 }
             }
             while (keyInfo.Key != ConsoleKey.Enter);

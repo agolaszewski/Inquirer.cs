@@ -39,7 +39,7 @@ namespace ConsoleWizard
 
         public QuestionList<TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
-            if (typeof(TResult) is IComparable && compareFn == null)
+            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
             {
                 compareFn = (x, y) =>
                 {
@@ -70,7 +70,7 @@ namespace ConsoleWizard
             return this;
         }
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
@@ -82,7 +82,16 @@ namespace ConsoleWizard
                 Console.WriteLine();
                 Console.WriteLine();
 
-                for (int i = 0; i < Choices.Count; i++)
+                if (Choices.Count == 0)
+                {
+                    ConsoleHelper.WriteError("No options to select");
+                    Console.ReadKey();
+                    IsCanceled = true;
+                    return default(TResult);
+                }
+
+                ConsoleHelper.WriteLine("  " + DisplayChoice(0), ConsoleColor.DarkYellow);
+                for (int i = 1; i < Choices.Count; i++)
                 {
                     ConsoleHelper.WriteLine("  " + DisplayChoice(i));
                 }
@@ -95,7 +104,7 @@ namespace ConsoleWizard
                 ConsoleHelper.PositionWrite("→", 0, boundryTop);
 
                 bool move = true;
-                while (move)
+                do
                 {
                     int y = Console.CursorTop;
 
@@ -146,6 +155,7 @@ namespace ConsoleWizard
                     ConsoleHelper.PositionWrite("→", 0, y);
                     Console.SetCursorPosition(0, y);
                 }
+                while (move);
 
                 tryAgain = Confirm(ConvertToStringFn(answer));
             }
