@@ -70,6 +70,10 @@ namespace ConsoleWizard
                     answer = ParseFn(value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
+                else
+                {
+                    Console.ReadKey();
+                }
             }
 
             return answer;

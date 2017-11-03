@@ -37,7 +37,7 @@ namespace ConsoleApp1
 
         private static void InputTest()
         {
-            _test.For(x => x.Input).Prompt(Question.Input("How are you?").WithDefaultValue("fine").WithConfirmation()).Then(x =>
+            _test.For(x => x.Input).Prompt(Question.Input("How are you?").WithConfirmation()).Then(x =>
            {
                InputTestNumber();
            });

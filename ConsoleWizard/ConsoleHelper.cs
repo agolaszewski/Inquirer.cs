@@ -13,10 +13,8 @@ namespace ConsoleWizard
 
         public static void WriteError(string error)
         {
-            WriteLine();
-            Write(">> ", ConsoleColor.Red);
+            WriteLine(">> ", ConsoleColor.Red);
             Write(error);
-            WriteLine();
         }
 
         public static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
@@ -44,6 +42,7 @@ namespace ConsoleWizard
 
             string result = string.Empty;
             ConsoleKeyInfo keyInfo;
+            var moveLine = false;
 
             do
             {
@@ -60,9 +59,23 @@ namespace ConsoleWizard
                         {
                             if (result.Length > 0)
                             {
+                                if (moveLine)
+                                {
+                                    Console.SetCursorPosition(Console.BufferWidth - 1, Console.CursorTop - 1);
+                                    moveLine = false;
+                                }
+
                                 result = result.Remove(result.Length - 1, 1);
-                                PositionWrite(" ", Console.CursorLeft, Console.CursorTop);
-                                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+
+                                int oldL = Console.CursorLeft;
+                                int oldT = Console.CursorTop;
+                                PositionWrite(" ", oldL, oldT);
+                                Console.SetCursorPosition(oldL, oldT);
+
+                                if (Console.CursorLeft == 0)
+                                {
+                                    moveLine = true;
+                                }
                             }
                             else
                             {
@@ -72,11 +85,17 @@ namespace ConsoleWizard
                             break;
                         }
 
+                    case (ConsoleKey.Enter):
+                        {
+                            break;
+                        }
+
                     default:
                         {
                             if (keyInfo.Key >= ConsoleKey.A && keyInfo.Key <= ConsoleKey.Z)
                             {
                                 result += keyInfo.KeyChar;
+                                moveLine = false;
                             }
                             else
                             {
