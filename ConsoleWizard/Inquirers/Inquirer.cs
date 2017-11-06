@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq.Expressions;
 using System.Reflection;
 
 namespace ConsoleWizard
@@ -11,6 +9,11 @@ namespace ConsoleWizard
         public Inquirer()
         {
             Answers = new TAnswers();
+        }
+
+        public Inquirer(TAnswers answers)
+        {
+            Answers = answers;
         }
 
         public TAnswers Answers { get; private set; }
@@ -24,20 +27,7 @@ namespace ConsoleWizard
             return new InquirerMenu<TAnswers>(header, this);
         }
 
-        public InquirerFor<TAnswers, TResult> For<TResult>(Expression<Func<TAnswers, TResult>> answerProperty)
-        {
-            var propertyInfo = ((MemberExpression)answerProperty.Body).Member as PropertyInfo;
-            if (propertyInfo == null)
-            {
-                throw new ArgumentException("The lambda expression 'property' should point to a valid Property");
-            }
-
-            PropertyInfo = propertyInfo;
-
-            return new InquirerFor<TAnswers, TResult>(this);
-        }
-
-        public TResult Prompt<TResult>(QuestionBase<TResult> question)
+        public InquirerFor<TAnswers, TResult> Prompt<TResult>(QuestionBase<TResult> question)
         {
             StackTrace stackTrace = new StackTrace();
             StackFrame[] stackFrames = stackTrace.GetFrames();
@@ -53,7 +43,7 @@ namespace ConsoleWizard
                 }
                 else
                 {
-                    return Prompt(question);
+                    return new InquirerFor<TAnswers, TResult>(this, default(TResult));
                 }
             }
             else
@@ -61,7 +51,7 @@ namespace ConsoleWizard
                 History.Push(callingFrame.GetMethod());
             }
 
-            return answer;
+            return new InquirerFor<TAnswers, TResult>(this, answer);
         }
     }
 }

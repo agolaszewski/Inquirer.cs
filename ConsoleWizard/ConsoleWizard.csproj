@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Inquirers\InquirerConvert.cs" />
+    <Compile Include="Inquirers\InquirerFor.cs" />
     <Compile Include="Inquirers\InquirerMenu.cs" />
     <Compile Include="QuestionMultipleListBase.cs" />
     <Compile Include="QuestionDictionaryListBase.cs" />
@@ -57,7 +57,6 @@
     <Compile Include="QuestionPagedList.cs" />
     <Compile Include="ConsoleHelper.cs" />
     <Compile Include="Inquirers\Inquirer.cs" />
-    <Compile Include="Inquirers\InquirerFor.cs" />
     <Compile Include="Inquirers\InquirerPrompt.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="QuestionList.cs" />

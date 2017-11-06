@@ -1,45 +1,41 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace ConsoleWizard
 {
     public class InquirerFor<TAnswers, TResult> where TAnswers : class, new()
     {
+        private TResult _result;
         private Inquirer<TAnswers> _inquirer;
 
-        public InquirerFor(Inquirer<TAnswers> inquirer)
+        public InquirerFor(Inquirer<TAnswers> inquirer, TResult result)
         {
             _inquirer = inquirer;
+            _result = result;
         }
 
-        public InquirerConvert<TAnswers, TAnswer, TResult> Prompt<TAnswer>(QuestionBase<TAnswer> question)
+        public TResult For(Expression<Func<TAnswers, TResult>> answerProperty)
         {
-            return new InquirerConvert<TAnswers, TAnswer, TResult>(_inquirer, question);
+            var propertyInfo = ((MemberExpression)answerProperty.Body).Member as PropertyInfo;
+            if (propertyInfo == null)
+            {
+                throw new ArgumentException("The lambda expression 'property' should point to a valid Property");
+            }
+
+            propertyInfo.SetValue(_inquirer.Answers, _result);
+            return _result;
         }
 
-        public InquirerPrompt<TAnswers> Prompt(QuestionBase<TResult> question)
+        public InquirerFor<TAnswers, TConvert> Return<TConvert>(Func<TResult, TConvert> convertFn)
         {
-            StackTrace stackTrace = new StackTrace();
-            StackFrame[] stackFrames = stackTrace.GetFrames();
-            StackFrame callingFrame = stackFrames[1];
+            var result = convertFn(_result);
+            return new InquirerFor<TAnswers, TConvert>(_inquirer, result);
+        }
 
-            var answer = question.Prompt();
-            if (question.IsCanceled)
-            {
-                if (_inquirer.History.Count > 0)
-                {
-                    var method = _inquirer.History.Pop();
-                    method.Invoke(null, null);
-                }
-
-                return new InquirerPrompt<TAnswers>(null);
-            }
-            else
-            {
-                _inquirer.PropertyInfo.SetValue(_inquirer.Answers, answer);
-                _inquirer.History.Push(callingFrame.GetMethod());
-            }
-
-            return new InquirerPrompt<TAnswers>(_inquirer);
+        public TResult Return()
+        {
+            return _result;
         }
     }
 }
