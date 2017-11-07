@@ -2,20 +2,51 @@
 
 namespace ConsoleWizard
 {
-    public class QuestionInputKey<T> : QuestionBase<T>
+    public class QuestionInputKey<TResult> : QuestionSingleChoiceBase<TResult>
     {
         internal QuestionInputKey(string question) : base(question)
         {
         }
 
-        internal Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<ConsoleKey, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
-        internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
+        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal override T Prompt()
+        public QuestionInputKey<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
+
+        public QuestionInputKey<TResult> Parse(Func<ConsoleKey, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionInputKey<TResult> Validation(Func<ConsoleKey, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionInputKey<TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionInputKey<TResult> WithDefaultValue(TResult defaultValue)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
+
+        public override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
@@ -26,18 +57,18 @@ namespace ConsoleWizard
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
-                    return default(T);
+                    return default(TResult);
                 }
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {
                     answer = DefaultValue;
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (ValidatationFn(key))
                 {
                     answer = ParseFn(key);
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 

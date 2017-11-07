@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleWizard
 {
@@ -9,6 +11,8 @@ namespace ConsoleWizard
         internal QuestionMultipleListBase(string message) : base(message)
         {
         }
+
+        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal TList Choices
         {
@@ -25,5 +29,18 @@ namespace ConsoleWizard
         }
 
         internal bool[] Selected { get; private set; }
+
+        public void DisplayQuestion()
+        {
+            Console.Clear();
+            ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
+            var question = $"{Message} : ";
+            if (HasDefaultValue)
+            {
+                question += $"[{string.Join(",", DefaultValue.Select(x => ConvertToStringFn(x)))}] ";
+            }
+
+            ConsoleHelper.Write(question);
+        }
     }
 }

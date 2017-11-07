@@ -1,23 +1,79 @@
 ﻿using System;
+using System.Linq;
 
 namespace ConsoleWizard
 {
-    public class QuestionRawList<T> : QuestionListBase<T>
+    public class QuestionRawList<TResult> : QuestionListBase<TResult>
     {
         internal QuestionRawList(string question) : base(question)
         {
         }
 
-        internal Func<int, T, string> ChoicesDisplayFn { get; set; }
+        public Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
-        internal Func<int, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
+        public QuestionRawList<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
 
-        internal override T Prompt()
+        public QuestionRawList<TResult> Parse(Func<int, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionRawList<TResult> Validation(Func<int, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionRawList<TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionRawList<TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
+        {
+            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
+            {
+                compareFn = (x, y) =>
+                {
+                    var x1 = x as IComparable;
+                    var y1 = y as IComparable;
+                    return x1.CompareTo(y1);
+                };
+            }
+            else if (compareFn == null)
+            {
+                throw new Exception("compareFn not defined");
+            }
+
+            if (Choices.Where(x => compareFn(x, defaultValue) == 0).Any())
+            {
+                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
+                Choices.Insert(0, Choices[index]);
+                Choices.RemoveAt(index + 1);
+
+                DefaultValue = Choices[0];
+                HasDefaultValue = true;
+            }
+            else
+            {
+                throw new Exception("No default values in choices");
+            }
+
+            return this;
+        }
+
+        public override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
@@ -28,7 +84,7 @@ namespace ConsoleWizard
 
                 for (int i = 0; i < Choices.Count; i++)
                 {
-                    ConsoleHelper.WriteLine(ChoicesDisplayFn(i + 1, Choices[i]));
+                    ConsoleHelper.WriteLine(DisplayChoice(i + 1, Choices[i]));
                 }
 
                 Console.WriteLine();
@@ -39,22 +95,27 @@ namespace ConsoleWizard
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
-                    return default(T);
+                    return default(TResult);
                 }
 
                 if (value.HasValue == false && HasDefaultValue)
                 {
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (value.HasValue && ValidatationFn(value.Value))
                 {
                     answer = ParseFn(value.Value);
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 
             Console.WriteLine();
             return answer;
+        }
+
+        protected string DisplayChoice(int index, TResult choice)
+        {
+            return $"[{index}] {choice}";
         }
     }
 }

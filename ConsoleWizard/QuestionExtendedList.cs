@@ -3,22 +3,51 @@ using System.Collections.Generic;
 
 namespace ConsoleWizard
 {
-    public class QuestionExtendedList<TDictionary, T> : QuestionDictionaryListBase<TDictionary, T> where TDictionary : Dictionary<ConsoleKey, T>, new()
+    public class QuestionExtendedList<TDictionary, TResult> : QuestionDictionaryListBase<TDictionary, TResult> where TDictionary : Dictionary<ConsoleKey, TResult>, new()
     {
         internal QuestionExtendedList(string question) : base(question)
         {
         }
 
-        internal Func<ConsoleKey, T, string> ChoicesDisplayFn { get; set; }
+        public Func<ConsoleKey, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
-        internal Func<ConsoleKey, T> ParseFn { get; set; } = v => { return default(T); };
+        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
+        public QuestionExtendedList<TDictionary, TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
 
-        internal override T Prompt()
+        public QuestionExtendedList<TDictionary, TResult> Parse(Func<ConsoleKey, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionExtendedList<TDictionary, TResult> Validation(Func<ConsoleKey, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionExtendedList<TDictionary, TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionExtendedList<TDictionary, TResult> WithDefaultValue(TResult defaultValue)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
+
+        public override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
@@ -29,7 +58,7 @@ namespace ConsoleWizard
 
                 foreach (var item in Choices)
                 {
-                    ConsoleHelper.WriteLine(ChoicesDisplayFn(item.Key, item.Value));
+                    ConsoleHelper.WriteLine(DisplayChoice(item.Key));
                 }
 
                 Console.WriteLine();
@@ -40,22 +69,27 @@ namespace ConsoleWizard
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
-                    return default(T);
+                    return default(TResult);
                 }
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
                 else if (ValidatationFn(key))
                 {
                     answer = ParseFn(key);
-                    tryAgain = Confirm(answer);
+                    tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
 
             Console.WriteLine();
             return answer;
+        }
+
+        private string DisplayChoice(ConsoleKey key)
+        {
+            return $"[{key}] {Choices[key]}";
         }
     }
 }

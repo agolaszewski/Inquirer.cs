@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inquirers\InquirerFor.cs" />
+    <Compile Include="Inquirers\InquirerMenu.cs" />
     <Compile Include="QuestionMultipleListBase.cs" />
     <Compile Include="QuestionDictionaryListBase.cs" />
     <Compile Include="QuestionCheckbox.cs" />
@@ -54,16 +56,15 @@
     <Compile Include="QuestionListBase.cs" />
     <Compile Include="QuestionPagedList.cs" />
     <Compile Include="ConsoleHelper.cs" />
-    <Compile Include="Inquirer.cs" />
-    <Compile Include="InquirerFor.cs" />
-    <Compile Include="InquirerPrompt.cs" />
+    <Compile Include="Inquirers\Inquirer.cs" />
+    <Compile Include="Inquirers\InquirerPrompt.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="QuestionList.cs" />
     <Compile Include="QuestionPagedRawList.cs" />
     <Compile Include="QuestionPassword.cs" />
     <Compile Include="QuestionRawLists.cs" />
+    <Compile Include="QuestionSingleChoiceBase.cs" />
     <Compile Include="StringExtensions.cs" />
-    <Compile Include="QuestionExtensions.cs" />
     <Compile Include="QuestionKey.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,16 +2,23 @@
 
 namespace ConsoleWizard
 {
-    public class InquirerFor<TAnswers, TResult> where TAnswers : class, new()
+    public class InquirerPrompt<TAnswers, TResult> where TAnswers : class, new()
     {
         private Inquirer<TAnswers> _inquirer;
 
-        public InquirerFor(Inquirer<TAnswers> inquirer)
+        private TResult _result;
+
+        public InquirerPrompt(Inquirer<TAnswers> inquirer)
         {
             _inquirer = inquirer;
         }
 
-        public InquirerPrompt<TAnswers> Prompt(QuestionBase<TResult> question)
+        private InquirerPrompt(Inquirer<TAnswers> inquirer, TResult result) : this(inquirer)
+        {
+            _result = result;
+        }
+
+        public InquirerFor<TAnswers, TResult> Prompt(QuestionBase<TResult> question)
         {
             StackTrace stackTrace = new StackTrace();
             StackFrame[] stackFrames = stackTrace.GetFrames();
@@ -25,14 +32,15 @@ namespace ConsoleWizard
                     var method = _inquirer.History.Pop();
                     method.Invoke(null, null);
                 }
+
+                return new InquirerFor<TAnswers, TResult>(_inquirer, default(TResult));
             }
             else
             {
-                _inquirer.PropertyInfo.SetValue(_inquirer.Answers, answer);
                 _inquirer.History.Push(callingFrame.GetMethod());
             }
 
-            return new InquirerPrompt<TAnswers>(_inquirer);
+            return new InquirerFor<TAnswers, TResult>(_inquirer, answer);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleWizard
 {
@@ -13,13 +14,100 @@ namespace ConsoleWizard
         {
         }
 
-        internal Func<int, TResult, string> ChoicesDisplayFn { get; set; }
+        public Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
 
-        internal Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
+        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
 
-        internal Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
+        public QuestionCheckbox<TList, TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
 
-        internal override TList Prompt()
+        public QuestionCheckbox<TList, TResult> Parse(Func<int, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> Validation(Func<int, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> WithDefaultValue(TList defaultValue, Func<TResult, TResult, int> compareFn = null)
+        {
+            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
+            {
+                compareFn = (x, y) =>
+                {
+                    var x1 = x as IComparable;
+                    var y1 = y as IComparable;
+                    return x1.CompareTo(y1);
+                };
+            }
+            else if (compareFn == null)
+            {
+                throw new Exception("compareFn not defined");
+            }
+
+            DefaultValue = defaultValue;
+            foreach (var value in defaultValue)
+            {
+                if (Choices.Where(x => compareFn(x, value) == 0).Any())
+                {
+                    var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, value) == 0).Index;
+                    Selected[index] = true;
+                }
+                else
+                {
+                    throw new Exception("No default values in choices");
+                }
+            }
+
+            HasDefaultValue = true;
+            return this;
+        }
+
+        public QuestionCheckbox<TList, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
+        {
+            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
+            {
+                compareFn = (x, y) =>
+                {
+                    var x1 = x as IComparable;
+                    var y1 = y as IComparable;
+                    return x1.CompareTo(y1);
+                };
+            }
+            else if (compareFn == null)
+            {
+                throw new Exception("compareFn not defined");
+            }
+
+            DefaultValue = new TList { defaultValue };
+            if (Choices.Where(x => compareFn(x, defaultValue) == 0).Any())
+            {
+                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
+                Selected[index] = true;
+            }
+            else
+            {
+                throw new Exception("No default values in choices");
+            }
+
+            HasDefaultValue = true;
+            return this;
+        }
+
+        public override TList Prompt()
         {
             bool tryAgain = true;
             TList answer = DefaultValue;
@@ -38,7 +126,7 @@ namespace ConsoleWizard
                 _boundryBottom = _boundryTop + Choices.Count - 1;
 
                 ConsoleHelper.PositionWrite("→", 0, _boundryTop);
-                ConsoleHelper.PositionWrite(ChoicesDisplayFn(0, Choices[0]), 4, _boundryTop, ConsoleColor.DarkYellow);
+                ConsoleHelper.PositionWrite(DisplayChoice(0), 4, _boundryTop, ConsoleColor.DarkYellow);
 
                 bool move = true;
                 while (move)
@@ -54,7 +142,7 @@ namespace ConsoleWizard
                     }
 
                     DisplayCheckbox(y - _boundryTop, 2, y);
-                    ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - _boundryTop), 4, y);
 
                     switch (key)
                     {
@@ -106,11 +194,12 @@ namespace ConsoleWizard
 
                     ConsoleHelper.PositionWrite(" ", 0, y - 1);
                     ConsoleHelper.PositionWrite("→", 0, y);
-                    ConsoleHelper.PositionWrite(ChoicesDisplayFn(y - _boundryTop, Choices[y - _boundryTop]), 4, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - _boundryTop), 4, y, ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                 }
 
-                tryAgain = Confirm(answer);
+                var answerNames = answer.Select(x => ConvertToStringFn(x)).ToList();
+                tryAgain = Confirm(string.Join(",", answerNames));
             }
 
             Console.WriteLine();
@@ -129,12 +218,17 @@ namespace ConsoleWizard
             }
         }
 
+        private string DisplayChoice(int index)
+        {
+            return $"{Choices[index]}";
+        }
+
         private void DisplayChoices()
         {
             for (int i = 0; i < Choices.Count; i++)
             {
                 DisplayCheckbox(i, 2, i + _boundryTop);
-                ConsoleHelper.PositionWriteLine(ChoicesDisplayFn(i + 1, Choices[i]), 4, i + _boundryTop);
+                ConsoleHelper.PositionWriteLine(DisplayChoice(i), 4, i + _boundryTop);
             }
         }
     }
