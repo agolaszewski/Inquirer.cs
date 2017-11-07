@@ -57,21 +57,21 @@ namespace ConsoleApp1
         private static void ListTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.Prompt(Question.List("Choose color?", list).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
+            _test.Prompt(Question.List("Choose favourite color", list).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
             ListRawTest();
         }
 
         private static void ListRawTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.Prompt(Question.RawList("Choose color?", list).WithDefaultValue(ConsoleColor.DarkRed).WithConfirmation());
+            _test.Prompt(Question.RawList("Choose favourite color", list).WithDefaultValue(ConsoleColor.DarkRed).WithConfirmation());
             ListCheckboxTest();
         }
 
         private static void ListCheckboxTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.Prompt(Question.Checkbox("Chose favourite colors", list).WithDefaultValue(ConsoleColor.DarkGray).WithConfirmation());
+            _test.Prompt(Question.Checkbox("Choose favourite colors", list).WithDefaultValue(ConsoleColor.DarkGray).WithConfirmation());
             ListExtendedTest();
         }
 
@@ -82,7 +82,7 @@ namespace ConsoleApp1
             list.Add(ConsoleKey.C, ConsoleColor.Cyan);
             list.Add(ConsoleKey.D, ConsoleColor.DarkBlue);
 
-            _test.Prompt(Question.ExtendedList("sdada", list).WithDefaultValue(ConsoleColor.DarkBlue).WithConfirmation());
+            _test.Prompt(Question.ExtendedList("Choose favourite color", list).WithDefaultValue(ConsoleColor.DarkBlue).WithConfirmation());
         }
     }
 }
