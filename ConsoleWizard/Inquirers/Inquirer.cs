@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -43,7 +44,7 @@ namespace ConsoleWizard
                 }
                 else
                 {
-                    return new InquirerFor<TAnswers, TResult>(this, default(TResult));
+                    Environment.Exit(0);
                 }
             }
             else

@@ -21,7 +21,7 @@ namespace ConsoleWizard
 
         public abstract TAnswer Prompt();
 
-        protected bool Confirm(string result)
+        protected virtual bool Confirm(string result)
         {
             if (HasConfirmation)
             {

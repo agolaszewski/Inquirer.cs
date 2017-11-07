@@ -12,19 +12,8 @@ namespace ConsoleApp1
 
         private static void Main(string[] args)
         {
-            //Console.ReadLine();
             _test = new Inquirer<Answers>(_answers);
-            InputTest();
-            //InputTest();
-            //InputTestNumber();
-            //ConfirmTest();
-            //PasswordTest();
-            //ListTest();
-            //ListRawTest();
-            //ListCheckboxTest();
-            //ListExtendedTest();
-            //MenuTest();
-            Console.WriteLine(_test.Answers.Input);
+            MenuTest();
             Console.ReadKey();
         }
 
@@ -33,18 +22,23 @@ namespace ConsoleApp1
             _test.Menu("Choose")
                .AddOption("InputTest", () => { InputTest(); })
                .AddOption("InputTestNumber", () => { InputTestNumber(); })
+               .AddOption("PasswordTest", () => { PasswordTest(); })
+               .AddOption("ListTest", () => { ListTest(); })
+               .AddOption("ListRawTest", () => { ListRawTest(); })
+               .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
+               .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
                .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
         }
 
         private static void InputTest()
         {
-            _test.Prompt(Question.Input("How are you?").WithConfirmation()).For(x => x.Input);
+            _test.Prompt(Question.Input("How are you?").WithConfirmation().WithDefaultValue("fine")).For(x => x.Input);
             InputTestNumber();
         }
 
         private static void InputTestNumber()
         {
-            _test.Prompt(Question.Input<int>("2+2"));
+            _test.Prompt(Question.Input<int>("2+2").WithConfirmation().WithDefaultValue(4));
             ConfirmTest();
         }
 
@@ -56,7 +50,7 @@ namespace ConsoleApp1
 
         private static void PasswordTest()
         {
-            _test.Prompt(Question.Password("How are you?").WithDefaultValue("123456").WithConfirmation());
+            _test.Prompt(Question.Password("Type password").WithDefaultValue("123456").WithConfirmation());
             ListTest();
         }
 

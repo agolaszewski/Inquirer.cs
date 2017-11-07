@@ -10,7 +10,7 @@ namespace ConsoleWizard
 
         public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
-        public void DisplayQuestion()
+        protected virtual void DisplayQuestion()
         {
             Console.Clear();
             ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);

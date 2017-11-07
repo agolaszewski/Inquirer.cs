@@ -93,7 +93,7 @@ namespace ConsoleWizard
 
                     default:
                         {
-                            if (keyInfo.Key >= ConsoleKey.A && keyInfo.Key <= ConsoleKey.Z)
+                            if (char.IsLetterOrDigit(keyInfo.KeyChar))
                             {
                                 result += keyInfo.KeyChar;
                                 moveLine = false;
