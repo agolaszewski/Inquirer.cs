@@ -1,3 +1,0 @@
-SA1200 - Using directives must be placed within namespace
-SA1027 – Tabs must not be used
-SA1126: PrefixCallsCorrectly
