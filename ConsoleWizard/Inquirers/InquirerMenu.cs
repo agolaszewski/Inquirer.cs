@@ -60,7 +60,7 @@ namespace ConsoleWizard
                         method.Invoke(null, null);
                     }
 
-                    return;
+                    Environment.Exit(0);
                 }
 
                 Console.SetCursorPosition(0, y);
