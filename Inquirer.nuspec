@@ -17,6 +17,6 @@
   </metadata>
 
   <files>
-    <file src="bin\Release\ConsoleWizard.dll" target="lib"></file>
+    <file src="Source\Inquirer\bin\Release\InquirerCS.dll" target="lib"></file>
   </files>
 </package>

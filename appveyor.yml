@@ -1,4 +1,4 @@
-version: 0.2.{build}
+version: {build}
 
 environment:
   gitHub_authentication_token:
@@ -12,7 +12,7 @@ build:
   verbosity: minimal
 
 cache:
-  - packages -> \ConsoleWizard\packages.config 
+  - packages -> \Source\packages
   
 platform: Any CPU
 configuration: Release
@@ -20,16 +20,16 @@ configuration: Release
 artifacts:
   - path: \*.nupkg
     name: NuGet
-  - path: \ConsoleWizard\bin\$(configuration)\ConsoleWizard.dll
+  - path: \Source\Inquirer\bin\$(configuration)\InquirerCS.dll
     name: Zip
     type: zip
 
 
 before_build:
-  - nuget restore ConsoleWizard
+  - nuget restore Inquirer
 
 after_build:
-  - nuget pack ConsoleWizard\ConsoleWizard.nuspec
+  - nuget pack Inquirer.nuspec
   
 nuget:
     disable_publish_on_pr: true
