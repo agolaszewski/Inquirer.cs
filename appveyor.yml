@@ -14,7 +14,7 @@ platform: Any CPU
 configuration: Release
 
 artifacts:
-  - path: *.nupkg
+  - path: \*.nupkg
     name: NuGet
   - path: bin\$(configuration)\*.zip
     name: Zip
