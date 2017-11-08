@@ -12,7 +12,7 @@ build:
   verbosity: minimal
 
 cache:
-  - packages -> **\packages.config 
+  - packages -> \ConsoleWizard\packages.config 
   
 platform: Any CPU
 configuration: Release
@@ -20,7 +20,7 @@ configuration: Release
 artifacts:
   - path: \*.nupkg
     name: NuGet
-  - path: \ConsoleWizard\bin\$(configuration)\*.dll
+  - path: \ConsoleWizard\bin\$(configuration)\ConsoleWizard.dll
     name: Zip
     type: zip
 
@@ -53,6 +53,5 @@ notifications:
   to:
   - agolaszewski@agme.info
   subject: Inquirer.cs
-  on_build_success: true
   on_build_failure: true
   on_build_status_changed: false
