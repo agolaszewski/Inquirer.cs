@@ -20,7 +20,7 @@ configuration: Release
 artifacts:
   - path: \*.nupkg
     name: NuGet
-  - path: \bin\$(configuration)\*.*
+  - path: \ConsoleWizard\bin\$(configuration)\*.dll
     name: Zip
     type: zip
 
