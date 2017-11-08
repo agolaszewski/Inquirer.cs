@@ -72,7 +72,6 @@
     <Compile Include="QuestionInput.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ConsoleWizard.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
