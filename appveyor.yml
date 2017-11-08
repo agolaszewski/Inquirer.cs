@@ -24,7 +24,7 @@ before_build:
   - nuget restore ConsoleWizard
 
 after_build:
-  - nuget pack ConsoleWizard.nuspec
+  - nuget pack ConsoleWizard\ConsoleWizard.nuspec
   
 nuget:
     disable_publish_on_pr: true
