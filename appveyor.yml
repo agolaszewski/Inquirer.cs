@@ -3,13 +3,32 @@ version: 0.2.{build}
 branches:
   only:
   - master
+  
+skip_non_tags: true
 
 build:
   verbosity: minimal
+
+cache:
+  - packages -> **\packages.config 
   
 platform: Any CPU
 configuration: Release
 
+artifacts:
+  - path: bin\$(configuration)\*.nupkg
+    name: NuGet
+  - path: bin\$(configuration)\*.zip
+    name: Zip
+
+
+before_build:
+  - nuget restore ConsoleWizard
+  
+nuget:
+    disable_publish_on_pr: true
+  
+  
 notifications:
 - provider: Email
   to:
@@ -18,21 +37,3 @@ notifications:
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: false
-
-artifacts:
-  - path: bin\$(configuration)\*.nupkg
-    name: NuGet
-  - path: bin\$(configuration)\*.zip
-    name: Zip
-
-init:
-    - ps: |
-            If ($Env:APPVEYOR_REPO_TAG_NAME -match "-"){
-              Set-AppveyorBuildVariable -Name "IsPreRelease" -Value True
-            }
-            Else{
-              Set-AppveyorBuildVariable -Name "IsPreRelease" -Value False
-            }
-
-before_build:
-  - nuget restore ConsoleWizard
