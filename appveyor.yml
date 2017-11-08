@@ -1,10 +1,12 @@
 version: 0.2.{build}
 
+environment:
+  gitHub_authentication_token:
+    secure: 8mNSYFdWNeQaYc9e+Ksm7uyuiEyA3LawxtNuAlHuS0pz8YwYO5SzqFzJByvPyXb/
+
 branches:
   only:
   - master
-  
-skip_non_tags: true
 
 build:
   verbosity: minimal
@@ -16,17 +18,35 @@ platform: Any CPU
 configuration: Release
 
 artifacts:
-  - path: bin\$(configuration)\*.nupkg
+  - path: \*.nupkg
     name: NuGet
-  - path: bin\$(configuration)\*.zip
+  - path: \ConsoleWizard\bin\$(configuration)\*.dll
     name: Zip
+    type: zip
 
 
 before_build:
   - nuget restore ConsoleWizard
+
+after_build:
+  - nuget pack ConsoleWizard\ConsoleWizard.nuspec
   
 nuget:
     disable_publish_on_pr: true
+    
+deploy:
+    - provider: GitHub
+      release: 'Release $(APPVEYOR_REPO_TAG_NAME) build $(APPVEYOR_BUILD_VERSION)'
+      tag: $(APPVEYOR_REPO_TAG_NAME)
+      description: ''
+      prerelease: true
+      artifact: Zip
+      auth_token:
+          secure: $(gitHub_authentication_token)
+      on:
+          branch: master
+          appveyor_repo_tag_name: /v\d+\.\d+\.\d+/ 
+          appveyor_repo_tag: true
   
   
 notifications:
