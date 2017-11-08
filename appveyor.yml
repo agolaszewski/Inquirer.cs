@@ -20,7 +20,7 @@ configuration: Release
 artifacts:
   - path: \*.nupkg
     name: NuGet
-  - path: bin\$(configuration)
+  - path: \bin\$(configuration)\*.*
     name: Zip
     type: zip
 
