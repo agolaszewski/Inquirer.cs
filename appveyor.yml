@@ -3,8 +3,6 @@ version: 0.2.{build}
 branches:
   only:
   - master
-  
-skip_non_tags: true
 
 build:
   verbosity: minimal
@@ -24,6 +22,9 @@ artifacts:
 
 before_build:
   - nuget restore ConsoleWizard
+
+after_build:
+  - nuget pack ConsoleWizard.nuspec
   
 nuget:
     disable_publish_on_pr: true
