@@ -1,0 +1,22 @@
+version: 0.2.{build}
+branches:
+  only:
+  - master
+
+build:
+  verbosity: minimal
+  
+platform: Any CPU
+configuration: Release
+
+notifications:
+- provider: Email
+  to:
+  - agolaszewski@agme.info
+  subject: Inquirer.cs
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
+  
+before_build:
+  - nuget restore
