@@ -1,4 +1,5 @@
 version: 0.2.{build}
+
 branches:
   only:
   - master
@@ -17,6 +18,21 @@ notifications:
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: false
-  
+
+artifacts:
+  - path: bin\$(configuration)\*.nupkg
+    name: NuGet
+  - path: bin\$(configuration)\*.zip
+    name: Zip
+
+init:
+    - ps: |
+            If ($Env:APPVEYOR_REPO_TAG_NAME -match "-"){
+              Set-AppveyorBuildVariable -Name "IsPreRelease" -Value True
+            }
+            Else{
+              Set-AppveyorBuildVariable -Name "IsPreRelease" -Value False
+            }
+
 before_build:
   - nuget restore ConsoleWizard
