@@ -42,7 +42,7 @@ deploy:
       prerelease: true
       artifact: Zip
       auth_token:
-          secure: $(gitHub_authentication_token)
+          secure: JnUtQ9HEoqyYkHVkj5he8tbRauph96orT9i0eiyAB4R9a9g2hW4Mvm1SYDxsUvUg
       on:
           appveyor_repo_tag_name: /\d+\.\d+\.\d+/ 
           appveyor_repo_tag: true
