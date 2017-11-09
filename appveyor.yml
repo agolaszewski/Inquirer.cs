@@ -44,7 +44,7 @@ deploy:
       auth_token:
           secure: $(gitHub_authentication_token)
       on:
-          appveyor_repo_tag_name: /v\d+\.\d+\.\d+/ 
+          appveyor_repo_tag_name: \d+\.\d+\.\d+ 
           appveyor_repo_tag: true
   
   
