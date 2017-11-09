@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace InquirerCS
 {
-    public class QuestionPagedList<T> : QuestionList<T> 
+    public class QuestionPagedList<TResult> : QuestionList<TResult> 
     {
-        private List<T> _pageChoices = new List<T>();
+        private List<TResult> _pageChoices = new List<TResult>();
 
         private int _skipChoices = 0;
 
-        internal QuestionPagedList(QuestionList<T> question) : base(question.Message)
+        internal QuestionPagedList(QuestionList<TResult> question) : base(question.Message)
         {
             ValidatationFn = question.ValidatationFn;
             ParseFn = question.ParseFn;
@@ -19,12 +19,12 @@ namespace InquirerCS
 
         internal int PageSize { get; set; } = 0;
 
-        public override T Prompt()
+        internal override TResult Prompt()
         {
             Console.Clear();
 
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
             _pageChoices = Choices.Skip(_skipChoices).Take(PageSize).ToList();
 
             while (tryAgain)
@@ -52,7 +52,7 @@ namespace InquirerCS
                     if (isCanceled)
                     {
                         IsCanceled = isCanceled;
-                        return default(T);
+                        return default(TResult);
                     }
 
                     Console.SetCursorPosition(0, y);

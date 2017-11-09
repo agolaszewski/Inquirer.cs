@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace InquirerCS
 {
-    public abstract class QuestionDictionaryListBase<TDictionary, T> : QuestionSingleChoiceBase<T> where TDictionary : Dictionary<ConsoleKey, T>
+    public abstract class QuestionDictionaryListBase<TDictionary, TResult> : QuestionSingleChoiceBase<TResult> where TDictionary : Dictionary<ConsoleKey, TResult>
     {
         protected QuestionDictionaryListBase(string message) : base(message)
         {
@@ -11,7 +11,7 @@ namespace InquirerCS
 
         internal TDictionary Choices { get; set; }
 
-        public QuestionDictionaryListBase<TDictionary, T> ToString(Func<T, string> toStringFn)
+        public QuestionDictionaryListBase<TDictionary, TResult> ConvertToString(Func<TResult, string> toStringFn)
         {
             ConvertToStringFn = toStringFn;
             return this;

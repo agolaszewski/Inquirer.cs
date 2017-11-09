@@ -8,9 +8,9 @@ namespace InquirerCS
         {
         }
 
-        public Func<ConsoleKey, TResult> ParseFn { get; set; } = v => { return default(TResult); };
+        internal Func<ConsoleKey, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
-        public Func<ConsoleKey, bool> ValidatationFn { get; set; } = v => { return true; };
+        internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = answer => { return true; };
 
         public QuestionInputKey<TResult> ConvertToString(Func<TResult, string> fn)
         {
@@ -43,7 +43,7 @@ namespace InquirerCS
             return this;
         }
 
-        public override TResult Prompt()
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;

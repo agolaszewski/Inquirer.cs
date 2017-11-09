@@ -24,6 +24,11 @@ namespace InquirerCS
 
         public void Prompt()
         {
+            if (_options.Count == 0)
+            {
+                throw new Exception("No options defined");
+            }
+
             StackTrace stackTrace = new StackTrace();
             StackFrame[] stackFrames = stackTrace.GetFrames();
             StackFrame callingFrame = stackFrames[1];
@@ -106,7 +111,7 @@ namespace InquirerCS
             }
         }
 
-        protected string DisplayChoice(int index)
+        private string DisplayChoice(int index)
         {
             return $"{_options[index].Item1}";
         }

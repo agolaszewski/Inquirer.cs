@@ -2,14 +2,14 @@
 
 namespace InquirerCS
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
-        public static T To<T>(this string source)
+        internal static T To<T>(this string source)
         {
             return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromInvariantString(source);
         }
 
-        public static T? ToN<T>(this string source) where T : struct
+        internal static T? ToN<T>(this string source) where T : struct
         {
             if (!string.IsNullOrWhiteSpace(source))
             {

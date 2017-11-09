@@ -6,17 +6,13 @@ namespace InquirerCS
 {
     public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new()
     {
-        private int _boundryBottom;
-
-        private int _boundryTop;
-
         internal QuestionCheckbox(string question) : base(question)
         {
         }
 
-        public Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
+        public Func<int, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
+        public Func<int, bool> ValidatationFn { get; set; } = answer => { return true; };
 
         public QuestionCheckbox<TList, TResult> ConvertToString(Func<TResult, string> fn)
         {
@@ -46,11 +42,11 @@ namespace InquirerCS
         {
             if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
             {
-                compareFn = (x, y) =>
+                compareFn = (l, r) =>
                 {
-                    var x1 = x as IComparable;
-                    var y1 = y as IComparable;
-                    return x1.CompareTo(y1);
+                    var l1 = l as IComparable;
+                    var r1 = r as IComparable;
+                    return l1.CompareTo(r1);
                 };
             }
             else if (compareFn == null)
@@ -61,9 +57,9 @@ namespace InquirerCS
             DefaultValue = defaultValue;
             foreach (var value in defaultValue)
             {
-                if (Choices.Where(x => compareFn(x, value) == 0).Any())
+                if (Choices.Where(item => compareFn(item, value) == 0).Any())
                 {
-                    var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, value) == 0).Index;
+                    var index = Choices.Select((answer, i) => new { Value = answer, Index = i }).First(x => compareFn(x.Value, value) == 0).Index;
                     Selected[index] = true;
                 }
                 else
@@ -80,11 +76,11 @@ namespace InquirerCS
         {
             if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
             {
-                compareFn = (x, y) =>
+                compareFn = (l, r) =>
                 {
-                    var x1 = x as IComparable;
-                    var y1 = y as IComparable;
-                    return x1.CompareTo(y1);
+                    var l1 = l as IComparable;
+                    var r1 = r as IComparable;
+                    return l1.CompareTo(r1);
                 };
             }
             else if (compareFn == null)
@@ -93,9 +89,9 @@ namespace InquirerCS
             }
 
             DefaultValue = new TList { defaultValue };
-            if (Choices.Where(x => compareFn(x, defaultValue) == 0).Any())
+            if (Choices.Where(item => compareFn(item, defaultValue) == 0).Any())
             {
-                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
+                var index = Choices.Select((answer, i) => new { Value = answer, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
                 Selected[index] = true;
             }
             else
@@ -107,8 +103,11 @@ namespace InquirerCS
             return this;
         }
 
-        public override TList Prompt()
+        internal override TList Prompt()
         {
+            int _boundryBottom;
+            int _boundryTop;
+
             bool tryAgain = true;
             TList answer = DefaultValue;
 
@@ -121,7 +120,12 @@ namespace InquirerCS
                 Console.CursorVisible = false;
 
                 _boundryTop = Console.CursorTop;
-                DisplayChoices();
+
+                for (int i = 0; i < Choices.Count; i++)
+                {
+                    DisplayCheckbox(i, 2, i + _boundryTop);
+                    ConsoleHelper.PositionWriteLine(DisplayChoice(i), 4, i + _boundryTop);
+                }
 
                 _boundryBottom = _boundryTop + Choices.Count - 1;
 
@@ -220,16 +224,7 @@ namespace InquirerCS
 
         private string DisplayChoice(int index)
         {
-            return $"{Choices[index]}";
-        }
-
-        private void DisplayChoices()
-        {
-            for (int i = 0; i < Choices.Count; i++)
-            {
-                DisplayCheckbox(i, 2, i + _boundryTop);
-                ConsoleHelper.PositionWriteLine(DisplayChoice(i), 4, i + _boundryTop);
-            }
+            return $"{ConvertToStringFn(Choices[index])}";
         }
     }
 }

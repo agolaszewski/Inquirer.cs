@@ -9,9 +9,9 @@ namespace InquirerCS
         {
         }
 
-        public Func<int, TResult> ParseFn { get; set; } = v => { return default(TResult); };
+        internal Func<int, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
-        public Func<int, bool> ValidatationFn { get; set; } = v => { return true; };
+        internal Func<int, bool> ValidatationFn { get; set; } = answer => { return true; };
 
         public QuestionList<TResult> ConvertToString(Func<TResult, string> fn)
         {
@@ -55,7 +55,7 @@ namespace InquirerCS
 
             if (Choices.Where(x => compareFn(x, defaultValue) == 0).Any())
             {
-                var index = Choices.Select((v, i) => new { Value = v, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
+                var index = Choices.Select((answer, i) => new { Value = answer, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
                 Choices.Insert(0, Choices[index]);
                 Choices.RemoveAt(index + 1);
 
@@ -70,7 +70,7 @@ namespace InquirerCS
             return this;
         }
 
-        public override TResult Prompt()
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
