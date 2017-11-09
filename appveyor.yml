@@ -2,7 +2,7 @@ version: '{build}'
 
 environment:
   gitHub_authentication_token:
-    secure: 8mNSYFdWNeQaYc9e+Ksm7uyuiEyA3LawxtNuAlHuS0pz8YwYO5SzqFzJByvPyXb/
+    secure: JnUtQ9HEoqyYkHVkj5he8tbRauph96orT9i0eiyAB4R9a9g2hW4Mvm1SYDxsUvUg
 
 branches:
   only:
