@@ -25,7 +25,7 @@ before_build:
   - nuget restore Source\Inquirer.sln
 
 after_build:
-  - nuget pack Inquirer.nuspec -Version $(APPVEYOR_BUILD_VERSION)
+  - nuget pack Inquirer.nuspec -Version 2.0.2-alpha
   
 nuget:
     disable_publish_on_pr: true
