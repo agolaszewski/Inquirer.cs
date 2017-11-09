@@ -1,49 +1,50 @@
 ﻿using System;
+using System.Text;
 
 namespace InquirerCS
 {
-    public static class ConsoleHelper
+    internal static class ConsoleHelper
     {
-        public static void Write(string text, ConsoleColor color = ConsoleColor.White)
+        internal static void Write(string text, ConsoleColor color = ConsoleColor.White)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
         }
 
-        public static void WriteError(string error)
+        internal static void WriteError(string error)
         {
             WriteLine(string.Empty);
             Write(">> ", ConsoleColor.Red);
             Write(error);
         }
 
-        public static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
+        internal static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);
             Console.ResetColor();
         }
 
-        public static void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
+        internal static void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
         {
             Console.SetCursorPosition(x, y);
             Write(text, color);
         }
 
-        public static void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
+        internal static void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
         {
             Console.SetCursorPosition(x, y);
             WriteLine(text, color);
         }
 
-        public static string Read(out bool isCanceled)
+        internal static string Read(out bool isCanceled)
         {
             isCanceled = false;
 
-            string result = string.Empty;
+            StringBuilder stringBuilder = new StringBuilder();
             ConsoleKeyInfo keyInfo;
-            var moveLine = false;
+            bool returnToPreviousLine = false;
 
             do
             {
@@ -53,20 +54,20 @@ namespace InquirerCS
                     case (ConsoleKey.Escape):
                         {
                             isCanceled = true;
-                            return result;
+                            return string.Empty;
                         }
 
                     case (ConsoleKey.Backspace):
                         {
-                            if (result.Length > 0)
+                            if (stringBuilder.Length > 0)
                             {
-                                if (moveLine)
+                                if (returnToPreviousLine)
                                 {
                                     Console.SetCursorPosition(Console.BufferWidth - 1, Console.CursorTop - 1);
-                                    moveLine = false;
+                                    returnToPreviousLine = false;
                                 }
 
-                                result = result.Remove(result.Length - 1, 1);
+                                stringBuilder = stringBuilder.Remove(stringBuilder.Length - 1, 1);
 
                                 int oldL = Console.CursorLeft;
                                 int oldT = Console.CursorTop;
@@ -75,7 +76,7 @@ namespace InquirerCS
 
                                 if (Console.CursorLeft == 0)
                                 {
-                                    moveLine = true;
+                                    returnToPreviousLine = true;
                                 }
                             }
                             else
@@ -95,8 +96,8 @@ namespace InquirerCS
                         {
                             if (!char.IsControl(keyInfo.KeyChar))
                             {
-                                result += keyInfo.KeyChar;
-                                moveLine = false;
+                                stringBuilder.Append(keyInfo.KeyChar);
+                                returnToPreviousLine = false;
                             }
                             else
                             {
@@ -109,10 +110,10 @@ namespace InquirerCS
             }
             while (keyInfo.Key != ConsoleKey.Enter);
 
-            return result;
+            return stringBuilder.ToString();
         }
 
-        public static ConsoleKey ReadKey(out bool isCanceled)
+        internal static ConsoleKey ReadKey(out bool isCanceled)
         {
             isCanceled = false;
 

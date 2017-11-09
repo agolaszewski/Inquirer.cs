@@ -6,17 +6,17 @@ namespace InquirerCS
 {
     public static class Question
     {
-        public static QuestionCheckbox<List<T>, T> Checkbox<T>(string message, List<T> choices) 
+        public static QuestionCheckbox<List<TResult>, TResult> Checkbox<TResult>(string message, List<TResult> choices) 
         {
-            var inquire = new QuestionCheckbox<List<T>, T>(message);
+            var inquire = new QuestionCheckbox<List<TResult>, TResult>(message);
             inquire.Choices = choices;
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return inquire.Choices[v - 1];
+                return inquire.Choices[answer - 1];
             };
 
-            inquire.ConvertToStringFn = v => { return string.Join(",", v); };
+            inquire.ConvertToStringFn = answer => { return string.Join(",", answer); };
 
             return inquire;
         }
@@ -25,9 +25,9 @@ namespace InquirerCS
         {
             var inquire = new QuestionInputKey<bool>(message);
             inquire.Message += " [y/n]";
-            inquire.ValidatationFn = v =>
+            inquire.ValidatationFn = answer =>
             {
-                if (v == System.ConsoleKey.Y || v == System.ConsoleKey.N)
+                if (answer == System.ConsoleKey.Y || answer == System.ConsoleKey.N)
                 {
                     return true;
                 }
@@ -36,9 +36,9 @@ namespace InquirerCS
                 return false;
             };
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return v == System.ConsoleKey.Y;
+                return answer == System.ConsoleKey.Y;
             };
 
             return inquire;
@@ -47,9 +47,9 @@ namespace InquirerCS
         public static QuestionInputKey<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
-            inquire.ValidatationFn = v =>
+            inquire.ValidatationFn = answer =>
             {
-                if (@params.Any(p => p == v))
+                if (@params.Any(p => p == answer))
                 {
                     return true;
                 }
@@ -64,22 +64,22 @@ namespace InquirerCS
                 return false;
             };
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return v;
+                return answer;
             };
 
             return inquire;
         }
 
-        public static QuestionExtendedList<Dictionary<ConsoleKey, T>, T> ExtendedList<T>(string message, Dictionary<ConsoleKey, T> choices)
+        public static QuestionExtendedList<Dictionary<ConsoleKey, TResult>, TResult> ExtendedList<TResult>(string message, Dictionary<ConsoleKey, TResult> choices)
         {
-            var inquire = new QuestionExtendedList<Dictionary<ConsoleKey, T>, T>(message);
+            var inquire = new QuestionExtendedList<Dictionary<ConsoleKey, TResult>, TResult>(message);
             inquire.Choices = choices;
 
-            inquire.ValidatationFn = v =>
+            inquire.ValidatationFn = answer =>
             {
-                if (inquire.Choices.ContainsKey(v))
+                if (inquire.Choices.ContainsKey(answer))
                 {
                     return true;
                 }
@@ -88,9 +88,9 @@ namespace InquirerCS
                 return false;
             };
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return inquire.Choices[v];
+                return inquire.Choices[answer];
             };
 
             return inquire;
@@ -99,17 +99,17 @@ namespace InquirerCS
         public static QuestionInput<T> Input<T>(string message) where T : struct
         {
             var inquire = new QuestionInput<T>(message);
-            inquire.ValidatationFn = v =>
+            inquire.ValidatationFn = answer =>
             {
-                if (string.IsNullOrEmpty(v) == false || inquire.HasDefaultValue)
+                if (string.IsNullOrEmpty(answer) == false || inquire.HasDefaultValue)
                 {
-                    if (v.ToN<T>().HasValue)
+                    if (answer.ToN<T>().HasValue)
                     {
                         return true;
                     }
                     else
                     {
-                        ConsoleHelper.WriteError($"Cannot parse {v} to {typeof(T)}");
+                        ConsoleHelper.WriteError($"Cannot parse {answer} to {typeof(T)}");
                         return false;
                     }
                 }
@@ -120,9 +120,9 @@ namespace InquirerCS
                 }
             };
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return v.To<T>();
+                return answer.To<T>();
             };
 
             return inquire;
@@ -131,9 +131,9 @@ namespace InquirerCS
         public static QuestionInput<string> Input(string message)
         {
             var inquire = new QuestionInput<string>(message);
-            inquire.ValidatationFn = v =>
+            inquire.ValidatationFn = answer =>
             {
-                if (string.IsNullOrEmpty(v) == false || inquire.HasDefaultValue)
+                if (string.IsNullOrEmpty(answer) == false || inquire.HasDefaultValue)
                 {
                     return true;
                 }
@@ -142,9 +142,9 @@ namespace InquirerCS
                 return false;
             };
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return v;
+                return answer;
             };
 
             return inquire;
@@ -155,9 +155,9 @@ namespace InquirerCS
             var inquire = new QuestionList<T>(message);
             inquire.Choices = choices;
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return inquire.Choices[v - 1];
+                return inquire.Choices[answer - 1];
             };
 
             return inquire;
@@ -166,9 +166,9 @@ namespace InquirerCS
         public static QuestionPassword<string> Password(string message)
         {
             var inquire = new QuestionPassword<string>(message);
-            inquire.ValidatationFn = v =>
+            inquire.ValidatationFn = answer =>
             {
-                if (string.IsNullOrEmpty(v) == false || inquire.HasDefaultValue)
+                if (string.IsNullOrEmpty(answer) == false || inquire.HasDefaultValue)
                 {
                     return true;
                 }
@@ -177,9 +177,9 @@ namespace InquirerCS
                 return false;
             };
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return v;
+                return answer;
             };
 
             return inquire;
@@ -190,9 +190,9 @@ namespace InquirerCS
             var inquire = new QuestionRawList<T>(message);
             inquire.Choices = choices;
 
-            inquire.ValidatationFn = v =>
+            inquire.ValidatationFn = answer =>
             {
-                if (v > 0 && v <= inquire.Choices.Count)
+                if (answer > 0 && answer <= inquire.Choices.Count)
                 {
                     return true;
                 }
@@ -201,9 +201,9 @@ namespace InquirerCS
                 return false;
             };
 
-            inquire.ParseFn = v =>
+            inquire.ParseFn = answer =>
             {
-                return inquire.Choices[v - 1];
+                return inquire.Choices[answer - 1];
             };
 
             return inquire;

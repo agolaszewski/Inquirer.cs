@@ -9,7 +9,7 @@ namespace InquirerCS
             Message = message;
         }
 
-        public bool IsCanceled { get; protected set; }
+        internal bool IsCanceled { get; set; }
 
         internal TAnswer DefaultValue { get; set; }
 
@@ -19,7 +19,7 @@ namespace InquirerCS
 
         internal string Message { get; set; }
 
-        public abstract TAnswer Prompt();
+        internal abstract TAnswer Prompt();
 
         protected virtual bool Confirm(string result)
         {

@@ -12,7 +12,7 @@ namespace InquirerCS
         {
         }
 
-        public Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
+        internal Func<T, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         internal TList Choices
         {
