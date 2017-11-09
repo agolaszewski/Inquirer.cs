@@ -13,6 +13,15 @@ namespace InquirerCS
 
         internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = answer => { return true; };
 
+        internal string ErrorMessage { get; set; }
+
+        public QuestionExtendedList<TDictionary, TResult> WithValidatation(Func<ConsoleKey, bool> fn, string errorMessage)
+        {
+            ValidatationFn = fn;
+            ErrorMessage = errorMessage;
+            return this;
+        }
+
         public QuestionExtendedList<TDictionary, TResult> Parse(Func<ConsoleKey, TResult> fn)
         {
             ParseFn = fn;

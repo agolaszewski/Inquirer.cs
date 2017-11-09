@@ -16,9 +16,9 @@ namespace InquirerCS
 
         internal string ErrorMessage { get; set; }
 
-        public QuestionCheckbox<TList, TResult> WithValidatation(Func<TResult, string> fn, string errorMessage)
+        public QuestionCheckbox<TList, TResult> WithValidatation(Func<TList, bool> fn, string errorMessage)
         {
-            ConvertToStringFn = fn;
+            ValidatationFn = fn;
             ErrorMessage = errorMessage;
             return this;
         }

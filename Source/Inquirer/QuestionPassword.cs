@@ -8,6 +8,8 @@ namespace InquirerCS
         {
         }
 
+        internal string ErrorMessage { get; set; }
+
         internal Func<string, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
         internal Func<string, bool> ValidatationFn { get; set; } = answer => { return true; };
@@ -40,6 +42,13 @@ namespace InquirerCS
         {
             DefaultValue = defaultValue;
             HasDefaultValue = true;
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithValidatation(Func<string, bool> fn, string errorMessage)
+        {
+            ValidatationFn = fn;
+            ErrorMessage = errorMessage;
             return this;
         }
 

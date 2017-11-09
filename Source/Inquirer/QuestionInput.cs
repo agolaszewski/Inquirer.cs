@@ -12,6 +12,15 @@ namespace InquirerCS
 
         internal Func<string, bool> ValidatationFn { get; set; } = answer => { return true; };
 
+        internal string ErrorMessage { get; set; }
+
+        public QuestionInput<TResult> WithValidatation(Func<string, bool> fn, string errorMessage)
+        {
+            ValidatationFn = fn;
+            ErrorMessage = errorMessage;
+            return this;
+        }
+
         public QuestionInput<TResult> ConvertToString(Func<TResult, string> fn)
         {
             ConvertToStringFn = fn;

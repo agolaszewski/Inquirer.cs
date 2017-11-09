@@ -9,6 +9,8 @@ namespace InquirerCS
         {
         }
 
+        internal string ErrorMessage { get; set; }
+
         internal Func<int, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
         internal Func<int, bool> ValidatationFn { get; set; } = answer => { return true; };
@@ -67,6 +69,13 @@ namespace InquirerCS
                 throw new Exception("No default values in choices");
             }
 
+            return this;
+        }
+
+        public QuestionList<TResult> WithValidatation(Func<int, bool> fn, string errorMessage)
+        {
+            ValidatationFn = fn;
+            ErrorMessage = errorMessage;
             return this;
         }
 
