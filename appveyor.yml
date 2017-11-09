@@ -1,9 +1,5 @@
 version: '{build}'
 
-environment:
-  gitHub_authentication_token:
-    secure: JnUtQ9HEoqyYkHVkj5he8tbRauph96orT9i0eiyAB4R9a9g2hW4Mvm1SYDxsUvUg
-
 branches:
   only:
   - master
@@ -45,6 +41,14 @@ deploy:
           secure: JnUtQ9HEoqyYkHVkj5he8tbRauph96orT9i0eiyAB4R9a9g2hW4Mvm1SYDxsUvUg
       on:
           appveyor_repo_tag_name: /\d+\.\d+\.\d+/ 
+          appveyor_repo_tag: true
+          
+    - provider: NuGet
+      api_key:
+          secure: jAS5nyIwacqXwMQl7CAi76q0+NAH3A3fGdvY8SCY+AfnNwSAooWfj4Bym6MPHdDF
+      artifact: NuGet
+      on:
+          appveyor_repo_tag_name: /\d+\.\d+\.\d+/
           appveyor_repo_tag: true
   
   
