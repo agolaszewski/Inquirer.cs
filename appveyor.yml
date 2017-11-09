@@ -17,7 +17,7 @@ artifacts:
   - path: \*.nupkg
     name: NuGet
   - path: \Source\Inquirer\bin\$(configuration)
-    name: Zip
+    name: Inquirer
     type: zip
 
 
@@ -36,7 +36,7 @@ deploy:
       tag: $(APPVEYOR_REPO_TAG_NAME)
       description: ''
       prerelease: true
-      artifact: Zip
+      artifact: Inquirer
       auth_token:
           secure: JnUtQ9HEoqyYkHVkj5he8tbRauph96orT9i0eiyAB4R9a9g2hW4Mvm1SYDxsUvUg
       on:
