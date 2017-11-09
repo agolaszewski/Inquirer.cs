@@ -26,7 +26,7 @@ artifacts:
 
 
 before_build:
-  - nuget restore Inquirer
+  - nuget restore Source\Inquirer.sln
 
 after_build:
   - nuget pack Inquirer.nuspec
