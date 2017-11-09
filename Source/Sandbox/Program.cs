@@ -33,46 +33,46 @@ namespace ConsoleApp1
         private static void InputTest()
         {
             _test.Prompt(Question.Input("How are you?").WithConfirmation().WithDefaultValue("fine")).For(x => x.Input);
-            InputTestNumber();
+            MenuTest();
         }
 
         private static void InputTestNumber()
         {
             _test.Prompt(Question.Input<int>("2+2").WithConfirmation().WithDefaultValue(4));
-            ConfirmTest();
+            MenuTest();
         }
 
         private static void ConfirmTest()
         {
             _test.Prompt(Question.Confirm("Are you sure?").WithDefaultValue(true).WithConfirmation());
-            PasswordTest();
+            MenuTest();
         }
 
         private static void PasswordTest()
         {
             _test.Prompt(Question.Password("Type password").WithDefaultValue("123456").WithConfirmation());
-            ListTest();
+            MenuTest();
         }
 
         private static void ListTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             _test.Prompt(Question.List("Choose favourite color", list).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
-            ListRawTest();
+            MenuTest();
         }
 
         private static void ListRawTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             _test.Prompt(Question.RawList("Choose favourite color", list).WithDefaultValue(ConsoleColor.DarkRed).WithConfirmation());
-            ListCheckboxTest();
+            MenuTest();
         }
 
         private static void ListCheckboxTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             _test.Prompt(Question.Checkbox("Choose favourite colors", list).WithDefaultValue(ConsoleColor.DarkGray).WithConfirmation());
-            ListExtendedTest();
+            MenuTest();
         }
 
         private static void ListExtendedTest()
@@ -83,6 +83,7 @@ namespace ConsoleApp1
             list.Add(ConsoleKey.D, ConsoleColor.DarkBlue);
 
             _test.Prompt(Question.ExtendedList("Choose favourite color", list).WithDefaultValue(ConsoleColor.DarkBlue).WithConfirmation());
+            MenuTest();
         }
     }
 }

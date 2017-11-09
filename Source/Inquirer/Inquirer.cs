@@ -34,7 +34,7 @@ namespace InquirerCS
             StackFrame[] stackFrames = stackTrace.GetFrames();
             StackFrame callingFrame = stackFrames[1];
 
-            var answer = question.Prompt();
+            var result = question.Prompt();
             if (question.IsCanceled)
             {
                 if (History.Count > 0)
@@ -52,7 +52,7 @@ namespace InquirerCS
                 History.Push(callingFrame.GetMethod());
             }
 
-            return new InquirerFor<TAnswers, TResult>(this, answer);
+            return new InquirerFor<TAnswers, TResult>(this, result);
         }
     }
 }

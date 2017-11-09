@@ -8,9 +8,9 @@ namespace InquirerCS
         {
         }
 
-        public Func<string, TResult> ParseFn { get; set; } = v => { return default(TResult); };
+        internal Func<string, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
-        public Func<string, bool> ValidatationFn { get; set; } = v => { return true; };
+        internal Func<string, bool> ValidatationFn { get; set; } = answer => { return true; };
 
         public QuestionPassword<TResult> ConvertToString(Func<TResult, string> fn)
         {
@@ -24,7 +24,26 @@ namespace InquirerCS
             return this;
         }
 
-        public override TResult Prompt()
+        public QuestionPassword<TResult> Validation(Func<string, bool> fn)
+        {
+            ValidatationFn = fn;
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithDefaultValue(TResult defaultValue)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
+
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
@@ -75,25 +94,6 @@ namespace InquirerCS
             }
 
             return answer;
-        }
-
-        public QuestionPassword<TResult> Validation(Func<string, bool> fn)
-        {
-            ValidatationFn = fn;
-            return this;
-        }
-
-        public QuestionPassword<TResult> WithConfirmation()
-        {
-            HasConfirmation = true;
-            return this;
-        }
-
-        public QuestionPassword<TResult> WithDefaultValue(TResult defaultValue)
-        {
-            DefaultValue = defaultValue;
-            HasDefaultValue = true;
-            return this;
         }
 
         protected override bool Confirm(string result)

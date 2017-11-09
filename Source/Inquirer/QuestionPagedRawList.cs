@@ -15,7 +15,7 @@ namespace InquirerCS
 
         public int PageSize { get; internal set; } = 0;
 
-        public override T Prompt()
+        internal override T Prompt()
         {
             bool tryAgain = true;
             T answer = DefaultValue;
