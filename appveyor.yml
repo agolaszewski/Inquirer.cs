@@ -1,4 +1,4 @@
-version: {build}
+version: '{build}'
 
 environment:
   gitHub_authentication_token:
