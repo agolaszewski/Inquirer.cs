@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace InquirerCS
 {
@@ -8,11 +9,35 @@ namespace InquirerCS
         {
         }
 
-        internal string ErrorMessage { get; set; }
-
         internal Func<string, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
-        internal Func<string, bool> ValidatationFn { get; set; } = answer => { return true; };
+        internal List<Tuple<Func<string, bool>, Func<string, string>>> ValidatorsString { get; set; } = new List<Tuple<Func<string, bool>, Func<string, string>>>();
+
+        internal List<Tuple<Func<TResult, bool>, Func<TResult, string>>> ValidatorsTResults { get; set; } = new List<Tuple<Func<TResult, bool>, Func<TResult, string>>>();
+
+        public QuestionPassword<TResult> WithValidation(Func<string, bool> fn, Func<string, string> errorMessageFn)
+        {
+            ValidatorsString.Add(new Tuple<Func<string, bool>, Func<string, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithValidation(Func<string, bool> fn, string errorMessage)
+        {
+            ValidatorsString.Add(new Tuple<Func<string, bool>, Func<string, string>>(fn, answers => { return errorMessage; }));
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        {
+            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        {
+            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
+            return this;
+        }
 
         public QuestionPassword<TResult> ConvertToString(Func<TResult, string> fn)
         {
@@ -26,12 +51,6 @@ namespace InquirerCS
             return this;
         }
 
-        public QuestionPassword<TResult> Validation(Func<string, bool> fn)
-        {
-            ValidatationFn = fn;
-            return this;
-        }
-
         public QuestionPassword<TResult> WithConfirmation()
         {
             HasConfirmation = true;
@@ -42,13 +61,6 @@ namespace InquirerCS
         {
             DefaultValue = defaultValue;
             HasDefaultValue = true;
-            return this;
-        }
-
-        public QuestionPassword<TResult> WithValidatation(Func<string, bool> fn, string errorMessage)
-        {
-            ValidatationFn = fn;
-            ErrorMessage = errorMessage;
             return this;
         }
 
@@ -95,14 +107,10 @@ namespace InquirerCS
                     answer = DefaultValue;
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
-                else if (ValidatationFn(value))
+                else if (Validation(value))
                 {
                     answer = ParseFn(value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
-                }
-                else
-                {
-                    ConsoleHelper.WriteError(ErrorMessage);
                 }
             }
 

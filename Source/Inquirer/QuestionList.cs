@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InquirerCS
@@ -9,11 +10,35 @@ namespace InquirerCS
         {
         }
 
-        internal string ErrorMessage { get; set; }
-
         internal Func<int, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
-        internal Func<TResult, bool> ValidatationFn { get; set; } = answer => { return true; };
+        internal List<Tuple<Func<int, bool>, Func<int, string>>> ValidatorsString { get; set; } = new List<Tuple<Func<int, bool>, Func<int, string>>>();
+
+        internal List<Tuple<Func<TResult, bool>, Func<TResult, string>>> ValidatorsTResults { get; set; } = new List<Tuple<Func<TResult, bool>, Func<TResult, string>>>();
+
+        public QuestionList<TResult> WithValidation(Func<int, bool> fn, Func<int, string> errorMessageFn)
+        {
+            ValidatorsString.Add(new Tuple<Func<int, bool>, Func<int, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        public QuestionList<TResult> WithValidation(Func<int, bool> fn, string errorMessage)
+        {
+            ValidatorsString.Add(new Tuple<Func<int, bool>, Func<int, string>>(fn, answers => { return errorMessage; }));
+            return this;
+        }
+
+        public QuestionList<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        {
+            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        public QuestionList<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        {
+            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
+            return this;
+        }
 
         public QuestionList<TResult> ConvertToString(Func<TResult, string> fn)
         {
@@ -24,12 +49,6 @@ namespace InquirerCS
         public QuestionList<TResult> Parse(Func<int, TResult> fn)
         {
             ParseFn = fn;
-            return this;
-        }
-
-        public QuestionList<TResult> Validation(Func<TResult, bool> fn)
-        {
-            ValidatationFn = fn;
             return this;
         }
 
@@ -69,13 +88,6 @@ namespace InquirerCS
                 throw new Exception("No default values in choices");
             }
 
-            return this;
-        }
-
-        public QuestionList<TResult> WithValidatation(Func<TResult, bool> fn, string errorMessage)
-        {
-            ValidatationFn = fn;
-            ErrorMessage = errorMessage;
             return this;
         }
 
@@ -153,18 +165,14 @@ namespace InquirerCS
 
                         case (ConsoleKey.Enter):
                             {
-                                if (ValidatationFn(Choices[Console.CursorTop - boundryTop]))
+                                if (Validate(Console.CursorTop - boundryTop))
                                 {
                                     Console.CursorVisible = true;
-                                    answer = Choices[Console.CursorTop - boundryTop];
+                                    answer = ParseFn(Console.CursorTop - boundryTop);
                                     move = false;
                                     break;
                                 }
-                                else
-                                {
-                                    ConsoleHelper.WriteError(ErrorMessage);
-                                    break;
-                                }
+                                break;
                             }
                     }
 
@@ -184,6 +192,40 @@ namespace InquirerCS
         protected string DisplayChoice(int index)
         {
             return $"{ConvertToStringFn(Choices[index])}";
+        }
+
+        protected bool Validate(int value)
+        {
+            foreach (var validator in ValidatorsString)
+            {
+                if (!validator.Item1(value))
+                {
+                    ConsoleHelper.WriteError(validator.Item2(value));
+                    return false;
+                }
+            }
+
+            TResult answer = default(TResult);
+            try
+            {
+                answer = ParseFn(value);
+            }
+            catch
+            {
+                ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(TResult)}");
+                return false;
+            }
+
+            foreach (var validator in ValidatorsTResults)
+            {
+                if (!validator.Item1(answer))
+                {
+                    ConsoleHelper.WriteError(validator.Item2(answer));
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
