@@ -13,7 +13,7 @@ namespace InquirerCS
 
         internal Func<int, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
-        internal Func<int, bool> ValidatationFn { get; set; } = answer => { return true; };
+        internal Func<TResult, bool> ValidatationFn { get; set; } = answer => { return true; };
 
         public QuestionList<TResult> ConvertToString(Func<TResult, string> fn)
         {
@@ -27,7 +27,7 @@ namespace InquirerCS
             return this;
         }
 
-        public QuestionList<TResult> Validation(Func<int, bool> fn)
+        public QuestionList<TResult> Validation(Func<TResult, bool> fn)
         {
             ValidatationFn = fn;
             return this;
@@ -72,7 +72,7 @@ namespace InquirerCS
             return this;
         }
 
-        public QuestionList<TResult> WithValidatation(Func<int, bool> fn, string errorMessage)
+        public QuestionList<TResult> WithValidatation(Func<TResult, bool> fn, string errorMessage)
         {
             ValidatationFn = fn;
             ErrorMessage = errorMessage;
@@ -153,10 +153,18 @@ namespace InquirerCS
 
                         case (ConsoleKey.Enter):
                             {
-                                Console.CursorVisible = true;
-                                answer = Choices[Console.CursorTop - boundryTop];
-                                move = false;
-                                break;
+                                if (ValidatationFn(Choices[Console.CursorTop - boundryTop]))
+                                {
+                                    Console.CursorVisible = true;
+                                    answer = Choices[Console.CursorTop - boundryTop];
+                                    move = false;
+                                    break;
+                                }
+                                else
+                                {
+                                    ConsoleHelper.WriteError(ErrorMessage);
+                                    break;
+                                }
                             }
                     }
 

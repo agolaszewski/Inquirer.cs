@@ -100,6 +100,10 @@ namespace InquirerCS
                     answer = ParseFn(value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
+                else
+                {
+                    ConsoleHelper.WriteError(ErrorMessage);
+                }
             }
 
             return answer;

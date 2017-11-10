@@ -100,7 +100,16 @@ namespace InquirerCS
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
-                                return _pageChoices[Console.CursorTop - boundryTop];
+
+                                if (ValidatationFn(_pageChoices[Console.CursorTop - boundryTop]))
+                                {
+                                    return answer = _pageChoices[Console.CursorTop - boundryTop];
+                                }
+                                else
+                                {
+                                    ConsoleHelper.WriteError(ErrorMessage);
+                                    break;
+                                }
                             }
                     }
 
