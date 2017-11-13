@@ -10,8 +10,6 @@ namespace InquirerCS
 
         internal Func<ConsoleKey, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
 
-        internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = answer => { return true; };
-
         public QuestionInputKey<TResult> ConvertToString(Func<TResult, string> fn)
         {
             ConvertToStringFn = fn;
@@ -21,12 +19,6 @@ namespace InquirerCS
         public QuestionInputKey<TResult> Parse(Func<ConsoleKey, TResult> fn)
         {
             ParseFn = fn;
-            return this;
-        }
-
-        public QuestionInputKey<TResult> Validation(Func<ConsoleKey, bool> fn)
-        {
-            ValidatationFn = fn;
             return this;
         }
 
