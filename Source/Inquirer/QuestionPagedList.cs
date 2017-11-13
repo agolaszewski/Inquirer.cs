@@ -104,6 +104,7 @@ namespace InquirerCS
                                 {
                                     return _pageChoices[Console.CursorTop - boundryTop];
                                 }
+
                                 break;
                             }
                     }

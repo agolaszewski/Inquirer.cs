@@ -16,30 +16,6 @@ namespace InquirerCS
 
         internal List<Tuple<Func<TResult, bool>, Func<TResult, string>>> ValidatorsTResults { get; set; } = new List<Tuple<Func<TResult, bool>, Func<TResult, string>>>();
 
-        public QuestionList<TResult> WithValidation(Func<int, bool> fn, Func<int, string> errorMessageFn)
-        {
-            ValidatorsString.Add(new Tuple<Func<int, bool>, Func<int, string>>(fn, errorMessageFn));
-            return this;
-        }
-
-        public QuestionList<TResult> WithValidation(Func<int, bool> fn, string errorMessage)
-        {
-            ValidatorsString.Add(new Tuple<Func<int, bool>, Func<int, string>>(fn, answers => { return errorMessage; }));
-            return this;
-        }
-
-        public QuestionList<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
-        {
-            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, errorMessageFn));
-            return this;
-        }
-
-        public QuestionList<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
-        {
-            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
-            return this;
-        }
-
         public QuestionList<TResult> ConvertToString(Func<TResult, string> fn)
         {
             ConvertToStringFn = fn;
@@ -88,6 +64,30 @@ namespace InquirerCS
                 throw new Exception("No default values in choices");
             }
 
+            return this;
+        }
+
+        public QuestionList<TResult> WithValidation(Func<int, bool> fn, Func<int, string> errorMessageFn)
+        {
+            ValidatorsString.Add(new Tuple<Func<int, bool>, Func<int, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        public QuestionList<TResult> WithValidation(Func<int, bool> fn, string errorMessage)
+        {
+            ValidatorsString.Add(new Tuple<Func<int, bool>, Func<int, string>>(fn, answers => { return errorMessage; }));
+            return this;
+        }
+
+        public QuestionList<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        {
+            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        public QuestionList<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        {
+            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
             return this;
         }
 
@@ -172,6 +172,7 @@ namespace InquirerCS
                                     move = false;
                                     break;
                                 }
+
                                 break;
                             }
                     }

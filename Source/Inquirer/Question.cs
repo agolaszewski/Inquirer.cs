@@ -133,16 +133,7 @@ namespace InquirerCS
         public static QuestionPassword<string> Password(string message)
         {
             var inquire = new QuestionPassword<string>(message);
-            inquire.ValidatationFn = answer =>
-            {
-                if (string.IsNullOrEmpty(answer) == false || inquire.HasDefaultValue)
-                {
-                    return true;
-                }
-
-                ConsoleHelper.WriteError("Empty line");
-                return false;
-            };
+            inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
 
             inquire.ParseFn = answer =>
             {

@@ -27,9 +27,27 @@ namespace InquirerCS
             return this;
         }
 
-        public QuestionRawList<TResult> Validation(Func<int, bool> fn)
+        public QuestionPassword<TResult> WithValidation(Func<string, bool> fn, Func<string, string> errorMessageFn)
         {
-            ValidatationFn = fn;
+            ValidatorsString.Add(new Tuple<Func<string, bool>, Func<string, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithValidation(Func<string, bool> fn, string errorMessage)
+        {
+            ValidatorsString.Add(new Tuple<Func<string, bool>, Func<string, string>>(fn, answers => { return errorMessage; }));
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        {
+            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        public QuestionPassword<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        {
+            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
             return this;
         }
 
