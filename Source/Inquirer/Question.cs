@@ -11,11 +11,6 @@ namespace InquirerCS
             var inquire = new QuestionCheckbox<List<TResult>, TResult>(message);
             inquire.Choices = choices;
 
-            inquire.ParseFn = answer =>
-            {
-                return inquire.Choices[answer - 1];
-            };
-
             inquire.ConvertToStringFn = answer => { return string.Join(",", answer); };
 
             return inquire;
