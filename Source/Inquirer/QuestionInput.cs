@@ -2,45 +2,10 @@
 
 namespace InquirerCS
 {
-    public class QuestionInput<TResult> : QuestionSingleChoiceBase<TResult>
+    public class QuestionInput<TResult> : QuestionSingleChoiceBase<string, TResult>
     {
         internal QuestionInput(string message) : base(message)
         {
-        }
-
-        internal Func<string, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
-
-        internal Func<string, bool> ValidatationFn { get; set; } = answer => { return true; };
-
-        public QuestionInput<TResult> ConvertToString(Func<TResult, string> fn)
-        {
-            ConvertToStringFn = fn;
-            return this;
-        }
-
-        public QuestionInput<TResult> Parse(Func<string, TResult> fn)
-        {
-            ParseFn = fn;
-            return this;
-        }
-
-        public QuestionInput<TResult> Validation(Func<string, bool> fn)
-        {
-            ValidatationFn = fn;
-            return this;
-        }
-
-        public QuestionInput<TResult> WithConfirmation()
-        {
-            HasConfirmation = true;
-            return this;
-        }
-
-        public QuestionInput<TResult> WithDefaultValue(TResult defaultValue)
-        {
-            DefaultValue = defaultValue;
-            HasDefaultValue = true;
-            return this;
         }
 
         internal override TResult Prompt()
@@ -65,7 +30,7 @@ namespace InquirerCS
                     answer = DefaultValue;
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
-                else if (ValidatationFn(value))
+                else if (Validate(value))
                 {
                     answer = ParseFn(value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
