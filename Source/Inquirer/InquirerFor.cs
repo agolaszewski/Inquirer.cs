@@ -6,8 +6,9 @@ namespace InquirerCS
 {
     public class InquirerFor<TAnswers, TResult> where TAnswers : class, new()
     {
-        private TResult _result;
         private Inquirer<TAnswers> _inquirer;
+
+        private TResult _result;
 
         public InquirerFor(Inquirer<TAnswers> inquirer, TResult result)
         {
@@ -27,15 +28,15 @@ namespace InquirerCS
             return _result;
         }
 
+        public TResult Return()
+        {
+            return _result;
+        }
+
         public InquirerFor<TAnswers, TConvert> Return<TConvert>(Func<TResult, TConvert> convertFn)
         {
             var result = convertFn(_result);
             return new InquirerFor<TAnswers, TConvert>(_inquirer, result);
-        }
-
-        public TResult Return()
-        {
-            return _result;
         }
     }
 }

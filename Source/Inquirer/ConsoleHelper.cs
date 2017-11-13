@@ -5,27 +5,6 @@ namespace InquirerCS
 {
     internal static class ConsoleHelper
     {
-        internal static void Write(string text, ConsoleColor color = ConsoleColor.White)
-        {
-            Console.ForegroundColor = color;
-            Console.Write(text);
-            Console.ResetColor();
-        }
-
-        internal static void WriteError(string error)
-        {
-            WriteLine(string.Empty);
-            Write(">> ", ConsoleColor.Red);
-            Write(error);
-        }
-
-        internal static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
-        {
-            Console.ForegroundColor = color;
-            Console.WriteLine(text);
-            Console.ResetColor();
-        }
-
         internal static void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
         {
             Console.SetCursorPosition(x, y);
@@ -124,6 +103,27 @@ namespace InquirerCS
             }
 
             return key;
+        }
+
+        internal static void Write(string text, ConsoleColor color = ConsoleColor.White)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+            Console.ResetColor();
+        }
+
+        internal static void WriteError(string error)
+        {
+            WriteLine(string.Empty);
+            Write(">> ", ConsoleColor.Red);
+            Write(error);
+        }
+
+        internal static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ResetColor();
         }
     }
 }

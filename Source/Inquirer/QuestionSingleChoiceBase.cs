@@ -35,22 +35,10 @@ namespace InquirerCS
             return this;
         }
 
-        public QuestionSingleChoiceBase<TInput, TResult> WithDefaultValue(TResult defaultValue)
+        public virtual QuestionSingleChoiceBase<TInput, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
             DefaultValue = defaultValue;
             HasDefaultValue = true;
-            return this;
-        }
-
-        public QuestionSingleChoiceBase<TInput, TResult> WithValidation(Func<TInput, bool> fn, Func<TInput, string> errorMessageFn)
-        {
-            ValidatorsTInput.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, errorMessageFn));
-            return this;
-        }
-
-        public QuestionSingleChoiceBase<TInput, TResult> WithValidation(Func<TInput, bool> fn, string errorMessage)
-        {
-            ValidatorsTInput.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, answers => { return errorMessage; }));
             return this;
         }
 
@@ -63,6 +51,18 @@ namespace InquirerCS
         public QuestionSingleChoiceBase<TInput, TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
             ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
+            return this;
+        }
+
+        internal QuestionSingleChoiceBase<TInput, TResult> WithInputValidation(Func<TInput, bool> fn, Func<TInput, string> errorMessageFn)
+        {
+            ValidatorsTInput.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        internal QuestionSingleChoiceBase<TInput, TResult> WithInputValidation(Func<TInput, bool> fn, string errorMessage)
+        {
+            ValidatorsTInput.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, answers => { return errorMessage; }));
             return this;
         }
 

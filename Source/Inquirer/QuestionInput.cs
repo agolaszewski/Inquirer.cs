@@ -8,8 +8,6 @@ namespace InquirerCS
         {
         }
 
-        
-
         internal override TResult Prompt()
         {
             bool tryAgain = true;
@@ -32,7 +30,7 @@ namespace InquirerCS
                     answer = DefaultValue;
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
-                else if (ValidatationFn(value))
+                else if (Validate(value))
                 {
                     answer = ParseFn(value);
                     tryAgain = Confirm(ConvertToStringFn(answer));

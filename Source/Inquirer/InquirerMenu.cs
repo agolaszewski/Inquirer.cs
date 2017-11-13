@@ -7,7 +7,9 @@ namespace InquirerCS
     public class InquirerMenu<TAnswers> where TAnswers : class, new()
     {
         private string _header;
+
         private Inquirer<TAnswers> _inquirer;
+
         private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
 
         public InquirerMenu(string header, Inquirer<TAnswers> inquirer)

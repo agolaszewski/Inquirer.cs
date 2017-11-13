@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace InquirerCS
 {
-    public class QuestionPagedList<TResult> : QuestionList<TResult> 
+    public class QuestionPagedList<TResult> : QuestionList<TResult>
     {
         private List<TResult> _pageChoices = new List<TResult>();
 
@@ -12,8 +12,8 @@ namespace InquirerCS
 
         internal QuestionPagedList(QuestionList<TResult> question) : base(question.Message)
         {
-            ValidatationFn = question.ValidatationFn;
-            ParseFn = question.ParseFn;
+            ////ValidatationFn = question.ValidatationFn;
+            ////ParseFn = question.ParseFn;
             Choices = question.Choices;
         }
 
