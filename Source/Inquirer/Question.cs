@@ -26,12 +26,12 @@ namespace InquirerCS
             var inquire = new QuestionInputKey<bool>(message);
             inquire.Message += " [y/n]";
 
-            inquire.WithValidatation(value => { return value == ConsoleKey.A ? true : false; }, "Press [[Y]] or [[N]]");
+            inquire.WithInputValidation(value => { return value == ConsoleKey.A ? true : false; }, "Press [[Y]] or [[N]]");
 
-            inquire.ParseFn = answer =>
+            inquire.Parse(answer =>
             {
                 return answer == System.ConsoleKey.Y;
-            };
+            });
 
             return inquire;
         }
@@ -40,7 +40,7 @@ namespace InquirerCS
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
 
-            inquire.WithValidatation(
+            inquire.WithInputValidation(
             value =>
             {
                 return @params.Any(p => p == value);
@@ -56,10 +56,10 @@ namespace InquirerCS
                 return keys;
             });
 
-            inquire.ParseFn = answer =>
+            inquire.Parse(answer =>
             {
                 return answer;
-            };
+            });
 
             return inquire;
         }
@@ -69,21 +69,12 @@ namespace InquirerCS
             var inquire = new QuestionExtendedList<Dictionary<ConsoleKey, TResult>, TResult>(message);
             inquire.Choices = choices;
 
-            inquire.ValidatationFn = answer =>
-            {
-                if (inquire.Choices.ContainsKey(answer))
-                {
-                    return true;
-                }
+            inquire.WithInputValidation(value => { return inquire.Choices.ContainsKey(value); }, "Invalid key");
 
-                ConsoleHelper.WriteError($"Invalid key");
-                return false;
-            };
-
-            inquire.ParseFn = answer =>
+            inquire.Parse(answer =>
             {
                 return inquire.Choices[answer];
-            };
+            });
 
             return inquire;
         }
@@ -92,13 +83,13 @@ namespace InquirerCS
         {
             var inquire = new QuestionInput<T>(message);
 
-            inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
-            inquire.WithValidation(value => { return value.ToN<T>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(T)}"; });
+            inquire.WithInputValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
+            inquire.WithInputValidation(value => { return value.ToN<T>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(T)}"; });
 
-            inquire.ParseFn = answer =>
+            inquire.Parse(answer =>
             {
                 return answer.To<T>();
-            };
+            });
 
             return inquire;
         }
@@ -109,10 +100,10 @@ namespace InquirerCS
 
             inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
 
-            inquire.ParseFn = answer =>
+            inquire.Parse(answer =>
             {
                 return answer;
-            };
+            });
 
             return inquire;
         }
@@ -122,10 +113,10 @@ namespace InquirerCS
             var inquire = new QuestionList<TResult>(message);
             inquire.Choices = choices;
 
-            inquire.ParseFn = answer =>
+            inquire.Parse(answer =>
             {
                 return inquire.Choices[answer - 1];
-            };
+            });
 
             return inquire;
         }
@@ -135,34 +126,25 @@ namespace InquirerCS
             var inquire = new QuestionPassword<string>(message);
             inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
 
-            inquire.ParseFn = answer =>
+            inquire.Parse(answer =>
             {
                 return answer;
-            };
+            });
 
             return inquire;
         }
 
-        public static QuestionRawList<T> RawList<T>(string message, List<T> choices)
+        public static QuestionRawList<TResult> RawList<TResult>(string message, List<TResult> choices)
         {
-            var inquire = new QuestionRawList<T>(message);
+            var inquire = new QuestionRawList<TResult>(message);
             inquire.Choices = choices;
 
-            inquire.ValidatationFn = answer =>
-            {
-                if (answer > 0 && answer <= inquire.Choices.Count)
-                {
-                    return true;
-                }
+            inquire.WithInputValidation(value => { return value > 0 && value <= inquire.Choices.Count; }, value => { return $"Choosen number must be between 1 and {inquire.Choices.Count}"; });
 
-                ConsoleHelper.WriteError($"Choosen number must be between 1 and {inquire.Choices.Count}");
-                return false;
-            };
-
-            inquire.ParseFn = answer =>
+            inquire.Parse(answer =>
             {
                 return inquire.Choices[answer - 1];
-            };
+            });
 
             return inquire;
         }

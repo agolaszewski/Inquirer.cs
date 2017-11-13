@@ -2,14 +2,14 @@
 
 namespace InquirerCS
 {
-    internal class QuestionPagedRawList<T> : QuestionRawList<T> 
+    internal class QuestionPagedRawList<T> : QuestionRawList<T>
     {
         private int _skipChoices = 0;
 
         public QuestionPagedRawList(QuestionRawList<T> question) : base(question.Message)
         {
-            ValidatationFn = question.ValidatationFn;
-            ParseFn = question.ParseFn;
+            ////ValidatationFn = question.ValidatationFn;
+            ////ParseFn = question.ParseFn;
             Choices = question.Choices;
         }
 
@@ -86,7 +86,7 @@ namespace InquirerCS
                 {
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
-                else if (value.HasValue && ValidatationFn(value.Value))
+                else if (value.HasValue && Validate(value.Value))
                 {
                     answer = ParseFn(value.Value);
                     tryAgain = Confirm(ConvertToStringFn(answer));

@@ -9,13 +9,13 @@ namespace InquirerCS
             Message = message;
         }
 
-        internal bool IsCanceled { get; set; }
-
         internal TAnswer DefaultValue { get; set; }
 
         internal bool HasConfirmation { get; set; }
 
         internal bool HasDefaultValue { get; set; }
+
+        internal bool IsCanceled { get; set; }
 
         internal string Message { get; set; }
 

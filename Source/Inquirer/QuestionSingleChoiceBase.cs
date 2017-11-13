@@ -9,36 +9,62 @@ namespace InquirerCS
         {
         }
 
-        protected List<Tuple<Func<TInput, bool>, Func<TInput, string>>> ValidatorsKey { get; set; } = new List<Tuple<Func<TInput, bool>, Func<TInput, string>>>();
+        protected Func<TResult, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
+
+        protected Func<TInput, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
+
+        protected List<Tuple<Func<TInput, bool>, Func<TInput, string>>> ValidatorsTInput { get; set; } = new List<Tuple<Func<TInput, bool>, Func<TInput, string>>>();
 
         protected List<Tuple<Func<TResult, bool>, Func<TResult, string>>> ValidatorsTResults { get; set; } = new List<Tuple<Func<TResult, bool>, Func<TResult, string>>>();
 
-
-        public QuestionSingleChoiceBase<TInput,TResult> WithValidatation(Func<TInput, bool> fn, Func<ConsoleKey, string> errorMessageFn)
+        public QuestionSingleChoiceBase<TInput, TResult> ConvertToString(Func<TResult, string> fn)
         {
-            ValidatorsKey.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, errorMessageFn));
+            ConvertToStringFn = fn;
             return this;
         }
 
-        public QuestionInputKey<TResult> WithValidatation(Func<ConsoleKey, bool> fn, string errorMessage)
+        public QuestionSingleChoiceBase<TInput, TResult> Parse(Func<TInput, TResult> fn)
         {
-            ValidatorsKey.Add(new Tuple<Func<ConsoleKey, bool>, Func<ConsoleKey, string>>(fn, answers => { return errorMessage; }));
+            ParseFn = fn;
             return this;
         }
 
-        public QuestionInputKey<TResult> WithValidatation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        public QuestionSingleChoiceBase<TInput, TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public virtual QuestionSingleChoiceBase<TInput, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
+
+        public QuestionSingleChoiceBase<TInput, TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
             ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, errorMessageFn));
             return this;
         }
 
-        public QuestionInputKey<TResult> WithValidatation(Func<TResult, bool> fn, string errorMessage)
+        public QuestionSingleChoiceBase<TInput, TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
             ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
             return this;
         }
 
-        internal Func<TResult, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
+        internal QuestionSingleChoiceBase<TInput, TResult> WithInputValidation(Func<TInput, bool> fn, Func<TInput, string> errorMessageFn)
+        {
+            ValidatorsTInput.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, errorMessageFn));
+            return this;
+        }
+
+        internal QuestionSingleChoiceBase<TInput, TResult> WithInputValidation(Func<TInput, bool> fn, string errorMessage)
+        {
+            ValidatorsTInput.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, answers => { return errorMessage; }));
+            return this;
+        }
 
         protected virtual void DisplayQuestion()
         {
@@ -51,6 +77,40 @@ namespace InquirerCS
             }
 
             ConsoleHelper.Write(question);
+        }
+
+        protected bool Validate(TInput value)
+        {
+            foreach (var validator in ValidatorsTInput)
+            {
+                if (!validator.Item1(value))
+                {
+                    ConsoleHelper.WriteError(validator.Item2(value));
+                    return false;
+                }
+            }
+
+            TResult answer = default(TResult);
+            try
+            {
+                answer = ParseFn(value);
+            }
+            catch
+            {
+                ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(TResult)}");
+                return false;
+            }
+
+            foreach (var validator in ValidatorsTResults)
+            {
+                if (!validator.Item1(answer))
+                {
+                    ConsoleHelper.WriteError(validator.Item2(answer));
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

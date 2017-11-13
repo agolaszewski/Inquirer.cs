@@ -9,44 +9,6 @@ namespace InquirerCS
         {
         }
 
-        internal Func<ConsoleKey, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
-
-        internal Func<ConsoleKey, bool> ValidatationFn { get; set; } = answer => { return true; };
-
-        internal string ErrorMessage { get; set; }
-
-        public QuestionExtendedList<TDictionary, TResult> WithValidatation(Func<ConsoleKey, bool> fn, string errorMessage)
-        {
-            ValidatationFn = fn;
-            ErrorMessage = errorMessage;
-            return this;
-        }
-
-        public QuestionExtendedList<TDictionary, TResult> Parse(Func<ConsoleKey, TResult> fn)
-        {
-            ParseFn = fn;
-            return this;
-        }
-
-        public QuestionExtendedList<TDictionary, TResult> Validation(Func<ConsoleKey, bool> fn)
-        {
-            ValidatationFn = fn;
-            return this;
-        }
-
-        public QuestionExtendedList<TDictionary, TResult> WithConfirmation()
-        {
-            HasConfirmation = true;
-            return this;
-        }
-
-        public QuestionExtendedList<TDictionary, TResult> WithDefaultValue(TResult defaultValue)
-        {
-            DefaultValue = defaultValue;
-            HasDefaultValue = true;
-            return this;
-        }
-
         internal override TResult Prompt()
         {
             bool tryAgain = true;
@@ -79,14 +41,10 @@ namespace InquirerCS
                 {
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
-                else if (ValidatationFn(key))
+                else if (Validate(key))
                 {
                     answer = ParseFn(key);
                     tryAgain = Confirm(ConvertToStringFn(answer));
-                }
-                else
-                {
-                    ConsoleHelper.WriteError(ErrorMessage);
                 }
             }
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace InquirerCS
 {
@@ -8,87 +6,6 @@ namespace InquirerCS
     {
         internal QuestionList(string question) : base(question)
         {
-        }
-
-        internal Func<int, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
-
-        internal List<Tuple<Func<int, bool>, Func<int, string>>> ValidatorsString { get; set; } = new List<Tuple<Func<int, bool>, Func<int, string>>>();
-
-        internal List<Tuple<Func<TResult, bool>, Func<TResult, string>>> ValidatorsTResults { get; set; } = new List<Tuple<Func<TResult, bool>, Func<TResult, string>>>();
-
-        public QuestionList<TResult> ConvertToString(Func<TResult, string> fn)
-        {
-            ConvertToStringFn = fn;
-            return this;
-        }
-
-        public QuestionList<TResult> Parse(Func<int, TResult> fn)
-        {
-            ParseFn = fn;
-            return this;
-        }
-
-        public QuestionList<TResult> WithConfirmation()
-        {
-            HasConfirmation = true;
-            return this;
-        }
-
-        public QuestionList<TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
-        {
-            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
-            {
-                compareFn = (x, y) =>
-                {
-                    var x1 = x as IComparable;
-                    var y1 = y as IComparable;
-                    return x1.CompareTo(y1);
-                };
-            }
-            else if (compareFn == null)
-            {
-                throw new Exception("compareFn not defined");
-            }
-
-            if (Choices.Where(x => compareFn(x, defaultValue) == 0).Any())
-            {
-                var index = Choices.Select((answer, i) => new { Value = answer, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
-                Choices.Insert(0, Choices[index]);
-                Choices.RemoveAt(index + 1);
-
-                DefaultValue = Choices[0];
-                HasDefaultValue = true;
-            }
-            else
-            {
-                throw new Exception("No default values in choices");
-            }
-
-            return this;
-        }
-
-        public QuestionList<TResult> WithValidation(Func<int, bool> fn, Func<int, string> errorMessageFn)
-        {
-            ValidatorsString.Add(new Tuple<Func<int, bool>, Func<int, string>>(fn, errorMessageFn));
-            return this;
-        }
-
-        public QuestionList<TResult> WithValidation(Func<int, bool> fn, string errorMessage)
-        {
-            ValidatorsString.Add(new Tuple<Func<int, bool>, Func<int, string>>(fn, answers => { return errorMessage; }));
-            return this;
-        }
-
-        public QuestionList<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
-        {
-            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, errorMessageFn));
-            return this;
-        }
-
-        public QuestionList<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
-        {
-            ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
-            return this;
         }
 
         internal override TResult Prompt()
@@ -165,14 +82,9 @@ namespace InquirerCS
 
                         case (ConsoleKey.Enter):
                             {
-                                if (Validate(Console.CursorTop - boundryTop))
-                                {
-                                    Console.CursorVisible = true;
-                                    answer = ParseFn(Console.CursorTop - boundryTop);
-                                    move = false;
-                                    break;
-                                }
-
+                                Console.CursorVisible = true;
+                                answer = Choices[Console.CursorTop - boundryTop];
+                                move = false;
                                 break;
                             }
                     }
@@ -193,40 +105,6 @@ namespace InquirerCS
         protected string DisplayChoice(int index)
         {
             return $"{ConvertToStringFn(Choices[index])}";
-        }
-
-        protected bool Validate(int value)
-        {
-            foreach (var validator in ValidatorsString)
-            {
-                if (!validator.Item1(value))
-                {
-                    ConsoleHelper.WriteError(validator.Item2(value));
-                    return false;
-                }
-            }
-
-            TResult answer = default(TResult);
-            try
-            {
-                answer = ParseFn(value);
-            }
-            catch
-            {
-                ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(TResult)}");
-                return false;
-            }
-
-            foreach (var validator in ValidatorsTResults)
-            {
-                if (!validator.Item1(answer))
-                {
-                    ConsoleHelper.WriteError(validator.Item2(answer));
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

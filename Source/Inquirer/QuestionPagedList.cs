@@ -12,7 +12,8 @@ namespace InquirerCS
 
         internal QuestionPagedList(QuestionList<TResult> question) : base(question.Message)
         {
-            ParseFn = question.ParseFn;
+            ////ValidatationFn = question.ValidatationFn;
+            ////ParseFn = question.ParseFn;
             Choices = question.Choices;
         }
 
@@ -99,13 +100,7 @@ namespace InquirerCS
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
-
-                                if (Validate(Console.CursorTop - boundryTop))
-                                {
-                                    return _pageChoices[Console.CursorTop - boundryTop];
-                                }
-
-                                break;
+                                return _pageChoices[Console.CursorTop - boundryTop];
                             }
                     }
 

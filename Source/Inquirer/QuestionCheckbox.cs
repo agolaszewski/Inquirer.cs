@@ -10,102 +10,6 @@ namespace InquirerCS
         {
         }
 
-        internal Func<int, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
-
-        internal Func<TList, bool> ValidatationFn { get; set; } = answer => { return true; };
-
-        internal string ErrorMessage { get; set; }
-
-        public QuestionCheckbox<TList, TResult> WithValidatation(Func<TList, bool> fn, string errorMessage)
-        {
-            ValidatationFn = fn;
-            ErrorMessage = errorMessage;
-            return this;
-        }
-
-        public QuestionCheckbox<TList, TResult> ConvertToString(Func<TResult, string> fn)
-        {
-            ConvertToStringFn = fn;
-            return this;
-        }
-
-        public QuestionCheckbox<TList, TResult> Parse(Func<int, TResult> fn)
-        {
-            ParseFn = fn;
-            return this;
-        }
-
-        public QuestionCheckbox<TList, TResult> WithConfirmation()
-        {
-            HasConfirmation = true;
-            return this;
-        }
-
-        public QuestionCheckbox<TList, TResult> WithDefaultValue(TList defaultValue, Func<TResult, TResult, int> compareFn = null)
-        {
-            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
-            {
-                compareFn = (l, r) =>
-                {
-                    var l1 = l as IComparable;
-                    var r1 = r as IComparable;
-                    return l1.CompareTo(r1);
-                };
-            }
-            else if (compareFn == null)
-            {
-                throw new Exception("compareFn not defined");
-            }
-
-            DefaultValue = defaultValue;
-            foreach (var value in defaultValue)
-            {
-                if (Choices.Where(item => compareFn(item, value) == 0).Any())
-                {
-                    var index = Choices.Select((answer, i) => new { Value = answer, Index = i }).First(x => compareFn(x.Value, value) == 0).Index;
-                    Selected[index] = true;
-                }
-                else
-                {
-                    throw new Exception("No default values in choices");
-                }
-            }
-
-            HasDefaultValue = true;
-            return this;
-        }
-
-        public QuestionCheckbox<TList, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
-        {
-            if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
-            {
-                compareFn = (l, r) =>
-                {
-                    var l1 = l as IComparable;
-                    var r1 = r as IComparable;
-                    return l1.CompareTo(r1);
-                };
-            }
-            else if (compareFn == null)
-            {
-                throw new Exception("compareFn not defined");
-            }
-
-            DefaultValue = new TList { defaultValue };
-            if (Choices.Where(item => compareFn(item, defaultValue) == 0).Any())
-            {
-                var index = Choices.Select((answer, i) => new { Value = answer, Index = i }).First(x => compareFn(x.Value, defaultValue) == 0).Index;
-                Selected[index] = true;
-            }
-            else
-            {
-                throw new Exception("No default values in choices");
-            }
-
-            HasDefaultValue = true;
-            return this;
-        }
-
         internal override TList Prompt()
         {
             int _boundryBottom;
@@ -193,17 +97,13 @@ namespace InquirerCS
                                     }
                                 }
 
-                                if (ValidatationFn(selectedChoices))
+                                if (Validate(selectedChoices))
                                 {
                                     answer = selectedChoices;
                                     move = false;
-                                    break;
                                 }
-                                else
-                                {
-                                    ConsoleHelper.WriteError(ErrorMessage);
-                                    break;
-                                }
+
+                                break;
                             }
                     }
 
