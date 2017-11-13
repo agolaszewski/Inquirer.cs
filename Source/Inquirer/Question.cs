@@ -99,26 +99,26 @@ namespace InquirerCS
         public static QuestionInput<T> Input<T>(string message) where T : struct
         {
             var inquire = new QuestionInput<T>(message);
-            inquire.ValidatationFn = answer =>
-            {
-                if (string.IsNullOrEmpty(answer) == false || inquire.HasDefaultValue)
-                {
-                    if (answer.ToN<T>().HasValue)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        ConsoleHelper.WriteError($"Cannot parse {answer} to {typeof(T)}");
-                        return false;
-                    }
-                }
-                else
-                {
-                    ConsoleHelper.WriteError("Empty line");
-                    return false;
-                }
-            };
+            //inquire.ValidatationFn = answer =>
+            //{
+            //    if (string.IsNullOrEmpty(answer) == false || inquire.HasDefaultValue)
+            //    {
+            //        if (answer.ToN<T>().HasValue)
+            //        {
+            //            return true;
+            //        }
+            //        else
+            //        {
+            //            ConsoleHelper.WriteError($"Cannot parse {answer} to {typeof(T)}");
+            //            return false;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        ConsoleHelper.WriteError("Empty line");
+            //        return false;
+            //    }
+            //};
 
             inquire.ParseFn = answer =>
             {

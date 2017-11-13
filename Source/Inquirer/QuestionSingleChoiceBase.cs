@@ -9,9 +9,38 @@ namespace InquirerCS
         {
         }
 
-        internal List<Tuple<Func<TInput, bool>, Func<TInput, string>>> ValidatorsTInput { get; set; } = new List<Tuple<Func<TInput, bool>, Func<TInput, string>>>();
+        protected Func<TResult, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
-        internal List<Tuple<Func<TResult, bool>, Func<TResult, string>>> ValidatorsTResults { get; set; } = new List<Tuple<Func<TResult, bool>, Func<TResult, string>>>();
+        protected Func<TInput, TResult> ParseFn { get; set; } = answer => { return default(TResult); };
+
+        protected List<Tuple<Func<TInput, bool>, Func<TInput, string>>> ValidatorsTInput { get; set; } = new List<Tuple<Func<TInput, bool>, Func<TInput, string>>>();
+
+        protected List<Tuple<Func<TResult, bool>, Func<TResult, string>>> ValidatorsTResults { get; set; } = new List<Tuple<Func<TResult, bool>, Func<TResult, string>>>();
+
+        public QuestionSingleChoiceBase<TInput, TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            ConvertToStringFn = fn;
+            return this;
+        }
+
+        public QuestionSingleChoiceBase<TInput, TResult> Parse(Func<TInput, TResult> fn)
+        {
+            ParseFn = fn;
+            return this;
+        }
+
+        public QuestionSingleChoiceBase<TInput, TResult> WithConfirmation()
+        {
+            HasConfirmation = true;
+            return this;
+        }
+
+        public QuestionSingleChoiceBase<TInput, TResult> WithDefaultValue(TResult defaultValue)
+        {
+            DefaultValue = defaultValue;
+            HasDefaultValue = true;
+            return this;
+        }
 
         public QuestionSingleChoiceBase<TInput, TResult> WithValidation(Func<TInput, bool> fn, Func<TInput, string> errorMessageFn)
         {
@@ -37,8 +66,6 @@ namespace InquirerCS
             return this;
         }
 
-        internal Func<TResult, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
-
         protected virtual void DisplayQuestion()
         {
             Console.Clear();
@@ -50,6 +77,40 @@ namespace InquirerCS
             }
 
             ConsoleHelper.Write(question);
+        }
+
+        protected bool Validate(TInput value)
+        {
+            foreach (var validator in ValidatorsTInput)
+            {
+                if (!validator.Item1(value))
+                {
+                    ConsoleHelper.WriteError(validator.Item2(value));
+                    return false;
+                }
+            }
+
+            TResult answer = default(TResult);
+            try
+            {
+                answer = ParseFn(value);
+            }
+            catch
+            {
+                ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(TResult)}");
+                return false;
+            }
+
+            foreach (var validator in ValidatorsTResults)
+            {
+                if (!validator.Item1(answer))
+                {
+                    ConsoleHelper.WriteError(validator.Item2(answer));
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
