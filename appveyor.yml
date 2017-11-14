@@ -8,10 +8,13 @@ build:
   verbosity: minimal
 
 cache:
-  - packages -> \Source\packages
+  - Source\packages -> **\packages.config
   
 platform: Any CPU
 configuration: Release
+
+pull_requests:
+  do_not_increment_build_number: true
 
 artifacts:
   - path: \*.nupkg
@@ -25,7 +28,11 @@ before_build:
   - nuget restore Source\Inquirer.sln
 
 after_build:
-  - nuget pack Inquirer.nuspec -Version 0.2.2-alpha
+- ps: >-
+    if($env:APPVEYOR_REPO_TAG_NAME)
+    {
+        nuget pack Inquirer.nuspec -Version $env:APPVEYOR_REPO_TAG_NAME-alpha
+    }
   
 nuget:
     disable_publish_on_pr: true
