@@ -8,6 +8,11 @@ namespace InquirerCS
         {
         }
 
+        public override QuestionListBase<TResult> Page(int pageSize)
+        {
+            return new QuestionPagedRawList<TResult>(this, pageSize);
+        }
+
         internal override TResult Prompt()
         {
             bool tryAgain = true;

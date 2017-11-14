@@ -2,23 +2,21 @@
 
 namespace InquirerCS
 {
-    internal class QuestionPagedRawList<T> : QuestionRawList<T>
+    internal class QuestionPagedRawList<TResult> : QuestionRawList<TResult>
     {
         private int _skipChoices = 0;
 
-        public QuestionPagedRawList(QuestionRawList<T> question) : base(question.Message)
+        public QuestionPagedRawList(QuestionRawList<TResult> questionRawList, int pageSize) : base(questionRawList.Message)
         {
-            ////ValidatationFn = question.ValidatationFn;
-            ////ParseFn = question.ParseFn;
-            Choices = question.Choices;
+            PageSize = pageSize;
         }
 
         public int PageSize { get; internal set; } = 0;
 
-        internal override T Prompt()
+        internal override TResult Prompt()
         {
             bool tryAgain = true;
-            T answer = DefaultValue;
+            TResult answer = DefaultValue;
 
             DisplayQuestion();
 
@@ -41,7 +39,7 @@ namespace InquirerCS
                     if (isCanceled)
                     {
                         IsCanceled = isCanceled;
-                        return default(T);
+                        return default(TResult);
                     }
 
                     switch (key)

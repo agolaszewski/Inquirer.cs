@@ -12,6 +12,8 @@ namespace InquirerCS
 
         internal List<TResult> Choices { get; set; }
 
+        public abstract QuestionListBase<TResult> Page(int pageSize);
+
         public override QuestionSingleChoiceBase<int, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
             if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)

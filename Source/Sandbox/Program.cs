@@ -20,6 +20,7 @@ namespace ConsoleApp1
         private static void MenuTest()
         {
             _test.Menu("Choose")
+               .AddOption("PagingTest", () => { PagingTest(); })
                .AddOption("ValidationTestNumber", () => { ValidationTestNumber(); })
                .AddOption("InputTest", () => { InputTest(); })
                .AddOption("InputTestNumber", () => { InputTestNumber(); })
@@ -29,6 +30,13 @@ namespace ConsoleApp1
                .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
                .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
                .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
+        }
+
+        private static void PagingTest()
+        {
+            var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            _test.Prompt(Question.List("Choose favourite color", list).Page(3).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
+            MenuTest();
         }
 
         private static void InputTest()
