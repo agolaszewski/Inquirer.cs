@@ -20,6 +20,7 @@ namespace ConsoleApp1
         private static void MenuTest()
         {
             _test.Menu("Choose")
+               .AddOption("ValidationTestNumber", () => { ValidationTestNumber(); })
                .AddOption("InputTest", () => { InputTest(); })
                .AddOption("InputTestNumber", () => { InputTestNumber(); })
                .AddOption("PasswordTest", () => { PasswordTest(); })
@@ -39,6 +40,12 @@ namespace ConsoleApp1
         private static void InputTestNumber()
         {
             _test.Prompt(Question.Input<int>("2+2").WithConfirmation().WithDefaultValue(4));
+            MenuTest();
+        }
+
+        private static void ValidationTestNumber()
+        {
+            _test.Prompt(Question.Input<int>("2+2").WithConfirmation().WithValidation(answer => answer == 4, "Not equal 4"));
             MenuTest();
         }
 

@@ -29,20 +29,28 @@ namespace InquirerCS
                 ConsoleHelper.Write("Answer: ");
 
                 bool isCanceled = false;
-                var value = ConsoleHelper.Read(out isCanceled).ToN<int>();
+                var value = ConsoleHelper.Read(out isCanceled);
                 if (isCanceled)
                 {
                     IsCanceled = isCanceled;
                     return default(TResult);
                 }
 
-                if (value.HasValue == false && HasDefaultValue)
+                if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
-                    tryAgain = Confirm(ConvertToStringFn(answer));
+                    return DefaultValue;
                 }
-                else if (value.HasValue && Validate(value.Value))
+
+                var parsedValue = value.ToN<int>();
+                if (!parsedValue.HasValue)
                 {
-                    answer = ParseFn(value.Value);
+                    tryAgain = true;
+                    ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(int)}");
+                }
+                else
+                if (Validate(parsedValue.Value))
+                {
+                    answer = ParseFn(parsedValue.Value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }

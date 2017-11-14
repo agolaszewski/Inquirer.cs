@@ -117,6 +117,9 @@ namespace InquirerCS
             WriteLine(string.Empty);
             Write(">> ", ConsoleColor.Red);
             Write(error);
+            WriteLine(string.Empty);
+            Write("Press any key to continue");
+            Console.ReadKey();
         }
 
         internal static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)

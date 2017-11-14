@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace InquirerCS
+﻿namespace InquirerCS
 {
     public class QuestionInput<TResult> : QuestionSingleChoiceBase<string, TResult>
     {
@@ -34,10 +32,6 @@ namespace InquirerCS
                 {
                     answer = ParseFn(value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
-                }
-                else
-                {
-                    Console.ReadKey();
                 }
             }
 
