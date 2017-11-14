@@ -35,7 +35,7 @@ namespace ConsoleApp1
         private static void PagingTest()
         {
             var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            _test.Prompt(Question.List("Choose favourite color", list).Page(4).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
+            _test.Prompt(Question.List("Choose favourite color", list).Page(3).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
             MenuTest();
         }
 

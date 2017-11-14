@@ -59,8 +59,9 @@ namespace InquirerCS
 
                 ConsoleHelper.PositionWrite("→", 0, y);
                 ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 2, y, ConsoleColor.DarkYellow);
+                bool move = true;
 
-                while (true)
+                while (move)
                 {
                     bool isCanceled = false;
                     var key = ConsoleHelper.ReadKey(out isCanceled);
@@ -77,7 +78,7 @@ namespace InquirerCS
                                 if (_skipChoices - PageSize >= 0)
                                 {
                                     _skipChoices -= PageSize;
-                                    return Prompt(y);
+                                    return Prompt(MathHelper.Clamp(y, 2, Choices.Skip(_skipChoices).Take(PageSize).Count() + 1));
                                 }
 
                                 break;
@@ -88,7 +89,7 @@ namespace InquirerCS
                                 if (_skipChoices + PageSize < Choices.Count)
                                 {
                                     _skipChoices += PageSize;
-                                    return Prompt(y);
+                                    return Prompt(MathHelper.Clamp(y, 2, Choices.Skip(_skipChoices).Take(PageSize).Count() + 1));
                                 }
 
                                 break;
@@ -137,14 +138,17 @@ namespace InquirerCS
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
-
-                                return _pageChoices[Console.CursorTop - boundryTop];
+                                answer = _pageChoices[Console.CursorTop - boundryTop];
+                                move = false;
+                                break;
                             }
                     }
 
                     ConsoleHelper.PositionWrite("→", 0, y);
                     ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 2, y, ConsoleColor.DarkYellow);
                 }
+
+                tryAgain = Confirm(ConvertToStringFn(answer));
             }
 
             Console.WriteLine();
