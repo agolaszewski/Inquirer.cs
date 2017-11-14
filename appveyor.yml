@@ -1,5 +1,16 @@
 version: '{build}'
 
+init:
+    - ps: |
+            If ($Env:APPVEYOR_REPO_TAG_NAME -match "-"){
+              Set-AppveyorBuildVariable -Name "IsPreRelease" -Value True
+              Set-AppveyorBuildVariable -Name "ReleaseSufix" -Value "-alpha"
+            }
+            Else{
+              Set-AppveyorBuildVariable -Name "IsPreRelease" -Value True
+              Set-AppveyorBuildVariable -Name "ReleaseSufix" -Value ""
+            }
+
 branches:
   only:
   - master
@@ -31,7 +42,7 @@ after_build:
 - ps: >-
     if($env:APPVEYOR_REPO_TAG_NAME)
     {
-        nuget pack Inquirer.nuspec -Version $env:APPVEYOR_REPO_TAG_NAME-alpha
+        nuget pack Inquirer.nuspec -Version $env:APPVEYOR_REPO_TAG_NAME$env:ReleaseSufix
     }
   
 nuget:
@@ -42,12 +53,12 @@ deploy:
       release: 'Release $(APPVEYOR_REPO_TAG_NAME) build $(APPVEYOR_BUILD_VERSION)'
       tag: $(APPVEYOR_REPO_TAG_NAME)
       description: ''
-      prerelease: true
+      prerelease: $(IsPreRelease)
       artifact: Inquirer
       auth_token:
           secure: JnUtQ9HEoqyYkHVkj5he8tbRauph96orT9i0eiyAB4R9a9g2hW4Mvm1SYDxsUvUg
       on:
-          appveyor_repo_tag_name: /\d+\.\d+\.\d+/ 
+          appveyor_repo_tag_name: /\d+\.\d+\.\d+(-{0,1})(alpha|$)/
           appveyor_repo_tag: true
           
     - provider: NuGet
@@ -55,7 +66,7 @@ deploy:
           secure: jAS5nyIwacqXwMQl7CAi76q0+NAH3A3fGdvY8SCY+AfnNwSAooWfj4Bym6MPHdDF
       artifact: NuGet
       on:
-          appveyor_repo_tag_name: /\d+\.\d+\.\d+/
+          appveyor_repo_tag_name: /\d+\.\d+\.\d+(-{0,1})(alpha|$)/
           appveyor_repo_tag: true
   
   
