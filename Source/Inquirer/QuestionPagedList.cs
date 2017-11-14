@@ -77,7 +77,7 @@ namespace InquirerCS
                                 if (_skipChoices - PageSize >= 0)
                                 {
                                     _skipChoices -= PageSize;
-                                    return Prompt(PageSize - 1);
+                                    return Prompt(y);
                                 }
 
                                 break;
@@ -88,7 +88,7 @@ namespace InquirerCS
                                 if (_skipChoices + PageSize < Choices.Count)
                                 {
                                     _skipChoices += PageSize;
-                                    return Prompt(PageSize - 1);
+                                    return Prompt(y);
                                 }
 
                                 break;
@@ -127,7 +127,7 @@ namespace InquirerCS
                                     if (_skipChoices + PageSize < Choices.Count)
                                     {
                                         _skipChoices += PageSize;
-                                        return Prompt(PageSize - 1);
+                                        return Prompt(2);
                                     }
                                 }
 
