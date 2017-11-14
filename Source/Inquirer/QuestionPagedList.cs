@@ -77,17 +77,18 @@ namespace InquirerCS
                                 if (_skipChoices - PageSize >= 0)
                                 {
                                     _skipChoices -= PageSize;
-                                    return Prompt(Console.CursorTop + PageSize - 1);
+                                    return Prompt(PageSize - 1);
                                 }
 
                                 break;
                             }
+
                         case (ConsoleKey.RightArrow):
                             {
-                                if (_skipChoices - PageSize >= 0)
+                                if (_skipChoices + PageSize < Choices.Count)
                                 {
-                                    _skipChoices -= PageSize;
-                                    return Prompt(Console.CursorTop + PageSize - 1);
+                                    _skipChoices += PageSize;
+                                    return Prompt(PageSize - 1);
                                 }
 
                                 break;
@@ -106,7 +107,7 @@ namespace InquirerCS
                                     if (_skipChoices - PageSize >= 0)
                                     {
                                         _skipChoices -= PageSize;
-                                        return Prompt(Console.CursorTop + PageSize - 1);
+                                        return Prompt(PageSize + 1);
                                     }
                                 }
 
@@ -126,7 +127,7 @@ namespace InquirerCS
                                     if (_skipChoices + PageSize < Choices.Count)
                                     {
                                         _skipChoices += PageSize;
-                                        return Prompt(Console.CursorTop - PageSize + 1);
+                                        return Prompt(PageSize - 1);
                                     }
                                 }
 
