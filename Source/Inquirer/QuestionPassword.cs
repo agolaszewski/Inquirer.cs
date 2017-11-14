@@ -99,7 +99,6 @@ namespace InquirerCS
                 if (repeated != result)
                 {
                     ConsoleHelper.WriteError("Strings doesn't match");
-                    Console.ReadKey();
                     return true;
                 }
             }
