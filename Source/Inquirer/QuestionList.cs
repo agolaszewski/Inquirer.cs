@@ -37,10 +37,10 @@ namespace InquirerCS
                     return default(TResult);
                 }
 
-                ConsoleHelper.WriteLine(DisplayChoice(0), ConsoleColor.DarkYellow);
+                ConsoleHelper.PositionWriteLine(DisplayChoice(0), 2, 2, ConsoleColor.DarkYellow);
                 for (int i = 1; i < Choices.Count; i++)
                 {
-                    ConsoleHelper.WriteLine(DisplayChoice(i));
+                    ConsoleHelper.PositionWriteLine(DisplayChoice(i), 2, i + 2);
                 }
 
                 Console.CursorVisible = false;
@@ -63,9 +63,8 @@ namespace InquirerCS
                         return default(TResult);
                     }
 
-                    Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write(DisplayChoice(y - boundryTop));
-                    Console.SetCursorPosition(0, y);
+                    ConsoleHelper.PositionWrite(" ", 0, y);
+                    ConsoleHelper.PositionWriteLine(DisplayChoice(y - boundryTop), 2, y);
 
                     switch (key)
                     {
@@ -98,9 +97,8 @@ namespace InquirerCS
                             }
                     }
 
-                    ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 2, y, ConsoleColor.DarkYellow);
                     ConsoleHelper.PositionWrite("→", 0, y);
-                    Console.SetCursorPosition(0, y);
                 }
                 while (move);
 
