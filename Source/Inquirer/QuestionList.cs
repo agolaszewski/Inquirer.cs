@@ -8,6 +8,15 @@ namespace InquirerCS
         {
         }
 
+        protected QuestionList(QuestionList<TResult> questionList) : base(questionList)
+        {
+        }
+
+        public override QuestionListBase<TResult> Page(int pageSize)
+        {
+            return new QuestionPagedList<TResult>(this, pageSize);
+        }
+
         internal override TResult Prompt()
         {
             bool tryAgain = true;
@@ -28,10 +37,10 @@ namespace InquirerCS
                     return default(TResult);
                 }
 
-                ConsoleHelper.WriteLine("  " + DisplayChoice(0), ConsoleColor.DarkYellow);
+                ConsoleHelper.WriteLine(DisplayChoice(0), ConsoleColor.DarkYellow);
                 for (int i = 1; i < Choices.Count; i++)
                 {
-                    ConsoleHelper.WriteLine("  " + DisplayChoice(i));
+                    ConsoleHelper.WriteLine(DisplayChoice(i));
                 }
 
                 Console.CursorVisible = false;
@@ -55,7 +64,7 @@ namespace InquirerCS
                     }
 
                     Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + DisplayChoice(y - boundryTop));
+                    ConsoleHelper.Write(DisplayChoice(y - boundryTop));
                     Console.SetCursorPosition(0, y);
 
                     switch (key)
@@ -89,7 +98,7 @@ namespace InquirerCS
                             }
                     }
 
-                    ConsoleHelper.PositionWrite("  " + DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
                     ConsoleHelper.PositionWrite("→", 0, y);
                     Console.SetCursorPosition(0, y);
                 }
@@ -102,7 +111,7 @@ namespace InquirerCS
             return answer;
         }
 
-        protected string DisplayChoice(int index)
+        protected virtual string DisplayChoice(int index)
         {
             return $"{ConvertToStringFn(Choices[index])}";
         }

@@ -2,118 +2,98 @@
 
 namespace InquirerCS
 {
-    internal class QuestionPagedRawList<T> : QuestionRawList<T>
+    internal class QuestionPagedRawList<TResult> : QuestionRawList<TResult>
     {
         private int _skipChoices = 0;
 
-        public QuestionPagedRawList(QuestionRawList<T> question) : base(question.Message)
+        public QuestionPagedRawList(QuestionRawList<TResult> questionRawList, int pageSize) : base(questionRawList)
         {
-            ////ValidatationFn = question.ValidatationFn;
-            ////ParseFn = question.ParseFn;
-            Choices = question.Choices;
+            PageSize = pageSize;
         }
 
         public int PageSize { get; internal set; } = 0;
 
-        internal override T Prompt()
+        internal override TResult Prompt()
         {
-            bool tryAgain = true;
-            T answer = DefaultValue;
+            Console.Clear();
 
-            DisplayQuestion();
+            bool tryAgain = true;
+            TResult answer = DefaultValue;
 
             while (tryAgain)
             {
+                DisplayQuestion();
+
                 Console.WriteLine();
                 Console.WriteLine();
 
-                DisplayChoices();
+                for (int i = _skipChoices; i < MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count); i++)
+                {
+                    ConsoleHelper.WriteLine(DisplayChoice(i));
+                }
 
-                Console.WriteLine();
-                ConsoleHelper.Write("Answer: ");
+                ConsoleHelper.WriteLine("Answer:");
+                ConsoleHelper.PositionWrite($"Page {Math.Ceiling(((double)_skipChoices / (double)PageSize) + 1)} of {Math.Ceiling((double)Choices.Count / (double)PageSize)}", y: Console.CursorTop + 1);
+                Console.SetCursorPosition(8, Console.CursorTop - 2);
 
-                string result = string.Empty;
-                ConsoleKey key;
-                do
+                while (true)
                 {
                     bool isCanceled = false;
-                    key = ConsoleHelper.ReadKey(out isCanceled);
+                    ConsoleKey? interrupted = null;
+                    var value = ConsoleHelper.Read(out isCanceled, out interrupted, ConsoleKey.LeftArrow, ConsoleKey.RightArrow);
                     if (isCanceled)
                     {
                         IsCanceled = isCanceled;
-                        return default(T);
+                        return default(TResult);
                     }
 
-                    switch (key)
+                    if (interrupted.HasValue)
                     {
-                        case (ConsoleKey.LeftArrow):
-                            {
-                                if (_skipChoices - PageSize >= 0)
+                        switch (interrupted.Value)
+                        {
+                            case (ConsoleKey.LeftArrow):
                                 {
-                                    _skipChoices = _skipChoices - PageSize;
-                                    return Prompt();
+                                    if (_skipChoices - PageSize >= 0)
+                                    {
+                                        _skipChoices -= PageSize;
+                                        return Prompt();
+                                    }
+
+                                    break;
                                 }
 
-                                break;
-                            }
-
-                        case (ConsoleKey.RightArrow):
-                            {
-                                _skipChoices = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
-                                if (_skipChoices != Choices.Count)
+                            case (ConsoleKey.RightArrow):
                                 {
-                                    return Prompt();
+                                    if (_skipChoices + PageSize < Choices.Count)
+                                    {
+                                        _skipChoices += PageSize;
+                                        return Prompt();
+                                    }
+
+                                    break;
                                 }
-
-                                break;
-                            }
-
-                        default:
-                            {
-                                result += (char)key;
-                                break;
-                            }
+                        }
                     }
-                }
-                while (key != ConsoleKey.Enter);
 
-                Console.WriteLine();
-                ConsoleHelper.Write("Answer: ");
-
-                var value = result.ToN<int>();
-
-                if (value.HasValue == false && HasDefaultValue)
-                {
-                    tryAgain = Confirm(ConvertToStringFn(answer));
-                }
-                else if (value.HasValue && Validate(value.Value))
-                {
-                    answer = ParseFn(value.Value);
-                    tryAgain = Confirm(ConvertToStringFn(answer));
+                    var parsedValue = value.ToN<int>();
+                    if (!parsedValue.HasValue)
+                    {
+                        tryAgain = true;
+                        ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(int)}");
+                        return Prompt();
+                    }
+                    else
+                    if (Validate(parsedValue.Value))
+                    {
+                        answer = ParseFn(parsedValue.Value);
+                        tryAgain = Confirm(ConvertToStringFn(answer));
+                        break;
+                    }
                 }
             }
 
             Console.WriteLine();
             return answer;
-        }
-
-        private void DisplayChoices()
-        {
-            if (_skipChoices != 0)
-            {
-                ConsoleHelper.WriteLine("[←] Previous Page");
-            }
-
-            int max = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count);
-            for (int i = _skipChoices; i < max; i++)
-            {
-                ConsoleHelper.WriteLine(DisplayChoice(i + 1, Choices[i]));
-            }
-
-            if (max != Choices.Count)
-            {
-                ConsoleHelper.WriteLine("[→] Next Page");
-            }
         }
     }
 }

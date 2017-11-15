@@ -8,6 +8,15 @@ namespace InquirerCS
         {
         }
 
+        protected QuestionRawList(QuestionRawList<TResult> questionRawList) : base(questionRawList)
+        {
+        }
+
+        public override QuestionListBase<TResult> Page(int pageSize)
+        {
+            return new QuestionPagedRawList<TResult>(this, pageSize);
+        }
+
         internal override TResult Prompt()
         {
             bool tryAgain = true;
@@ -22,7 +31,7 @@ namespace InquirerCS
 
                 for (int i = 0; i < Choices.Count; i++)
                 {
-                    ConsoleHelper.WriteLine(DisplayChoice(i + 1, Choices[i]));
+                    ConsoleHelper.WriteLine(DisplayChoice(i));
                 }
 
                 Console.WriteLine();
@@ -59,9 +68,9 @@ namespace InquirerCS
             return answer;
         }
 
-        protected string DisplayChoice(int index, TResult choice)
+        protected virtual string DisplayChoice(int index)
         {
-            return $"[{index}] {ConvertToStringFn(choice)}";
+            return $"[{index + 1}] {ConvertToStringFn(Choices[index])}";
         }
     }
 }

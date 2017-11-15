@@ -20,6 +20,9 @@ namespace ConsoleApp1
         private static void MenuTest()
         {
             _test.Menu("Choose")
+               .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
+               .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
+               .AddOption("PagingListTest", () => { PagingListTest(); })
                .AddOption("ValidationTestNumber", () => { ValidationTestNumber(); })
                .AddOption("InputTest", () => { InputTest(); })
                .AddOption("InputTestNumber", () => { InputTestNumber(); })
@@ -29,6 +32,27 @@ namespace ConsoleApp1
                .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
                .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
                .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
+        }
+
+        private static void PagingCheckboxTest()
+        {
+            var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            _test.Prompt(Question.Checkbox("Choose favourite colors", list).Page(14).WithDefaultValue(ConsoleColor.DarkGray).WithConfirmation());
+            MenuTest();
+        }
+
+        private static void PagingRawListTest()
+        {
+            var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            _test.Prompt(Question.RawList("Choose favourite color", list).Page(3).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
+            MenuTest();
+        }
+
+        private static void PagingListTest()
+        {
+            var list = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            _test.Prompt(Question.List("Choose favourite color", list).Page(3).WithDefaultValue(ConsoleColor.DarkYellow).WithConfirmation());
+            MenuTest();
         }
 
         private static void InputTest()

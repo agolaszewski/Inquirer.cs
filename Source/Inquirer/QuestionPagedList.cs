@@ -10,17 +10,27 @@ namespace InquirerCS
 
         private int _skipChoices = 0;
 
-        internal QuestionPagedList(QuestionList<TResult> question) : base(question.Message)
+        public QuestionPagedList(QuestionList<TResult> questionList, int pageSize) : base(questionList)
         {
-            ////ValidatationFn = question.ValidatationFn;
-            ////ParseFn = question.ParseFn;
-            Choices = question.Choices;
+            PageSize = pageSize;
         }
 
         internal int PageSize { get; set; } = 0;
 
         internal override TResult Prompt()
         {
+            return Prompt(Console.CursorTop);
+        }
+
+        protected override string DisplayChoice(int index)
+        {
+            return $"{ConvertToStringFn(_pageChoices[index])}";
+        }
+
+        private TResult Prompt(int cursorPosition)
+        {
+            int y = cursorPosition;
+
             Console.Clear();
 
             bool tryAgain = true;
@@ -34,19 +44,25 @@ namespace InquirerCS
                 Console.WriteLine();
                 Console.WriteLine();
 
-                DisplayChoices();
+                for (int i = 0; i < _pageChoices.Count; i++)
+                {
+                    ConsoleHelper.PositionWriteLine(DisplayChoice(i), 2, Console.CursorTop);
+                }
+
+                ConsoleHelper.PositionWrite($"Page {Math.Ceiling(((double)_skipChoices / (double)PageSize) + 1)} of {Math.Ceiling((double)Choices.Count / (double)PageSize)}", y: Console.CursorTop + 1);
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
 
                 Console.CursorVisible = false;
 
                 int boundryTop = Console.CursorTop - _pageChoices.Count;
                 int boundryBottom = boundryTop + _pageChoices.Count - 1;
 
-                ConsoleHelper.PositionWrite("→", 0, boundryTop);
+                ConsoleHelper.PositionWrite("→", 0, y);
+                ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 2, y, ConsoleColor.DarkYellow);
+                bool move = true;
 
-                while (true)
+                while (move)
                 {
-                    int y = Console.CursorTop;
-
                     bool isCanceled = false;
                     var key = ConsoleHelper.ReadKey(out isCanceled);
                     if (isCanceled)
@@ -55,16 +71,36 @@ namespace InquirerCS
                         return default(TResult);
                     }
 
-                    Console.SetCursorPosition(0, y);
-                    ConsoleHelper.Write("  " + DisplayChoice(y - boundryTop));
-                    Console.SetCursorPosition(0, y);
-
                     switch (key)
                     {
+                        case (ConsoleKey.LeftArrow):
+                            {
+                                if (_skipChoices - PageSize >= 0)
+                                {
+                                    _skipChoices -= PageSize;
+                                    return Prompt(MathHelper.Clamp(y, 2, Choices.Skip(_skipChoices).Take(PageSize).Count() + 1));
+                                }
+
+                                break;
+                            }
+
+                        case (ConsoleKey.RightArrow):
+                            {
+                                if (_skipChoices + PageSize < Choices.Count)
+                                {
+                                    _skipChoices += PageSize;
+                                    return Prompt(MathHelper.Clamp(y, 2, Choices.Skip(_skipChoices).Take(PageSize).Count() + 1));
+                                }
+
+                                break;
+                            }
+
                         case (ConsoleKey.UpArrow):
                             {
                                 if (y > boundryTop)
                                 {
+                                    ConsoleHelper.PositionWrite(" ", 0, y);
+                                    ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 2, y);
                                     y -= 1;
                                 }
                                 else
@@ -72,7 +108,7 @@ namespace InquirerCS
                                     if (_skipChoices - PageSize >= 0)
                                     {
                                         _skipChoices -= PageSize;
-                                        return Prompt();
+                                        return Prompt(PageSize + 1);
                                     }
                                 }
 
@@ -83,6 +119,8 @@ namespace InquirerCS
                             {
                                 if (y < boundryBottom)
                                 {
+                                    ConsoleHelper.PositionWrite(" ", 0, y);
+                                    ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 2, y);
                                     y += 1;
                                 }
                                 else
@@ -90,7 +128,7 @@ namespace InquirerCS
                                     if (_skipChoices + PageSize < Choices.Count)
                                     {
                                         _skipChoices += PageSize;
-                                        return Prompt();
+                                        return Prompt(2);
                                     }
                                 }
 
@@ -100,25 +138,21 @@ namespace InquirerCS
                         case (ConsoleKey.Enter):
                             {
                                 Console.CursorVisible = true;
-                                return _pageChoices[Console.CursorTop - boundryTop];
+                                answer = _pageChoices[Console.CursorTop - boundryTop];
+                                move = false;
+                                break;
                             }
                     }
 
                     ConsoleHelper.PositionWrite("→", 0, y);
-                    ConsoleHelper.PositionWrite("  " + DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - boundryTop), 2, y, ConsoleColor.DarkYellow);
                 }
+
+                tryAgain = Confirm(ConvertToStringFn(answer));
             }
 
             Console.WriteLine();
             return answer;
-        }
-
-        private void DisplayChoices()
-        {
-            for (int i = 0; i < _pageChoices.Count; i++)
-            {
-                ConsoleHelper.WriteLine("  " + DisplayChoice(i));
-            }
         }
     }
 }
