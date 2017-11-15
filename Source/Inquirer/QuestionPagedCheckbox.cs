@@ -4,25 +4,32 @@ using System.Linq;
 
 namespace InquirerCS
 {
-    public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new()
+    public class QuestionPagedCheckbox<TList, TResult> : QuestionCheckbox<TList, TResult> where TList : List<TResult>, new()
     {
-        public QuestionCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox) : base(questionCheckbox)
+        private const int _BOUNDRY_TOP = 2;
+
+        private int _skipChoices;
+
+        public QuestionPagedCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox, int pageSize) : base(questionCheckbox)
+        {
+            PageSize = pageSize;
+        }
+
+        public QuestionPagedCheckbox(string question) : base(question)
         {
         }
 
-        internal QuestionCheckbox(string question) : base(question)
-        {
-        }
-
-        public QuestionMultipleListBase<TList, TResult> Page(int pageSize)
-        {
-            return new QuestionPagedCheckbox<TList, TResult>(this, pageSize);
-        }
+        public int PageSize { get; private set; }
 
         internal override TList Prompt()
         {
+            return Prompt(_BOUNDRY_TOP);
+        }
+
+        private TList Prompt(int cursorPosition)
+        {
+            int y = cursorPosition;
             int _boundryBottom;
-            int _boundryTop;
 
             bool tryAgain = true;
             TList answer = DefaultValue;
@@ -35,24 +42,23 @@ namespace InquirerCS
                 ConsoleHelper.WriteLine();
                 Console.CursorVisible = false;
 
-                _boundryTop = Console.CursorTop;
-
-                for (int i = 0; i < Choices.Count; i++)
+                for (int i = _skipChoices; i < MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count); i++)
                 {
-                    DisplayCheckbox(i, 2, i);
-                    ConsoleHelper.PositionWriteLine(DisplayChoice(i), 4, i + _boundryTop);
+                    DisplayCheckbox(i, 2, _BOUNDRY_TOP + (i % PageSize));
+                    ConsoleHelper.PositionWriteLine(DisplayChoice(i), 4, _BOUNDRY_TOP + (i % PageSize));
                 }
 
-                _boundryBottom = _boundryTop + Choices.Count - 1;
+                ConsoleHelper.PositionWrite($"Page {Math.Ceiling(((double)_skipChoices / (double)PageSize) + 1)} of {Math.Ceiling((double)Choices.Count / (double)PageSize)}", y: Console.CursorTop + 1);
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
 
-                ConsoleHelper.PositionWrite("→", 0, _boundryTop);
-                ConsoleHelper.PositionWrite(DisplayChoice(0), 4, _boundryTop, ConsoleColor.DarkYellow);
+                _boundryBottom = MathHelper.Clamp(_skipChoices + PageSize, 0, Choices.Count) - _skipChoices + _BOUNDRY_TOP - 1;
+
+                ConsoleHelper.PositionWrite("→", 0, y);
+                ConsoleHelper.PositionWrite(DisplayChoice(y - _BOUNDRY_TOP + _skipChoices), 4, y, ConsoleColor.DarkYellow);
 
                 bool move = true;
                 while (move)
                 {
-                    int y = Console.CursorTop;
-
                     bool isCanceled = false;
                     var key = ConsoleHelper.ReadKey(out isCanceled);
                     if (isCanceled)
@@ -61,24 +67,33 @@ namespace InquirerCS
                         return default(TList);
                     }
 
-                    DisplayCheckbox(y - _boundryTop, 2, y);
-                    ConsoleHelper.PositionWrite(DisplayChoice(y - _boundryTop), 4, y);
+                    DisplayCheckbox(y - _BOUNDRY_TOP + _skipChoices, 2, y);
+                    ConsoleHelper.PositionWrite(" ", 0, y);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - _BOUNDRY_TOP + _skipChoices), 4, y);
 
                     switch (key)
                     {
                         case (ConsoleKey.RightArrow):
                             {
-                                Selected[y - _boundryTop] = !Selected[y - _boundryTop];
-                                DisplayCheckbox(y - _boundryTop, 2, y);
+                                Selected[y - _BOUNDRY_TOP + _skipChoices] = !Selected[y - _BOUNDRY_TOP + _skipChoices];
+                                DisplayCheckbox(y - _BOUNDRY_TOP + _skipChoices, 2, y);
 
                                 break;
                             }
 
                         case (ConsoleKey.UpArrow):
                             {
-                                if (y > _boundryTop)
+                                if (y > _BOUNDRY_TOP)
                                 {
                                     y -= 1;
+                                }
+                                else
+                                {
+                                    if (_skipChoices - PageSize >= 0)
+                                    {
+                                        _skipChoices -= PageSize;
+                                        return Prompt(PageSize + 1);
+                                    }
                                 }
 
                                 break;
@@ -89,6 +104,14 @@ namespace InquirerCS
                                 if (y < _boundryBottom)
                                 {
                                     y += 1;
+                                }
+                                else
+                                {
+                                    if (_skipChoices + PageSize < Choices.Count)
+                                    {
+                                        _skipChoices += PageSize;
+                                        return Prompt(_BOUNDRY_TOP);
+                                    }
                                 }
 
                                 break;
@@ -116,9 +139,8 @@ namespace InquirerCS
                             }
                     }
 
-                    ConsoleHelper.PositionWrite(" ", 0, y - 1);
                     ConsoleHelper.PositionWrite("→", 0, y);
-                    ConsoleHelper.PositionWrite(DisplayChoice(y - _boundryTop), 4, y, ConsoleColor.DarkYellow);
+                    ConsoleHelper.PositionWrite(DisplayChoice(y - _BOUNDRY_TOP + _skipChoices), 4, y, ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, y);
                 }
 
@@ -128,23 +150,6 @@ namespace InquirerCS
 
             Console.WriteLine();
             return answer;
-        }
-
-        protected void DisplayCheckbox(int selectedIndex, int x, int y)
-        {
-            if (Selected[selectedIndex])
-            {
-                ConsoleHelper.PositionWrite("*", x, y);
-            }
-            else
-            {
-                ConsoleHelper.PositionWrite(" ", x, y);
-            }
-        }
-
-        protected virtual string DisplayChoice(int index)
-        {
-            return $"{ConvertToStringFn(Choices[index])}";
         }
     }
 }

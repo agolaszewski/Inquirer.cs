@@ -8,6 +8,13 @@ namespace InquirerCS
     {
         private TList _choices;
 
+        private QuestionCheckbox<TList, TResult> questionCheckbox;
+
+        public QuestionMultipleListBase(QuestionCheckbox<TList, TResult> questionCheckbox) : base(questionCheckbox.Message)
+        {
+            Choices = questionCheckbox.Choices;
+        }
+
         internal QuestionMultipleListBase(string message) : base(message)
         {
         }
