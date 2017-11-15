@@ -10,6 +10,13 @@ namespace InquirerCS
         {
         }
 
+        protected QuestionListBase(QuestionListBase<TResult> questionListBase) : base(questionListBase.Message)
+        {
+            Choices = questionListBase.Choices;
+            ParseFn = questionListBase.ParseFn;
+            ValidatorsTInput = questionListBase.ValidatorsTInput;
+        }
+
         internal List<TResult> Choices { get; set; }
 
         public abstract QuestionListBase<TResult> Page(int pageSize);

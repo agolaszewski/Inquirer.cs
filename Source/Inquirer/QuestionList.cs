@@ -8,9 +8,8 @@ namespace InquirerCS
         {
         }
 
-        protected QuestionList(QuestionList<TResult> questionList) : base(questionList.Message)
+        protected QuestionList(QuestionList<TResult> questionList) : base(questionList)
         {
-            Choices = questionList.Choices;
         }
 
         public override QuestionListBase<TResult> Page(int pageSize)
