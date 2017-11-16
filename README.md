@@ -4,11 +4,11 @@
 [nuget]:     https://www.nuget.org/packages/Inquirer.cs/
 
 [checkbox-img]: Assets/Screenshots/checkbox.png
-[confirm-img]: Assets/Screenshots/confirm.png
+[confirm-img]: Assets/Screenshots/confirm.PNG
 [extended-img]: Assets/Screenshots/extended.png
 [input-img]: Assets/Screenshots/input.png
 [list-img]: Assets/Screenshots/list.png
-[password-img]: Assets/Screenshots/password.png
+[password-img]: Assets/Screenshots/password.PNG
 [rawlist-img]: Assets/Screenshots/rawlist.png
 
 Inquirer.cs
