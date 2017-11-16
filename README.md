@@ -21,13 +21,13 @@ A collection of common interactive command line user interfaces.
 
 Clone of [Inquirer.js](https://github.com/SBoudrias/Inquirer.js)
 
-### Installation
+## Installation
 
 ```shell
 Install-Package Inquirer.cs
 ```
 
-### Prompt types
+## Prompt types
 
 #### List
 
@@ -80,3 +80,5 @@ Question.Input<int>("2+2")
 Question.Password("Type password");
 ```
 ![][password-img]
+
+## Extensions
