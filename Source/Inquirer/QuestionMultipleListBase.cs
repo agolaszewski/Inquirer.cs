@@ -45,19 +45,6 @@ namespace InquirerCS
             return this;
         }
 
-        public void DisplayQuestion()
-        {
-            Console.Clear();
-            ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
-            var question = $"{Message} : ";
-            if (HasDefaultValue)
-            {
-                question += $"[{string.Join(",", DefaultValue.Select(x => ConvertToStringFn(x)))}] ";
-            }
-
-            ConsoleHelper.Write(question);
-        }
-
         public QuestionMultipleListBase<TList, TResult> WithConfirmation()
         {
             HasConfirmation = true;
@@ -139,6 +126,19 @@ namespace InquirerCS
         {
             ValidatorsTResults.Add(new Tuple<Func<TList, bool>, Func<TList, string>>(fn, answers => { return errorMessage; }));
             return this;
+        }
+
+        protected void DisplayQuestion()
+        {
+            Console.Clear();
+            ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
+            var question = $"{Message} : ";
+            if (HasDefaultValue)
+            {
+                question += $"[{string.Join(",", DefaultValue.Select(x => ConvertToStringFn(x)))}] ";
+            }
+
+            ConsoleHelper.Write(question);
         }
 
         protected bool Validate(TList answer)

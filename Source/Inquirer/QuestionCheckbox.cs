@@ -111,6 +111,10 @@ namespace InquirerCS
                                     answer = selectedChoices;
                                     move = false;
                                 }
+                                else
+                                {
+                                    return Prompt();
+                                }
 
                                 break;
                             }

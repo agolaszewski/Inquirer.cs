@@ -13,6 +13,10 @@ namespace InquirerCS
         public QuestionPagedList(QuestionList<TResult> questionList, int pageSize) : base(questionList)
         {
             PageSize = pageSize;
+            Parse(answer =>
+            {
+                return _pageChoices[answer];
+            });
         }
 
         internal int PageSize { get; set; } = 0;
@@ -137,8 +141,13 @@ namespace InquirerCS
 
                         case (ConsoleKey.Enter):
                             {
+                                if (!Validate(Console.CursorTop - boundryTop))
+                                {
+                                    return Prompt(y);
+                                }
+
                                 Console.CursorVisible = true;
-                                answer = _pageChoices[Console.CursorTop - boundryTop];
+                                answer = ParseFn(Console.CursorTop - boundryTop);
                                 move = false;
                                 break;
                             }

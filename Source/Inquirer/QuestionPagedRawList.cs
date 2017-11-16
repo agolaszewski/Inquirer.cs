@@ -15,13 +15,13 @@ namespace InquirerCS
 
         internal override TResult Prompt()
         {
-            Console.Clear();
-
             bool tryAgain = true;
             TResult answer = DefaultValue;
 
             while (tryAgain)
             {
+                Console.Clear();
+
                 DisplayQuestion();
 
                 Console.WriteLine();
@@ -56,10 +56,9 @@ namespace InquirerCS
                                     if (_skipChoices - PageSize >= 0)
                                     {
                                         _skipChoices -= PageSize;
-                                        return Prompt();
                                     }
 
-                                    break;
+                                    return Prompt();
                                 }
 
                             case (ConsoleKey.RightArrow):
@@ -67,24 +66,27 @@ namespace InquirerCS
                                     if (_skipChoices + PageSize < Choices.Count)
                                     {
                                         _skipChoices += PageSize;
-                                        return Prompt();
                                     }
 
-                                    break;
+                                    return Prompt();
                                 }
                         }
                     }
-
-                    var parsedValue = value.ToN<int>();
-                    if (!parsedValue.HasValue)
-                    {
-                        tryAgain = true;
-                        ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(int)}");
-                        return Prompt();
-                    }
                     else
-                    if (Validate(parsedValue.Value))
                     {
+                        var parsedValue = value.ToN<int>();
+                        if (!parsedValue.HasValue)
+                        {
+                            tryAgain = true;
+                            ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(int)}");
+                            return Prompt();
+                        }
+                        else
+                        if (!Validate(parsedValue.Value))
+                        {
+                            return Prompt();
+                        }
+
                         answer = ParseFn(parsedValue.Value);
                         tryAgain = Confirm(ConvertToStringFn(answer));
                         break;

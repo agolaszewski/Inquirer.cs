@@ -90,8 +90,13 @@ namespace InquirerCS
 
                         case (ConsoleKey.Enter):
                             {
+                                if (!Validate(Console.CursorTop - boundryTop - 1))
+                                {
+                                    return Prompt();
+                                }
+
                                 Console.CursorVisible = true;
-                                answer = Choices[Console.CursorTop - boundryTop];
+                                answer = ParseFn(Console.CursorTop - boundryTop - 1);
                                 move = false;
                                 break;
                             }

@@ -34,6 +34,8 @@ namespace InquirerCS
             bool tryAgain = true;
             TList answer = DefaultValue;
 
+            Console.Clear();
+
             while (tryAgain)
             {
                 DisplayQuestion();
@@ -133,6 +135,10 @@ namespace InquirerCS
                                 {
                                     answer = selectedChoices;
                                     move = false;
+                                }
+                                else
+                                {
+                                    return Prompt(_BOUNDRY_TOP);
                                 }
 
                                 break;

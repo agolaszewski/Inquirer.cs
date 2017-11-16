@@ -200,7 +200,7 @@ namespace InquirerCS
 
         internal static void WriteError(string error)
         {
-            WriteLine(string.Empty);
+            Console.Clear();
             Write(">> ", ConsoleColor.Red);
             Write(error);
             WriteLine(string.Empty);

@@ -110,7 +110,7 @@ namespace InquirerCS
 
             inquire.Parse(answer =>
             {
-                return inquire.Choices[answer - 1];
+                return inquire.Choices[answer];
             });
 
             return inquire;
