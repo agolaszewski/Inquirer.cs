@@ -29,7 +29,7 @@ artifacts:
   - path: \*.nupkg
     name: NuGet
   - path: \Source\Inquirer\bin\$(configuration)
-    name: Inquirer
+    name: Inquirer 
     type: zip
 
 
