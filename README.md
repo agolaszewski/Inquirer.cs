@@ -3,13 +3,13 @@
 [nuget-img]: https://img.shields.io/nuget/v/Inquirer.cs.svg
 [nuget]:     https://www.nuget.org/packages/Inquirer.cs/
 
-[checkbox-img]: assets/screenshots/checkbox.png
-[confirm-img]: assets/screenshots/confirm.png
-[extended-img]: assets/screenshots/extended.png
-[input-img]: assets/screenshots/input.png
-[list-img]: assets/screenshots/list.png
-[password-img]: assets/screenshots/password.png
-[rawlist-img]: assets/screenshots/rawlist.png
+[checkbox-img]: Assets/Screenshots/checkbox.png
+[confirm-img]: Assets/Screenshots/confirm.png
+[extended-img]: Assets/Screenshots/extended.png
+[input-img]: Assets/Screenshots/input.png
+[list-img]: Assets/Screenshots/list.png
+[password-img]: Assets/Screenshots/password.png
+[rawlist-img]: Assets/Screenshots/rawlist.png
 
 Inquirer.cs
 ===========
