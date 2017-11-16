@@ -89,6 +89,7 @@ namespace InquirerCS
 
                         answer = ParseFn(parsedValue.Value);
                         tryAgain = Confirm(ConvertToStringFn(answer));
+                        break;
                     }
                 }
             }

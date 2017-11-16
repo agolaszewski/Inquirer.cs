@@ -20,8 +20,8 @@ namespace ConsoleApp1
         private static void MenuTest()
         {
             _test.Menu("Choose")
-               .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
-               .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
+               //.AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
+               //.AddOption("PagingRawListTest", () => { PagingRawListTest(); })
                .AddOption("PagingListTest", () => { PagingListTest(); })
                .AddOption("ValidationTestNumber", () => { ValidationTestNumber(); })
                .AddOption("InputTest", () => { InputTest(); })
@@ -44,7 +44,7 @@ namespace ConsoleApp1
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
-                .Page(14)
+                .Page(3)
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                 .WithConfirmation()
                 .WithConfirmation()
@@ -56,14 +56,24 @@ namespace ConsoleApp1
         private static void PagingRawListTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.RawList("Choose favourite color", colors).Page(3));
+            var answer = _test.Prompt(Question.RawList("Choose favourite color", colors)
+                .Page(3)
+                .WithDefaultValue(ConsoleColor.DarkCyan)
+                .WithConfirmation()
+                .WithValidation(item => item == ConsoleColor.Black, "Choose black"))
+                .Return();
             MenuTest();
         }
 
         private static void PagingListTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.List("Choose favourite color", colors).Page(3));
+            var answer = _test.Prompt(Question.List("Choose favourite color", colors)
+                .Page(3)
+                .WithDefaultValue(ConsoleColor.DarkCyan)
+                .WithConfirmation()
+                .WithValidation(item => item == ConsoleColor.Black, "Choose black"))
+            .Return();
             MenuTest();
         }
 
