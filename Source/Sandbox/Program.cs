@@ -20,11 +20,10 @@ namespace ConsoleApp1
         private static void MenuTest()
         {
             _test.Menu("Choose")
-               //.AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
-               //.AddOption("PagingRawListTest", () => { PagingRawListTest(); })
-               //.AddOption("PagingListTest", () => { PagingListTest(); })
-               //.AddOption("ValidationTestNumber", () => { ValidationTestNumber(); })
-               //.AddOption("InputTest", () => { InputTest(); })
+               .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
+               .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
+               .AddOption("PagingListTest", () => { PagingListTest(); })
+               .AddOption("InputTest", () => { InputTest(); })
                .AddOption("PasswordTest", () => { PasswordTest(); })
                .AddOption("ListTest", () => { ListTest(); })
                .AddOption("ListRawTest", () => { ListRawTest(); })
@@ -101,21 +100,35 @@ namespace ConsoleApp1
         private static void ListTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            ConsoleColor answer = _test.Prompt(Question.List("Choose favourite color", colors)).Return();
+            var answer = _test.Prompt(Question.List("Choose favourite color", colors)
+                 .WithDefaultValue(ConsoleColor.DarkCyan)
+                 .WithConfirmation()
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"))
+                 .Return();
             MenuTest();
         }
 
         private static void ListRawTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            ConsoleColor answer = _test.Prompt(Question.RawList("Choose favourite color", colors)).Return();
+            var answer = _test.Prompt(Question.RawList("Choose favourite color", colors)
+                 .WithDefaultValue(ConsoleColor.DarkCyan)
+                 .WithConfirmation()
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"))
+                 .Return();
             MenuTest();
         }
 
         private static void ListCheckboxTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            List<ConsoleColor> answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)).Return();
+            var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
+                .Page(3)
+                .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
+                .WithConfirmation()
+                .WithConfirmation()
+                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"))
+            .Return();
             MenuTest();
         }
 
