@@ -48,13 +48,13 @@ namespace InquirerCS
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
-                    answer = DefaultValue;
-                    tryAgain = Confirm(ConvertToStringFn(answer));
+                    value = ConvertToStringFn(DefaultValue);
                 }
-                else if (Validate(value))
+                
+                if (Validate(value))
                 {
-                    answer = ParseFn(value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
+                    answer = ParseFn(value);
                 }
             }
 

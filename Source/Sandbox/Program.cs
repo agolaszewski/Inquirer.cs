@@ -22,22 +22,15 @@ namespace ConsoleApp1
             _test.Menu("Choose")
                //.AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
                //.AddOption("PagingRawListTest", () => { PagingRawListTest(); })
-               .AddOption("PagingListTest", () => { PagingListTest(); })
-               .AddOption("ValidationTestNumber", () => { ValidationTestNumber(); })
-               .AddOption("InputTest", () => { InputTest(); })
-               .AddOption("InputTestNumber", () => { InputTestNumber(); })
+               //.AddOption("PagingListTest", () => { PagingListTest(); })
+               //.AddOption("ValidationTestNumber", () => { ValidationTestNumber(); })
+               //.AddOption("InputTest", () => { InputTest(); })
                .AddOption("PasswordTest", () => { PasswordTest(); })
                .AddOption("ListTest", () => { ListTest(); })
                .AddOption("ListRawTest", () => { ListRawTest(); })
                .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
                .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
                .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
-        }
-
-        private static void ValidationTestNumber()
-        {
-            var answer = _test.Prompt(Question.Input<int>("2+2").WithValidation(value => value == 4, "Not equal 4"));
-            MenuTest();
         }
 
         private static void PagingCheckboxTest()
@@ -79,25 +72,29 @@ namespace ConsoleApp1
 
         private static void InputTest()
         {
-            string answer = _test.Prompt(Question.Input("How are you?")).Return();
-            MenuTest();
-        }
-
-        private static void InputTestNumber()
-        {
-            var answer = _test.Prompt(Question.Input<int>("2+2"));
+            string answer = _test.Prompt(Question.Input("How are you?")
+                .WithDefaultValue("fine")
+                .WithConfirmation()
+                .WithValidation(value => value == "fine", "You cannot be not fine!"))
+            .Return();
             MenuTest();
         }
 
         private static void ConfirmTest()
         {
-            var answer = _test.Prompt(Question.Confirm("Are you sure?"));
+            var answer = _test.Prompt(Question.Confirm("Are you sure?")
+                .WithDefaultValue(false))
+            .Return();
             MenuTest();
         }
 
         private static void PasswordTest()
         {
-            string answer = _test.Prompt(Question.Password("Type password")).Return();
+            string answer = _test.Prompt(Question.Password("Type password")
+                .WithDefaultValue("123456789")
+                .WithConfirmation()
+                .WithValidation(value => value.Length > 8 && value.Length < 10, "Password length must be between 8-10 characters"))
+            .Return();
             MenuTest();
         }
 
