@@ -39,7 +39,6 @@ namespace ConsoleApp1
                 .Page(3)
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                 .WithConfirmation()
-                .WithConfirmation()
                 .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"))
             .Return();
             MenuTest();
@@ -123,9 +122,7 @@ namespace ConsoleApp1
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
-                .Page(3)
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
-                .WithConfirmation()
                 .WithConfirmation()
                 .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"))
             .Return();
