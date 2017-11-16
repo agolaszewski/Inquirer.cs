@@ -39,7 +39,7 @@ namespace InquirerCS
 
                 for (int i = 0; i < Choices.Count; i++)
                 {
-                    DisplayCheckbox(i, 2, i);
+                    DisplayCheckbox(i, 2, i + _boundryTop);
                     ConsoleHelper.PositionWriteLine(DisplayChoice(i), 4, i + _boundryTop);
                 }
 

@@ -3,6 +3,14 @@
 [nuget-img]: https://img.shields.io/nuget/v/Inquirer.cs.svg
 [nuget]:     https://www.nuget.org/packages/Inquirer.cs/
 
+[checkbox-img]: assets/screenshots/checkbox.png
+[confirm-img]: assets/screenshots/confirm.png
+[extended-img]: assets/screenshots/extended.png
+[input-img]: assets/screenshots/input.png
+[list-img]: assets/screenshots/list.png
+[password-img]: assets/screenshots/password.png
+[rawlist-img]: assets/screenshots/rawlist.png
+
 Inquirer.cs
 ===========
 
@@ -27,12 +35,14 @@ Install-Package Inquirer.cs
 List<ConsoleColor> colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
 Question.List("Choose favourite color", colors);
 ```
+![][list-img]
 
 #### Raw List
 ```csharp
 List<ConsoleColor> colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
 Question.RawList("Choose favourite color", colors);
 ```
+![][rawlist-img]
 
 #### Expand
 ```csharp
@@ -43,24 +53,30 @@ var colors = new Dictionary<ConsoleKey, ConsoleColor>();
 
 Question.ExtendedList("Choose favourite color", colors);
 ```
+![][extended-img]
+
 #### Checkbox
 ```csharp
 var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
 Question.Checkbox("Choose favourite colors", colors);
 ```
+![][checkbox-img]
 
 #### Confirm
 ```csharp
 Question.Confirm("Are you sure?");
 ```
+![][confirm-img]
 
 #### Input
 ```csharp
 Question.Input("How are you?");
 Question.Input<int>("2+2")
 ```
+![][input-img]
 
 #### Password
 ```csharp
 Question.Password("Type password");
 ```
+![][password-img]
