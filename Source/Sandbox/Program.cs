@@ -132,11 +132,14 @@ namespace ConsoleApp1
         private static void ListExtendedTest()
         {
             var colors = new Dictionary<ConsoleKey, ConsoleColor>();
-            colors.Add(ConsoleKey.B, ConsoleColor.Blue);
+            colors.Add(ConsoleKey.B, ConsoleColor.Black);
             colors.Add(ConsoleKey.C, ConsoleColor.Cyan);
             colors.Add(ConsoleKey.D, ConsoleColor.DarkBlue);
 
-            ConsoleColor answer = _test.Prompt(Question.ExtendedList("Choose favourite color", colors)).Return();
+            ConsoleColor answer = _test.Prompt(Question.ExtendedList("Choose favourite color", colors)
+                .WithDefaultValue(ConsoleColor.Black)
+                .WithConfirmation()
+                .WithValidation(values => values == ConsoleColor.Black, "Choose black")).Return();
             MenuTest();
         }
     }
