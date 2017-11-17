@@ -82,3 +82,25 @@ Question.Password("Type password");
 ![][password-img]
 
 ## Extensions
+
+```csharp
+Page(int pageSize)
+```
+Change the number of lines that will be rendered when using list, rawList, or checkbox.
+
+```csharp
+WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
+```
+Default value(s) to use if nothing is entered.
+compareFn must
+
+```csharp
+WithConfirmation()
+```
+Choosen value is displayed for final confirmation
+
+```csharp
+WithValidation(Func<TResult, bool> fn, string errorMessage)
+WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+```
+Should return true if the value is valid, and an error message (String) otherwise. If false is returned, a default error message is provided.
