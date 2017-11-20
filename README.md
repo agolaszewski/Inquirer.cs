@@ -113,7 +113,22 @@ new Inquirer<Answers>();
 _answers = new Answers();
 _test = new Inquirer<Answers>(_answers);
 ```
-Inquirer is for preserving history and assigning answer to TAnswer class
+Inquirer is for preserving history and assigning answer to TAnswer class.
+It works by wrapping  ```csharp Prompt ``` or ```csharp Menu ``` methods in another method.
+
+```csharp
+private static void PagingCheckboxTest()
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
+                .Page(3)
+                .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
+                .WithConfirmation()
+                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"))
+            .Return();
+            MenuTest();
+        }
+```
 
 
 #### Menu
@@ -130,6 +145,16 @@ _test.Menu("Choose")
                .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
                .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
                .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
+```
+
+#### Prompt
+```csharp
+public InquirerFor<TAnswers, TResult> Prompt<TResult>(QuestionBase<TResult> question)
+```
+
+### For
+```csharp
+public TResult For(Expression<Func<TAnswers, TResult>> answerProperty)
 ```
 
 
