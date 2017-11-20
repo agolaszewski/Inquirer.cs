@@ -100,6 +100,11 @@ compareFn must
 Choosen value is displayed for final confirmation
 
 ```csharp
+.ConvertToString(Func<TResult, string> fn)
+```
+Choose display name for complex type
+
+```csharp
 .WithValidation(Func<TResult, bool> fn, string errorMessage)
 .WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
 ```
@@ -148,13 +153,22 @@ _test.Menu("Choose")
 ```
 
 #### Prompt
+
 ```csharp
 public InquirerFor<TAnswers, TResult> Prompt<TResult>(QuestionBase<TResult> question)
 ```
 
-### For
+#### For
+
 ```csharp
 public TResult For(Expression<Func<TAnswers, TResult>> answerProperty)
+```
+
+#### Return
+
+```csharp
+public TResult Return()
+public InquirerFor<TAnswers, TConvert> Return<TConvert>(Func<TResult, TConvert> convertFn)
 ```
 
 
