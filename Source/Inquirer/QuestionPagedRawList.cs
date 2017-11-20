@@ -13,7 +13,7 @@ namespace InquirerCS
 
         internal int PageSize { get; private set; } = 0;
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;

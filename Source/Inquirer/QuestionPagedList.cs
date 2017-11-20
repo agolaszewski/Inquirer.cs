@@ -21,7 +21,7 @@ namespace InquirerCS
 
         internal int PageSize { get; set; } = 0;
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             return Prompt(Console.CursorTop);
         }

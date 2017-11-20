@@ -19,7 +19,7 @@ namespace InquirerCS
 
         internal string Message { get; set; }
 
-        internal abstract TAnswer Prompt();
+        public abstract TAnswer Prompt();
 
         protected virtual bool Confirm(string result)
         {

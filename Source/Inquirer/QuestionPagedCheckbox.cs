@@ -17,7 +17,7 @@ namespace InquirerCS
 
         internal int PageSize { get; private set; }
 
-        internal override TList Prompt()
+        public override TList Prompt()
         {
             return Prompt(_BOUNDRY_TOP);
         }

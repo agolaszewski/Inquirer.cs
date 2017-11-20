@@ -19,7 +19,7 @@ namespace InquirerCS
             return new QuestionPagedCheckbox<TList, TResult>(this, pageSize);
         }
 
-        internal override TList Prompt()
+        public override TList Prompt()
         {
             int _boundryBottom;
             int _boundryTop;
