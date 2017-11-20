@@ -21,13 +21,7 @@ namespace InquirerCS
                 ConsoleKey key;
                 do
                 {
-                    bool isCanceled = false;
-                    key = ConsoleHelper.ReadKey(out isCanceled);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TResult);
-                    }
+                    key = ConsoleHelper.ReadKey();
 
                     switch (key)
                     {
@@ -50,7 +44,7 @@ namespace InquirerCS
                 {
                     value = ConvertToStringFn(DefaultValue);
                 }
-                
+
                 if (Validate(value))
                 {
                     tryAgain = Confirm(ConvertToStringFn(answer));

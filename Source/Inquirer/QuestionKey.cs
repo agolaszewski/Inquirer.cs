@@ -17,13 +17,7 @@ namespace InquirerCS
             {
                 DisplayQuestion();
 
-                bool isCanceled = false;
-                var key = ConsoleHelper.ReadKey(out isCanceled);
-                if (isCanceled)
-                {
-                    IsCanceled = isCanceled;
-                    return default(TResult);
-                }
+                var key = ConsoleHelper.ReadKey();
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {

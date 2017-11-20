@@ -38,14 +38,8 @@ namespace InquirerCS
 
                 while (true)
                 {
-                    bool isCanceled = false;
                     ConsoleKey? interrupted = null;
-                    var value = ConsoleHelper.Read(out isCanceled, out interrupted, ConsoleKey.LeftArrow, ConsoleKey.RightArrow);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TResult);
-                    }
+                    var value = ConsoleHelper.Read(out interrupted, ConsoleKey.LeftArrow, ConsoleKey.RightArrow);
 
                     if (interrupted.HasValue)
                     {

@@ -37,11 +37,11 @@ namespace InquirerCS
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
 
-                bool isCanceled = false;
-                var value = ConsoleHelper.Read(out isCanceled);
-                if (isCanceled)
+                ConsoleKey? isCanceled = null;
+                var value = ConsoleHelper.Read(out isCanceled, ConsoleKey.Escape);
+                if (isCanceled.HasValue)
                 {
-                    IsCanceled = isCanceled;
+                    IsCanceled = true;
                     return default(TResult);
                 }
 

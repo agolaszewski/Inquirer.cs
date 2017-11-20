@@ -55,13 +55,7 @@ namespace InquirerCS
                 {
                     int y = Console.CursorTop;
 
-                    bool isCanceled = false;
-                    var key = ConsoleHelper.ReadKey(out isCanceled);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TResult);
-                    }
+                    var key = ConsoleHelper.ReadKey();
 
                     ConsoleHelper.PositionWrite(" ", 0, y);
                     ConsoleHelper.PositionWriteLine(DisplayChoice(y - boundryTop), 2, y);

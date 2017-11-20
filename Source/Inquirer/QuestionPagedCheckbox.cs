@@ -57,13 +57,7 @@ namespace InquirerCS
                 bool move = true;
                 while (move)
                 {
-                    bool isCanceled = false;
-                    var key = ConsoleHelper.ReadKey(out isCanceled);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TList);
-                    }
+                    var key = ConsoleHelper.ReadKey();
 
                     DisplayCheckbox(y - _BOUNDRY_TOP + _skipChoices, 2, y);
                     ConsoleHelper.PositionWrite(" ", 0, y);

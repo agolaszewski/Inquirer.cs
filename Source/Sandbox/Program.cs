@@ -7,12 +7,12 @@ namespace ConsoleApp1
 {
     internal class Program
     {
-        private static Inquirer<Answers> _test;
+    
         private static Answers _answers = new Answers();
 
         private static void Main(string[] args)
         {
-            _test = new Inquirer<Answers>(_answers);
+           
             MenuTest();
             Console.ReadKey();
         }

@@ -4,17 +4,14 @@ using System.Diagnostics;
 
 namespace InquirerCS
 {
-    public class InquirerMenu<TAnswers> where TAnswers : class, new()
+    public class InquirerMenu
     {
         private string _header;
 
-        private Inquirer<TAnswers> _inquirer;
-
         private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
 
-        internal InquirerMenu(string header, Inquirer<TAnswers> inquirer)
+        internal InquirerMenu(string header)
         {
-            _inquirer = inquirer;
             _header = header;
         }
 
@@ -22,7 +19,7 @@ namespace InquirerCS
         {
         }
 
-        public InquirerMenu<TAnswers> AddOption(string description, Action option)
+        public InquirerMenu AddOption(string description, Action option)
         {
             _options.Add(new Tuple<string, Action>(description, option));
             return this;
@@ -65,12 +62,7 @@ namespace InquirerCS
                 var key = ConsoleHelper.ReadKey(out isCanceled);
                 if (isCanceled)
                 {
-                    if (_inquirer.History.Count > 0)
-                    {
-                        var method = _inquirer.History.Pop();
-                        method.Invoke(null, null);
-                    }
-
+                    Prompt();
                     return;
                 }
 
@@ -105,7 +97,6 @@ namespace InquirerCS
                             Console.CursorVisible = true;
                             var answer = _options[Console.CursorTop - boundryTop];
                             move = false;
-                            _inquirer.History.Push(callingFrame.GetMethod());
                             answer.Item2();
                             return;
                         }

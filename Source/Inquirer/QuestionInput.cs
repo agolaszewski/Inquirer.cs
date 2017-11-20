@@ -15,13 +15,7 @@
             {
                 DisplayQuestion();
 
-                bool isCanceled = false;
-                var value = ConsoleHelper.Read(out isCanceled);
-                if (isCanceled)
-                {
-                    IsCanceled = isCanceled;
-                    return default(TResult);
-                }
+                var value = ConsoleHelper.Read();
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {
