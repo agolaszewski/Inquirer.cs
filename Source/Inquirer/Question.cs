@@ -21,7 +21,7 @@ namespace InquirerCS
             var inquire = new QuestionInputKey<bool>(message);
             inquire.Message += " [y/n]";
 
-            inquire.WithInputValidation(value => { return value == ConsoleKey.A ? true : false; }, "Press [[Y]] or [[N]]");
+            inquire.WithInputValidation(value => { return value == ConsoleKey.Y ? true : false; }, "Press [[Y]] or [[N]]");
 
             inquire.Parse(answer =>
             {

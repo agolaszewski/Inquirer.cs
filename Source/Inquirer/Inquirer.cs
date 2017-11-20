@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -42,10 +41,7 @@ namespace InquirerCS
                     var method = History.Pop();
                     method.Invoke(null, null);
                 }
-                else
-                {
-                    Environment.Exit(0);
-                }
+                return new InquirerFor<TAnswers, TResult>(method);
             }
             else
             {

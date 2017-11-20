@@ -16,11 +16,12 @@ namespace InquirerCS
             _result = result;
         }
 
-        private InquirerFor()
+        internal InquirerFor()
         {
+            return;
         }
 
-        public TResult For(Expression<Func<TAnswers, TResult>> answerProperty)
+        public InquirerFor<TAnswers, TResult> For(Expression<Func<TAnswers, TResult>> answerProperty)
         {
             var propertyInfo = ((MemberExpression)answerProperty.Body).Member as PropertyInfo;
             if (propertyInfo == null)
@@ -29,12 +30,27 @@ namespace InquirerCS
             }
 
             propertyInfo.SetValue(_inquirer.Answers, _result);
-            return _result;
+            return this;
         }
 
         public TResult Return()
         {
             return _result;
+        }
+
+        public void OnResult(Action<TResult> thenFn)
+        {
+            thenFn(_result);
+        }
+
+        public void Then(Action<TAnswers> thenFn)
+        {
+            thenFn(_inquirer.Answers);
+        }
+
+        public void Then(Action<TAnswers, TResult> thenFn)
+        {
+            thenFn(_inquirer.Answers, _result);
         }
 
         public InquirerFor<TAnswers, TConvert> Return<TConvert>(Func<TResult, TConvert> convertFn)

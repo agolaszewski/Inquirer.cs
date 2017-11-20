@@ -71,7 +71,7 @@ namespace InquirerCS
                         method.Invoke(null, null);
                     }
 
-                    Environment.Exit(0);
+                    return;
                 }
 
                 Console.SetCursorPosition(0, y);
