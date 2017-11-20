@@ -10,7 +10,7 @@ namespace InquirerCS
 
         private int _skipChoices = 0;
 
-        public QuestionPagedList(QuestionList<TResult> questionList, int pageSize) : base(questionList)
+        internal QuestionPagedList(QuestionList<TResult> questionList, int pageSize) : base(questionList)
         {
             PageSize = pageSize;
             Parse(answer =>

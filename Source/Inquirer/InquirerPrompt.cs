@@ -8,9 +8,13 @@ namespace InquirerCS
 
         private TResult _result;
 
-        public InquirerPrompt(Inquirer<TAnswers> inquirer)
+        internal InquirerPrompt(Inquirer<TAnswers> inquirer)
         {
             _inquirer = inquirer;
+        }
+
+        private InquirerPrompt()
+        {
         }
 
         private InquirerPrompt(Inquirer<TAnswers> inquirer, TResult result) : this(inquirer)

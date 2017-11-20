@@ -12,10 +12,14 @@ namespace InquirerCS
 
         private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
 
-        public InquirerMenu(string header, Inquirer<TAnswers> inquirer)
+        internal InquirerMenu(string header, Inquirer<TAnswers> inquirer)
         {
             _inquirer = inquirer;
             _header = header;
+        }
+
+        private InquirerMenu()
+        {
         }
 
         public InquirerMenu<TAnswers> AddOption(string description, Action option)

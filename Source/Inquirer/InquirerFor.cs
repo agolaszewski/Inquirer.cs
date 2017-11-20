@@ -10,10 +10,14 @@ namespace InquirerCS
 
         private TResult _result;
 
-        public InquirerFor(Inquirer<TAnswers> inquirer, TResult result)
+        internal InquirerFor(Inquirer<TAnswers> inquirer, TResult result)
         {
             _inquirer = inquirer;
             _result = result;
+        }
+
+        private InquirerFor()
+        {
         }
 
         public TResult For(Expression<Func<TAnswers, TResult>> answerProperty)

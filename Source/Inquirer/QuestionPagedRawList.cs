@@ -6,12 +6,12 @@ namespace InquirerCS
     {
         private int _skipChoices = 0;
 
-        public QuestionPagedRawList(QuestionRawList<TResult> questionRawList, int pageSize) : base(questionRawList)
+        internal QuestionPagedRawList(QuestionRawList<TResult> questionRawList, int pageSize) : base(questionRawList)
         {
             PageSize = pageSize;
         }
 
-        public int PageSize { get; internal set; } = 0;
+        internal int PageSize { get; private set; } = 0;
 
         internal override TResult Prompt()
         {

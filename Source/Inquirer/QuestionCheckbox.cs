@@ -6,7 +6,7 @@ namespace InquirerCS
 {
     public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new()
     {
-        public QuestionCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox) : base(questionCheckbox)
+        internal QuestionCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox) : base(questionCheckbox)
         {
         }
 

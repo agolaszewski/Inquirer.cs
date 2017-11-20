@@ -10,16 +10,12 @@ namespace InquirerCS
 
         private int _skipChoices;
 
-        public QuestionPagedCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox, int pageSize) : base(questionCheckbox)
+        internal QuestionPagedCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox, int pageSize) : base(questionCheckbox)
         {
             PageSize = pageSize;
         }
 
-        public QuestionPagedCheckbox(string question) : base(question)
-        {
-        }
-
-        public int PageSize { get; private set; }
+        internal int PageSize { get; private set; }
 
         internal override TList Prompt()
         {
