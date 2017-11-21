@@ -19,6 +19,8 @@ namespace InquirerCS
         public static QuestionInputKey<bool> Confirm(string message)
         {
             var inquire = new QuestionInputKey<bool>(message);
+            inquire.ReadFn = () => { return Console.ReadKey().Key; };
+
             inquire.Message += " [y/n]";
 
             inquire.WithInputValidation(value => { return value == ConsoleKey.Y ? true : false; }, "Press [[Y]] or [[N]]");
@@ -34,6 +36,7 @@ namespace InquirerCS
         public static QuestionInputKey<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
+            inquire.ReadFn = () => { return Console.ReadKey().Key; };
 
             inquire.WithInputValidation(
             value =>

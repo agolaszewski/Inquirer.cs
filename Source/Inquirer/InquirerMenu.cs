@@ -10,13 +10,9 @@ namespace InquirerCS
 
         private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
 
-        internal InquirerMenu(string header)
+        public InquirerMenu(string header)
         {
             _header = header;
-        }
-
-        private InquirerMenu()
-        {
         }
 
         public InquirerMenu AddOption(string description, Action option)

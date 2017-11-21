@@ -37,13 +37,7 @@ namespace InquirerCS
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
 
-                ConsoleKey? isCanceled = null;
-                var value = ConsoleHelper.Read(out isCanceled, ConsoleKey.Escape);
-                if (isCanceled.HasValue)
-                {
-                    IsCanceled = true;
-                    return default(TResult);
-                }
+                var value = ConsoleHelper.Read();
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {

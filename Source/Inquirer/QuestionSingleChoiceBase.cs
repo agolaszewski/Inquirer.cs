@@ -9,6 +9,8 @@ namespace InquirerCS
         {
         }
 
+        internal Func<TInput> ReadFn { get; set; }
+
         protected Func<TResult, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
         protected Func<TInput, TResult> ParseFn { get; set; } = answer => { return default(TResult); };

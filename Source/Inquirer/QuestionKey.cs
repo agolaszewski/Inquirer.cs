@@ -17,7 +17,7 @@ namespace InquirerCS
             {
                 DisplayQuestion();
 
-                var key = ConsoleHelper.ReadKey();
+                var key = ReadFn();
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {
