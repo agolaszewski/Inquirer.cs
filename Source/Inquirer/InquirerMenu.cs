@@ -62,6 +62,10 @@ namespace InquirerCS
                         _inquirer.History.Pop();
                         _inquirer.Next(_inquirer.History.Pop());
                     }
+                    else
+                    {
+                        _inquirer.Next(_inquirer.History.Pop());
+                    }
 
                     return;
                 }

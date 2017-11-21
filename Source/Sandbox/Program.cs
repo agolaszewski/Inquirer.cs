@@ -10,7 +10,7 @@ namespace ConsoleApp1
 
         private static void Main(string[] args)
         {
-            _test.Next(() => Test());
+            _test.Next(() => Menu());
             Console.ReadKey();
         }
 
