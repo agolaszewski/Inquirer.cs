@@ -15,7 +15,7 @@
             {
                 DisplayQuestion();
 
-                var value = ConsoleHelper.Read();
+                var value = ReadFn();
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {

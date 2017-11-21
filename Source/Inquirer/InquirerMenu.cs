@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 
 namespace InquirerCS
 {
@@ -8,11 +8,14 @@ namespace InquirerCS
     {
         private string _header;
 
+        private Inquirer _inquirer;
+
         private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
 
-        public InquirerMenu(string header)
+        internal InquirerMenu(string header, Inquirer inquirer)
         {
             _header = header;
+            _inquirer = inquirer;
         }
 
         public InquirerMenu AddOption(string description, Action option)
@@ -27,10 +30,6 @@ namespace InquirerCS
             {
                 throw new Exception("No options defined");
             }
-
-            StackTrace stackTrace = new StackTrace();
-            StackFrame[] stackFrames = stackTrace.GetFrames();
-            StackFrame callingFrame = stackFrames[1];
 
             Console.Clear();
             ConsoleHelper.WriteLine(_header + " :");
@@ -58,7 +57,12 @@ namespace InquirerCS
                 var key = ConsoleHelper.ReadKey(out isCanceled);
                 if (isCanceled)
                 {
-                    Prompt();
+                    if (_inquirer.History.Count > 1)
+                    {
+                        _inquirer.History.Pop();
+                        _inquirer.Next(_inquirer.History.Pop());
+                    }
+
                     return;
                 }
 
@@ -93,7 +97,8 @@ namespace InquirerCS
                             Console.CursorVisible = true;
                             var answer = _options[Console.CursorTop - boundryTop];
                             move = false;
-                            answer.Item2();
+                            _inquirer.Next(answer.Item2);
+
                             return;
                         }
                 }

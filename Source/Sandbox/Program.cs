@@ -10,21 +10,33 @@ namespace ConsoleApp1
 
         private static void Main(string[] args)
         {
-            new Inquirer().Prompt(Question.Input("How are you?"));
-
-            //Question.Input("How are you?").Prompt();
+            _test.Next(() => Test());
             Console.ReadKey();
+        }
+
+        private static void Menu()
+        {
+            _test.Menu("addas")
+              .AddOption("T1", () => Test())
+              .AddOption("T2", () => Test2()).Prompt();
         }
 
         private static void Test()
         {
-            _test.Prompt(Question.Input("asdasd"));
+            _test.Prompt(Question.Input("Test1"));
             _test.Next(() => Test2());
+        }
+
+        private static void Test3()
+        {
+            _test.Prompt(Question.Input("Test3"));
+            _test.Next(() => Test3());
         }
 
         private static void Test2()
         {
-
+            _test.Prompt(Question.Input("Test2"));
+            _test.Next(() => Test3());
         }
 
         //private static void MenuTest()

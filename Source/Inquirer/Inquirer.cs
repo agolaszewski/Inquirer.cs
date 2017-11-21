@@ -6,7 +6,12 @@ namespace InquirerCS
 {
     public class Inquirer
     {
-        private Stack<Action> History { get; set; } = new Stack<Action>();
+        internal Stack<Action> History { get; set; } = new Stack<Action>();
+
+        public InquirerMenu Menu(string header)
+        {
+            return new InquirerMenu(header, this);
+        }
 
         public TResult Prompt<TResult>(QuestionSingleChoiceBase<ConsoleKey, TResult> question)
         {
@@ -46,12 +51,17 @@ namespace InquirerCS
         {
             try
             {
-                action.Invoke();
                 History.Push(action);
+                action.Invoke();
             }
             catch (OperationCanceledException)
             {
-                if (History.Any())
+                if (History.Count > 1)
+                {
+                    History.Pop();
+                    Next(History.Pop());
+                }
+                else
                 {
                     Next(History.Pop());
                 }
