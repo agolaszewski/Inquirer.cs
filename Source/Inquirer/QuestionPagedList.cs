@@ -15,7 +15,7 @@ namespace InquirerCS
             PageSize = pageSize;
             Parse(answer =>
             {
-                return _pageChoices[answer];
+                return _pageChoices[answer.Value];
             });
         }
 

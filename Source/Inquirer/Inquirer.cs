@@ -13,7 +13,41 @@ namespace InquirerCS
             return new InquirerMenu(header, this);
         }
 
+        public TResult Prompt<TResult>(QuestionSingleChoiceBase<int?, TResult> question)
+        {
+            question.ReadFn = () =>
+            {
+                ConsoleKey? isCanceled;
+                var read = ConsoleHelper.Read(out isCanceled);
+                if (isCanceled.HasValue)
+                {
+                    question.IsCanceled = true;
+                    throw new OperationCanceledException();
+                }
+
+                return read.ToN<int>();
+            };
+            return question.Prompt();
+        }
+
         public TResult Prompt<TResult>(QuestionSingleChoiceBase<ConsoleKey, TResult> question)
+        {
+            question.ReadFn = () =>
+            {
+                bool isCanceled;
+                var read = ConsoleHelper.ReadKey(out isCanceled);
+                if (isCanceled)
+                {
+                    question.IsCanceled = true;
+                    throw new OperationCanceledException();
+                }
+
+                return read;
+            };
+            return question.Prompt();
+        }
+
+        public List<TResult> Prompt<TResult>(QuestionMultipleListBase<List<TResult>, TResult> question)
         {
             question.ReadFn = () =>
             {

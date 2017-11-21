@@ -53,7 +53,7 @@ namespace InquirerCS
                 {
                     int y = Console.CursorTop;
 
-                    var key = ConsoleHelper.ReadKey();
+                    var key = ReadFn();
 
                     DisplayCheckbox(y - _boundryTop, 2, y);
                     ConsoleHelper.PositionWrite(DisplayChoice(y - _boundryTop), 4, y);

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace InquirerCS
 {
-    public abstract class QuestionListBase<TResult> : QuestionSingleChoiceBase<int, TResult>
+    public abstract class QuestionListBase<TResult> : QuestionSingleChoiceBase<int?, TResult>
     {
         internal QuestionListBase(string message) : base(message)
         {
@@ -21,7 +21,7 @@ namespace InquirerCS
 
         public abstract QuestionListBase<TResult> Page(int pageSize);
 
-        public override QuestionSingleChoiceBase<int, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
+        public override QuestionSingleChoiceBase<int?, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
             if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
             {

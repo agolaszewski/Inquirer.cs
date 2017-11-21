@@ -37,23 +37,22 @@ namespace InquirerCS
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
 
-                var value = ConsoleHelper.Read();
+                var value = ReadFn();
 
-                if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
+                if (!value.HasValue && HasDefaultValue)
                 {
                     return DefaultValue;
                 }
 
-                var parsedValue = value.ToN<int>();
-                if (!parsedValue.HasValue)
+                if (!value.HasValue)
                 {
                     tryAgain = true;
                     ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(int)}");
                 }
                 else
-                if (Validate(parsedValue.Value))
+                if (Validate(value.Value))
                 {
-                    answer = ParseFn(parsedValue.Value);
+                    answer = ParseFn(value.Value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }
