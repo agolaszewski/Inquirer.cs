@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InquirerCS", "Inquirer\Inqu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{82875E7A-C891-4876-AECA-41A17ED67324}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox2", "Sandbox2\Sandbox2.csproj", "{4E628FA1-954D-4563-B807-E32FA8E14CEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{82875E7A-C891-4876-AECA-41A17ED67324}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82875E7A-C891-4876-AECA-41A17ED67324}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82875E7A-C891-4876-AECA-41A17ED67324}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E628FA1-954D-4563-B807-E32FA8E14CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E628FA1-954D-4563-B807-E32FA8E14CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E628FA1-954D-4563-B807-E32FA8E14CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E628FA1-954D-4563-B807-E32FA8E14CEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
