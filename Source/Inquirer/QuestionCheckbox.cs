@@ -6,7 +6,7 @@ namespace InquirerCS
 {
     public class QuestionCheckbox<TList, TResult> : QuestionMultipleListBase<TList, TResult> where TList : List<TResult>, new()
     {
-        public QuestionCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox) : base(questionCheckbox)
+        internal QuestionCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox) : base(questionCheckbox)
         {
         }
 
@@ -19,7 +19,7 @@ namespace InquirerCS
             return new QuestionPagedCheckbox<TList, TResult>(this, pageSize);
         }
 
-        internal override TList Prompt()
+        public override TList Prompt()
         {
             int _boundryBottom;
             int _boundryTop;
@@ -53,13 +53,7 @@ namespace InquirerCS
                 {
                     int y = Console.CursorTop;
 
-                    bool isCanceled = false;
-                    var key = ConsoleHelper.ReadKey(out isCanceled);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TList);
-                    }
+                    var key = ReadFn();
 
                     DisplayCheckbox(y - _boundryTop, 2, y);
                     ConsoleHelper.PositionWrite(DisplayChoice(y - _boundryTop), 4, y);

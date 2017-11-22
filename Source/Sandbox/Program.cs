@@ -7,13 +7,12 @@ namespace ConsoleApp1
 {
     internal class Program
     {
-        private static Inquirer<Answers> _test;
+        private static Inquirer _test = new Inquirer();
         private static Answers _answers = new Answers();
 
         private static void Main(string[] args)
         {
-            _test = new Inquirer<Answers>(_answers);
-            MenuTest();
+            _test.Next(() => MenuTest());
             Console.ReadKey();
         }
 
@@ -39,9 +38,9 @@ namespace ConsoleApp1
                 .Page(3)
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                 .WithConfirmation()
-                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"))
-            .Return();
-            MenuTest();
+                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
+
+            _test.Next(() => MenuTest());
         }
 
         private static void PagingRawListTest()
@@ -51,9 +50,8 @@ namespace ConsoleApp1
                 .Page(3)
                 .WithDefaultValue(ConsoleColor.DarkCyan)
                 .WithConfirmation()
-                .WithValidation(item => item == ConsoleColor.Black, "Choose black"))
-                .Return();
-            MenuTest();
+                .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
+            _test.Next(() => MenuTest());
         }
 
         private static void PagingListTest()
@@ -63,9 +61,9 @@ namespace ConsoleApp1
                 .Page(3)
                 .WithDefaultValue(ConsoleColor.DarkCyan)
                 .WithConfirmation()
-                .WithValidation(item => item == ConsoleColor.Black, "Choose black"))
-            .Return();
-            MenuTest();
+                .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
+
+            _test.Next(() => MenuTest());
         }
 
         private static void InputTest()
@@ -73,17 +71,17 @@ namespace ConsoleApp1
             string answer = _test.Prompt(Question.Input("How are you?")
                 .WithDefaultValue("fine")
                 .WithConfirmation()
-                .WithValidation(value => value == "fine", "You cannot be not fine!"))
-            .Return();
-            MenuTest();
+                .WithValidation(value => value == "fine", "You cannot be not fine!"));
+
+            _test.Next(() => MenuTest());
         }
 
         private static void ConfirmTest()
         {
             var answer = _test.Prompt(Question.Confirm("Are you sure?")
-                .WithDefaultValue(false))
-            .Return();
-            MenuTest();
+                .WithDefaultValue(false));
+
+            _test.Next(() => MenuTest());
         }
 
         private static void PasswordTest()
@@ -91,9 +89,9 @@ namespace ConsoleApp1
             string answer = _test.Prompt(Question.Password("Type password")
                 .WithDefaultValue("123456789")
                 .WithConfirmation()
-                .WithValidation(value => value.Length > 8 && value.Length < 10, "Password length must be between 8-10 characters"))
-            .Return();
-            MenuTest();
+                .WithValidation(value => value.Length > 8 && value.Length < 10, "Password length must be between 8-10 characters"));
+
+            _test.Next(() => MenuTest());
         }
 
         private static void ListTest()
@@ -102,9 +100,9 @@ namespace ConsoleApp1
             var answer = _test.Prompt(Question.List("Choose favourite color", colors)
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"))
-                 .Return();
-            MenuTest();
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
+
+            _test.Next(() => MenuTest());
         }
 
         private static void ListRawTest()
@@ -113,9 +111,9 @@ namespace ConsoleApp1
             var answer = _test.Prompt(Question.RawList("Choose favourite color", colors)
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"))
-                 .Return();
-            MenuTest();
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
+
+            _test.Next(() => MenuTest());
         }
 
         private static void ListCheckboxTest()
@@ -124,9 +122,9 @@ namespace ConsoleApp1
             var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                 .WithConfirmation()
-                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"))
-            .Return();
-            MenuTest();
+                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
+
+            _test.Next(() => MenuTest());
         }
 
         private static void ListExtendedTest()
@@ -139,8 +137,9 @@ namespace ConsoleApp1
             ConsoleColor answer = _test.Prompt(Question.ExtendedList("Choose favourite color", colors)
                 .WithDefaultValue(ConsoleColor.Black)
                 .WithConfirmation()
-                .WithValidation(values => values == ConsoleColor.Black, "Choose black")).Return();
-            MenuTest();
+                .WithValidation(values => values == ConsoleColor.Black, "Choose black"));
+
+            _test.Next(() => MenuTest());
         }
     }
 }

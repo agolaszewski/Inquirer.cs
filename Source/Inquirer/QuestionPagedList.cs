@@ -10,18 +10,18 @@ namespace InquirerCS
 
         private int _skipChoices = 0;
 
-        public QuestionPagedList(QuestionList<TResult> questionList, int pageSize) : base(questionList)
+        internal QuestionPagedList(QuestionList<TResult> questionList, int pageSize) : base(questionList)
         {
             PageSize = pageSize;
             Parse(answer =>
             {
-                return _pageChoices[answer];
+                return _pageChoices[answer.Value];
             });
         }
 
         internal int PageSize { get; set; } = 0;
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             return Prompt(Console.CursorTop);
         }
@@ -67,13 +67,7 @@ namespace InquirerCS
 
                 while (move)
                 {
-                    bool isCanceled = false;
-                    var key = ConsoleHelper.ReadKey(out isCanceled);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TResult);
-                    }
+                    var key = ReadFn();
 
                     switch (key)
                     {

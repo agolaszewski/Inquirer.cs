@@ -2,7 +2,7 @@
 
 namespace InquirerCS
 {
-    public class QuestionRawList<TResult> : QuestionListBase<TResult>
+    public class QuestionRawList<TResult> : QuestionListBase<string, TResult>
     {
         internal QuestionRawList(string question) : base(question)
         {
@@ -12,12 +12,12 @@ namespace InquirerCS
         {
         }
 
-        public override QuestionListBase<TResult> Page(int pageSize)
+        public override QuestionListBase<string, TResult> Page(int pageSize)
         {
             return new QuestionPagedRawList<TResult>(this, pageSize);
         }
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
@@ -37,29 +37,22 @@ namespace InquirerCS
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
 
-                bool isCanceled = false;
-                var value = ConsoleHelper.Read(out isCanceled);
-                if (isCanceled)
-                {
-                    IsCanceled = isCanceled;
-                    return default(TResult);
-                }
+                var value = ReadFn().ToN<int>();
 
-                if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
+                if (!value.HasValue && HasDefaultValue)
                 {
                     return DefaultValue;
                 }
 
-                var parsedValue = value.ToN<int>();
-                if (!parsedValue.HasValue)
+                if (!value.HasValue)
                 {
                     tryAgain = true;
                     ConsoleHelper.WriteError($"Cannot parse {value} to {typeof(int)}");
                 }
                 else
-                if (Validate(parsedValue.Value))
+                if (Validate(value.Value))
                 {
-                    answer = ParseFn(parsedValue.Value);
+                    answer = ParseFn(value.Value);
                     tryAgain = Confirm(ConvertToStringFn(answer));
                 }
             }

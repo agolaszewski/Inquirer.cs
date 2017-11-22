@@ -9,8 +9,9 @@ namespace InquirerCS
         public static QuestionCheckbox<List<TResult>, TResult> Checkbox<TResult>(string message, List<TResult> choices)
         {
             var inquire = new QuestionCheckbox<List<TResult>, TResult>(message);
-            inquire.Choices = choices;
 
+            inquire.ReadFn = () => { return Console.ReadKey().Key; };
+            inquire.Choices = choices;
             inquire.ConvertToStringFn = answer => { return string.Join(",", answer); };
 
             return inquire;
@@ -19,9 +20,10 @@ namespace InquirerCS
         public static QuestionInputKey<bool> Confirm(string message)
         {
             var inquire = new QuestionInputKey<bool>(message);
-            inquire.Message += " [y/n]";
 
-            inquire.WithInputValidation(value => { return value == ConsoleKey.A ? true : false; }, "Press [[Y]] or [[N]]");
+            inquire.ReadFn = () => { return Console.ReadKey().Key; };
+            inquire.Message += " [y/n]";
+            inquire.WithInputValidation(value => { return value == ConsoleKey.Y ? true : false; }, "Press [[Y]] or [[N]]");
 
             inquire.Parse(answer =>
             {
@@ -34,6 +36,7 @@ namespace InquirerCS
         public static QuestionInputKey<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
         {
             var inquire = new QuestionInputKey<ConsoleKey>(message);
+            inquire.ReadFn = () => { return Console.ReadKey().Key; };
 
             inquire.WithInputValidation(
             value =>
@@ -62,8 +65,9 @@ namespace InquirerCS
         public static QuestionExtendedList<Dictionary<ConsoleKey, TResult>, TResult> ExtendedList<TResult>(string message, Dictionary<ConsoleKey, TResult> choices)
         {
             var inquire = new QuestionExtendedList<Dictionary<ConsoleKey, TResult>, TResult>(message);
-            inquire.Choices = choices;
 
+            inquire.Choices = choices;
+            inquire.ReadFn = () => { return Console.ReadKey().Key; };
             inquire.WithInputValidation(value => { return inquire.Choices.ContainsKey(value); }, "Invalid key");
 
             inquire.Parse(answer =>
@@ -78,6 +82,7 @@ namespace InquirerCS
         {
             var inquire = new QuestionInput<T>(message);
 
+            inquire.ReadFn = () => { return ConsoleHelper.Read(); };
             inquire.WithInputValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
             inquire.WithInputValidation(value => { return value.ToN<T>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(T)}"; });
 
@@ -93,6 +98,7 @@ namespace InquirerCS
         {
             var inquire = new QuestionInput<string>(message);
 
+            inquire.ReadFn = () => { return ConsoleHelper.Read(); };
             inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
 
             inquire.Parse(answer =>
@@ -106,11 +112,13 @@ namespace InquirerCS
         public static QuestionList<TResult> List<TResult>(string message, List<TResult> choices)
         {
             var inquire = new QuestionList<TResult>(message);
+
+            inquire.ReadFn = () => { return ConsoleHelper.ReadKey(); };
             inquire.Choices = choices;
 
             inquire.Parse(answer =>
             {
-                return inquire.Choices[answer];
+                return inquire.Choices[answer.Value];
             });
 
             return inquire;
@@ -119,6 +127,8 @@ namespace InquirerCS
         public static QuestionPassword<string> Password(string message)
         {
             var inquire = new QuestionPassword<string>(message);
+
+            inquire.ReadFn = () => { return ConsoleHelper.ReadKey(); };
             inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
 
             inquire.Parse(answer =>
@@ -134,11 +144,12 @@ namespace InquirerCS
             var inquire = new QuestionRawList<TResult>(message);
             inquire.Choices = choices;
 
+            inquire.ReadFn = () => { return ConsoleHelper.Read(); };
             inquire.WithInputValidation(value => { return value > 0 && value <= inquire.Choices.Count; }, value => { return $"Choosen number must be between 1 and {inquire.Choices.Count}"; });
 
             inquire.Parse(answer =>
             {
-                return inquire.Choices[answer - 1];
+                return inquire.Choices[answer.Value - 1];
             });
 
             return inquire;

@@ -9,7 +9,7 @@ namespace InquirerCS
         {
         }
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
@@ -29,13 +29,7 @@ namespace InquirerCS
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
 
-                bool isCanceled = false;
-                var key = ConsoleHelper.ReadKey(out isCanceled);
-                if (isCanceled)
-                {
-                    IsCanceled = isCanceled;
-                    return default(TResult);
-                }
+                var key = ReadFn();
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {

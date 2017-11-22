@@ -1,58 +1,144 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace InquirerCS
 {
-    public class Inquirer<TAnswers> where TAnswers : class, new()
+    public class Inquirer
     {
-        public Inquirer()
+        internal Stack<Action> History { get; set; } = new Stack<Action>();
+
+        public InquirerMenu Menu(string header)
         {
-            Answers = new TAnswers();
+            return new InquirerMenu(header, this);
         }
 
-        public Inquirer(TAnswers answers)
+        public void Next(Action action)
         {
-            Answers = answers;
-        }
-
-        public TAnswers Answers { get; private set; }
-
-        internal Stack<MethodBase> History { get; set; } = new Stack<MethodBase>();
-
-        internal PropertyInfo PropertyInfo { get; set; }
-
-        public InquirerMenu<TAnswers> Menu(string header)
-        {
-            return new InquirerMenu<TAnswers>(header, this);
-        }
-
-        public InquirerFor<TAnswers, TResult> Prompt<TResult>(QuestionBase<TResult> question)
-        {
-            StackTrace stackTrace = new StackTrace();
-            StackFrame[] stackFrames = stackTrace.GetFrames();
-            StackFrame callingFrame = stackFrames[1];
-
-            var result = question.Prompt();
-            if (question.IsCanceled)
+            try
             {
-                if (History.Count > 0)
+                History.Push(action);
+                action.Invoke();
+            }
+            catch (OperationCanceledException)
+            {
+                if (History.Count > 1)
                 {
-                    var method = History.Pop();
-                    method.Invoke(null, null);
+                    History.Pop();
+                    Next(History.Pop());
                 }
                 else
                 {
-                    Environment.Exit(0);
+                    Next(History.Pop());
                 }
             }
-            else
-            {
-                History.Push(callingFrame.GetMethod());
-            }
+        }
 
-            return new InquirerFor<TAnswers, TResult>(this, result);
+        public List<TResult> Prompt<TResult>(QuestionMultipleListBase<List<TResult>, TResult> question)
+        {
+            question.ReadFn = () =>
+            {
+                bool isCanceled;
+                var read = ConsoleHelper.ReadKey(out isCanceled);
+                if (isCanceled)
+                {
+                    question.IsCanceled = true;
+                    throw new OperationCanceledException();
+                }
+
+                return read;
+            };
+
+            return question.Prompt();
+        }
+
+        public TResult Prompt<TResult>(QuestionSingleChoiceBase<ConsoleKey, ConsoleKey, TResult> question)
+        {
+            question.ReadFn = () =>
+            {
+                bool isCanceled;
+                var read = ConsoleHelper.ReadKey(out isCanceled);
+                if (isCanceled)
+                {
+                    question.IsCanceled = true;
+                    throw new OperationCanceledException();
+                }
+
+                return read;
+            };
+
+            return question.Prompt();
+        }
+
+        public TResult Prompt<TResult>(QuestionSingleChoiceBase<ConsoleKey, int?, TResult> question)
+        {
+            question.ReadFn = () =>
+            {
+                bool isCanceled;
+                var read = ConsoleHelper.ReadKey(out isCanceled);
+                if (isCanceled)
+                {
+                    question.IsCanceled = true;
+                    throw new OperationCanceledException();
+                }
+
+                return read;
+            };
+
+            return question.Prompt();
+        }
+
+        public TResult Prompt<TResult>(QuestionSingleChoiceBase<ConsoleKey, string, TResult> question)
+        {
+            question.ReadFn = () =>
+            {
+                bool isCanceled;
+                var read = ConsoleHelper.ReadKey(out isCanceled);
+                if (isCanceled)
+                {
+                    question.IsCanceled = true;
+                    throw new OperationCanceledException();
+                }
+
+                return read;
+            };
+
+            return question.Prompt();
+        }
+
+        public TResult Prompt<TResult>(QuestionSingleChoiceBase<string, int?, TResult> question)
+        {
+            question.ReadFn = () =>
+            {
+                ConsoleKey? isCanceled;
+                var read = ConsoleHelper.Read(out isCanceled, ConsoleKey.Escape);
+                if (isCanceled.HasValue)
+                {
+                    question.IsCanceled = true;
+                    throw new OperationCanceledException();
+                }
+
+                return read;
+            };
+
+            return question.Prompt();
+        }
+
+        public TResult Prompt<TResult>(QuestionSingleChoiceBase<string, string, TResult> question)
+        {
+            question.ReadFn = () =>
+            {
+                ConsoleKey? isCanceled;
+                var read = ConsoleHelper.Read(out isCanceled, ConsoleKey.Escape);
+                if (isCanceled.HasValue)
+                {
+                    question.IsCanceled = true;
+                    throw new OperationCanceledException();
+                }
+
+                return read;
+            };
+
+            return question.Prompt();
         }
     }
 }

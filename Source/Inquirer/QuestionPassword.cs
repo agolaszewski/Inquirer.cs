@@ -2,13 +2,13 @@
 
 namespace InquirerCS
 {
-    public class QuestionPassword<TResult> : QuestionSingleChoiceBase<string, TResult>
+    public class QuestionPassword<TResult> : QuestionSingleChoiceBase<ConsoleKey, string, TResult>
     {
         internal QuestionPassword(string question) : base(question)
         {
         }
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
@@ -21,13 +21,7 @@ namespace InquirerCS
                 ConsoleKey key;
                 do
                 {
-                    bool isCanceled = false;
-                    key = ConsoleHelper.ReadKey(out isCanceled);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TResult);
-                    }
+                    key = ReadFn();
 
                     switch (key)
                     {
@@ -50,7 +44,7 @@ namespace InquirerCS
                 {
                     value = ConvertToStringFn(DefaultValue);
                 }
-                
+
                 if (Validate(value))
                 {
                     tryAgain = Confirm(ConvertToStringFn(answer));

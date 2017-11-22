@@ -2,7 +2,7 @@
 
 namespace InquirerCS
 {
-    public class QuestionList<TResult> : QuestionListBase<TResult>
+    public class QuestionList<TResult> : QuestionListBase<ConsoleKey, TResult>
     {
         internal QuestionList(string question) : base(question)
         {
@@ -12,12 +12,12 @@ namespace InquirerCS
         {
         }
 
-        public override QuestionListBase<TResult> Page(int pageSize)
+        public override QuestionListBase<ConsoleKey, TResult> Page(int pageSize)
         {
             return new QuestionPagedList<TResult>(this, pageSize);
         }
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
@@ -55,13 +55,7 @@ namespace InquirerCS
                 {
                     int y = Console.CursorTop;
 
-                    bool isCanceled = false;
-                    var key = ConsoleHelper.ReadKey(out isCanceled);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TResult);
-                    }
+                    var key = ReadFn();
 
                     ConsoleHelper.PositionWrite(" ", 0, y);
                     ConsoleHelper.PositionWriteLine(DisplayChoice(y - boundryTop), 2, y);

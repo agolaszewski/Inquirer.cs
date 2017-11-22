@@ -1,12 +1,12 @@
 ﻿namespace InquirerCS
 {
-    public class QuestionInput<TResult> : QuestionSingleChoiceBase<string, TResult>
+    public class QuestionInput<TResult> : QuestionSingleChoiceBase<string, string, TResult>
     {
         internal QuestionInput(string message) : base(message)
         {
         }
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
@@ -15,13 +15,7 @@
             {
                 DisplayQuestion();
 
-                bool isCanceled = false;
-                var value = ConsoleHelper.Read(out isCanceled);
-                if (isCanceled)
-                {
-                    IsCanceled = isCanceled;
-                    return default(TResult);
-                }
+                var value = ReadFn();
 
                 if (string.IsNullOrWhiteSpace(value) && HasDefaultValue)
                 {

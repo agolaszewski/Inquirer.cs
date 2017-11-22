@@ -10,18 +10,14 @@ namespace InquirerCS
 
         private int _skipChoices;
 
-        public QuestionPagedCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox, int pageSize) : base(questionCheckbox)
+        internal QuestionPagedCheckbox(QuestionCheckbox<TList, TResult> questionCheckbox, int pageSize) : base(questionCheckbox)
         {
             PageSize = pageSize;
         }
 
-        public QuestionPagedCheckbox(string question) : base(question)
-        {
-        }
+        internal int PageSize { get; private set; }
 
-        public int PageSize { get; private set; }
-
-        internal override TList Prompt()
+        public override TList Prompt()
         {
             return Prompt(_BOUNDRY_TOP);
         }
@@ -61,13 +57,7 @@ namespace InquirerCS
                 bool move = true;
                 while (move)
                 {
-                    bool isCanceled = false;
-                    var key = ConsoleHelper.ReadKey(out isCanceled);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TList);
-                    }
+                    var key = ReadFn();
 
                     DisplayCheckbox(y - _BOUNDRY_TOP + _skipChoices, 2, y);
                     ConsoleHelper.PositionWrite(" ", 0, y);

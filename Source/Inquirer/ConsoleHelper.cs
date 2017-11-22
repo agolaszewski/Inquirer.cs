@@ -18,84 +18,14 @@ namespace InquirerCS
             WriteLine(text, color);
         }
 
-        internal static string Read(out bool isCanceled)
+        internal static string Read()
         {
-            isCanceled = false;
-
-            StringBuilder stringBuilder = new StringBuilder();
-            ConsoleKeyInfo keyInfo;
-            bool returnToPreviousLine = false;
-
-            do
-            {
-                keyInfo = Console.ReadKey();
-                switch (keyInfo.Key)
-                {
-                    case (ConsoleKey.Escape):
-                        {
-                            isCanceled = true;
-                            return string.Empty;
-                        }
-
-                    case (ConsoleKey.Backspace):
-                        {
-                            if (stringBuilder.Length > 0)
-                            {
-                                if (returnToPreviousLine)
-                                {
-                                    Console.SetCursorPosition(Console.BufferWidth - 1, Console.CursorTop - 1);
-                                    returnToPreviousLine = false;
-                                }
-
-                                stringBuilder = stringBuilder.Remove(stringBuilder.Length - 1, 1);
-
-                                int oldL = Console.CursorLeft;
-                                int oldT = Console.CursorTop;
-                                PositionWrite(" ", oldL, oldT);
-                                Console.SetCursorPosition(oldL, oldT);
-
-                                if (Console.CursorLeft == 0)
-                                {
-                                    returnToPreviousLine = true;
-                                }
-                            }
-                            else
-                            {
-                                Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
-                            }
-
-                            break;
-                        }
-
-                    case (ConsoleKey.Enter):
-                        {
-                            break;
-                        }
-
-                    default:
-                        {
-                            if (!char.IsControl(keyInfo.KeyChar))
-                            {
-                                stringBuilder.Append(keyInfo.KeyChar);
-                                returnToPreviousLine = false;
-                            }
-                            else
-                            {
-                                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
-                            }
-
-                            break;
-                        }
-                }
-            }
-            while (keyInfo.Key != ConsoleKey.Enter);
-
-            return stringBuilder.ToString();
+            ConsoleKey? interruptKey;
+            return Read(out interruptKey);
         }
 
-        internal static string Read(out bool isCanceled, out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys)
+        internal static string Read(out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys)
         {
-            isCanceled = false;
             intteruptedKey = null;
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -108,20 +38,12 @@ namespace InquirerCS
 
                 if (interruptKeys.Contains(keyInfo.Key))
                 {
-                    isCanceled = false;
                     intteruptedKey = keyInfo.Key;
                     return string.Empty;
                 }
 
                 switch (keyInfo.Key)
                 {
-                    case (ConsoleKey.Escape):
-                        {
-                            isCanceled = true;
-                            intteruptedKey = null;
-                            return string.Empty;
-                        }
-
                     case (ConsoleKey.Backspace):
                         {
                             if (stringBuilder.Length > 0)
@@ -189,6 +111,11 @@ namespace InquirerCS
             }
 
             return key;
+        }
+
+        internal static ConsoleKey ReadKey()
+        {
+            return Console.ReadKey().Key;
         }
 
         internal static void Write(string text, ConsoleColor color = ConsoleColor.White)

@@ -6,14 +6,14 @@ namespace InquirerCS
     {
         private int _skipChoices = 0;
 
-        public QuestionPagedRawList(QuestionRawList<TResult> questionRawList, int pageSize) : base(questionRawList)
+        internal QuestionPagedRawList(QuestionRawList<TResult> questionRawList, int pageSize) : base(questionRawList)
         {
             PageSize = pageSize;
         }
 
-        public int PageSize { get; internal set; } = 0;
+        internal int PageSize { get; private set; } = 0;
 
-        internal override TResult Prompt()
+        public override TResult Prompt()
         {
             bool tryAgain = true;
             TResult answer = DefaultValue;
@@ -38,14 +38,8 @@ namespace InquirerCS
 
                 while (true)
                 {
-                    bool isCanceled = false;
                     ConsoleKey? interrupted = null;
-                    var value = ConsoleHelper.Read(out isCanceled, out interrupted, ConsoleKey.LeftArrow, ConsoleKey.RightArrow);
-                    if (isCanceled)
-                    {
-                        IsCanceled = isCanceled;
-                        return default(TResult);
-                    }
+                    var value = ReadFn();
 
                     if (interrupted.HasValue)
                     {

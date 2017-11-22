@@ -8,8 +8,6 @@ namespace InquirerCS
     {
         private TList _choices;
 
-        private QuestionCheckbox<TList, TResult> questionCheckbox;
-
         public QuestionMultipleListBase(QuestionCheckbox<TList, TResult> questionCheckbox) : base(questionCheckbox.Message)
         {
             Choices = questionCheckbox.Choices;
@@ -34,6 +32,8 @@ namespace InquirerCS
         }
 
         internal Func<TResult, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
+
+        internal Func<ConsoleKey> ReadFn { get; set; }
 
         internal bool[] Selected { get; private set; }
 

@@ -2,14 +2,14 @@
 
 namespace InquirerCS
 {
-    public abstract class QuestionBase<TAnswer>
+    public abstract class QuestionBase<TResult>
     {
         protected QuestionBase(string message)
         {
             Message = message;
         }
 
-        internal TAnswer DefaultValue { get; set; }
+        internal TResult DefaultValue { get; set; }
 
         internal bool HasConfirmation { get; set; }
 
@@ -19,7 +19,7 @@ namespace InquirerCS
 
         internal string Message { get; set; }
 
-        internal abstract TAnswer Prompt();
+        public abstract TResult Prompt();
 
         protected virtual bool Confirm(string result)
         {
