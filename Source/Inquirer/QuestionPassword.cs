@@ -2,7 +2,7 @@
 
 namespace InquirerCS
 {
-    public class QuestionPassword<TResult> : QuestionSingleChoiceBase<string, TResult>
+    public class QuestionPassword<TResult> : QuestionSingleChoiceBase<ConsoleKey, string, TResult>
     {
         internal QuestionPassword(string question) : base(question)
         {
@@ -21,7 +21,7 @@ namespace InquirerCS
                 ConsoleKey key;
                 do
                 {
-                    key = ConsoleHelper.ReadKey();
+                    key = ReadFn();
 
                     switch (key)
                     {

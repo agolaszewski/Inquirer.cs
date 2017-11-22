@@ -2,7 +2,7 @@
 
 namespace InquirerCS
 {
-    public class QuestionRawList<TResult> : QuestionListBase<TResult>
+    public class QuestionRawList<TResult> : QuestionListBase<string, TResult>
     {
         internal QuestionRawList(string question) : base(question)
         {
@@ -12,7 +12,7 @@ namespace InquirerCS
         {
         }
 
-        public override QuestionListBase<TResult> Page(int pageSize)
+        public override QuestionListBase<string, TResult> Page(int pageSize)
         {
             return new QuestionPagedRawList<TResult>(this, pageSize);
         }
@@ -37,7 +37,7 @@ namespace InquirerCS
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
 
-                var value = ReadFn();
+                var value = ReadFn().ToN<int>();
 
                 if (!value.HasValue && HasDefaultValue)
                 {

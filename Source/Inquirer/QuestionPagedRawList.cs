@@ -39,7 +39,7 @@ namespace InquirerCS
                 while (true)
                 {
                     ConsoleKey? interrupted = null;
-                    var value = ConsoleHelper.Read(out interrupted, ConsoleKey.LeftArrow, ConsoleKey.RightArrow);
+                    var value = ReadFn();
 
                     if (interrupted.HasValue)
                     {

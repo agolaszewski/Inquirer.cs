@@ -57,7 +57,7 @@ namespace InquirerCS
                 bool move = true;
                 while (move)
                 {
-                    var key = ConsoleHelper.ReadKey();
+                    var key = ReadFn();
 
                     DisplayCheckbox(y - _BOUNDRY_TOP + _skipChoices, 2, y);
                     ConsoleHelper.PositionWrite(" ", 0, y);

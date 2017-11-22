@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace InquirerCS
 {
-    public abstract class QuestionListBase<TResult> : QuestionSingleChoiceBase<int?, TResult>
+    public abstract class QuestionListBase<TRead, TResult> : QuestionSingleChoiceBase<TRead, int?, TResult>
     {
         internal QuestionListBase(string message) : base(message)
         {
         }
 
-        protected QuestionListBase(QuestionListBase<TResult> questionListBase) : base(questionListBase.Message)
+        protected QuestionListBase(QuestionListBase<TRead, TResult> questionListBase) : base(questionListBase.Message)
         {
             Choices = questionListBase.Choices;
             ParseFn = questionListBase.ParseFn;
@@ -19,9 +19,9 @@ namespace InquirerCS
 
         internal List<TResult> Choices { get; set; }
 
-        public abstract QuestionListBase<TResult> Page(int pageSize);
+        public abstract QuestionListBase<TRead, TResult> Page(int pageSize);
 
-        public override QuestionSingleChoiceBase<int?, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
+        public override QuestionSingleChoiceBase<TRead, int?, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
             if ((typeof(TResult) is IComparable || typeof(TResult).IsEnum || typeof(TResult).IsValueType) && compareFn == null)
             {

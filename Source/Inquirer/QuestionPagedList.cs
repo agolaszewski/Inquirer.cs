@@ -67,7 +67,7 @@ namespace InquirerCS
 
                 while (move)
                 {
-                    var key = ConsoleHelper.ReadKey();
+                    var key = ReadFn();
 
                     switch (key)
                     {

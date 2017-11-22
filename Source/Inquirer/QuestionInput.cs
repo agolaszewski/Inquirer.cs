@@ -1,6 +1,6 @@
 ﻿namespace InquirerCS
 {
-    public class QuestionInput<TResult> : QuestionSingleChoiceBase<string, TResult>
+    public class QuestionInput<TResult> : QuestionSingleChoiceBase<string, string, TResult>
     {
         internal QuestionInput(string message) : base(message)
         {

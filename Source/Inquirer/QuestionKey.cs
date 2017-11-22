@@ -2,7 +2,7 @@
 
 namespace InquirerCS
 {
-    public class QuestionInputKey<TResult> : QuestionSingleChoiceBase<ConsoleKey, TResult>
+    public class QuestionInputKey<TResult> : QuestionSingleChoiceBase<ConsoleKey, ConsoleKey, TResult>
     {
         internal QuestionInputKey(string question) : base(question)
         {

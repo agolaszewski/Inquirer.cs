@@ -29,7 +29,7 @@ namespace InquirerCS
                 Console.WriteLine();
                 ConsoleHelper.Write("Answer: ");
 
-                var key = ConsoleHelper.ReadKey();
+                var key = ReadFn();
 
                 if (key == ConsoleKey.Enter && HasDefaultValue)
                 {

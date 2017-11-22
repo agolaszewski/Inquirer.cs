@@ -2,7 +2,7 @@
 
 namespace InquirerCS
 {
-    public class QuestionList<TResult> : QuestionListBase<TResult>
+    public class QuestionList<TResult> : QuestionListBase<ConsoleKey, TResult>
     {
         internal QuestionList(string question) : base(question)
         {
@@ -12,7 +12,7 @@ namespace InquirerCS
         {
         }
 
-        public override QuestionListBase<TResult> Page(int pageSize)
+        public override QuestionListBase<ConsoleKey, TResult> Page(int pageSize)
         {
             return new QuestionPagedList<TResult>(this, pageSize);
         }
@@ -55,7 +55,7 @@ namespace InquirerCS
                 {
                     int y = Console.CursorTop;
 
-                    var key = ConsoleHelper.ReadKey();
+                    var key = ReadFn();
 
                     ConsoleHelper.PositionWrite(" ", 0, y);
                     ConsoleHelper.PositionWriteLine(DisplayChoice(y - boundryTop), 2, y);

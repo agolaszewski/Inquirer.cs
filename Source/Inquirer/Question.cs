@@ -113,7 +113,7 @@ namespace InquirerCS
         {
             var inquire = new QuestionList<TResult>(message);
 
-            inquire.ReadFn = () => { return ConsoleHelper.Read().ToN<int>(); };
+            inquire.ReadFn = () => { return ConsoleHelper.ReadKey(); };
             inquire.Choices = choices;
 
             inquire.Parse(answer =>
@@ -128,7 +128,7 @@ namespace InquirerCS
         {
             var inquire = new QuestionPassword<string>(message);
 
-            inquire.ReadFn = () => { return ConsoleHelper.Read(); };
+            inquire.ReadFn = () => { return ConsoleHelper.ReadKey(); };
             inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
 
             inquire.Parse(answer =>
@@ -144,7 +144,7 @@ namespace InquirerCS
             var inquire = new QuestionRawList<TResult>(message);
             inquire.Choices = choices;
 
-            inquire.ReadFn = () => { return ConsoleHelper.Read().ToN<int>(); };
+            inquire.ReadFn = () => { return ConsoleHelper.Read(); };
             inquire.WithInputValidation(value => { return value > 0 && value <= inquire.Choices.Count; }, value => { return $"Choosen number must be between 1 and {inquire.Choices.Count}"; });
 
             inquire.Parse(answer =>

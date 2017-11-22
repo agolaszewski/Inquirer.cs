@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace InquirerCS
 {
-    public abstract class QuestionSingleChoiceBase<TInput, TResult> : QuestionBase<TResult>
+    public abstract class QuestionSingleChoiceBase<TRead, TInput, TResult> : QuestionBase<TResult>
     {
         public QuestionSingleChoiceBase(string question) : base(question)
         {
         }
 
-        internal Func<TInput> ReadFn { get; set; }
+        internal Func<TRead> ReadFn { get; set; }
 
         protected Func<TResult, string> ConvertToStringFn { get; set; } = value => { return value.ToString(); };
 
@@ -19,50 +19,50 @@ namespace InquirerCS
 
         protected List<Tuple<Func<TResult, bool>, Func<TResult, string>>> ValidatorsTResults { get; set; } = new List<Tuple<Func<TResult, bool>, Func<TResult, string>>>();
 
-        public QuestionSingleChoiceBase<TInput, TResult> ConvertToString(Func<TResult, string> fn)
+        public QuestionSingleChoiceBase<TRead, TInput, TResult> ConvertToString(Func<TResult, string> fn)
         {
             ConvertToStringFn = fn;
             return this;
         }
 
-        public QuestionSingleChoiceBase<TInput, TResult> Parse(Func<TInput, TResult> fn)
+        public QuestionSingleChoiceBase<TRead, TInput, TResult> Parse(Func<TInput, TResult> fn)
         {
             ParseFn = fn;
             return this;
         }
 
-        public QuestionSingleChoiceBase<TInput, TResult> WithConfirmation()
+        public QuestionSingleChoiceBase<TRead, TInput, TResult> WithConfirmation()
         {
             HasConfirmation = true;
             return this;
         }
 
-        public virtual QuestionSingleChoiceBase<TInput, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
+        public virtual QuestionSingleChoiceBase<TRead, TInput, TResult> WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
         {
             DefaultValue = defaultValue;
             HasDefaultValue = true;
             return this;
         }
 
-        public QuestionSingleChoiceBase<TInput, TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        public QuestionSingleChoiceBase<TRead, TInput, TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
             ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, errorMessageFn));
             return this;
         }
 
-        public QuestionSingleChoiceBase<TInput, TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        public QuestionSingleChoiceBase<TRead, TInput, TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
             ValidatorsTResults.Add(new Tuple<Func<TResult, bool>, Func<TResult, string>>(fn, answers => { return errorMessage; }));
             return this;
         }
 
-        internal QuestionSingleChoiceBase<TInput, TResult> WithInputValidation(Func<TInput, bool> fn, Func<TInput, string> errorMessageFn)
+        internal QuestionSingleChoiceBase<TRead, TInput, TResult> WithInputValidation(Func<TInput, bool> fn, Func<TInput, string> errorMessageFn)
         {
             ValidatorsTInput.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, errorMessageFn));
             return this;
         }
 
-        internal QuestionSingleChoiceBase<TInput, TResult> WithInputValidation(Func<TInput, bool> fn, string errorMessage)
+        internal QuestionSingleChoiceBase<TRead, TInput, TResult> WithInputValidation(Func<TInput, bool> fn, string errorMessage)
         {
             ValidatorsTInput.Add(new Tuple<Func<TInput, bool>, Func<TInput, string>>(fn, answers => { return errorMessage; }));
             return this;
