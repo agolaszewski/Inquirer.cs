@@ -2,6 +2,6 @@
 {
     public interface IConfirmComponent<TResult>
     {
-        bool Run(TResult answer);
+        bool Run(TResult result);
     }
 }

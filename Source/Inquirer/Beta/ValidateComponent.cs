@@ -11,21 +11,17 @@ namespace InquirerCS.Beta
         {
         }
 
-        public string ErrorMessage { get; set; }
-
-        public bool HasError { get; set; }
-
-        public void Run(T value)
+        public IValidationResultComponent Run(T value)
         {
             foreach (var validator in _validators)
             {
                 if (!validator.Item1(value))
                 {
-                    HasError = true;
-                    ErrorMessage = validator.Item2(value);
-                    return;
+                    return new ValidateResult(validator.Item2(value));
                 }
             }
+
+            return null;
         }
 
         public IValidateComponent<T> AddValidator(Func<T, bool> fn, Func<T, string> errorMessageFn)

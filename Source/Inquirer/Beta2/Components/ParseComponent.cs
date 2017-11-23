@@ -1,6 +1,7 @@
 ﻿using System;
+using InquirerCS.Beta2.Interfaces;
 
-namespace InquirerCS.Beta
+namespace InquirerCS.Beta2.Components
 {
     public class ParseComponent<TInput, TResult> : IParseComponent<TInput, TResult>
     {

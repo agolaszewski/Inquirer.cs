@@ -1,9 +1,7 @@
 ﻿namespace InquirerCS.Beta
 {
-    public interface IUIComponent
+    public interface IDisplayQuestionComponent
     {
-        void Render();
-
-        void Render<T>(IValidateComponent<T> validateInput);
+        void Run();
     }
 }

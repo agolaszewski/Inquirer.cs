@@ -15,13 +15,13 @@ namespace InquirerCS.Beta
         {
             while (true)
             {
-                ConsoleKey keyPressed = Console.ReadKey().Key;
-                if (keyPressed == ConsoleKey.Enter)
+                ConsoleKeyInfo keyPressed = Console.ReadKey();
+                if (keyPressed.Key == ConsoleKey.Enter)
                 {
                     return _sb.ToString();
                 }
 
-                _sb.Append(keyPressed);
+                _sb.Append(keyPressed.KeyChar);
             }
         }
     }

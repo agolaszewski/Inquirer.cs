@@ -1,4 +1,5 @@
-﻿using InquirerCS.Beta;
+﻿using InquirerCS.Beta2.Components;
+using InquirerCS.Beta2.Questions;
 
 namespace Sandbox2
 {
@@ -6,13 +7,8 @@ namespace Sandbox2
     {
         private static void Main(string[] args)
         {
-            var component = new UIInput<int>(new MessageComponent("Test"), new ConvertToStringComponent<int>(), null);
-            var validation = new ValidateComponent<string>();
-            var parse = new ParseComponent<string, string>(value => { return value; });
-            var confirm = new ConfirmComponent<string>();
-
-            var q = new QuestionInput<string>(component, new ReadComponent(), validation, validation, parse, confirm);
-            q.Prompt();
+            var displayQuestion = new DisplayQuestion<int>(new MessageComponent("Test"), new ConvertToStringComponent<int>(), new DefaultValueComponent<int>(4));
+            new QuestionInput<int>(displayQuestion).Prompt();
         }
     }
 }

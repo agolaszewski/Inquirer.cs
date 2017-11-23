@@ -1,6 +1,8 @@
-﻿namespace InquirerCS.Beta
+﻿using InquirerCS.Beta2.Interfaces;
+
+namespace InquirerCS.Beta2.Components
 {
-    internal class DefaultValueComponent<TResult> : IDefaultValueComponent<TResult>
+    public class DefaultValueComponent<TResult> : IDefaultValueComponent<TResult>
     {
         public DefaultValueComponent()
         {

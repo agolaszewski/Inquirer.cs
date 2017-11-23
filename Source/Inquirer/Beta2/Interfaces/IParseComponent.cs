@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InquirerCS.Beta
+namespace InquirerCS.Beta2.Interfaces
 {
     public interface IParseComponent<TInput, TResult>
     {

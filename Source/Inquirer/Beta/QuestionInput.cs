@@ -4,23 +4,26 @@
     {
         private IConfirmComponent<TResult> _confirmComponent;
 
+        private IDisplayQuestionComponent _displayQuestion;
+
         private IParseComponent<string, TResult> _parseComponent;
 
         private IReadInputComponent<string> _readComponent;
 
-        private IUIComponent _uiComponent;
+        private IUISystem _uiComponent;
 
         private IValidateComponent<string> _validateInput;
 
         private IValidateComponent<TResult> _validateResult;
 
         public QuestionInput(
-            IUIComponent uiComponent,
+            IUISystem uiComponent,
             IReadInputComponent<string> readComponent,
             IValidateComponent<string> validateInput,
             IValidateComponent<TResult> validateResult,
             IParseComponent<string, TResult> parseComponent,
-            IConfirmComponent<TResult> confirmComponent)
+            IConfirmComponent<TResult> confirmComponent,
+            IDisplayQuestionComponent displayQuestion)
         {
             _uiComponent = uiComponent;
             _readComponent = readComponent;
@@ -28,28 +31,32 @@
             _validateResult = validateResult;
             _parseComponent = parseComponent;
             _confirmComponent = confirmComponent;
+            _displayQuestion = displayQuestion;
         }
 
         public override TResult Prompt()
         {
-            _uiComponent.Render();
+            _uiComponent.Render(_displayQuestion);
 
-            var value = _readComponent.WaitForInput();
+            string value = _readComponent.WaitForInput();
 
-            _validateInput.Run(value);
-            _uiComponent.Render(_validateInput);
+            IValidationResultComponent validationResult = _validateInput.Run(value);
+            _uiComponent.Render(validationResult);
 
             var result = _parseComponent.Parse(value);
 
-            _validateResult.Run(result);
-            _uiComponent.Render(_validateResult);
+            validationResult = _validateResult.Run(result);
+            _uiComponent.Render(validationResult);
 
-            if (_confirmComponent.Run(result))
+            var confirmEntity = new ConfirmEntity<TResult>(result, _confirmComponent);
+
+            if (_uiComponent.Render())
             {
                 return result;
             }
 
-            return Prompt();
+            ////return Prompt();
+            return default(TResult);
         }
     }
 }

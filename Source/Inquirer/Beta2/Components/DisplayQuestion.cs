@@ -1,14 +1,15 @@
 ﻿using System;
+using InquirerCS.Beta2.Interfaces;
 
-namespace InquirerCS.Beta
+namespace InquirerCS.Beta2.Components
 {
-    public class UIInput<TResult> : IUIComponent
+    public class DisplayQuestion<TResult> : IRenderComponent
     {
         private IConvertToStringComponent<TResult> _convertToStringComponent;
         private IDefaultValueComponent<TResult> _defaultValueComponent;
         private IMessageComponent _messageComponent;
 
-        public UIInput(IMessageComponent messageComponent, IConvertToStringComponent<TResult> convertToStringComponent, IDefaultValueComponent<TResult> defaultValueComponent)
+        public DisplayQuestion(IMessageComponent messageComponent, IConvertToStringComponent<TResult> convertToStringComponent, IDefaultValueComponent<TResult> defaultValueComponent)
         {
             _convertToStringComponent = convertToStringComponent ?? new ConvertToStringComponent<TResult>();
             _defaultValueComponent = defaultValueComponent ?? new DefaultValueComponent<TResult>();
@@ -23,8 +24,9 @@ namespace InquirerCS.Beta
             }
         }
 
-        public virtual void Render()
+        public void Render()
         {
+            Console.Clear();
             ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
             var question = $"{_messageComponent.Message} : ";
             if (_defaultValueComponent.HasDefaultValue)
@@ -33,17 +35,6 @@ namespace InquirerCS.Beta
             }
 
             Console.Write(question);
-        }
-
-        public void Render<T>(IValidateComponent<T> validationComponent)
-        {
-            Render();
-            if (validationComponent.HasError)
-            {
-                Console.WriteLine();
-                ConsoleHelper.WriteError(validationComponent.ErrorMessage);
-                Console.ReadKey();
-            }
         }
     }
 }
