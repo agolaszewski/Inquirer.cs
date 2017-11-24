@@ -56,6 +56,7 @@
     <Compile Include="Beta2\Components\DisplayQuestion.cs" />
     <Compile Include="Beta2\Components\MessageComponent.cs" />
     <Compile Include="Beta2\Components\ParseComponent.cs" />
+    <Compile Include="Beta2\Interfaces\IConfirmComponent.cs" />
     <Compile Include="Beta2\Interfaces\IQuestion.cs" />
     <Compile Include="Beta2\Interfaces\IRenderComponent.cs" />
     <Compile Include="Beta2\Interfaces\IWaitForInputComponent.cs" />

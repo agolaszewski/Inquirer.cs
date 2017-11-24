@@ -10,34 +10,20 @@ namespace InquirerCS.Beta2.Questions
 
         private IChoicesComponent<TResult> _choicesComponent;
 
+        private IConfirmComponent<TResult> _confirmComponent;
+
         private IRenderComponent _displayQuestion;
 
         private IWaitForInputComponent<ConsoleKey> _inputComponent;
 
+        private IParseComponent<int, TResult> _parseComponent;
+
         private IRenderChoicesComponent<TResult> _renderChoices;
+
+        private IValidateComponent<TResult> _validationComponent;
 
         public QuestionList()
         {
-        }
-
-        public void Register(IChoicesComponent<TResult> choicesComponent)
-        {
-            _choicesComponent = choicesComponent;
-        }
-
-        public void Register(IRenderChoicesComponent<TResult> renderChoices)
-        {
-            _renderChoices = renderChoices;
-        }
-
-        public void Register(IRenderComponent displayQuestion)
-        {
-            _displayQuestion = displayQuestion;
-        }
-
-        public void Register(IWaitForInputComponent<ConsoleKey> inputComponent)
-        {
-            _inputComponent = inputComponent;
         }
 
         public TResult Prompt()
@@ -48,9 +34,10 @@ namespace InquirerCS.Beta2.Questions
             int boundryTop = 2;
             int boundryBottom = boundryTop + _choicesComponent.Choices.Count() - 1;
 
+            int cursorPosition = _CURSOR_OFFSET;
+
             while (true)
             {
-                int cursorPosition = _CURSOR_OFFSET;
                 var keyPressed = _inputComponent.WaitForInput();
                 switch (keyPressed)
                 {
@@ -74,6 +61,9 @@ namespace InquirerCS.Beta2.Questions
                                 cursorPosition += 1;
                             }
 
+                            _renderChoices.Render();
+                            _renderChoices.Select(cursorPosition - _CURSOR_OFFSET);
+
                             break;
                         }
 
@@ -84,8 +74,54 @@ namespace InquirerCS.Beta2.Questions
                 }
             }
 
-            Escape:
-            return default(TResult);
+        Escape:
+            TResult result = _parseComponent.Parse(cursorPosition - _CURSOR_OFFSET);
+            if (!_validationComponent.Run(result))
+            {
+                return Prompt();
+            }
+
+            if (!_confirmComponent.Run(result))
+            {
+                return Prompt();
+            }
+
+            return result;
+        }
+
+        public void Register(IChoicesComponent<TResult> choicesComponent)
+        {
+            _choicesComponent = choicesComponent;
+        }
+
+        public void Register(IParseComponent<int, TResult> parseComponent)
+        {
+            _parseComponent = parseComponent;
+        }
+
+        public void Register(IRenderChoicesComponent<TResult> renderChoices)
+        {
+            _renderChoices = renderChoices;
+        }
+
+        public void Register(IRenderComponent displayQuestion)
+        {
+            _displayQuestion = displayQuestion;
+        }
+
+        public void Register(IValidateComponent<TResult> validationComponent)
+        {
+            _validationComponent = validationComponent;
+        }
+
+        public void Register(IConfirmComponent<TResult> confirmComponent)
+        {
+            _confirmComponent = confirmComponent;
+        }
+
+        public void Register(IWaitForInputComponent<ConsoleKey> inputComponent)
+        {
+            _inputComponent = inputComponent;
         }
     }
 }
