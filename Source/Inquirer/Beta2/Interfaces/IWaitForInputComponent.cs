@@ -1,6 +1,6 @@
 ﻿namespace InquirerCS.Beta2.Interfaces
 {
-    internal interface IWaitForInputComponent<TInput>
+    public interface IWaitForInputComponent<TInput>
     {
         TInput WaitForInput();
     }

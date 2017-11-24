@@ -9,19 +9,23 @@ namespace InquirerCS.Beta2.Components
         private IDefaultValueComponent<TResult> _defaultValueComponent;
         private IMessageComponent _messageComponent;
 
-        public DisplayQuestion(IMessageComponent messageComponent, IConvertToStringComponent<TResult> convertToStringComponent, IDefaultValueComponent<TResult> defaultValueComponent)
+        public DisplayQuestion()
         {
-            _convertToStringComponent = convertToStringComponent ?? new ConvertToStringComponent<TResult>();
-            _defaultValueComponent = defaultValueComponent ?? new DefaultValueComponent<TResult>();
+        }
 
-            if (messageComponent == null)
-            {
-                throw new ArgumentNullException("messageComponent");
-            }
-            else
-            {
-                _messageComponent = messageComponent;
-            }
+        public void Register(IMessageComponent messageComponent)
+        {
+            _messageComponent = messageComponent;
+        }
+
+        public void Register(IConvertToStringComponent<TResult> convertToStringComponent)
+        {
+            _convertToStringComponent = convertToStringComponent;
+        }
+
+        public void Register(IDefaultValueComponent<TResult> defaultValueComponent)
+        {
+            _defaultValueComponent = defaultValueComponent;
         }
 
         public void Render()

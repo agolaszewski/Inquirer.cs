@@ -48,13 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Beta2\Components\ReadConsoleKey.cs" />
+    <Compile Include="Beta2\Components\DisplayChoices.cs" />
+    <Compile Include="Beta2\Components\ListChoices.cs" />
+    <Compile Include="Beta2\Interfaces\IChoicesComponent.cs" />
+    <Compile Include="Beta2\Components\ReadStringComponent.cs" />
     <Compile Include="Beta2\Components\DisplayQuestion.cs" />
     <Compile Include="Beta2\Components\MessageComponent.cs" />
     <Compile Include="Beta2\Components\ParseComponent.cs" />
     <Compile Include="Beta2\Interfaces\IQuestion.cs" />
     <Compile Include="Beta2\Interfaces\IRenderComponent.cs" />
     <Compile Include="Beta2\Interfaces\IWaitForInputComponent.cs" />
-    <Compile Include="Beta2\Questions\QuestionInput.cs" />
+    <Compile Include="Beta2\Interfaces\IRenderChoicesComponent.cs" />
+    <Compile Include="Beta2\Questions\QuestionList.cs" />
     <Compile Include="Beta2\Components\ConvertToStringComponent.cs" />
     <Compile Include="Beta2\Components\DefaultValueComponent.cs" />
     <Compile Include="Beta2\Interfaces\IParseComponent.cs" />
