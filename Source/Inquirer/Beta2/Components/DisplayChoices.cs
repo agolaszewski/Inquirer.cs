@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using InquirerCS.Beta2.Interfaces;
 
 namespace InquirerCS.Beta2.Components
@@ -11,17 +12,9 @@ namespace InquirerCS.Beta2.Components
 
         private IConvertToStringComponent<TResult> _convertToString;
 
-        public DisplayChoices()
-        {
-        }
-
-        public void Register(IChoicesComponent<TResult> choicesComponent)
+        public DisplayChoices(IChoicesComponent<TResult> choicesComponent, IConvertToStringComponent<TResult> convertToString)
         {
             _choicesComponent = choicesComponent;
-        }
-
-        public void Register(IConvertToStringComponent<TResult> convertToString)
-        {
             _convertToString = convertToString;
         }
 
@@ -30,14 +23,14 @@ namespace InquirerCS.Beta2.Components
             int index = 0;
             foreach (TResult choice in _choicesComponent.Choices)
             {
-                ConsoleHelper.PositionWriteLine($"{_convertToString.Convert(choice)}", _CURSOR_OFFSET, index + _CURSOR_OFFSET);
+                ConsoleHelper.PositionWriteLine($"   {_convertToString.Convert(choice)}", 0, index + _CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"-> {_convertToString.Convert(_choicesComponent.Choices.ElementAt(index))}", 0, index + _CURSOR_OFFSET);
+            ConsoleHelper.PositionWriteLine($"-> {_convertToString.Convert(_choicesComponent.Choices.ElementAt(index))}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }
 }

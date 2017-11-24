@@ -12,7 +12,7 @@ namespace InquirerCS.Beta2.Questions
 
         private IConfirmComponent<TResult> _confirmComponent;
 
-        private IRenderComponent _displayQuestion;
+        private IDisplayQuestionComponent _displayQuestion;
 
         private IWaitForInputComponent<ConsoleKey> _inputComponent;
 
@@ -24,12 +24,14 @@ namespace InquirerCS.Beta2.Questions
 
         public QuestionList()
         {
+            Console.CursorVisible = false;
         }
 
         public TResult Prompt()
         {
             _displayQuestion.Render();
             _renderChoices.Render();
+            _renderChoices.Select(0);
 
             int boundryTop = 2;
             int boundryBottom = boundryTop + _choicesComponent.Choices.Count() - 1;
@@ -104,7 +106,7 @@ namespace InquirerCS.Beta2.Questions
             _renderChoices = renderChoices;
         }
 
-        public void Register(IRenderComponent displayQuestion)
+        public void Register(IDisplayQuestionComponent displayQuestion)
         {
             _displayQuestion = displayQuestion;
         }
