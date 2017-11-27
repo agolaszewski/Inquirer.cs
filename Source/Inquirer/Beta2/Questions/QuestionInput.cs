@@ -17,16 +17,17 @@ namespace InquirerCS.Beta2.Questions
 
         private IParseComponent<string, TResult> _parseComponent;
 
-        private IRenderChoicesComponent<TResult> _renderChoices;
+        private IValidateComponent<TResult> _validationResultComponent;
 
-        private IValidateComponent<TResult> _validationComponent;
+        private IValidateComponent<string> _validationValueComponent;
 
         public QuestionInput(
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<string> inputComponent,
             IParseComponent<string, TResult> parseComponent,
-            IValidateComponent<TResult> validationComponent,
+            IValidateComponent<TResult> validationResultComponent,
+            IValidateComponent<string> validationValueComponent,
             IDisplayErrorComponent errorComponent,
             IDefaultValueComponent<TResult> defaultComponent)
         {
@@ -34,7 +35,8 @@ namespace InquirerCS.Beta2.Questions
             _displayQuestion = displayQuestion;
             _inputComponent = inputComponent;
             _parseComponent = parseComponent;
-            _validationComponent = validationComponent;
+            _validationResultComponent = validationResultComponent;
+            _validationValueComponent = validationValueComponent;
             _errorComponent = errorComponent;
             _defaultComponent = defaultComponent;
 
@@ -56,8 +58,15 @@ namespace InquirerCS.Beta2.Questions
                 return _defaultComponent.DefaultValue;
             }
 
+            var validationResult = _validationValueComponent.Run(value);
+            if (validationResult.HasError)
+            {
+                _errorComponent.Render(validationResult.ErrorMessage);
+                return Prompt();
+            }
+
             TResult answer = _parseComponent.Parse(value);
-            var validationResult = _validationComponent.Run(answer);
+            validationResult = _validationResultComponent.Run(answer);
 
             if (validationResult.HasError)
             {

@@ -24,8 +24,9 @@ namespace Sandbox2
             var errorDisplay = new DisplayErrorCompnent();
 
             var question = new QuestionList<ConsoleColor>(choicesComponent, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationComponent, errorDisplay);
-            question.Prompt();
+            //question.Prompt();
 
+          
             var stringInputComponent = new ReadStringComponent();
             var parseStructComponent = new ParseStructComponent<int>();
             var validationComponentS = new ValidationComponent<string>();
@@ -33,8 +34,10 @@ namespace Sandbox2
             var convertToString2 = new ConvertToStringComponent<int>();
             var confirmComponent2 = new ConfirmComponent<int>(convertToString2);
             var defaultComponent2 = new DefaultValueComponent<int>(4);
+            var displayQuestionComponent2 = new DisplayQuestion<int>(msgComponent, convertToString2, defaultComponent2);
 
-            var question2 = new QuestionInput<int>(confirmComponent2, displayQuestionComponent, stringInputComponent, parseStructComponent, validationComponentI, errorDisplay, defaultComponent2);
+            var question2 = new QuestionInput<int>(confirmComponent2, displayQuestionComponent2, stringInputComponent, parseStructComponent, validationComponentI, validationComponentS, errorDisplay, defaultComponent2);
+            question2.Prompt();
         }
     }
 }
