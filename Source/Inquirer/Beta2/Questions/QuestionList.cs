@@ -22,8 +22,27 @@ namespace InquirerCS.Beta2.Questions
 
         private IValidateComponent<TResult> _validationComponent;
 
-        public QuestionList()
+        private IDisplayErrorComponent _errorComponent;
+
+        public QuestionList(
+            IChoicesComponent<TResult> choicesComponent,
+            IConfirmComponent<TResult> confirmComponent,
+            IDisplayQuestionComponent displayQuestion,
+            IWaitForInputComponent<ConsoleKey> inputComponent,
+            IParseComponent<int, TResult> parseComponent,
+            IRenderChoicesComponent<TResult> renderChoices,
+            IValidateComponent<TResult> validationComponent,
+            IDisplayErrorComponent errorComponent)
         {
+            _choicesComponent = choicesComponent;
+            _confirmComponent = confirmComponent;
+            _displayQuestion = displayQuestion;
+            _inputComponent = inputComponent;
+            _parseComponent = parseComponent;
+            _renderChoices = renderChoices;
+            _validationComponent = validationComponent;
+            _errorComponent = errorComponent;
+
             Console.CursorVisible = false;
         }
 
@@ -78,52 +97,19 @@ namespace InquirerCS.Beta2.Questions
 
         Escape:
             TResult result = _parseComponent.Parse(cursorPosition - _CURSOR_OFFSET);
-            if (!_validationComponent.Run(result))
+            var validationResult = _validationComponent.Run(result);
+            if (validationResult.HasError)
             {
+                _errorComponent.Render(validationResult.ErrorMessage);
                 return Prompt();
             }
 
-            if (!_confirmComponent.Run(result))
+            if (_confirmComponent.Confirm(result))
             {
                 return Prompt();
             }
 
             return result;
-        }
-
-        public void Register(IChoicesComponent<TResult> choicesComponent)
-        {
-            _choicesComponent = choicesComponent;
-        }
-
-        public void Register(IParseComponent<int, TResult> parseComponent)
-        {
-            _parseComponent = parseComponent;
-        }
-
-        public void Register(IRenderChoicesComponent<TResult> renderChoices)
-        {
-            _renderChoices = renderChoices;
-        }
-
-        public void Register(IDisplayQuestionComponent displayQuestion)
-        {
-            _displayQuestion = displayQuestion;
-        }
-
-        public void Register(IValidateComponent<TResult> validationComponent)
-        {
-            _validationComponent = validationComponent;
-        }
-
-        public void Register(IConfirmComponent<TResult> confirmComponent)
-        {
-            _confirmComponent = confirmComponent;
-        }
-
-        public void Register(IWaitForInputComponent<ConsoleKey> inputComponent)
-        {
-            _inputComponent = inputComponent;
         }
     }
 }

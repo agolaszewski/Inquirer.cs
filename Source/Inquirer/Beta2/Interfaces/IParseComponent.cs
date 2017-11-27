@@ -4,6 +4,6 @@ namespace InquirerCS.Beta2.Interfaces
 {
     public interface IParseComponent<TInput, TResult>
     {
-        Func<TInput, TResult> Parse { get; set; }
+        Func<TInput, TResult> Parse { get; }
     }
 }

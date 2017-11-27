@@ -14,16 +14,7 @@ namespace InquirerCS.Beta2.Components
 
         public string WaitForInput()
         {
-            while (true)
-            {
-                ConsoleKeyInfo keyPressed = Console.ReadKey();
-                if (keyPressed.Key == ConsoleKey.Enter)
-                {
-                    return _sb.ToString();
-                }
-
-                _sb.Append(keyPressed.KeyChar);
-            }
+            return Console.ReadLine();
         }
     }
 }
