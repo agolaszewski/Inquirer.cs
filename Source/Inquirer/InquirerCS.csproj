@@ -54,6 +54,7 @@
     <Compile Include="Beta2\Components\DisplayErrorCompnent.cs" />
     <Compile Include="Beta2\Components\DisplayListQuestion.cs" />
     <Compile Include="Beta2\Components\DisplaySelectableChoices.cs" />
+    <Compile Include="Beta2\Components\NoConfirmationComponent.cs" />
     <Compile Include="Beta2\Components\ParseListComponent.cs" />
     <Compile Include="Beta2\Components\ParseSelectableListComponent.cs" />
     <Compile Include="Beta2\Components\ParseStructComponent.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Beta2\Question.cs" />
     <Compile Include="Beta2\Questions\Checkbox.cs" />
     <Compile Include="Beta2\Questions\Input.cs" />
+    <Compile Include="Beta2\Questions\InputKey.cs" />
     <Compile Include="Beta2\Questions\Listing.cs" />
     <Compile Include="Beta2\Components\ConvertToStringComponent.cs" />
     <Compile Include="Beta2\Components\DefaultListValueComponent.cs" />

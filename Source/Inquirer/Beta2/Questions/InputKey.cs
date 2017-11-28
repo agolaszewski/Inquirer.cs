@@ -3,7 +3,7 @@ using InquirerCS.Beta2.Interfaces;
 
 namespace InquirerCS.Beta2.Questions
 {
-    public class Input<TResult> : IQuestion<TResult>
+    public class InputKey<TResult> : IQuestion<TResult>
     {
         private IConfirmComponent<TResult> _confirmComponent;
 
@@ -13,21 +13,21 @@ namespace InquirerCS.Beta2.Questions
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<string> _inputComponent;
+        private IWaitForInputComponent<ConsoleKey> _inputComponent;
 
-        private IParseComponent<string, TResult> _parseComponent;
+        private IParseComponent<ConsoleKey, TResult> _parseComponent;
 
         private IValidateComponent<TResult> _validationResultComponent;
 
-        private IValidateComponent<string> _validationValueComponent;
+        private IValidateComponent<ConsoleKey> _validationValueComponent;
 
-        public Input(
+        public InputKey(
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<string> inputComponent,
-            IParseComponent<string, TResult> parseComponent,
+            IWaitForInputComponent<ConsoleKey> inputComponent,
+            IParseComponent<ConsoleKey, TResult> parseComponent,
             IValidateComponent<TResult> validationResultComponent,
-            IValidateComponent<string> validationValueComponent,
+            IValidateComponent<ConsoleKey> validationValueComponent,
             IDisplayErrorComponent errorComponent,
             IDefaultValueComponent<TResult> defaultComponent)
         {
@@ -48,7 +48,7 @@ namespace InquirerCS.Beta2.Questions
             _displayQuestion.Render();
 
             var value = _inputComponent.WaitForInput();
-            if (string.IsNullOrWhiteSpace(value) && _defaultComponent.HasDefaultValue)
+            if (value == ConsoleKey.Enter && _defaultComponent.HasDefaultValue)
             {
                 if (_confirmComponent.Confirm(_defaultComponent.DefaultValue))
                 {

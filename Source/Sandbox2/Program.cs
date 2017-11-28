@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using InquirerCS.Beta2;
-using InquirerCS.Beta2.Components;
-using InquirerCS.Beta2.Questions;
 
 namespace Sandbox2
 {
@@ -27,7 +25,6 @@ namespace Sandbox2
             //var question = new Listing<ConsoleColor>(choicesComponent, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationComponent, errorDisplay);
             ////question.Prompt();
 
-
             //var stringInputComponent = new ReadStringComponent();
             //var parseStructComponent = new ParseStructComponent<int>();
             //var validationComponentS = new ValidationComponent<string>();
@@ -39,8 +36,8 @@ namespace Sandbox2
 
             //var question2 = new Input<int>(confirmComponent2, displayQuestionComponent2, stringInputComponent, parseStructComponent, validationComponentI, validationComponentS, errorDisplay, defaultComponent2);
             //question2.Prompt();
-            var q = Question.Checkbox("Test", Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>());
-            q.Prompt();
+            //var q = Question.Checkbox("Test", Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>());
+            Question.Input<int>("Test").Prompt();
         }
     }
 }
