@@ -48,14 +48,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Beta2\Components\ConfirmListComponent.cs" />
     <Compile Include="Beta2\Components\ConfirmComponent.cs" />
     <Compile Include="Beta2\Components\DefaultValueComponent.cs" />
     <Compile Include="Beta2\Components\DisplayErrorCompnent.cs" />
+    <Compile Include="Beta2\Components\DisplayListQuestion.cs" />
+    <Compile Include="Beta2\Components\DisplaySelectableChoices.cs" />
     <Compile Include="Beta2\Components\ParseListComponent.cs" />
+    <Compile Include="Beta2\Components\ParseSelectableListComponent.cs" />
     <Compile Include="Beta2\Components\ParseStructComponent.cs" />
     <Compile Include="Beta2\Components\ReadConsoleKey.cs" />
     <Compile Include="Beta2\Components\DisplayChoices.cs" />
     <Compile Include="Beta2\Components\ListChoices.cs" />
+    <Compile Include="Beta2\Components\SelectableListChoices.cs" />
+    <Compile Include="Beta2\Components\Selectable.cs" />
     <Compile Include="Beta2\Components\ValidationComponent.cs" />
     <Compile Include="Beta2\Components\ValidationResult.cs" />
     <Compile Include="Beta2\Interfaces\IChoicesComponent.cs" />
@@ -70,8 +76,10 @@
     <Compile Include="Beta2\Interfaces\IValidationResult.cs" />
     <Compile Include="Beta2\Interfaces\IWaitForInputComponent.cs" />
     <Compile Include="Beta2\Interfaces\IRenderChoicesComponent.cs" />
-    <Compile Include="Beta2\Questions\QuestionInput.cs" />
-    <Compile Include="Beta2\Questions\QuestionList.cs" />
+    <Compile Include="Beta2\Question.cs" />
+    <Compile Include="Beta2\Questions\Checkbox.cs" />
+    <Compile Include="Beta2\Questions\Input.cs" />
+    <Compile Include="Beta2\Questions\Listing.cs" />
     <Compile Include="Beta2\Components\ConvertToStringComponent.cs" />
     <Compile Include="Beta2\Components\DefaultListValueComponent.cs" />
     <Compile Include="Beta2\Interfaces\IParseComponent.cs" />

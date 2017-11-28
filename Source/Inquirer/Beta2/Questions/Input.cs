@@ -3,7 +3,7 @@ using InquirerCS.Beta2.Interfaces;
 
 namespace InquirerCS.Beta2.Questions
 {
-    public class QuestionInput<TResult> : IQuestion<TResult>
+    public class Input<TResult> : IQuestion<TResult>
     {
         private IConfirmComponent<TResult> _confirmComponent;
 
@@ -21,7 +21,7 @@ namespace InquirerCS.Beta2.Questions
 
         private IValidateComponent<string> _validationValueComponent;
 
-        public QuestionInput(
+        public Input(
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<string> inputComponent,

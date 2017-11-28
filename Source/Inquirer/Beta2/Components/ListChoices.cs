@@ -6,7 +6,7 @@ namespace InquirerCS.Beta2.Components
 {
     public class ListChoices<TResult> : IChoicesComponent<TResult>
     {
-        public ListChoices(IList<TResult> choices)
+        public ListChoices(List<TResult> choices)
         {
             Choices = choices;
         }
@@ -16,6 +16,6 @@ namespace InquirerCS.Beta2.Components
             Choices = choices.ToList();
         }
 
-        public IList<TResult> Choices { get; }
+        public List<TResult> Choices { get; }
     }
 }
