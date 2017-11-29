@@ -7,10 +7,10 @@ namespace InquirerCS.Beta2.Components
 {
     internal class HideReadStringComponent : IWaitForInputComponent<string>
     {
-        private Stack<char> stringBuilder = new Stack<char>();
-
         public string WaitForInput()
         {
+            Stack<char> stringBuilder = new Stack<char>();
+
             ConsoleKeyInfo key;
             do
             {

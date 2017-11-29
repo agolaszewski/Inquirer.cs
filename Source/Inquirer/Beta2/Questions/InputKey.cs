@@ -82,6 +82,11 @@ namespace InquirerCS.Beta2.Questions
                 return Prompt();
             }
 
+            if (_confirmComponent.Confirm(answer))
+            {
+                return Prompt();
+            }
+
             return answer;
         }
     }

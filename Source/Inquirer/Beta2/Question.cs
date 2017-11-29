@@ -208,7 +208,6 @@ namespace InquirerCS.Beta2
 
             var msgComponent = new MessageComponent(message);
 
-            var confirmComponent = new NoConfirmationComponent<string>();
             var defaultComponent = new DefaultValueComponent<string>();
 
             var displayQuestionComponent = new DisplayQuestion<string>(msgComponent, convertToString, defaultComponent);
@@ -217,6 +216,7 @@ namespace InquirerCS.Beta2
             {
                 return value;
             });
+            var confirmComponent = new ConfirmPasswordComponent(inputComponent);
 
             var validationInputComponent = new ValidationComponent<string>();
             validationInputComponent.AddValidator(value => { return string.IsNullOrEmpty(value) == false || defaultComponent.HasDefaultValue; }, "Empty line");
