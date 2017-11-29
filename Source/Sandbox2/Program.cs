@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using InquirerCS.Beta2;
 
 namespace Sandbox2
@@ -37,7 +36,7 @@ namespace Sandbox2
             //var question2 = new Input<int>(confirmComponent2, displayQuestionComponent2, stringInputComponent, parseStructComponent, validationComponentI, validationComponentS, errorDisplay, defaultComponent2);
             //question2.Prompt();
             //var q = Question.Checkbox("Test", Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>());
-            Question.Input<int>("Test").Prompt();
+            Question.Password("[T]est [P]rod").Prompt();
         }
     }
 }

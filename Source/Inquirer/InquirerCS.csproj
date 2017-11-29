@@ -50,10 +50,12 @@
   <ItemGroup>
     <Compile Include="Beta2\Components\ConfirmListComponent.cs" />
     <Compile Include="Beta2\Components\ConfirmComponent.cs" />
+    <Compile Include="Beta2\Components\ConfirmPasswordComponent.cs" />
     <Compile Include="Beta2\Components\DefaultValueComponent.cs" />
     <Compile Include="Beta2\Components\DisplayErrorCompnent.cs" />
     <Compile Include="Beta2\Components\DisplayListQuestion.cs" />
     <Compile Include="Beta2\Components\DisplaySelectableChoices.cs" />
+    <Compile Include="Beta2\Components\HideReadStringComponent.cs" />
     <Compile Include="Beta2\Components\NoConfirmationComponent.cs" />
     <Compile Include="Beta2\Components\ParseListComponent.cs" />
     <Compile Include="Beta2\Components\ParseSelectableListComponent.cs" />
@@ -89,6 +91,8 @@
     <Compile Include="Beta2\Interfaces\IDefaultValueComponent.cs" />
     <Compile Include="Beta2\Interfaces\IMessageComponent.cs" />
     <Compile Include="Beta2\Interfaces\IValidateComponent.cs" />
+    <Compile Include="Beta2\Questions\Password.cs" />
+    <Compile Include="Beta2\Questions\RawList.cs" />
     <Compile Include="Inquirer.cs" />
     <Compile Include="InquirerMenu.cs" />
     <Compile Include="QuestionMultipleListBase.cs" />
