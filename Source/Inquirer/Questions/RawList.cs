@@ -18,7 +18,7 @@ namespace InquirerCS.Questions
 
         private IParseComponent<string, TResult> _parseComponent;
 
-        private IRenderchoices<TResult> _renderChoices;
+        private IRenderChoices<TResult> _renderChoices;
 
         private IValidateComponent<string> _validationInputComponent;
 
@@ -30,7 +30,7 @@ namespace InquirerCS.Questions
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<string> inputComponent,
             IParseComponent<string, TResult> parseComponent,
-            IRenderchoices<TResult> renderChoices,
+            IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<string> validationInputComponent,
             IDisplayErrorComponent errorComponent)

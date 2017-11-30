@@ -21,7 +21,7 @@ namespace InquirerCS.Questions
 
         private IParseComponent<List<Selectable<TResult>>, TList> _parseComponent;
 
-        private IRenderchoices<TResult> _renderchoices;
+        private IRenderChoices<TResult> _renderchoices;
 
         private IValidateComponent<TList> _validationComponent;
 
@@ -31,7 +31,7 @@ namespace InquirerCS.Questions
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<ConsoleKey> inputComponent,
             IParseComponent<List<Selectable<TResult>>, TList> parseComponent,
-            IRenderchoices<TResult> renderChoices,
+            IRenderChoices<TResult> renderChoices,
             IValidateComponent<TList> validationComponent,
             IDisplayErrorComponent errorComponent)
         {

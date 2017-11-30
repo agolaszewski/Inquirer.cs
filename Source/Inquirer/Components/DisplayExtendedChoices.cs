@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
-namespace InquirerCS.Beta2
+namespace InquirerCS.Components
 {
-    internal class DisplayExtendedChoices<TResult> : IRenderchoices<TResult>
+    internal class DisplayExtendedChoices<TResult> : IRenderChoices<TResult>
     {
         private const int _CURSOR_OFFSET = 2;
 
         private Dictionary<ConsoleKey, TResult> _choicesDictionary;
 
-        private ConvertToStringComponent<TResult> _convertToString;
+        private IConvertToStringComponent<TResult> _convertToString;
 
-        public DisplayExtendedChoices(Dictionary<ConsoleKey, TResult> choicesDictionary, ConvertToStringComponent<TResult> convertToString)
+        public DisplayExtendedChoices(Dictionary<ConsoleKey, TResult> choicesDictionary, IConvertToStringComponent<TResult> convertToString)
         {
             _choicesDictionary = choicesDictionary;
             _convertToString = convertToString;

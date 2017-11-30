@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\CheckboxBuilder.cs" />
+    <Compile Include="Components\DefaultDictionaryValue.cs" />
+    <Compile Include="Builders\ExtendedListBuilder.cs" />
+    <Compile Include="Interfaces\IBuild.cs" />
     <Compile Include="Components\ConfirmListComponent.cs" />
     <Compile Include="Components\ConfirmComponent.cs" />
     <Compile Include="Components\ConfirmPasswordComponent.cs" />

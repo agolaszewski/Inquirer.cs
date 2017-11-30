@@ -4,7 +4,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class DisplaySelectableChoices<TResult> : IRenderchoices<TResult>
+    public class DisplaySelectableChoices<TResult> : IRenderChoices<TResult>
     {
         private const int _CURSOR_OFFSET = 2;
 

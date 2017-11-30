@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using InquirerCS.Builders;
 using InquirerCS.Components;
 using InquirerCS.Questions;
 
@@ -8,23 +9,9 @@ namespace InquirerCS.Beta2
 {
     public static class Question
     {
-        public static Checkbox<List<TResult>, TResult> Checkbox<TResult>(string message, IEnumerable<TResult> choices)
+        public static CheckboxBuilder<TResult> Checkbox<TResult>(string message, IEnumerable<TResult> choices)
         {
-            var messageComponent = new MessageComponent(message);
-            var convertToStringComponent = new ConvertToStringComponent<TResult>();
-            var defaultValueComponent = new DefaultValueComponent<List<TResult>>();
-
-            var displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(messageComponent, convertToStringComponent, defaultValueComponent);
-            var selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
-
-            var confirmComponent = new NoConfirmationComponent<List<TResult>>();
-            var inputComponent = new ReadConsoleKey();
-            var parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(selectedChoices);
-            var renderchoices = new DisplaySelectableChoices<TResult>(selectedChoices, convertToStringComponent);
-            var validateComponent = new ValidationComponent<List<TResult>>();
-            var errorComponent = new DisplayErrorCompnent();
-
-            return new Checkbox<List<TResult>, TResult>(selectedChoices, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, renderchoices, validateComponent, errorComponent);
+            return new CheckboxBuilder<TResult>(message, choices);
         }
 
         public static InputKey<bool> Confirm(string message)
@@ -92,29 +79,9 @@ namespace InquirerCS.Beta2
             return new InputKey<ConsoleKey>(confirmComponent, displayQuestionComponent, inputComponent, parseComponent, validationResultComponent, validationInputComponent, errorDisplay, defaultComponent);
         }
 
-        public static ExtendedList<TResult> ExtendedList<TResult>(string message, IDictionary<ConsoleKey, TResult> choices)
+        public static ExtendedListBuilder<TResult> ExtendedList<TResult>(string message, IDictionary<ConsoleKey, TResult> choices) where TResult : IComparable
         {
-            var choicesDictionary = choices.ToDictionary(k => k.Key, v => v.Value);
-            var convertToString = new ConvertToStringComponent<TResult>();
-            var msgComponent = new MessageComponent(message);
-
-            var defaultComponent = new DefaultValueComponent<TResult>();
-
-            var displayQuestionComponent = new DisplayQuestion<TResult>(msgComponent, convertToString, defaultComponent);
-            var inputComponent = new ReadConsoleKey();
-            var parseComponent = new ParseComponent<ConsoleKey, TResult>(value =>
-            {
-                return choices[value];
-            });
-            var confirmComponent = new ConfirmComponent<TResult>(convertToString);
-
-            var validationInputComponent = new ValidationComponent<ConsoleKey>();
-
-            var validationResultComponent = new ValidationComponent<TResult>();
-            var errorDisplay = new DisplayErrorCompnent();
-            var displayChoices = new DisplayExtendedChoices<TResult>(choicesDictionary, convertToString);
-
-            return new ExtendedList<TResult>(choicesDictionary, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationResultComponent, validationInputComponent, errorDisplay);
+            return new ExtendedListBuilder<TResult>(message, choices);
         }
 
         public static Input<string> Input(string message)

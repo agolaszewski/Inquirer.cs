@@ -1,6 +1,6 @@
 ﻿namespace InquirerCS.Interfaces
 {
-    public interface IRenderchoices<TResult>
+    public interface IRenderChoices<TResult>
     {
         void Render();
 
