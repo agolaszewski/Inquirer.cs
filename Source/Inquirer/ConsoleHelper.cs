@@ -100,6 +100,11 @@ namespace InquirerCS
             return stringBuilder.ToString();
         }
 
+        internal static ConsoleKey ReadKey()
+        {
+            return Console.ReadKey().Key;
+        }
+
         internal static ConsoleKey ReadKey(out bool isCanceled)
         {
             isCanceled = false;
@@ -111,11 +116,6 @@ namespace InquirerCS
             }
 
             return key;
-        }
-
-        internal static ConsoleKey ReadKey()
-        {
-            return Console.ReadKey().Key;
         }
 
         internal static void Write(string text, ConsoleColor color = ConsoleColor.White)
