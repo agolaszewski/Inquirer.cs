@@ -9,7 +9,7 @@ namespace InquirerCS.Beta2
 {
     public static class Question
     {
-        public static CheckboxBuilder<TResult> Checkbox<TResult>(string message, IEnumerable<TResult> choices)
+        public static CheckboxBuilder<TResult> Checkbox<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
         {
             return new CheckboxBuilder<TResult>(message, choices);
         }
@@ -86,27 +86,7 @@ namespace InquirerCS.Beta2
 
         public static Input<string> Input(string message)
         {
-            var convertToString = new ConvertToStringComponent<string>();
-
-            var msgComponent = new MessageComponent(message);
-
-            var confirmComponent = new NoConfirmationComponent<string>();
-            var defaultComponent = new DefaultValueComponent<string>();
-
-            var displayQuestionComponent = new DisplayQuestion<string>(msgComponent, convertToString, defaultComponent);
-            var inputComponent = new ReadStringComponent();
-            var parseComponent = new ParseComponent<string, string>(value =>
-            {
-                return value;
-            });
-
-            var validationInputComponent = new ValidationComponent<string>();
-            validationInputComponent.AddValidator(value => { return string.IsNullOrEmpty(value) == false || defaultComponent.HasDefaultValue; }, "Empty line");
-
-            var validationResultComponent = new ValidationComponent<string>();
-            var errorDisplay = new DisplayErrorCompnent();
-
-            return new Input<string>(confirmComponent, displayQuestionComponent, inputComponent, parseComponent, validationResultComponent, validationInputComponent, errorDisplay, defaultComponent);
+            
         }
 
         public static Input<TResult> Input<TResult>(string message) where TResult : struct

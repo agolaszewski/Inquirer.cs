@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\CheckboxBuilder.cs" />
+    <Compile Include="Builders\InputBuilder.cs" />
+    <Compile Include="Components\DefaultSelectedValueComponent.cs" />
     <Compile Include="Components\DefaultDictionaryValue.cs" />
     <Compile Include="Builders\ExtendedListBuilder.cs" />
     <Compile Include="Interfaces\IBuild.cs" />

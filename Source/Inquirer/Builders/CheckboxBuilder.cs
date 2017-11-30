@@ -7,7 +7,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class CheckboxBuilder<TResult>
+    public class CheckboxBuilder<TResult> where TResult : IComparable
     {
         private IConfirmComponent<List<TResult>> _confirmComponent;
 
@@ -79,13 +79,13 @@ namespace InquirerCS.Builders
 
         public CheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
         {
-            _defaultValueComponent = new DefaultValueComponent<List<TResult>>(defaultValues);
+            _defaultValueComponent = new DefaultSelectedValueComponent<TResult>(_selectedChoices, defaultValues);
             return this;
         }
 
         public CheckboxBuilder<TResult> WithDefaultValue(TResult defaultValues)
         {
-            _defaultValueComponent = new DefaultValueComponent<List<TResult>>(new List<TResult>() { defaultValues });
+            _defaultValueComponent = new DefaultSelectedValueComponent<TResult>(_selectedChoices, new List<TResult>() { defaultValues });
             return this;
         }
     }
