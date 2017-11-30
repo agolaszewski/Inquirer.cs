@@ -1,26 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using InquirerCS.Beta2.Interfaces;
 
 namespace InquirerCS.Beta2.Components
 {
-    public class DisplaySelectableChoices<TResult> : IRenderChoicesComponent<TResult>
+    public class DisplaySelectableChoices<TResult> : IRenderchoices<TResult>
     {
         private const int _CURSOR_OFFSET = 2;
 
-        private IChoicesComponent<Selectable<TResult>> _choicesComponent;
+        private List<Selectable<TResult>> _choices;
 
         private IConvertToStringComponent<TResult> _convertToString;
 
-        public DisplaySelectableChoices(IChoicesComponent<Selectable<TResult>> choicesComponent, IConvertToStringComponent<TResult> convertToString)
+        public DisplaySelectableChoices(List<Selectable<TResult>> choices, IConvertToStringComponent<TResult> convertToString)
         {
-            _choicesComponent = choicesComponent;
+            _choices = choices;
             _convertToString = convertToString;
         }
 
         public void Render()
         {
             int index = 0;
-            foreach (Selectable<TResult> choice in _choicesComponent.Choices)
+            foreach (Selectable<TResult> choice in _choices)
             {
                 ConsoleHelper.PositionWriteLine($"     {_convertToString.Convert(choice.Item)}", 0, index + _CURSOR_OFFSET);
                 ConsoleHelper.PositionWriteLine(choice.IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET);
@@ -30,8 +31,8 @@ namespace InquirerCS.Beta2.Components
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"->   {_convertToString.Convert(_choicesComponent.Choices[index].Item)}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
-            ConsoleHelper.PositionWriteLine(_choicesComponent.Choices[index].IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine($"->   {_convertToString.Convert(_choices[index].Item)}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine(_choices[index].IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }
 }

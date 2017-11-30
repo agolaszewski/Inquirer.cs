@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using InquirerCS.Beta2.Interfaces;
 
@@ -12,21 +13,21 @@ namespace InquirerCS.Beta2.Components
             DefaultValue = default(TResult);
         }
 
-        public DefaultListValueComponent(IChoicesComponent<TResult> choicesComponent, TResult defaultValue)
+        public DefaultListValueComponent(List<TResult> choices, TResult defaultValue)
         {
             HasDefaultValue = true;
             DefaultValue = defaultValue;
 
-            if (!choicesComponent.Choices.Any(item => item.CompareTo(defaultValue) == 0))
+            if (choices.Any(item => item.CompareTo(defaultValue) == 0))
             {
                 throw new ArgumentNullException("defaultValue not found in choices collection");
             }
 
-            var index = choicesComponent.Choices.Select((answer, i) => new { Value = answer, Index = i }).First(item => item.Value.CompareTo(defaultValue) == 0).Index;
-            var selected = choicesComponent.Choices.ElementAt(index);
-            choicesComponent.Choices.RemoveAt(index);
+            var index = choices.Select((answer, i) => new { Value = answer, Index = i }).First(item => item.Value.CompareTo(defaultValue) == 0).Index;
+            var selected = choices.ElementAt(index);
+            choices.RemoveAt(index);
 
-            choicesComponent.Choices.Insert(0, selected);
+            choices.Insert(0, selected);
         }
 
         public TResult DefaultValue { get; }

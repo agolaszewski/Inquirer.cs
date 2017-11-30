@@ -9,7 +9,7 @@ namespace InquirerCS.Beta2.Questions
     {
         private const int _CURSOR_OFFSET = 2;
 
-        private IChoicesComponent<Selectable<TResult>> _choicesComponent;
+        private List<Selectable<TResult>> _choices;
 
         private IConfirmComponent<TList> _confirmComponent;
 
@@ -21,26 +21,26 @@ namespace InquirerCS.Beta2.Questions
 
         private IParseComponent<List<Selectable<TResult>>, TList> _parseComponent;
 
-        private IRenderChoicesComponent<TResult> _renderChoicesComponent;
+        private IRenderchoices<TResult> _renderchoices;
 
         private IValidateComponent<TList> _validationComponent;
 
         public Checkbox(
-            IChoicesComponent<Selectable<TResult>> choicesComponent,
+            List<Selectable<TResult>> choices,
             IConfirmComponent<TList> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<ConsoleKey> inputComponent,
             IParseComponent<List<Selectable<TResult>>, TList> parseComponent,
-            IRenderChoicesComponent<TResult> renderChoices,
+            IRenderchoices<TResult> renderChoices,
             IValidateComponent<TList> validationComponent,
             IDisplayErrorComponent errorComponent)
         {
-            _choicesComponent = choicesComponent;
+            _choices = choices;
             _confirmComponent = confirmComponent;
             _displayQuestionComponent = displayQuestion;
             _inputComponent = inputComponent;
             _parseComponent = parseComponent;
-            _renderChoicesComponent = renderChoices;
+            _renderchoices = renderChoices;
             _validationComponent = validationComponent;
             _errorComponent = errorComponent;
 
@@ -50,11 +50,11 @@ namespace InquirerCS.Beta2.Questions
         public TList Prompt()
         {
             _displayQuestionComponent.Render();
-            _renderChoicesComponent.Render();
-            _renderChoicesComponent.Select(0);
+            _renderchoices.Render();
+            _renderchoices.Select(0);
 
             int boundryTop = 2;
-            int boundryBottom = boundryTop + _choicesComponent.Choices.Count - 1;
+            int boundryBottom = boundryTop + _choices.Count - 1;
 
             int cursorPosition = _CURSOR_OFFSET;
 
@@ -65,9 +65,9 @@ namespace InquirerCS.Beta2.Questions
                 {
                     case ConsoleKey.Spacebar:
                         {
-                            _choicesComponent.Choices[cursorPosition - _CURSOR_OFFSET].IsSelected ^= true;
-                            _renderChoicesComponent.Render();
-                            _renderChoicesComponent.Select(cursorPosition - _CURSOR_OFFSET);
+                            _choices[cursorPosition - _CURSOR_OFFSET].IsSelected ^= true;
+                            _renderchoices.Render();
+                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
 
                             break;
                         }
@@ -79,8 +79,8 @@ namespace InquirerCS.Beta2.Questions
                                 cursorPosition -= 1;
                             }
 
-                            _renderChoicesComponent.Render();
-                            _renderChoicesComponent.Select(cursorPosition - _CURSOR_OFFSET);
+                            _renderchoices.Render();
+                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
 
                             break;
                         }
@@ -92,8 +92,8 @@ namespace InquirerCS.Beta2.Questions
                                 cursorPosition += 1;
                             }
 
-                            _renderChoicesComponent.Render();
-                            _renderChoicesComponent.Select(cursorPosition - _CURSOR_OFFSET);
+                            _renderchoices.Render();
+                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
 
                             break;
                         }
@@ -106,7 +106,7 @@ namespace InquirerCS.Beta2.Questions
             }
 
         Escape:
-            TList result = _parseComponent.Parse(_choicesComponent.Choices);
+            TList result = _parseComponent.Parse(_choices);
             var validationResult = _validationComponent.Run(result);
             if (validationResult.HasError)
             {

@@ -1,6 +1,6 @@
 ﻿namespace InquirerCS.Beta2.Interfaces
 {
-    public interface IRenderChoicesComponent<TResult>
+    public interface IRenderchoices<TResult>
     {
         void Render();
 

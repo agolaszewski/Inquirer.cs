@@ -7,21 +7,21 @@ namespace Sandbox2
     {
         private static void Main(string[] args)
         {
-            //var choicesComponent = new ListChoices<ConsoleColor>(Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>());
+            //var choices = new ListChoices<ConsoleColor>(Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>());
             //var convertToString = new ConvertToStringComponent<ConsoleColor>();
             //var msgComponent = new MessageComponent("Test");
 
             //var confirmComponent = new ConfirmComponent<ConsoleColor>(convertToString);
-            //var defaultComponent = new DefaultListValueComponent<ConsoleColor>(choicesComponent, ConsoleColor.Red);
+            //var defaultComponent = new DefaultListValueComponent<ConsoleColor>(choices, ConsoleColor.Red);
 
             //var displayQuestionComponent = new DisplayQuestion<ConsoleColor>(msgComponent, convertToString, defaultComponent);
             //var inputComponent = new ReadConsoleKey();
-            //var parseComponent = new ParseListComponent<ConsoleColor>(choicesComponent);
-            //var displayChoices = new DisplayChoices<ConsoleColor>(choicesComponent, convertToString);
+            //var parseComponent = new ParseListComponent<ConsoleColor>(choices);
+            //var displayChoices = new DisplayChoices<ConsoleColor>(choices, convertToString);
             //var validationComponent = new ValidationComponent<ConsoleColor>();
             //var errorDisplay = new DisplayErrorCompnent();
 
-            //var question = new Listing<ConsoleColor>(choicesComponent, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationComponent, errorDisplay);
+            //var question = new Listing<ConsoleColor>(choices, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationComponent, errorDisplay);
             ////question.Prompt();
 
             //var stringInputComponent = new ReadStringComponent();

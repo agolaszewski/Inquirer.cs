@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using InquirerCS.Beta2.Interfaces;
 
@@ -8,7 +9,7 @@ namespace InquirerCS.Beta2.Questions
     {
         private const int _CURSOR_OFFSET = 2;
 
-        private IChoicesComponent<TResult> _choicesComponent;
+        private List<TResult> _choices;
 
         private IConfirmComponent<TResult> _confirmComponent;
 
@@ -18,23 +19,23 @@ namespace InquirerCS.Beta2.Questions
 
         private IParseComponent<int, TResult> _parseComponent;
 
-        private IRenderChoicesComponent<TResult> _renderChoices;
+        private IRenderchoices<TResult> _renderChoices;
 
         private IValidateComponent<TResult> _validationComponent;
 
         private IDisplayErrorComponent _errorComponent;
 
         public Listing(
-            IChoicesComponent<TResult> choicesComponent,
+            List<TResult> choices,
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<ConsoleKey> inputComponent,
             IParseComponent<int, TResult> parseComponent,
-            IRenderChoicesComponent<TResult> renderChoices,
+            IRenderchoices<TResult> renderChoices,
             IValidateComponent<TResult> validationComponent,
             IDisplayErrorComponent errorComponent)
         {
-            _choicesComponent = choicesComponent;
+            _choices = choices;
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
             _inputComponent = inputComponent;
@@ -53,7 +54,7 @@ namespace InquirerCS.Beta2.Questions
             _renderChoices.Select(0);
 
             int boundryTop = 2;
-            int boundryBottom = boundryTop + _choicesComponent.Choices.Count() - 1;
+            int boundryBottom = boundryTop + _choices.Count() - 1;
 
             int cursorPosition = _CURSOR_OFFSET;
 

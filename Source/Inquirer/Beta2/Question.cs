@@ -15,16 +15,16 @@ namespace InquirerCS.Beta2
             var defaultValueComponent = new DefaultValueComponent<List<TResult>>();
 
             var displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(messageComponent, convertToStringComponent, defaultValueComponent);
-            var choicesComponent = new SelectableListChoices<TResult>(choices);
+            var selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
 
             var confirmComponent = new NoConfirmationComponent<List<TResult>>();
             var inputComponent = new ReadConsoleKey();
-            var parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(choicesComponent);
-            var renderChoicesComponent = new DisplaySelectableChoices<TResult>(choicesComponent, convertToStringComponent);
+            var parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(selectedChoices);
+            var renderchoices = new DisplaySelectableChoices<TResult>(selectedChoices, convertToStringComponent);
             var validateComponent = new ValidationComponent<List<TResult>>();
             var errorComponent = new DisplayErrorCompnent();
 
-            return new Checkbox<List<TResult>, TResult>(choicesComponent, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, renderChoicesComponent, validateComponent, errorComponent);
+            return new Checkbox<List<TResult>, TResult>(selectedChoices, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, renderchoices, validateComponent, errorComponent);
         }
 
         public static InputKey<bool> Confirm(string message)
@@ -145,7 +145,7 @@ namespace InquirerCS.Beta2
 
         public static Listing<TResult> Listing<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
         {
-            var choicesComponent = new ListChoices<TResult>(choices);
+            var choicesList = choices.ToList();
             var convertToString = new ConvertToStringComponent<TResult>();
             var msgComponent = new MessageComponent(message);
 
@@ -154,17 +154,17 @@ namespace InquirerCS.Beta2
 
             var displayQuestionComponent = new DisplayQuestion<TResult>(msgComponent, convertToString, defaultComponent);
             var inputComponent = new ReadConsoleKey();
-            var parseComponent = new ParseListComponent<TResult>(choicesComponent);
-            var displayChoices = new DisplayChoices<TResult>(choicesComponent, convertToString);
+            var parseComponent = new ParseListComponent<TResult>(choicesList);
+            var displayChoices = new DisplayChoices<TResult>(choicesList, convertToString);
             var validationComponent = new ValidationComponent<TResult>();
             var errorDisplay = new DisplayErrorCompnent();
 
-            return new Listing<TResult>(choicesComponent, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationComponent, errorDisplay);
+            return new Listing<TResult>(choicesList, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationComponent, errorDisplay);
         }
 
         public static RawList<TResult> RawList<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
         {
-            var choicesComponent = new ListChoices<TResult>(choices);
+            var choicesList = choices.ToList();
             var convertToString = new ConvertToStringComponent<TResult>();
             var msgComponent = new MessageComponent(message);
 
@@ -176,10 +176,10 @@ namespace InquirerCS.Beta2
 
             var parseComponent = new ParseComponent<string, TResult>(value =>
             {
-                return choicesComponent.Choices[value.To<int>()];
+                return choicesList[value.To<int>()];
             });
 
-            var displayChoices = new DisplayChoices<TResult>(choicesComponent, convertToString);
+            var displayChoices = new DisplayChoices<TResult>(choicesList, convertToString);
 
             var validationResultComponent = new ValidationComponent<TResult>();
 
@@ -190,16 +190,16 @@ namespace InquirerCS.Beta2
             value =>
             {
                 var index = value.To<int>();
-                return index > 0 && index <= choicesComponent.Choices.Count;
+                return index > 0 && index <= choicesList.Count;
             },
             value =>
             {
-                return $"Choosen number must be between 1 and {choicesComponent.Choices.Count}";
+                return $"Choosen number must be between 1 and {choicesList.Count}";
             });
 
             var errorDisplay = new DisplayErrorCompnent();
 
-            return new RawList<TResult>(choicesComponent, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationResultComponent, validationInputComponent, errorDisplay);
+            return new RawList<TResult>(choicesList, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationResultComponent, validationInputComponent, errorDisplay);
         }
 
         public static Input<string> Password(string message)
@@ -225,6 +225,31 @@ namespace InquirerCS.Beta2
             var errorDisplay = new DisplayErrorCompnent();
 
             return new Input<string>(confirmComponent, displayQuestionComponent, inputComponent, parseComponent, validationResultComponent, validationInputComponent, errorDisplay, defaultComponent);
+        }
+
+        public static ExtendedList<TResult> ExtendedList<TResult>(string message, IDictionary<ConsoleKey, TResult> choices)
+        {
+            var choicesDictionary = choices.ToDictionary(k => k.Key, v => v.Value);
+            var convertToString = new ConvertToStringComponent<TResult>();
+            var msgComponent = new MessageComponent(message);
+
+            var defaultComponent = new DefaultValueComponent<TResult>();
+
+            var displayQuestionComponent = new DisplayQuestion<TResult>(msgComponent, convertToString, defaultComponent);
+            var inputComponent = new ReadConsoleKey();
+            var parseComponent = new ParseComponent<ConsoleKey, TResult>(value =>
+            {
+                return choices[value];
+            });
+            var confirmComponent = new ConfirmComponent<TResult>(convertToString);
+
+            var validationInputComponent = new ValidationComponent<ConsoleKey>();
+
+            var validationResultComponent = new ValidationComponent<TResult>();
+            var errorDisplay = new DisplayErrorCompnent();
+            var displayChoices = new DisplayExtendedChoices<TResult>(choicesDictionary, convertToString);
+
+            return new ExtendedList<TResult>(choicesDictionary, confirmComponent, displayQuestionComponent, inputComponent, parseComponent, displayChoices, validationResultComponent, validationInputComponent, errorDisplay);
         }
     }
 }

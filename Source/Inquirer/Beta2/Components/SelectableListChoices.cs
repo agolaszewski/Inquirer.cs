@@ -4,7 +4,7 @@ using InquirerCS.Beta2.Interfaces;
 
 namespace InquirerCS.Beta2.Components
 {
-    public class SelectableListChoices<TResult> : IChoicesComponent<Selectable<TResult>>
+    public class SelectableListChoices<TResult> : List<Selectable<TResult>>
     {
         public SelectableListChoices(IList<TResult> choices)
         {

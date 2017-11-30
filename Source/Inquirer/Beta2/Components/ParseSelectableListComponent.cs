@@ -7,14 +7,14 @@ namespace InquirerCS.Beta2.Components
 {
     public class ParseSelectableListComponent<TList, TResult> : IParseComponent<List<Selectable<TResult>>, TList> where TList : List<TResult>
     {
-        private IChoicesComponent<Selectable<TResult>> _choicesComponent;
+        private List<Selectable<TResult>> _choices;
 
-        public ParseSelectableListComponent(IChoicesComponent<Selectable<TResult>> choicesComponent)
+        public ParseSelectableListComponent(List<Selectable<TResult>> choices)
         {
-            _choicesComponent = choicesComponent;
+            _choices = choices;
             Parse = value =>
             {
-                return (TList)_choicesComponent.Choices.Where(item => item.IsSelected).Select(item => item.Item).ToList();
+                return (TList)_choices.Where(item => item.IsSelected).Select(item => item.Item).ToList();
             };
         }
 

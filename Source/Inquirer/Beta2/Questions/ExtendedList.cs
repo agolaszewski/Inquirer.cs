@@ -4,35 +4,35 @@ using InquirerCS.Beta2.Interfaces;
 
 namespace InquirerCS.Beta2.Questions
 {
-    public class RawList<TResult> : IQuestion<TResult>
+    public class ExtendedList<TResult> : IQuestion<TResult>
     {
-        private List<TResult> _choices;
+        private Dictionary<ConsoleKey, TResult> _choices;
 
         private IConfirmComponent<TResult> _confirmComponent;
 
         private IDisplayQuestionComponent _displayQuestion;
 
-        private IDisplayErrorComponent _errorComponent;
+        private IWaitForInputComponent<ConsoleKey> _inputComponent;
 
-        private IWaitForInputComponent<string> _inputComponent;
-
-        private IParseComponent<string, TResult> _parseComponent;
+        private IParseComponent<ConsoleKey, TResult> _parseComponent;
 
         private IRenderchoices<TResult> _renderChoices;
 
-        private IValidateComponent<string> _validationInputComponent;
-
         private IValidateComponent<TResult> _validationResultComponent;
 
-        public RawList(
-            List<TResult> choices,
+        private IValidateComponent<ConsoleKey> _validationInputComponent;
+
+        private IDisplayErrorComponent _errorComponent;
+
+        public ExtendedList(
+            Dictionary<ConsoleKey, TResult> choices,
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<string> inputComponent,
-            IParseComponent<string, TResult> parseComponent,
+            IWaitForInputComponent<ConsoleKey> inputComponent,
+            IParseComponent<ConsoleKey, TResult> parseComponent,
             IRenderchoices<TResult> renderChoices,
             IValidateComponent<TResult> validationResultComponent,
-            IValidateComponent<string> validationInputComponent,
+            IValidateComponent<ConsoleKey> validationInputComponent,
             IDisplayErrorComponent errorComponent)
         {
             _choices = choices;
