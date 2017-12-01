@@ -27,7 +27,7 @@ namespace InquirerCS.Builders
 
         private IWaitForInputComponent<ConsoleKey> _inputComponent;
 
-        private IMessageComponent _messageComponent;
+        private string _message;
 
         private IParseComponent<List<Selectable<TResult>>, List<TResult>> _parseComponent;
 
@@ -39,7 +39,7 @@ namespace InquirerCS.Builders
 
         public CheckboxBuilder(string message, IEnumerable<TResult> choices)
         {
-            _messageComponent = new MessageComponent(message);
+            _message = message;
             _selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
         }
 
@@ -99,7 +99,7 @@ namespace InquirerCS.Builders
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<List<TResult>>();
             _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<List<TResult>>();
 
-            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_messageComponent, _convertToStringComponent, _defaultValueComponent);
+            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_message, _convertToStringComponent, _defaultValueComponent);
 
             _inputComponent = new ReadConsoleKey();
             _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);

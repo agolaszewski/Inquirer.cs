@@ -12,11 +12,11 @@ namespace InquirerCS.Components
 
         private IDefaultValueComponent<TList> _defaultValueComponent;
 
-        private IMessageComponent _messageComponent;
+        private string _message;
 
-        public DisplayListQuestion(IMessageComponent messageComponent, IConvertToStringComponent<TResult> convertToStringComponent, IDefaultValueComponent<TList> defaultValueComponent)
+        public DisplayListQuestion(string message, IConvertToStringComponent<TResult> convertToStringComponent, IDefaultValueComponent<TList> defaultValueComponent)
         {
-            _messageComponent = messageComponent;
+            _message = message;
             _convertToStringComponent = convertToStringComponent;
             _defaultValueComponent = defaultValueComponent;
         }
@@ -28,7 +28,7 @@ namespace InquirerCS.Components
             Console.Clear();
             ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
 
-            sb.Append($"{_messageComponent.Message} : ");
+            sb.Append($"{_message} : ");
             if (_defaultValueComponent.HasDefaultValue)
             {
                 sb.Append("[");

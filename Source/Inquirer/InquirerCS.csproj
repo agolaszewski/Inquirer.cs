@@ -49,11 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\CheckboxBuilder.cs" />
+    <Compile Include="Builders\ConfirmBuilder.cs" />
     <Compile Include="Builders\InputBuilder.cs" />
-    <Compile Include="Builders\InputKeyBuilder.cs" />
     <Compile Include="Components\DefaultSelectedValueComponent.cs" />
     <Compile Include="Components\DefaultDictionaryValue.cs" />
-    <Compile Include="Builders\ExtendedListBuilder.cs" />
+    <Compile Include="Builders\ListBuilder.cs" />
     <Compile Include="Components\ConfirmListComponent.cs" />
     <Compile Include="Components\ConfirmComponent.cs" />
     <Compile Include="Components\ConfirmPasswordComponent.cs" />
@@ -74,7 +74,6 @@
     <Compile Include="Components\ValidationResult.cs" />
     <Compile Include="Components\ReadStringComponent.cs" />
     <Compile Include="Components\DisplayQuestion.cs" />
-    <Compile Include="Components\MessageComponent.cs" />
     <Compile Include="Components\ParseComponent.cs" />
     <Compile Include="Components\DisplayExtendedChoices.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="Interfaces\IParseComponent.cs" />
     <Compile Include="Interfaces\IConvertToStringComponent.cs" />
     <Compile Include="Interfaces\IDefaultValueComponent.cs" />
-    <Compile Include="Interfaces\IMessageComponent.cs" />
     <Compile Include="Interfaces\IValidateComponent.cs" />
     <Compile Include="Questions\RawList.cs" />
     <Compile Include="Inquirer.cs" />
