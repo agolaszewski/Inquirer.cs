@@ -84,10 +84,10 @@ namespace InquirerCS.Beta2
             return new ExtendedListBuilder<TResult>(message, choices);
         }
 
-        public static Input<string> Input(string message)
-        {
+        ////public static Input<string> Input(string message)
+        ////{
             
-        }
+        ////}
 
         public static Input<TResult> Input<TResult>(string message) where TResult : struct
         {

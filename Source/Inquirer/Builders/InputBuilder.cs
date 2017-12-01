@@ -18,17 +18,21 @@ namespace InquirerCS.Builders
         private IValidateComponent<string> _validationInputComponent;
         private IValidateComponent<TResult> _validationResultComponent;
 
+        private Func<IConfirmComponent<TResult>> _confirmComponentFn = () => { return null; };
+        private Func<IConvertToStringComponent<TResult>> _convertToStringComponentFn = () => { return null; };
+        private Func<IDefaultValueComponent<TResult>> _defaultValueComponentFn = () => { return null; };
+
         public InputBuilder()
         {
-
         }
 
         public TResult Prompt(string message)
         {
-            _convertToString = new ConvertToStringComponent<TResult>();
+            _convertToString = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
+            _defaultComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<TResult>();
+            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<TResult>();
+
             _msgComponent = new MessageComponent(message);
-            _confirmComponent = new NoConfirmationComponent<TResult>();
-            _defaultComponent = new DefaultValueComponent<TResult>();
 
             _displayQuestionComponent = new DisplayQuestion<TResult>(_msgComponent, _convertToString, _defaultComponent);
             _inputComponent = new ReadStringComponent();
@@ -48,19 +52,31 @@ namespace InquirerCS.Builders
 
         public InputBuilder<TResult> WithDefaultValue(TResult defaultValues)
         {
-            _defaultComponent = new DefaultValueComponent<TResult>(defaultValues);
+            _defaultValueComponentFn = () =>
+            {
+                return new DefaultValueComponent<TResult>(defaultValues);
+            };
+
             return this;
         }
 
         public InputBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
         {
-            _convertToString = new ConvertToStringComponent<TResult>(convertFn);
+            _convertToStringComponentFn = () =>
+            {
+                return new ConvertToStringComponent<TResult>(convertFn);
+            };
+
             return this;
         }
 
         public InputBuilder<TResult> WithConfirmation()
         {
-            _confirmComponent = new ConfirmComponent<TResult>(_convertToString);
+            _confirmComponentFn = () =>
+            {
+                return new ConfirmComponent<TResult>(_convertToString);
+            };
+
             return this;
         }
     }

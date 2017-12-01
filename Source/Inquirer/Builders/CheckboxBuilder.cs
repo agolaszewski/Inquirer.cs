@@ -11,9 +11,15 @@ namespace InquirerCS.Builders
     {
         private IConfirmComponent<List<TResult>> _confirmComponent;
 
+        private Func<IConfirmComponent<List<TResult>>> _confirmComponentFn = () => { return null; };
+
         private IConvertToStringComponent<TResult> _convertToStringComponent;
 
+        private Func<IConvertToStringComponent<TResult>> _convertToStringComponentFn = () => { return null; };
+
         private IDefaultValueComponent<List<TResult>> _defaultValueComponent;
+
+        private Func<IDefaultValueComponent<List<TResult>>> _defaultValueComponentFn = () => { return null; };
 
         private IDisplayQuestionComponent _displayQuestionComponent;
 
@@ -39,20 +45,19 @@ namespace InquirerCS.Builders
 
         public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
         {
-            _convertToStringComponent = new ConvertToStringComponent<TResult>(convertFn);
-            if (_confirmComponent != null)
+            _convertToStringComponentFn = () =>
             {
-                _confirmComponent = new ConfirmListComponent<List<TResult>, TResult>(_convertToStringComponent);
-            }
+                return new ConvertToStringComponent<TResult>(convertFn);
+            };
 
             return this;
         }
 
         public List<TResult> Prompt()
         {
-            _convertToStringComponent = _convertToStringComponent ?? new ConvertToStringComponent<TResult>();
-            _defaultValueComponent = _defaultValueComponent ?? new DefaultValueComponent<List<TResult>>();
-            _confirmComponent = _confirmComponent ?? new NoConfirmationComponent<List<TResult>>();
+            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
+            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<List<TResult>>();
+            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<List<TResult>>();
 
             _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_messageComponent, _convertToStringComponent, _defaultValueComponent);
 
@@ -67,25 +72,41 @@ namespace InquirerCS.Builders
 
         public CheckboxBuilder<TResult> WithConfirmation()
         {
-            _confirmComponent = new ConfirmListComponent<List<TResult>, TResult>(_convertToStringComponent);
+            _confirmComponentFn = () =>
+            {
+                return new ConfirmListComponent<List<TResult>, TResult>(_convertToStringComponent);
+            };
+
             return this;
         }
 
         public CheckboxBuilder<TResult> WithDefaultValue(IEnumerable<TResult> defaultValues)
         {
-            _defaultValueComponent = new DefaultValueComponent<List<TResult>>(defaultValues.ToList());
+            _defaultValueComponentFn = () =>
+            {
+                return new DefaultValueComponent<List<TResult>>(defaultValues.ToList());
+            };
+
             return this;
         }
 
         public CheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
         {
-            _defaultValueComponent = new DefaultSelectedValueComponent<TResult>(_selectedChoices, defaultValues);
+            _defaultValueComponentFn = () =>
+            {
+                return new DefaultSelectedValueComponent<TResult>(_selectedChoices, defaultValues);
+            };
+
             return this;
         }
 
         public CheckboxBuilder<TResult> WithDefaultValue(TResult defaultValues)
         {
-            _defaultValueComponent = new DefaultSelectedValueComponent<TResult>(_selectedChoices, new List<TResult>() { defaultValues });
+            _defaultValueComponentFn = () =>
+            {
+                return new DefaultSelectedValueComponent<TResult>(_selectedChoices, new List<TResult>() { defaultValues });
+            };
+
             return this;
         }
     }
