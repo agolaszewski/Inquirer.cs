@@ -22,6 +22,10 @@ namespace InquirerCS.Builders
         private IValidateComponent<ConsoleKey> _validationInputComponent;
         private IValidateComponent<TResult> _validationResultComponent;
 
+        private Func<IConfirmComponent<TResult>> _confirmComponentFn;
+        private Func<IDefaultValueComponent<TResult>> _defaultValueComponentFn;
+        private Func<IConvertToStringComponent<TResult>> _convertToStringFn;
+
         public ExtendedListBuilder(string message, IDictionary<ConsoleKey, TResult> choices)
         {
             _choicesDictionary = choices.ToDictionary(k => k.Key, v => v.Value);
@@ -48,19 +52,31 @@ namespace InquirerCS.Builders
 
         public ExtendedListBuilder<TResult> WithDefaultValue(TResult defaultValues)
         {
-            _defaultComponent = new DefaultDictionaryValueComponent<ConsoleKey, TResult>(_choicesDictionary, defaultValues);
+            _defaultValueComponentFn = () =>
+            {
+                return new DefaultDictionaryValueComponent<ConsoleKey, TResult>(_choicesDictionary, defaultValues);
+            };
+
             return this;
         }
 
         public ExtendedListBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
         {
-            _convertToString = new ConvertToStringComponent<TResult>(convertFn);
+            _convertToStringFn = () =>
+            {
+                return new ConvertToStringComponent<TResult>(convertFn);
+            };
+
             return this;
         }
 
         public ExtendedListBuilder<TResult> WithConfirmation()
         {
-            _confirmComponent = new ConfirmComponent<TResult>(_convertToString);
+            _confirmComponentFn = () =>
+            {
+                return new ConfirmComponent<TResult>(_convertToString);
+            };
+
             return this;
         }
 

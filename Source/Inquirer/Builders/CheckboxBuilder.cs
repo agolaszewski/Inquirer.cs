@@ -53,23 +53,6 @@ namespace InquirerCS.Builders
             return this;
         }
 
-        public List<TResult> Prompt()
-        {
-            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
-            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<List<TResult>>();
-            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<List<TResult>>();
-
-            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_messageComponent, _convertToStringComponent, _defaultValueComponent);
-
-            _inputComponent = new ReadConsoleKey();
-            _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);
-            _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _convertToStringComponent);
-            _validateComponent = new ValidationComponent<List<TResult>>();
-            _errorComponent = new DisplayErrorCompnent();
-
-            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validateComponent, _errorComponent).Prompt();
-        }
-
         public CheckboxBuilder<TResult> WithConfirmation()
         {
             _confirmComponentFn = () =>
@@ -108,6 +91,23 @@ namespace InquirerCS.Builders
             };
 
             return this;
+        }
+
+        public List<TResult> Prompt()
+        {
+            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
+            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<List<TResult>>();
+            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<List<TResult>>();
+
+            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_messageComponent, _convertToStringComponent, _defaultValueComponent);
+
+            _inputComponent = new ReadConsoleKey();
+            _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);
+            _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _convertToStringComponent);
+            _validateComponent = new ValidationComponent<List<TResult>>();
+            _errorComponent = new DisplayErrorCompnent();
+
+            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validateComponent, _errorComponent).Prompt();
         }
     }
 }
