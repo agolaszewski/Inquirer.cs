@@ -36,7 +36,7 @@ namespace InquirerCS.Beta2
             return new InputStructBuilder<TResult>(message);
         }
 
-        public static ListBuilder<TResult> Listing<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
+        public static ListBuilder<TResult> List<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
         {
             return new ListBuilder<TResult>(message, choices);
         }

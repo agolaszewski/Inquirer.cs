@@ -11,48 +11,34 @@ namespace InquirerCS.Builders
         public InputStringBuilder(string message)
         {
             _message = message;
+            _validationInputComponent = new ValidationComponent<string>();
+            _validationResultComponent = new ValidationComponent<string>();
         }
 
-        public InputStringBuilder AddValidator(Func<string, bool> fn, Func<string, string> errorMessageFn)
+        public override string Prompt()
         {
-            _validationResultComponent.AddValidator(fn, errorMessageFn);
-            return this;
-        }
+            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<string>();
+            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<string>();
+            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<string>();
 
-        public InputStringBuilder AddValidator(Func<string, bool> fn, string errorMessage)
-        {
-            _validationResultComponent.AddValidator(fn, errorMessage);
-            return this;
-        }
-
-        public override string Build()
-        {
-            _convertToString = new ConvertToStringComponent<string>();
-
-            _confirmComponent = new NoConfirmationComponent<string>();
-            _defaultComponent = new DefaultValueComponent<string>();
-
-            _displayQuestionComponent = new DisplayQuestion<string>(_message, _convertToString, _defaultComponent);
+            _displayQuestionComponent = new DisplayQuestion<string>(_message, _convertToStringComponent, _defaultValueComponent);
             _inputComponent = new ReadStringComponent();
             _parseComponent = new ParseComponent<string, string>(value =>
             {
                 return value;
             });
 
-            var validationInputComponent = new ValidationComponent<string>();
-            validationInputComponent.AddValidator(value => { return string.IsNullOrEmpty(value) == false || _defaultComponent.HasDefaultValue; }, "Empty line");
+            _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
+            _errorDisplay = new DisplayErrorCompnent();
 
-            var validationResultComponent = new ValidationComponent<string>();
-            var errorDisplay = new DisplayErrorCompnent();
-
-            return new Input<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultComponent).Prompt();
+            return new Input<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent).Prompt();
         }
 
         public InputStringBuilder WithConfirmation()
         {
             _confirmComponentFn = () =>
             {
-                return new ConfirmComponent<string>(_convertToString);
+                return new ConfirmComponent<string>(_convertToStringComponent);
             };
 
             return this;
@@ -65,6 +51,18 @@ namespace InquirerCS.Builders
                 return new DefaultValueComponent<string>(defaultValues);
             };
 
+            return this;
+        }
+
+        public InputStringBuilder WithValidation(Func<string, bool> fn, Func<string, string> errorMessageFn)
+        {
+            _validationResultComponent.Add(fn, errorMessageFn);
+            return this;
+        }
+
+        public InputStringBuilder WithValidation(Func<string, bool> fn, string errorMessage)
+        {
+            _validationResultComponent.Add(fn, errorMessage);
             return this;
         }
     }

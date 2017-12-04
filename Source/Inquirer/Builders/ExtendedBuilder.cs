@@ -17,26 +17,14 @@ namespace InquirerCS.Builders
             _params = @params;
         }
 
-        public ExtendedBuilder AddValidator(Func<ConsoleKey, bool> fn, Func<ConsoleKey, string> errorMessageFn)
+        public override ConsoleKey Prompt()
         {
-            _validationResultComponent.AddValidator(fn, errorMessageFn);
-            return this;
-        }
+            _convertToStringComponent = new ConvertToStringComponent<ConsoleKey>();
 
-        public ExtendedBuilder AddValidator(Func<ConsoleKey, bool> fn, string errorMessage)
-        {
-            _validationResultComponent.AddValidator(fn, errorMessage);
-            return this;
-        }
-
-        public override ConsoleKey Build()
-        {
-            _convertToString = new ConvertToStringComponent<ConsoleKey>();
-
-            _defaultComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<ConsoleKey>();
+            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<ConsoleKey>();
             _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<ConsoleKey>();
 
-            _displayQuestionComponent = new DisplayQuestion<ConsoleKey>(_message, _convertToString, _defaultComponent);
+            _displayQuestionComponent = new DisplayQuestion<ConsoleKey>(_message, _convertToStringComponent, _defaultValueComponent);
             _inputComponent = new ReadConsoleKey();
             _parseComponent = new ParseComponent<ConsoleKey, ConsoleKey>(value =>
             {
@@ -44,7 +32,7 @@ namespace InquirerCS.Builders
             });
 
             _validationInputComponent = new ValidationComponent<ConsoleKey>();
-            _validationInputComponent.AddValidator(
+            _validationInputComponent.Add(
             value =>
             {
                 return _params.Any(p => p == value);
@@ -63,14 +51,14 @@ namespace InquirerCS.Builders
             _validationResultComponent = new ValidationComponent<ConsoleKey>();
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new InputKey<ConsoleKey>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultComponent).Prompt();
+            return new InputKey<ConsoleKey>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent).Prompt();
         }
 
         public ExtendedBuilder WithConfirmation()
         {
             _confirmComponentFn = () =>
             {
-                return new ConfirmComponent<ConsoleKey>(_convertToString);
+                return new ConfirmComponent<ConsoleKey>(_convertToStringComponent);
             };
 
             return this;
@@ -83,6 +71,18 @@ namespace InquirerCS.Builders
                 return new DefaultValueComponent<ConsoleKey>(defaultValues);
             };
 
+            return this;
+        }
+
+        public ExtendedBuilder WithValidation(Func<ConsoleKey, bool> fn, Func<ConsoleKey, string> errorMessageFn)
+        {
+            _validationResultComponent.Add(fn, errorMessageFn);
+            return this;
+        }
+
+        public ExtendedBuilder WithValidation(Func<ConsoleKey, bool> fn, string errorMessage)
+        {
+            _validationResultComponent.Add(fn, errorMessage);
             return this;
         }
     }

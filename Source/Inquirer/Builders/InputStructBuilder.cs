@@ -13,26 +13,14 @@ namespace InquirerCS.Builders
             _message = message;
         }
 
-        public InputStructBuilder<TResult> AddValidator(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        public override TResult Prompt()
         {
-            _validationResultComponent.AddValidator(fn, errorMessageFn);
-            return this;
-        }
-
-        public InputStructBuilder<TResult> AddValidator(Func<TResult, bool> fn, string errorMessage)
-        {
-            _validationResultComponent.AddValidator(fn, errorMessage);
-            return this;
-        }
-
-        public override TResult Build()
-        {
-            _convertToString = new ConvertToStringComponent<TResult>();
+            _convertToStringComponent = new ConvertToStringComponent<TResult>();
 
             _confirmComponent = new NoConfirmationComponent<TResult>();
-            _defaultComponent = new DefaultValueComponent<TResult>();
+            _defaultValueComponent = new DefaultValueComponent<TResult>();
 
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToString, _defaultComponent);
+            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
             _inputComponent = new ReadStringComponent();
             _parseComponent = new ParseComponent<string, TResult>(value =>
             {
@@ -40,20 +28,20 @@ namespace InquirerCS.Builders
             });
 
             var validationInputComponent = new ValidationComponent<string>();
-            validationInputComponent.AddValidator(value => { return string.IsNullOrEmpty(value) == false || _defaultComponent.HasDefaultValue; }, "Empty line");
-            validationInputComponent.AddValidator(value => { return value.ToN<TResult>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
+            validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
+            validationInputComponent.Add(value => { return value.ToN<TResult>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
 
             var validationResultComponent = new ValidationComponent<TResult>();
             var errorDisplay = new DisplayErrorCompnent();
 
-            return new Input<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultComponent).Prompt();
+            return new Input<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultValueComponent).Prompt();
         }
 
         public InputStructBuilder<TResult> WithConfirmation()
         {
             _confirmComponentFn = () =>
             {
-                return new ConfirmComponent<TResult>(_convertToString);
+                return new ConfirmComponent<TResult>(_convertToStringComponent);
             };
 
             return this;
@@ -66,6 +54,18 @@ namespace InquirerCS.Builders
                 return new DefaultValueComponent<TResult>(defaultValues);
             };
 
+            return this;
+        }
+
+        public InputStructBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        {
+            _validationResultComponent.Add(fn, errorMessageFn);
+            return this;
+        }
+
+        public InputStructBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        {
+            _validationResultComponent.Add(fn, errorMessage);
             return this;
         }
     }

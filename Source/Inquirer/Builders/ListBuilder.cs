@@ -15,11 +15,11 @@ namespace InquirerCS.Builders
 
         private Func<IConfirmComponent<TResult>> _confirmComponentFn = () => { return null; };
 
-        private IConvertToStringComponent<TResult> _convertToString;
+        private IConvertToStringComponent<TResult> _convertToStringComponent;
 
         private Func<IConvertToStringComponent<TResult>> _convertToStringComponentFn = () => { return null; };
 
-        private IDefaultValueComponent<TResult> _defaultComponent;
+        private IDefaultValueComponent<TResult> _defaultValueComponent;
 
         private Func<IDefaultValueComponent<TResult>> _defaultValueComponentFn = () => { return null; };
 
@@ -41,21 +41,64 @@ namespace InquirerCS.Builders
         {
             _message = message;
             _choices = choices.ToList();
+            _validationResultComponent = new ValidationComponent<TResult>();
         }
 
-        public TResult Build()
+        public TResult Prompt()
         {
-            _convertToString = new ConvertToStringComponent<TResult>();
-            _confirmComponent = new NoConfirmationComponent<TResult>();
-            _defaultComponent = new DefaultListValueComponent<TResult>();
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToString, _defaultComponent);
+            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
+            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<TResult>();
+            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<TResult>();
+
+            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
             _inputComponent = new ReadConsoleKey();
             _parseComponent = new ParseListComponent<TResult>(_choices);
-            _displayChoices = new DisplayChoices<TResult>(_choices, _convertToString);
-            _validationResultComponent = new ValidationComponent<TResult>();
+            _displayChoices = new DisplayChoices<TResult>(_choices, _convertToStringComponent);
             _errorDisplay = new DisplayErrorCompnent();
 
             return new Listing<TResult>(_choices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _errorDisplay).Prompt();
+        }
+
+        public ListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            _convertToStringComponentFn = () =>
+            {
+                return new ConvertToStringComponent<TResult>(fn);
+            };
+
+            return this;
+        }
+
+        public ListBuilder<TResult> WithConfirmation()
+        {
+            _confirmComponentFn = () =>
+            {
+                return new ConfirmComponent<TResult>(_convertToStringComponent);
+            };
+
+            return this;
+        }
+
+        public ListBuilder<TResult> WithDefaultValue(TResult defaultValue)
+        {
+            _defaultValueComponentFn = () =>
+            {
+                return new DefaultListValueComponent<TResult>(_choices, defaultValue);
+            };
+
+            return this;
+        }
+
+        public ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        {
+            _validationResultComponent.Add(fn, errorMessageFn);
+            return this;
+        }
+
+        public ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        {
+            _validationResultComponent.Add(fn, errorMessage);
+            return this;
         }
     }
 }

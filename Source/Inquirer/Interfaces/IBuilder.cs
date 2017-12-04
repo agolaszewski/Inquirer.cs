@@ -2,6 +2,6 @@
 {
     public interface IBuilder<TResult>
     {
-        TResult Build();
+        TResult Prompt();
     }
 }

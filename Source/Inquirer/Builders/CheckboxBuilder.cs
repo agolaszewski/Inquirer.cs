@@ -43,7 +43,17 @@ namespace InquirerCS.Builders
             _selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
         }
 
-        public List<TResult> Build()
+        public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
+        {
+            _convertToStringComponentFn = () =>
+            {
+                return new ConvertToStringComponent<TResult>(convertFn);
+            };
+
+            return this;
+        }
+
+        public List<TResult> Prompt()
         {
             _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<List<TResult>>();
@@ -58,16 +68,6 @@ namespace InquirerCS.Builders
             _errorComponent = new DisplayErrorCompnent();
 
             return new Checkbox<List<TResult>, TResult>(_selectedChoices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validateComponent, _errorComponent).Prompt();
-        }
-
-        public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
-        {
-            _convertToStringComponentFn = () =>
-            {
-                return new ConvertToStringComponent<TResult>(convertFn);
-            };
-
-            return this;
         }
 
         public CheckboxBuilder<TResult> WithConfirmation()

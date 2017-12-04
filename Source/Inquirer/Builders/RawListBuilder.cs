@@ -18,16 +18,18 @@ namespace InquirerCS.Builders
         {
             _message = message;
             _choices = choices.ToList();
+            _validationResultComponent = new ValidationComponent<TResult>();
+            _validationInputComponent = new ValidationComponent<string>();
         }
 
-        public override TResult Build()
+        public override TResult Prompt()
         {
-            _convertToString = new ConvertToStringComponent<TResult>();
+            _convertToStringComponent = new ConvertToStringComponent<TResult>();
 
             _confirmComponent = new NoConfirmationComponent<TResult>();
-            _defaultComponent = new DefaultListValueComponent<TResult>();
+            _defaultValueComponent = new DefaultListValueComponent<TResult>();
 
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_msgComponent, _convertToString, _defaultComponent);
+            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
             _inputComponent = new ReadStringComponent();
 
             _parseComponent = new ParseComponent<string, TResult>(value =>
@@ -35,14 +37,11 @@ namespace InquirerCS.Builders
                 return _choices[value.To<int>()];
             });
 
-            _displayChoices = new DisplayChoices<TResult>(_choices, _convertToString);
+            _displayChoices = new DisplayChoices<TResult>(_choices, _convertToStringComponent);
 
-            _validationResultComponent = new ValidationComponent<TResult>();
-
-            var validationInputComponent = new ValidationComponent<string>();
-            validationInputComponent.AddValidator(value => { return string.IsNullOrEmpty(value) == false || _defaultComponent.HasDefaultValue; }, "Empty line");
-            validationInputComponent.AddValidator(value => { return value.ToN<int>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
-            validationInputComponent.AddValidator(
+            _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
+            _validationInputComponent.Add(value => { return value.ToN<int>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
+            _validationInputComponent.Add(
             value =>
             {
                 var index = value.To<int>();
@@ -55,7 +54,7 @@ namespace InquirerCS.Builders
 
             var errorDisplay = new DisplayErrorCompnent();
 
-            return new RawList<TResult>(_choices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, validationInputComponent, errorDisplay).Prompt();
+            return new RawList<TResult>(_choices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _validationInputComponent, errorDisplay).Prompt();
         }
     }
 }

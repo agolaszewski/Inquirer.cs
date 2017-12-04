@@ -11,12 +11,12 @@ namespace InquirerCS.Components
 
         private List<TResult> _choices;
 
-        private IConvertToStringComponent<TResult> _convertToString;
+        private IConvertToStringComponent<TResult> _convertToStringComponent;
 
         public DisplayChoices(List<TResult> choices, IConvertToStringComponent<TResult> convertToString)
         {
             _choices = choices;
-            _convertToString = convertToString;
+            _convertToStringComponent = convertToString;
         }
 
         public void Render()
@@ -24,14 +24,14 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (TResult choice in _choices)
             {
-                ConsoleHelper.PositionWriteLine($"   {_convertToString.Convert(choice)}", 0, index + _CURSOR_OFFSET);
+                ConsoleHelper.PositionWriteLine($"   {_convertToStringComponent.Convert(choice)}", 0, index + _CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"-> {_convertToString.Convert(_choices.ElementAt(index))}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine($"-> {_convertToStringComponent.Convert(_choices.ElementAt(index))}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }
 }

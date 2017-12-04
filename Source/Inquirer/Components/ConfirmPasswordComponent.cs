@@ -20,7 +20,7 @@ namespace InquirerCS.Components
             string repeated = _inputComponent.WaitForInput();
             if (repeated != result)
             {
-                ConsoleHelper.WriteError("Strings doesn't match");
+                ConsoleHelper.WriteError("Strings don't match");
                 return true;
             }
 

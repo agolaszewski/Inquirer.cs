@@ -10,12 +10,12 @@ namespace InquirerCS.Components
 
         private List<Selectable<TResult>> _choices;
 
-        private IConvertToStringComponent<TResult> _convertToString;
+        private IConvertToStringComponent<TResult> _convertToStringComponent;
 
         public DisplaySelectableChoices(List<Selectable<TResult>> choices, IConvertToStringComponent<TResult> convertToString)
         {
             _choices = choices;
-            _convertToString = convertToString;
+            _convertToStringComponent = convertToString;
         }
 
         public void Render()
@@ -23,7 +23,7 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (Selectable<TResult> choice in _choices)
             {
-                ConsoleHelper.PositionWriteLine($"     {_convertToString.Convert(choice.Item)}", 0, index + _CURSOR_OFFSET);
+                ConsoleHelper.PositionWriteLine($"     {_convertToStringComponent.Convert(choice.Item)}", 0, index + _CURSOR_OFFSET);
                 ConsoleHelper.PositionWriteLine(choice.IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET);
                 index++;
             }
@@ -31,7 +31,7 @@ namespace InquirerCS.Components
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"->   {_convertToString.Convert(_choices[index].Item)}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine($"->   {_convertToStringComponent.Convert(_choices[index].Item)}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
             ConsoleHelper.PositionWriteLine(_choices[index].IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }

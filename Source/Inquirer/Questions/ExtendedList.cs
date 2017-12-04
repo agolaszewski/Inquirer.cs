@@ -9,7 +9,7 @@ namespace InquirerCS.Questions
         private Dictionary<ConsoleKey, TResult> _choices;
 
         private IConfirmComponent<TResult> _confirmComponent;
-
+        private IDefaultValueComponent<TResult> _defaultValueComponent;
         private IDisplayQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
@@ -26,6 +26,7 @@ namespace InquirerCS.Questions
 
         public ExtendedList(
             Dictionary<ConsoleKey, TResult> choices,
+            IDefaultValueComponent<TResult> defaultValueComponent,
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<ConsoleKey> inputComponent,
@@ -44,6 +45,7 @@ namespace InquirerCS.Questions
             _validationInputComponent = validationInputComponent;
             _validationResultComponent = validationResultComponent;
             _errorComponent = errorComponent;
+            _defaultValueComponent = defaultValueComponent;
 
             Console.CursorVisible = false;
         }
@@ -54,6 +56,23 @@ namespace InquirerCS.Questions
             _renderChoices.Render();
 
             var value = _inputComponent.WaitForInput();
+            if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefaultValue)
+            {
+                if (_confirmComponent.Confirm(_defaultValueComponent.DefaultValue))
+                {
+                    return Prompt();
+                }
+
+                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.DefaultValue);
+
+                if (defaultValueValidation.HasError)
+                {
+                    _errorComponent.Render(defaultValueValidation.ErrorMessage);
+                    return Prompt();
+                }
+
+                return _defaultValueComponent.DefaultValue;
+            }
 
             var validationResult = _validationInputComponent.Run(value);
             if (validationResult.HasError)

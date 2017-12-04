@@ -18,7 +18,7 @@ namespace InquirerCS.Components
             HasDefaultValue = true;
             DefaultValue = defaultValue;
 
-            if (choices.Any(item => item.CompareTo(defaultValue) == 0))
+            if (!choices.Any(item => item.CompareTo(defaultValue) == 0))
             {
                 throw new ArgumentNullException("defaultValue not found in choices collection");
             }

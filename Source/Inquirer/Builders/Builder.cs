@@ -9,11 +9,11 @@ namespace InquirerCS.Builders
 
         protected Func<IConfirmComponent<TResult>> _confirmComponentFn = () => { return null; };
 
-        protected IConvertToStringComponent<TResult> _convertToString;
+        protected IConvertToStringComponent<TResult> _convertToStringComponent;
 
         protected Func<IConvertToStringComponent<TResult>> _convertToStringComponentFn = () => { return null; };
 
-        protected IDefaultValueComponent<TResult> _defaultComponent;
+        protected IDefaultValueComponent<TResult> _defaultValueComponent;
 
         protected Func<IDefaultValueComponent<TResult>> _defaultValueComponentFn = () => { return null; };
 
@@ -23,14 +23,12 @@ namespace InquirerCS.Builders
 
         protected IWaitForInputComponent<TInput> _inputComponent;
 
-        protected string _msgComponent;
-
         protected IParseComponent<TInput, TResult> _parseComponent;
 
         protected IValidateComponent<TInput> _validationInputComponent;
 
         protected IValidateComponent<TResult> _validationResultComponent;
 
-        public abstract TResult Build();
+        public abstract TResult Prompt();
     }
 }
