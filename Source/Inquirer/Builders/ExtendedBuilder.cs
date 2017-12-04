@@ -17,7 +17,19 @@ namespace InquirerCS.Builders
             _params = @params;
         }
 
-        public override ConsoleKey Prompt()
+        public ExtendedBuilder AddValidator(Func<ConsoleKey, bool> fn, Func<ConsoleKey, string> errorMessageFn)
+        {
+            _validationResultComponent.AddValidator(fn, errorMessageFn);
+            return this;
+        }
+
+        public ExtendedBuilder AddValidator(Func<ConsoleKey, bool> fn, string errorMessage)
+        {
+            _validationResultComponent.AddValidator(fn, errorMessage);
+            return this;
+        }
+
+        public override ConsoleKey Build()
         {
             _convertToString = new ConvertToStringComponent<ConsoleKey>();
 
@@ -54,15 +66,13 @@ namespace InquirerCS.Builders
             return new InputKey<ConsoleKey>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultComponent).Prompt();
         }
 
-        public ExtendedBuilder AddValidator(Func<ConsoleKey, bool> fn, Func<ConsoleKey, string> errorMessageFn)
+        public ExtendedBuilder WithConfirmation()
         {
-            _validationResultComponent.AddValidator(fn, errorMessageFn);
-            return this;
-        }
+            _confirmComponentFn = () =>
+            {
+                return new ConfirmComponent<ConsoleKey>(_convertToString);
+            };
 
-        public ExtendedBuilder AddValidator(Func<ConsoleKey, bool> fn, string errorMessage)
-        {
-            _validationResultComponent.AddValidator(fn, errorMessage);
             return this;
         }
 
@@ -71,16 +81,6 @@ namespace InquirerCS.Builders
             _defaultValueComponentFn = () =>
             {
                 return new DefaultValueComponent<ConsoleKey>(defaultValues);
-            };
-
-            return this;
-        }
-
-        public ExtendedBuilder WithConfirmation()
-        {
-            _confirmComponentFn = () =>
-            {
-                return new ConfirmComponent<ConsoleKey>(_convertToString);
             };
 
             return this;

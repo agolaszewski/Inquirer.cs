@@ -1,5 +1,4 @@
 ﻿using System;
-using InquirerCS;
 using InquirerCS.Components;
 using InquirerCS.Questions;
 
@@ -26,7 +25,7 @@ namespace InquirerCS.Builders
             return this;
         }
 
-        public override TResult Prompt()
+        public override TResult Build()
         {
             _convertToString = new ConvertToStringComponent<TResult>();
 

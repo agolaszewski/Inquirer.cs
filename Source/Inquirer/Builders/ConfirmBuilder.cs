@@ -13,7 +13,19 @@ namespace InquirerCS.Builders
             _message = message + " [y/n]";
         }
 
-        public override bool Prompt()
+        public ConfirmBuilder AddValidator(Func<bool, bool> fn, Func<bool, string> errorMessageFn)
+        {
+            _validationResultComponent.AddValidator(fn, errorMessageFn);
+            return this;
+        }
+
+        public ConfirmBuilder AddValidator(Func<bool, bool> fn, string errorMessage)
+        {
+            _validationResultComponent.AddValidator(fn, errorMessage);
+            return this;
+        }
+
+        public override bool Build()
         {
             _convertToString = new ConvertToStringComponent<bool>(value =>
             {
@@ -37,15 +49,13 @@ namespace InquirerCS.Builders
             return new InputKey<bool>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultComponent).Prompt();
         }
 
-        public ConfirmBuilder AddValidator(Func<bool, bool> fn, Func<bool, string> errorMessageFn)
+        public ConfirmBuilder WithConfirmation()
         {
-            _validationResultComponent.AddValidator(fn, errorMessageFn);
-            return this;
-        }
+            _confirmComponentFn = () =>
+            {
+                return new ConfirmComponent<bool>(_convertToString);
+            };
 
-        public ConfirmBuilder AddValidator(Func<bool, bool> fn, string errorMessage)
-        {
-            _validationResultComponent.AddValidator(fn, errorMessage);
             return this;
         }
 
@@ -54,16 +64,6 @@ namespace InquirerCS.Builders
             _defaultValueComponentFn = () =>
             {
                 return new DefaultValueComponent<bool>(defaultValues);
-            };
-
-            return this;
-        }
-
-        public ConfirmBuilder WithConfirmation()
-        {
-            _confirmComponentFn = () =>
-            {
-                return new ConfirmComponent<bool>(_convertToString);
             };
 
             return this;

@@ -7,7 +7,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class CheckboxBuilder<TResult> where TResult : IComparable
+    public class CheckboxBuilder<TResult> : IBuilder<List<TResult>> where TResult : IComparable
     {
         private IConfirmComponent<List<TResult>> _confirmComponent;
 
@@ -41,6 +41,23 @@ namespace InquirerCS.Builders
         {
             _message = message;
             _selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
+        }
+
+        public List<TResult> Build()
+        {
+            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
+            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<List<TResult>>();
+            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<List<TResult>>();
+
+            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_message, _convertToStringComponent, _defaultValueComponent);
+
+            _inputComponent = new ReadConsoleKey();
+            _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);
+            _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _convertToStringComponent);
+            _validateComponent = new ValidationComponent<List<TResult>>();
+            _errorComponent = new DisplayErrorCompnent();
+
+            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validateComponent, _errorComponent).Prompt();
         }
 
         public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
@@ -91,23 +108,6 @@ namespace InquirerCS.Builders
             };
 
             return this;
-        }
-
-        public List<TResult> Prompt()
-        {
-            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
-            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<List<TResult>>();
-            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<List<TResult>>();
-
-            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_message, _convertToStringComponent, _defaultValueComponent);
-
-            _inputComponent = new ReadConsoleKey();
-            _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);
-            _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _convertToStringComponent);
-            _validateComponent = new ValidationComponent<List<TResult>>();
-            _errorComponent = new DisplayErrorCompnent();
-
-            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validateComponent, _errorComponent).Prompt();
         }
     }
 }

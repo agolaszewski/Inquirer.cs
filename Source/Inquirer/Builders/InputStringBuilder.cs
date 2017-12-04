@@ -25,7 +25,7 @@ namespace InquirerCS.Builders
             return this;
         }
 
-        public override string Prompt()
+        public override string Build()
         {
             _convertToString = new ConvertToStringComponent<string>();
 

@@ -9,7 +9,9 @@ namespace InquirerCS.Builders
     public class ExtendedListBuilder<TResult> : Builder<ConsoleKey, TResult>
     {
         private Dictionary<ConsoleKey, TResult> _choices;
+
         private DisplayExtendedChoices<TResult> _displayChoices;
+
         private string _message;
 
         public ExtendedListBuilder(string message, IDictionary<ConsoleKey, TResult> choices)
@@ -18,7 +20,19 @@ namespace InquirerCS.Builders
             _choices = choices.ToDictionary(k => k.Key, v => v.Value);
         }
 
-        public override TResult Prompt()
+        public ExtendedListBuilder<TResult> AddValidator(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        {
+            _validationResultComponent.AddValidator(fn, errorMessageFn);
+            return this;
+        }
+
+        public ExtendedListBuilder<TResult> AddValidator(Func<TResult, bool> fn, string errorMessage)
+        {
+            _validationResultComponent.AddValidator(fn, errorMessage);
+            return this;
+        }
+
+        public override TResult Build()
         {
             _convertToString = new ConvertToStringComponent<TResult>();
 
@@ -41,15 +55,13 @@ namespace InquirerCS.Builders
             return new ExtendedList<TResult>(_choices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _validationInputComponent, _errorDisplay).Prompt();
         }
 
-        public ExtendedListBuilder<TResult> AddValidator(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        public ExtendedListBuilder<TResult> WithConfirmation()
         {
-            _validationResultComponent.AddValidator(fn, errorMessageFn);
-            return this;
-        }
+            _confirmComponentFn = () =>
+            {
+                return new ConfirmComponent<TResult>(_convertToString);
+            };
 
-        public ExtendedListBuilder<TResult> AddValidator(Func<TResult, bool> fn, string errorMessage)
-        {
-            _validationResultComponent.AddValidator(fn, errorMessage);
             return this;
         }
 
@@ -58,16 +70,6 @@ namespace InquirerCS.Builders
             _defaultValueComponentFn = () =>
             {
                 return new DefaultValueComponent<TResult>(defaultValues);
-            };
-
-            return this;
-        }
-
-        public ExtendedListBuilder<TResult> WithConfirmation()
-        {
-            _confirmComponentFn = () =>
-            {
-                return new ConfirmComponent<TResult>(_convertToString);
             };
 
             return this;

@@ -55,6 +55,9 @@
     <Compile Include="Builders\Builder.cs" />
     <Compile Include="Builders\InputStringBuilder.cs" />
     <Compile Include="Builders\InputStructBuilder.cs" />
+    <Compile Include="Builders\ListBuilder.cs" />
+    <Compile Include="Builders\PasswordBuilder.cs" />
+    <Compile Include="Builders\RawListBuilder.cs" />
     <Compile Include="Components\DefaultSelectedValueComponent.cs" />
     <Compile Include="Components\DefaultDictionaryValue.cs" />
     <Compile Include="Components\ConfirmListComponent.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="Components\DisplayQuestion.cs" />
     <Compile Include="Components\ParseComponent.cs" />
     <Compile Include="Components\DisplayExtendedChoices.cs" />
+    <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
     <Compile Include="Interfaces\IDisplayError.cs" />
     <Compile Include="Interfaces\IQuestion.cs" />
