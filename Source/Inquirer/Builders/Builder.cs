@@ -3,7 +3,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Builders
 {
-    public abstract class InputBuilder<TInput, TResult>
+    public abstract class Builder<TInput, TResult>
     {
         protected IConfirmComponent<TResult> _confirmComponent;
         protected IConvertToStringComponent<TResult> _convertToString;

@@ -4,7 +4,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class ConfirmBuilder : InputBuilder<ConsoleKey, bool>
+    public class ConfirmBuilder : Builder<ConsoleKey, bool>
     {
         private string _message;
 
