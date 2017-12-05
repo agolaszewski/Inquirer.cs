@@ -127,12 +127,10 @@ namespace InquirerCS
 
         internal static void WriteError(string error)
         {
-            Console.Clear();
             Write(">> ", ConsoleColor.Red);
             Write(error);
             WriteLine(string.Empty);
             Write("Press any key to continue");
-            Console.ReadKey();
         }
 
         internal static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)

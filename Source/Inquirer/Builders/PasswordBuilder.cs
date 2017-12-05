@@ -24,14 +24,12 @@ namespace InquirerCS.Builders
             _displayQuestionComponent = new DisplayQuestion<string>(_message, _convertToStringComponent, _defaultValueComponent);
             _inputComponent = new HideReadStringComponent();
             _parseComponent = new ParseComponent<string, string>(value =>
-             {
-                 return value;
-             });
+            {
+                return value;
+            });
             _confirmComponent = new ConfirmPasswordComponent(_inputComponent);
-            _validationInputComponent = new ValidationComponent<string>();
             _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
 
-            _validationResultComponent = new ValidationComponent<string>();
             _errorDisplay = new DisplayErrorCompnent();
 
             return new Input<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent).Prompt();

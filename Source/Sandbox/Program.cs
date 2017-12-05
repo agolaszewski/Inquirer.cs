@@ -64,27 +64,6 @@ namespace ConsoleApp1
         //    _test.Next(() => MenuTest());
         //}
 
-        //private static void ListTest()
-        //{
-        //    var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-        //    var answer = _test.Prompt(Question.List("Choose favourite color", colors)
-        //         .WithDefaultValue(ConsoleColor.DarkCyan)
-        //         .WithConfirmation()
-        //         .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-
-        //    _test.Next(() => MenuTest());
-        //}
-
-        //private static void ListRawTest()
-        //{
-        //    var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-        //    var answer = _test.Prompt(Question.RawList("Choose favourite color", colors)
-        //         .WithDefaultValue(ConsoleColor.DarkCyan)
-        //         .WithConfirmation()
-        //         .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-
-        //    _test.Next(() => MenuTest());
-        //}
 
         //private static void ListCheckboxTest()
         //{

@@ -12,7 +12,28 @@ namespace Sandbox2
 
         private static void Main(string[] args)
         {
-            ListTest();
+            PasswordTest();
+        }
+
+        private static void ListCheckboxTest()
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            Question.Checkbox("Choose favourite colors", colors)
+                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
+                 .WithConfirmation()
+                 .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black")
+                 .ConvertToString(x => { return x + " Test"; }).Prompt();
+
+        
+        }
+
+        private static void ListRawTest()
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            Question.RawList("Choose favourite color", colors)
+                 .WithDefaultValue(ConsoleColor.DarkCyan)
+                 .WithConfirmation()
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Prompt();
         }
 
         private static void ListTest()

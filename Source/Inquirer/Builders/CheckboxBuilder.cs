@@ -35,12 +35,13 @@ namespace InquirerCS.Builders
 
         private List<Selectable<TResult>> _selectedChoices;
 
-        private IValidateComponent<List<TResult>> _validateComponent;
+        private IValidateComponent<List<TResult>> _validationResultComponent;
 
         public CheckboxBuilder(string message, IEnumerable<TResult> choices)
         {
             _message = message;
             _selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
+            _validationResultComponent = new ValidationComponent<List<TResult>>();
         }
 
         public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
@@ -64,10 +65,9 @@ namespace InquirerCS.Builders
             _inputComponent = new ReadConsoleKey();
             _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);
             _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _convertToStringComponent);
-            _validateComponent = new ValidationComponent<List<TResult>>();
             _errorComponent = new DisplayErrorCompnent();
 
-            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validateComponent, _errorComponent).Prompt();
+            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validationResultComponent, _errorComponent).Prompt();
         }
 
         public CheckboxBuilder<TResult> WithConfirmation()
@@ -107,6 +107,18 @@ namespace InquirerCS.Builders
                 return new DefaultSelectedValueComponent<TResult>(_selectedChoices, new List<TResult>() { defaultValues });
             };
 
+            return this;
+        }
+
+        public CheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, Func<List<TResult>, string> errorMessageFn)
+        {
+            _validationResultComponent.Add(fn, errorMessageFn);
+            return this;
+        }
+
+        public CheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, string errorMessage)
+        {
+            _validationResultComponent.Add(fn, errorMessage);
             return this;
         }
     }

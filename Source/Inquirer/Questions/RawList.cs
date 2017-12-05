@@ -53,6 +53,8 @@ namespace InquirerCS.Questions
             _displayQuestion.Render();
             _renderChoices.Render();
 
+            Console.WriteLine();
+            ConsoleHelper.Write("Answer: ");
             var value = _inputComponent.WaitForInput();
 
             var validationResult = _validationInputComponent.Run(value);

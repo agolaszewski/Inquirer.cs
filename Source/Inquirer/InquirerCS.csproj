@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Builders\CheckboxBuilder.cs" />
     <Compile Include="Builders\ConfirmBuilder.cs" />
+    <Compile Include="Components\DisplaRawChoices.cs" />
     <Compile Include="Builders\ExtendedBuilder.cs" />
     <Compile Include="Builders\ExtendedListBuilder.cs" />
     <Compile Include="Builders\Builder.cs" />
