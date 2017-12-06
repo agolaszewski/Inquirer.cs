@@ -41,7 +41,7 @@ namespace InquirerCS.Components
         {
             if (PagedChoices.ContainsKey(_page + 1))
             {
-                _page = +1;
+                _page += 1;
                 return true;
             }
 
@@ -50,9 +50,9 @@ namespace InquirerCS.Components
 
         public bool Previous()
         {
-            if (_page - 1 > 0)
+            if (_page - 1 >= 0)
             {
-                _page = -1;
+                _page -= 1;
                 return true;
             }
 

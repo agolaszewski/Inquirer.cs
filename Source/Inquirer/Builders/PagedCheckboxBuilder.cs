@@ -9,18 +9,19 @@ namespace InquirerCS.Builders
 {
     public class PagedCheckboxBuilder<TResult> : IBuilder<List<TResult>> where TResult : IComparable
     {
-        private List<Selectable<TResult>> _choices;
-        private IConfirmComponent<List<TResult>> _confirmComponent;
-
         private Func<IConfirmComponent<List<TResult>>> _confirmComponentFn = () => { return null; };
-
-        private IConvertToStringComponent<TResult> _convertToStringComponent;
 
         private Func<IConvertToStringComponent<TResult>> _convertToStringComponentFn = () => { return null; };
 
-        private IDefaultValueComponent<List<TResult>> _defaultValueComponent;
-
         private Func<IDefaultValueComponent<List<TResult>>> _defaultValueComponentFn = () => { return null; };
+
+        private List<Selectable<TResult>> _choices;
+
+        private IConfirmComponent<List<TResult>> _confirmComponent;
+
+        private IConvertToStringComponent<TResult> _convertToStringComponent;
+
+        private IDefaultValueComponent<List<TResult>> _defaultValueComponent;
 
         private IDisplayQuestionComponent _displayQuestionComponent;
 
@@ -37,13 +38,19 @@ namespace InquirerCS.Builders
         private IRenderChoices<TResult> _renderchoices;
 
         private IValidateComponent<List<TResult>> _validationResultComponent;
+        private int _pageSize;
 
-        public PagedCheckboxBuilder(string message, IEnumerable<TResult> choices, int pageSize)
+        public PagedCheckboxBuilder(string message, IEnumerable<Selectable<TResult>> choices, int pageSize, Func<IConvertToStringComponent<TResult>> convertToStringComponentFn, Func<IConfirmComponent<List<TResult>>> confirmComponentFn, Func<IDefaultValueComponent<List<TResult>>> defaultValueComponentFn)
         {
-            _choices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
+            _choices = choices.ToList();
+            _pageSize = pageSize;
 
             _message = message;
-            _pagingComponent = new PagingComponent<Selectable<TResult>>(_choices, 2, 0);
+
+            _convertToStringComponentFn = convertToStringComponentFn;
+            _confirmComponentFn = confirmComponentFn;
+            _defaultValueComponentFn = defaultValueComponentFn;
+
             _validationResultComponent = new ValidationComponent<List<TResult>>();
         }
 
@@ -62,6 +69,8 @@ namespace InquirerCS.Builders
             _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<List<TResult>>();
             _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<List<TResult>>();
+
+            _pagingComponent = new PagingComponent<Selectable<TResult>>(_choices, _pageSize);
 
             _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_message, _convertToStringComponent, _defaultValueComponent);
 

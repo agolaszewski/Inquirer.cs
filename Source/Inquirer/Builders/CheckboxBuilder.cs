@@ -36,12 +36,19 @@ namespace InquirerCS.Builders
         private List<Selectable<TResult>> _selectedChoices;
 
         private IValidateComponent<List<TResult>> _validationResultComponent;
+        private IEnumerable<TResult> _choices;
 
         public CheckboxBuilder(string message, IEnumerable<TResult> choices)
         {
             _message = message;
+            _choices = choices;
             _selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
             _validationResultComponent = new ValidationComponent<List<TResult>>();
+        }
+
+        public PagedCheckboxBuilder<TResult> Page(int pageSize)
+        {
+            return new PagedCheckboxBuilder<TResult>(_message, _selectedChoices, pageSize, _convertToStringComponentFn, _confirmComponentFn, _defaultValueComponentFn);
         }
 
         public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)

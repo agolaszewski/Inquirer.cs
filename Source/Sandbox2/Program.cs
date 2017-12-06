@@ -12,7 +12,7 @@ namespace Sandbox2
 
         private static void Main(string[] args)
         {
-            PasswordTest();
+            ListCheckboxTest();
         }
 
         private static void ListCheckboxTest()
@@ -21,6 +21,7 @@ namespace Sandbox2
             Question.Checkbox("Choose favourite colors", colors)
                  .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                  .WithConfirmation()
+                 .Page(4)
                  .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black")
                  .ConvertToString(x => { return x + " Test"; }).Prompt();
 

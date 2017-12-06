@@ -13,6 +13,8 @@ namespace InquirerCS.Questions
 
         private IConfirmComponent<TList> _confirmComponent;
 
+        private int _cursorPosition = _CURSOR_OFFSET;
+
         private IDisplayQuestionComponent _displayQuestionComponent;
 
         private IDisplayErrorComponent _errorComponent;
@@ -55,12 +57,10 @@ namespace InquirerCS.Questions
         {
             _displayQuestionComponent.Render();
             _renderchoices.Render();
-            _renderchoices.Select(0);
+            _renderchoices.Select(_cursorPosition - _CURSOR_OFFSET);
 
             int boundryTop = 2;
             int boundryBottom = boundryTop + _choices[_pagingComponent.CurrentPageNumber].Count - 1;
-
-            int cursorPosition = _CURSOR_OFFSET;
 
             while (true)
             {
@@ -69,10 +69,7 @@ namespace InquirerCS.Questions
                 {
                     case ConsoleKey.Spacebar:
                         {
-                            _choices[_pagingComponent.CurrentPageNumber][cursorPosition - _CURSOR_OFFSET].IsSelected ^= true;
-                            _renderchoices.Render();
-                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
-
+                            _pagingComponent.CurrentPage[_cursorPosition - _CURSOR_OFFSET].IsSelected ^= true;
                             break;
                         }
 
@@ -90,6 +87,7 @@ namespace InquirerCS.Questions
                         {
                             if (_pagingComponent.Next())
                             {
+                                _cursorPosition = MathHelper.Clamp(_cursorPosition, _CURSOR_OFFSET, _pagingComponent.CurrentPage.Count - 1 + _CURSOR_OFFSET);
                                 return Prompt();
                             }
 
@@ -98,40 +96,36 @@ namespace InquirerCS.Questions
 
                     case ConsoleKey.UpArrow:
                         {
-                            if (cursorPosition > boundryTop)
+                            if (_cursorPosition > boundryTop)
                             {
-                                cursorPosition -= 1;
+                                _cursorPosition -= 1;
                             }
                             else
                             {
                                 if (_pagingComponent.Previous())
                                 {
+                                    _cursorPosition = _pagingComponent.CurrentPage.Count - 1 + _CURSOR_OFFSET;
                                     return Prompt();
                                 }
                             }
-
-                            _renderchoices.Render();
-                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
 
                             break;
                         }
 
                     case ConsoleKey.DownArrow:
                         {
-                            if (cursorPosition < boundryBottom)
+                            if (_cursorPosition < boundryBottom)
                             {
-                                cursorPosition += 1;
+                                _cursorPosition += 1;
                             }
                             else
                             {
                                 if (_pagingComponent.Next())
                                 {
+                                    _cursorPosition = _CURSOR_OFFSET;
                                     return Prompt();
                                 }
                             }
-
-                            _renderchoices.Render();
-                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
 
                             break;
                         }
@@ -141,6 +135,9 @@ namespace InquirerCS.Questions
                             goto Escape;
                         }
                 }
+
+                _renderchoices.Render();
+                _renderchoices.Select(_cursorPosition - _CURSOR_OFFSET);
             }
 
         Escape:
