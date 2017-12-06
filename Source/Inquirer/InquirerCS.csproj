@@ -48,8 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\PagedCheckboxBuilder.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
     <Compile Include="Builders\ConfirmBuilder.cs" />
+    <Compile Include="Components\DisplaySelectablePagedChoices.cs" />
+    <Compile Include="Components\ParseSelectablePagedListComponent.cs" />
     <Compile Include="Components\DisplaRawChoices.cs" />
     <Compile Include="Builders\ExtendedBuilder.cs" />
     <Compile Include="Builders\ExtendedListBuilder.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="Components\DisplaySelectableChoices.cs" />
     <Compile Include="Components\HideReadStringComponent.cs" />
     <Compile Include="Components\NoConfirmationComponent.cs" />
+    <Compile Include="Components\PagingComponent.cs" />
     <Compile Include="Components\ParseListComponent.cs" />
     <Compile Include="Components\ParseSelectableListComponent.cs" />
     <Compile Include="Components\ParseStructComponent.cs" />
@@ -86,12 +90,14 @@
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
     <Compile Include="Interfaces\IDisplayError.cs" />
+    <Compile Include="Interfaces\IPagingComponent.cs" />
     <Compile Include="Interfaces\IQuestion.cs" />
     <Compile Include="Interfaces\IRenderComponent.cs" />
     <Compile Include="Interfaces\IValidationResult.cs" />
     <Compile Include="Interfaces\IWaitForInputComponent.cs" />
     <Compile Include="Interfaces\IRenderChoicesComponent.cs" />
     <Compile Include="Question.cs" />
+    <Compile Include="Questions\PagedCheckbox.cs" />
     <Compile Include="Questions\Checkbox.cs" />
     <Compile Include="Questions\ExtendedList.cs" />
     <Compile Include="Questions\Input.cs" />
