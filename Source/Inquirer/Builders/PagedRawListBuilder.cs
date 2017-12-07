@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
@@ -11,24 +10,12 @@ namespace InquirerCS.Builders
     {
         private List<TResult> _choices;
 
-        private IConfirmComponent<TResult> _confirmComponent;
-
-        private Func<IConfirmComponent<TResult>> _confirmComponentFn = () => { return null; };
-
-        private IConvertToStringComponent<TResult> _convertToStringComponent;
-
-        private Func<IConvertToStringComponent<TResult>> _convertToStringComponentFn = () => { return null; };
-
-        private IDefaultValueComponent<TResult> _defaultValueComponent;
-
-        private Func<IDefaultValueComponent<TResult>> _defaultValueComponentFn = () => { return null; };
-
         private IRenderChoices<TResult> _displayChoices;
 
         private IDisplayQuestionComponent _displayQuestionComponent;
 
         private IDisplayErrorComponent _errorDisplay;
-
+        private Extensions<TResult> _extensions;
         private IWaitForInputComponent<StringOrKey> _inputComponent;
 
         private string _message;
@@ -41,32 +28,25 @@ namespace InquirerCS.Builders
 
         private IValidateComponent<string> _validationInputComponent;
 
-        private IValidateComponent<TResult> _validationResultComponent;
-
         public PagedRawListBuilder(
             string message,
             List<TResult> choices,
             int pageSize,
-            Func<IConvertToStringComponent<TResult>> convertToStringComponentFn,
-            Func<IConfirmComponent<TResult>> confirmComponentFn,
-            Func<IDefaultValueComponent<TResult>> defaultValueComponentFn)
+            Extensions<TResult> extensions)
         {
             _choices = choices;
             _pageSize = pageSize;
 
             _message = message;
 
-            _convertToStringComponentFn = convertToStringComponentFn;
-            _confirmComponentFn = confirmComponentFn;
-            _defaultValueComponentFn = defaultValueComponentFn;
+            _extensions = extensions;
 
-            _validationResultComponent = new ValidationComponent<TResult>();
             _validationInputComponent = new ValidationComponent<string>();
         }
 
         public PagedRawListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
         {
-            _convertToStringComponentFn = () =>
+            _extensions.ConvertToStringComponentFn = () =>
             {
                 return new ConvertToStringComponent<TResult>(fn);
             };
@@ -76,13 +56,11 @@ namespace InquirerCS.Builders
 
         public TResult Prompt()
         {
-            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
-            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<TResult>();
-            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<TResult>();
+            _extensions.Build();
 
             _pagingComponent = new PagingComponent<TResult>(_choices, _pageSize);
 
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
+            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _extensions.Convert, _extensions.Default);
             _inputComponent = new StringOrKeyInputComponent(ConsoleKey.LeftArrow, ConsoleKey.RightArrow);
 
             _parseComponent = new ParseComponent<string, TResult>(value =>
@@ -90,9 +68,9 @@ namespace InquirerCS.Builders
                 return _pagingComponent.CurrentPage[value.To<int>() - 1];
             });
 
-            _displayChoices = new DisplaPagedRawChoices<TResult>(_pagingComponent, _convertToStringComponent);
+            _displayChoices = new DisplaPagedRawChoices<TResult>(_pagingComponent, _extensions.Convert);
 
-            _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
+            _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _extensions.Default.HasDefaultValue; }, "Empty line");
             _validationInputComponent.Add(value => { return value.ToN<int>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
             _validationInputComponent.Add(
             value =>
@@ -107,14 +85,14 @@ namespace InquirerCS.Builders
 
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new PagedRawList<TResult>(_pagingComponent, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _validationInputComponent, _errorDisplay).Prompt();
+            return new PagedRawList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay).Prompt();
         }
 
         public PagedRawListBuilder<TResult> WithConfirmation()
         {
-            _confirmComponentFn = () =>
+            _extensions.ConfirmComponentFn = () =>
             {
-                return new ConfirmComponent<TResult>(_convertToStringComponentFn());
+                return new ConfirmComponent<TResult>(_extensions.Convert);
             };
 
             return this;
@@ -122,7 +100,7 @@ namespace InquirerCS.Builders
 
         public PagedRawListBuilder<TResult> WithDefaultValue(TResult defaultValue)
         {
-            _defaultValueComponentFn = () =>
+            _extensions.DefaultValueComponentFn = () =>
             {
                 return new DefaultListValueComponent<TResult>(_choices, defaultValue);
             };
@@ -132,13 +110,13 @@ namespace InquirerCS.Builders
 
         public PagedRawListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
-            _validationResultComponent.Add(fn, errorMessageFn);
+            _extensions.Validators.Add(fn, errorMessageFn);
             return this;
         }
 
         public PagedRawListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
-            _validationResultComponent.Add(fn, errorMessage);
+            _extensions.Validators.Add(fn, errorMessage);
             return this;
         }
     }

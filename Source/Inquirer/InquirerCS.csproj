@@ -48,13 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Extensions.cs" />
     <Compile Include="Builders\PagedCheckboxBuilder.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
     <Compile Include="Builders\ConfirmBuilder.cs" />
     <Compile Include="Builders\PagedListBuilder.cs" />
     <Compile Include="Builders\PagedRawListBuilder.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Components\DisplayPagedListComponent.cs" />
+    <Compile Include="Components\ExtensionsCheckbox.cs" />
     <Compile Include="Components\StringOrKeyInputComponent.cs" />
     <Compile Include="Components\StringOrKey.cs" />
     <Compile Include="Components\DisplaRawPagedChoices.cs" />

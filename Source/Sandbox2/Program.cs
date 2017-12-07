@@ -10,6 +10,11 @@ namespace Sandbox2
     {
         private static Inquirer _test = new Inquirer();
 
+        private static void Main(string[] args)
+        {
+            ListTest();
+        }
+
         private static void ConfirmTest()
         {
             Question.Confirm("Are you sure?")
@@ -32,9 +37,8 @@ namespace Sandbox2
             Question.Checkbox("Choose favourite colors", colors)
                  .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                  .WithConfirmation()
-                 .Page(4)
                  .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black")
-                 .ConvertToString(x => { return x + " Test"; }).Prompt();
+                 .ConvertToString(x => { return x + " Test"; }).Page(4).Prompt();
         }
 
         private static void ListExtendedTest()
@@ -55,10 +59,10 @@ namespace Sandbox2
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             Question.RawList("Choose favourite color", colors)
-                 .Page(4)
+                 
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Prompt();
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Page(4).Prompt();
         }
 
         private static void ListTest()
@@ -67,14 +71,10 @@ namespace Sandbox2
             Question.List("Choose favourite color", colors)
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
-                 .Page(4)
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Prompt();
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Page(3).Prompt();
         }
 
-        private static void Main(string[] args)
-        {
-            ListTest();
-        }
+      
 
         private static void PasswordTest()
         {

@@ -7,11 +7,23 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class RawListBuilder<TResult> : Builder<string, TResult> where TResult : IComparable
+    public class RawListBuilder<TResult> : IBuilder<TResult> where TResult : IComparable
     {
+        private IDisplayQuestionComponent _displayQuestionComponent;
+
+        private IDisplayErrorComponent _errorDisplay;
+
+        private IWaitForInputComponent<string> _inputComponent;
+
+        private IParseComponent<string, TResult> _parseComponent;
+
+        private IValidateComponent<string> _validationInputComponent;
+
         private List<TResult> _choices;
 
         private IRenderChoices<TResult> _displayChoices;
+
+        private Extensions<TResult> _extensions = new Extensions<TResult>();
 
         private string _message;
 
@@ -19,13 +31,12 @@ namespace InquirerCS.Builders
         {
             _message = message;
             _choices = choices.ToList();
-            _validationResultComponent = new ValidationComponent<TResult>();
             _validationInputComponent = new ValidationComponent<string>();
         }
 
         public RawListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
         {
-            _convertToStringComponentFn = () =>
+            _extensions.ConvertToStringComponentFn = () =>
             {
                 return new ConvertToStringComponent<TResult>(fn);
             };
@@ -33,13 +44,17 @@ namespace InquirerCS.Builders
             return this;
         }
 
-        public override TResult Prompt()
+        public PagedRawListBuilder<TResult> Page(int pageSize)
         {
-            _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
-            _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<TResult>();
-            _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<TResult>();
+            return new PagedRawListBuilder<TResult>(_message, _choices, pageSize, _extensions);
+        }
 
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
+        public TResult Prompt()
+        {
+            _extensions.Build();
+
+            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _extensions.Convert, _extensions.Default);
+
             _inputComponent = new ReadStringComponent();
 
             _parseComponent = new ParseComponent<string, TResult>(value =>
@@ -47,9 +62,9 @@ namespace InquirerCS.Builders
                 return _choices[value.To<int>() - 1];
             });
 
-            _displayChoices = new DisplaRawChoices<TResult>(_choices, _convertToStringComponent);
+            _displayChoices = new DisplaRawChoices<TResult>(_choices, _extensions.Convert);
 
-            _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
+            _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _extensions.Default.HasDefaultValue; }, "Empty line");
             _validationInputComponent.Add(value => { return value.ToN<int>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
             _validationInputComponent.Add(
             value =>
@@ -62,16 +77,16 @@ namespace InquirerCS.Builders
                 return $"Choosen number must be between 1 and {_choices.Count}";
             });
 
-            var errorDisplay = new DisplayErrorCompnent();
+            _errorDisplay = new DisplayErrorCompnent();
 
-            return new RawList<TResult>(_choices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _validationInputComponent, errorDisplay).Prompt();
+            return new RawList<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay).Prompt();
         }
 
         public RawListBuilder<TResult> WithConfirmation()
         {
-            _confirmComponentFn = () =>
+            _extensions.ConfirmComponentFn = () =>
             {
-                return new ConfirmComponent<TResult>(_convertToStringComponentFn());
+                return new ConfirmComponent<TResult>(_extensions.Convert);
             };
 
             return this;
@@ -79,7 +94,7 @@ namespace InquirerCS.Builders
 
         public RawListBuilder<TResult> WithDefaultValue(TResult defaultValue)
         {
-            _defaultValueComponentFn = () =>
+            _extensions.DefaultValueComponentFn = () =>
             {
                 return new DefaultListValueComponent<TResult>(_choices, defaultValue);
             };
@@ -89,19 +104,14 @@ namespace InquirerCS.Builders
 
         public RawListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
-            _validationResultComponent.Add(fn, errorMessageFn);
+            _extensions.Validators.Add(fn, errorMessageFn);
             return this;
         }
 
         public RawListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
-            _validationResultComponent.Add(fn, errorMessage);
+            _extensions.Validators.Add(fn, errorMessage);
             return this;
-        }
-
-        public PagedRawListBuilder<TResult> Page(int pageSize)
-        {
-            return new PagedRawListBuilder<TResult>(_message, _choices, pageSize, _convertToStringComponentFn, _confirmComponentFn, _defaultValueComponentFn);
         }
     }
 }
