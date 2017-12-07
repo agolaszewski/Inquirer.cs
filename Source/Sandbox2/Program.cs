@@ -12,7 +12,19 @@ namespace Sandbox2
 
         private static void Main(string[] args)
         {
-            ListTest();
+            _test.Next(() => MenuTest());
+        }
+
+        private static void MenuTest()
+        {
+            _test.Menu("Choose")
+               .AddOption("InputTest", () => { InputTest(); })
+               .AddOption("PasswordTest", () => { PasswordTest(); })
+               .AddOption("ListTest", () => { ListTest(); })
+               .AddOption("ListRawTest", () => { ListRawTest(); })
+               .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
+               .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
+               .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
         }
 
         private static void ConfirmTest()
@@ -28,7 +40,7 @@ namespace Sandbox2
             Question.Input("How are you?")
                 .WithDefaultValue("fine")
                 .WithConfirmation()
-                .WithValidation(value => value == "fine", "You cannot be not fine!").Prompt();
+                .WithValidation(value => value == "fine", "You cannot not be fine!").Prompt();
         }
 
         private static void ListCheckboxTest()
