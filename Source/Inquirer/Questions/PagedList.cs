@@ -1,93 +1,73 @@
 ﻿using System;
-using System.Collections.Generic;
-using InquirerCS.Components;
+using System.Linq;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
 {
-    public class PagedCheckbox<TList, TResult> : IQuestion<TList> where TList : IEnumerable<TResult>
+    public class PagedList<TResult> : IQuestion<TResult>
     {
         private const int _CURSOR_OFFSET = 2;
 
-        private IConfirmComponent<TList> _confirmComponent;
-
+        private IConfirmComponent<TResult> _confirmComponent;
         private int _cursorPosition = _CURSOR_OFFSET;
-
-        private IDisplayQuestionComponent _displayQuestionComponent;
+        private IDisplayQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
         private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IPagingComponent<TResult> _pagingComponent;
+        private IParseComponent<int, TResult> _parseComponent;
 
-        private IPagingComponent<Selectable<TResult>> _pagingComponent;
+        private IRenderChoices<TResult> _renderChoices;
 
-        private IParseComponent<Dictionary<int, List<Selectable<TResult>>>, TList> _parseComponent;
+        private IValidateComponent<TResult> _validationComponent;
 
-        private IRenderChoices<TResult> _renderchoices;
-
-        private IValidateComponent<TList> _validationComponent;
-
-        public PagedCheckbox(
-            IPagingComponent<Selectable<TResult>> pagingComponent,
-            IConfirmComponent<TList> confirmComponent,
+        public PagedList(
+            IPagingComponent<TResult> pagingComponent,
+            IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<ConsoleKey> inputComponent,
-            IParseComponent<Dictionary<int, List<Selectable<TResult>>>, TList> parseComponent,
+            IParseComponent<int, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
-            IValidateComponent<TList> validationComponent,
+            IValidateComponent<TResult> validationComponent,
             IDisplayErrorComponent errorComponent)
         {
             _pagingComponent = pagingComponent;
             _confirmComponent = confirmComponent;
-            _displayQuestionComponent = displayQuestion;
+            _displayQuestion = displayQuestion;
             _inputComponent = inputComponent;
             _parseComponent = parseComponent;
-            _renderchoices = renderChoices;
+            _renderChoices = renderChoices;
             _validationComponent = validationComponent;
             _errorComponent = errorComponent;
 
             Console.CursorVisible = false;
         }
 
-        public TList Prompt()
+        public TResult Prompt()
         {
-            _displayQuestionComponent.Render();
-            _renderchoices.Render();
-            _renderchoices.Select(_cursorPosition - _CURSOR_OFFSET);
+            _displayQuestion.Render();
+            _renderChoices.Render();
+            _renderChoices.Select(_cursorPosition - _CURSOR_OFFSET);
 
             int boundryTop = 2;
-            int boundryBottom = boundryTop + _pagingComponent.CurrentPage.Count - 1;
+            int boundryBottom = boundryTop + _pagingComponent.CurrentPage.Count() - 1;
 
             while (true)
             {
                 var keyPressed = _inputComponent.WaitForInput();
                 switch (keyPressed)
                 {
-                    case ConsoleKey.Spacebar:
+                    case (ConsoleKey.LeftArrow):
                         {
-                            _pagingComponent.CurrentPage[_cursorPosition - _CURSOR_OFFSET].IsSelected ^= true;
-                            break;
+                            _pagingComponent.Previous();
+                            return Prompt();
                         }
 
-                    case ConsoleKey.LeftArrow:
+                    case (ConsoleKey.RightArrow):
                         {
-                            if (_pagingComponent.Previous())
-                            {
-                                return Prompt();
-                            }
-
-                            break;
-                        }
-
-                    case ConsoleKey.RightArrow:
-                        {
-                            if (_pagingComponent.Next())
-                            {
-                                _cursorPosition = MathHelper.Clamp(_cursorPosition, _CURSOR_OFFSET, _pagingComponent.CurrentPage.Count - 1 + _CURSOR_OFFSET);
-                                return Prompt();
-                            }
-
-                            break;
+                            _pagingComponent.Next();
+                            return Prompt();
                         }
 
                     case ConsoleKey.UpArrow:
@@ -132,12 +112,12 @@ namespace InquirerCS.Questions
                         }
                 }
 
-                _renderchoices.Render();
-                _renderchoices.Select(_cursorPosition - _CURSOR_OFFSET);
+                _renderChoices.Render();
+                _renderChoices.Select(_cursorPosition - _CURSOR_OFFSET);
             }
 
         Escape:
-            TList result = _parseComponent.Parse(_pagingComponent.PagedChoices);
+            TResult result = _parseComponent.Parse(_cursorPosition - _CURSOR_OFFSET);
             var validationResult = _validationComponent.Run(result);
             if (validationResult.HasError)
             {

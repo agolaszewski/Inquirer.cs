@@ -18,9 +18,9 @@ namespace InquirerCS.Builders
         public override bool Prompt()
         {
             _convertToStringComponent = new ConvertToStringComponent<bool>(value =>
-             {
-                 return value ? "yes" : "no";
-             });
+            {
+                return value ? "yes" : "no";
+            });
 
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<bool>();
             _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<bool>();
@@ -41,7 +41,7 @@ namespace InquirerCS.Builders
         {
             _confirmComponentFn = () =>
             {
-                return new ConfirmComponent<bool>(_convertToStringComponent);
+                return new ConfirmComponent<bool>(_convertToStringComponentFn());
             };
 
             return this;

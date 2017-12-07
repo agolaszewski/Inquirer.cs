@@ -71,7 +71,7 @@ namespace InquirerCS.Builders
         {
             _confirmComponentFn = () =>
             {
-                return new ConfirmComponent<TResult>(_convertToStringComponent);
+                return new ConfirmComponent<TResult>(_convertToStringComponentFn());
             };
 
             return this;
@@ -97,6 +97,11 @@ namespace InquirerCS.Builders
         {
             _validationResultComponent.Add(fn, errorMessage);
             return this;
+        }
+
+        public PagedRawListBuilder<TResult> Page(int pageSize)
+        {
+            return new PagedRawListBuilder<TResult>(_message, _choices, pageSize, _convertToStringComponentFn, _confirmComponentFn, _defaultValueComponentFn);
         }
     }
 }

@@ -81,7 +81,7 @@ namespace InquirerCS.Builders
         {
             _confirmComponentFn = () =>
             {
-                return new ConfirmListComponent<List<TResult>, TResult>(_convertToStringComponent);
+                return new ConfirmListComponent<List<TResult>, TResult>(_convertToStringComponentFn());
             };
 
             return this;

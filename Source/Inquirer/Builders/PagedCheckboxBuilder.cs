@@ -40,9 +40,9 @@ namespace InquirerCS.Builders
         private IValidateComponent<List<TResult>> _validationResultComponent;
         private int _pageSize;
 
-        public PagedCheckboxBuilder(string message, IEnumerable<Selectable<TResult>> choices, int pageSize, Func<IConvertToStringComponent<TResult>> convertToStringComponentFn, Func<IConfirmComponent<List<TResult>>> confirmComponentFn, Func<IDefaultValueComponent<List<TResult>>> defaultValueComponentFn)
+        public PagedCheckboxBuilder(string message, List<Selectable<TResult>> choices, int pageSize, Func<IConvertToStringComponent<TResult>> convertToStringComponentFn, Func<IConfirmComponent<List<TResult>>> confirmComponentFn, Func<IDefaultValueComponent<List<TResult>>> defaultValueComponentFn)
         {
-            _choices = choices.ToList();
+            _choices = choices;
             _pageSize = pageSize;
 
             _message = message;
@@ -79,14 +79,14 @@ namespace InquirerCS.Builders
             _renderchoices = new DisplaySelectablePagedChoices<TResult>(_pagingComponent, _convertToStringComponent);
             _errorComponent = new DisplayErrorCompnent();
 
-            return new PagedCheckbox<List<TResult>, TResult>(_pagingComponent.PagedChoices, _pagingComponent, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validationResultComponent, _errorComponent).Prompt();
+            return new PagedCheckbox<List<TResult>, TResult>(_pagingComponent, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validationResultComponent, _errorComponent).Prompt();
         }
 
         public PagedCheckboxBuilder<TResult> WithConfirmation()
         {
             _confirmComponentFn = () =>
             {
-                return new ConfirmListComponent<List<TResult>, TResult>(_convertToStringComponent);
+                return new ConfirmListComponent<List<TResult>, TResult>(_convertToStringComponentFn());
             };
 
             return this;

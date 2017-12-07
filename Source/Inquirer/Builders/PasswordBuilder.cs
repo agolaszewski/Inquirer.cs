@@ -39,7 +39,7 @@ namespace InquirerCS.Builders
         {
             _confirmComponentFn = () =>
             {
-                return new ConfirmComponent<string>(_convertToStringComponent);
+                return new ConfirmComponent<string>(_convertToStringComponentFn());
             };
 
             return this;

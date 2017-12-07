@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class ListBuilder<TResult> : IBuilder<TResult> where TResult : IComparable
+    public class PagedListBuilder<TResult> : IBuilder<TResult> where TResult : IComparable
     {
         private List<TResult> _choices;
 
@@ -23,7 +22,7 @@ namespace InquirerCS.Builders
 
         private Func<IDefaultValueComponent<TResult>> _defaultValueComponentFn = () => { return null; };
 
-        private DisplayChoices<TResult> _displayChoices;
+        private IRenderChoices<TResult> _displayChoices;
 
         private IDisplayQuestionComponent _displayQuestionComponent;
 
@@ -33,18 +32,35 @@ namespace InquirerCS.Builders
 
         private string _message;
 
+        private int _pageSize;
+
+        private IPagingComponent<TResult> _pagingComponent;
+
         private IParseComponent<int, TResult> _parseComponent;
 
         private IValidateComponent<TResult> _validationResultComponent;
 
-        public ListBuilder(string message, IEnumerable<TResult> choices)
+        public PagedListBuilder(
+            string message,
+            List<TResult> choices,
+            int pageSize,
+            Func<IConvertToStringComponent<TResult>> convertToStringComponentFn,
+            Func<IConfirmComponent<TResult>> confirmComponentFn,
+            Func<IDefaultValueComponent<TResult>> defaultValueComponentFn)
         {
+            _choices = choices;
+            _pageSize = pageSize;
+
             _message = message;
-            _choices = choices.ToList();
+
+            _convertToStringComponentFn = convertToStringComponentFn;
+            _confirmComponentFn = confirmComponentFn;
+            _defaultValueComponentFn = defaultValueComponentFn;
+
             _validationResultComponent = new ValidationComponent<TResult>();
         }
 
-        public ListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
+        public PagedListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
         {
             _convertToStringComponentFn = () =>
             {
@@ -54,27 +70,24 @@ namespace InquirerCS.Builders
             return this;
         }
 
-        public PagedListBuilder<TResult> Page(int pageSize)
-        {
-            return new PagedListBuilder<TResult>(_message, _choices, pageSize, _convertToStringComponentFn, _confirmComponentFn, _defaultValueComponentFn);
-        }
-
         public TResult Prompt()
         {
             _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<TResult>();
             _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<TResult>();
 
+            _pagingComponent = new PagingComponent<TResult>(_choices, _pageSize);
+
             _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
             _inputComponent = new ReadConsoleKey();
             _parseComponent = new ParseListComponent<TResult>(_choices);
-            _displayChoices = new DisplayChoices<TResult>(_choices, _convertToStringComponent);
+            _displayChoices = new DisplayPagedListChoices<TResult>(_pagingComponent, _convertToStringComponent);
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new Listing<TResult>(_choices, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _errorDisplay).Prompt();
+            return new PagedList<TResult>(_pagingComponent, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _errorDisplay).Prompt();
         }
 
-        public ListBuilder<TResult> WithConfirmation()
+        public PagedListBuilder<TResult> WithConfirmation()
         {
             _confirmComponentFn = () =>
             {
@@ -84,7 +97,7 @@ namespace InquirerCS.Builders
             return this;
         }
 
-        public ListBuilder<TResult> WithDefaultValue(TResult defaultValue)
+        public PagedListBuilder<TResult> WithDefaultValue(TResult defaultValue)
         {
             _defaultValueComponentFn = () =>
             {
@@ -94,13 +107,13 @@ namespace InquirerCS.Builders
             return this;
         }
 
-        public ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        public PagedListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
             _validationResultComponent.Add(fn, errorMessageFn);
             return this;
         }
 
-        public ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        public PagedListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
             _validationResultComponent.Add(fn, errorMessage);
             return this;

@@ -51,6 +51,13 @@
     <Compile Include="Builders\PagedCheckboxBuilder.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
     <Compile Include="Builders\ConfirmBuilder.cs" />
+    <Compile Include="Builders\PagedListBuilder.cs" />
+    <Compile Include="Builders\PagedRawListBuilder.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="Components\DisplayPagedListComponent.cs" />
+    <Compile Include="Components\StringOrKeyInputComponent.cs" />
+    <Compile Include="Components\StringOrKey.cs" />
+    <Compile Include="Components\DisplaRawPagedChoices.cs" />
     <Compile Include="Components\DisplaySelectablePagedChoices.cs" />
     <Compile Include="Components\ParseSelectablePagedListComponent.cs" />
     <Compile Include="Components\DisplaRawChoices.cs" />
@@ -109,6 +116,8 @@
     <Compile Include="Interfaces\IConvertToStringComponent.cs" />
     <Compile Include="Interfaces\IDefaultValueComponent.cs" />
     <Compile Include="Interfaces\IValidateComponent.cs" />
+    <Compile Include="Questions\PagedList.cs" />
+    <Compile Include="Questions\PagedRawList.cs" />
     <Compile Include="Questions\RawList.cs" />
     <Compile Include="Inquirer.cs" />
     <Compile Include="InquirerMenu.cs" />

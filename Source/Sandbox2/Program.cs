@@ -10,9 +10,20 @@ namespace Sandbox2
     {
         private static Inquirer _test = new Inquirer();
 
-        private static void Main(string[] args)
+        private static void ConfirmTest()
         {
-            ListCheckboxTest();
+            Question.Confirm("Are you sure?")
+                .WithConfirmation()
+                .WithDefaultValue(false)
+                .WithValidation(values => values == true, "You must be sure!").Prompt();
+        }
+
+        private static void InputTest()
+        {
+            Question.Input("How are you?")
+                .WithDefaultValue("fine")
+                .WithConfirmation()
+                .WithValidation(value => value == "fine", "You cannot be not fine!").Prompt();
         }
 
         private static void ListCheckboxTest()
@@ -24,34 +35,6 @@ namespace Sandbox2
                  .Page(4)
                  .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black")
                  .ConvertToString(x => { return x + " Test"; }).Prompt();
-
-        
-        }
-
-        private static void ListRawTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            Question.RawList("Choose favourite color", colors)
-                 .WithDefaultValue(ConsoleColor.DarkCyan)
-                 .WithConfirmation()
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Prompt();
-        }
-
-        private static void ListTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            Question.List("Choose favourite color", colors)
-                 .WithDefaultValue(ConsoleColor.DarkCyan)
-                 .WithConfirmation()
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Prompt();
-        }
-
-        private static void InputTest()
-        {
-            Question.Input("How are you?")
-                .WithDefaultValue("fine")
-                .WithConfirmation()
-                .WithValidation(value => value == "fine", "You cannot be not fine!").Prompt();
         }
 
         private static void ListExtendedTest()
@@ -68,12 +51,29 @@ namespace Sandbox2
                 .ConvertToString(value => value + " Test").Prompt();
         }
 
-        private static void ConfirmTest()
+        private static void ListRawTest()
         {
-            Question.Confirm("Are you sure?")
-                .WithConfirmation()
-                .WithDefaultValue(false)
-                .WithValidation(values => values == true, "You must be sure!").Prompt();
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            Question.RawList("Choose favourite color", colors)
+                 .Page(4)
+                 .WithDefaultValue(ConsoleColor.DarkCyan)
+                 .WithConfirmation()
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Prompt();
+        }
+
+        private static void ListTest()
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            Question.List("Choose favourite color", colors)
+                 .WithDefaultValue(ConsoleColor.DarkCyan)
+                 .WithConfirmation()
+                 .Page(4)
+                 .WithValidation(item => item == ConsoleColor.Black, "Choose black").Prompt();
+        }
+
+        private static void Main(string[] args)
+        {
+            ListTest();
         }
 
         private static void PasswordTest()
