@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
@@ -9,12 +10,14 @@ namespace InquirerCS.Questions
         private Dictionary<ConsoleKey, TResult> _choices;
 
         private IConfirmComponent<TResult> _confirmComponent;
+
         private IDefaultValueComponent<TResult> _defaultValueComponent;
+
         private IDisplayQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _input;
 
         private IParseComponent<ConsoleKey, TResult> _parseComponent;
 
@@ -29,7 +32,7 @@ namespace InquirerCS.Questions
             IDefaultValueComponent<TResult> defaultValueComponent,
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<ConsoleKey> inputComponent,
+             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<ConsoleKey, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationResultComponent,
@@ -39,7 +42,7 @@ namespace InquirerCS.Questions
             _choices = choices;
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
-            _inputComponent = inputComponent;
+            _input = inputComponent;
             _parseComponent = parseComponent;
             _renderChoices = renderChoices;
             _validationInputComponent = validationInputComponent;
@@ -55,7 +58,7 @@ namespace InquirerCS.Questions
             _displayQuestion.Render();
             _renderChoices.Render();
 
-            var value = _inputComponent.WaitForInput();
+            var value = _input.WaitForInput().InterruptKey.Value;
             if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefaultValue)
             {
                 if (_confirmComponent.Confirm(_defaultValueComponent.DefaultValue))

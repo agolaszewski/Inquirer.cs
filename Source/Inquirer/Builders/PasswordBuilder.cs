@@ -4,7 +4,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class PasswordBuilder : Builder<string, string>
+    public class PasswordBuilder : Builder<_inputComponent<string>, string, string>
     {
         private string _message;
 
@@ -15,7 +15,7 @@ namespace InquirerCS.Builders
             _validationResultComponent = new ValidationComponent<string>();
         }
 
-        public override string Prompt()
+        public override _inputComponent<string> Build()
         {
             _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<string>();
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<string>();
@@ -27,12 +27,17 @@ namespace InquirerCS.Builders
             {
                 return value;
             });
-            _confirmComponent = new ConfirmPasswordComponent(_inputComponent);
+            _confirmComponent = new ConfirmPasswordComponent(new ReadStringComponent());
             _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
 
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new Input<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent).Prompt();
+            return new _inputComponent<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
+        }
+
+        public override string Prompt()
+        {
+            return Build().Prompt();
         }
 
         public PasswordBuilder WithConfirmation()

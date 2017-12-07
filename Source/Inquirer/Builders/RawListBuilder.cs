@@ -7,25 +7,25 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class RawListBuilder<TResult> : IBuilder<TResult> where TResult : IComparable
+    public class RawListBuilder<TResult> : IBuilder<RawList<TResult>, TResult> where TResult : IComparable
     {
-        private IDisplayQuestionComponent _displayQuestionComponent;
-
-        private IDisplayErrorComponent _errorDisplay;
-
-        private IWaitForInputComponent<string> _inputComponent;
-
-        private IParseComponent<string, TResult> _parseComponent;
-
-        private IValidateComponent<string> _validationInputComponent;
-
         private List<TResult> _choices;
 
         private IRenderChoices<TResult> _displayChoices;
 
+        private IDisplayQuestionComponent _displayQuestionComponent;
+
+        private IDisplayErrorComponent _errorDisplay;
+
         private Extensions<TResult> _extensions = new Extensions<TResult>();
 
+        private IWaitForInputComponent<StringOrKey> _inputComponent;
+
         private string _message;
+
+        private IParseComponent<string, TResult> _parseComponent;
+
+        private IValidateComponent<string> _validationInputComponent;
 
         public RawListBuilder(string message, IEnumerable<TResult> choices)
         {
@@ -34,28 +34,13 @@ namespace InquirerCS.Builders
             _validationInputComponent = new ValidationComponent<string>();
         }
 
-        public RawListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
-        {
-            _extensions.ConvertToStringComponentFn = () =>
-            {
-                return new ConvertToStringComponent<TResult>(fn);
-            };
-
-            return this;
-        }
-
-        public PagedRawListBuilder<TResult> Page(int pageSize)
-        {
-            return new PagedRawListBuilder<TResult>(_message, _choices, pageSize, _extensions);
-        }
-
-        public TResult Prompt()
+        public RawList<TResult> Build()
         {
             _extensions.Build();
 
             _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _extensions.Convert, _extensions.Default);
 
-            _inputComponent = new ReadStringComponent();
+            _inputComponent = new StringOrKeyInputComponent();
 
             _parseComponent = new ParseComponent<string, TResult>(value =>
             {
@@ -79,7 +64,27 @@ namespace InquirerCS.Builders
 
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new RawList<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay).Prompt();
+            return new RawList<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay);
+        }
+
+        public RawListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            _extensions.ConvertToStringComponentFn = () =>
+            {
+                return new ConvertToStringComponent<TResult>(fn);
+            };
+
+            return this;
+        }
+
+        public PagedRawListBuilder<TResult> Page(int pageSize)
+        {
+            return new PagedRawListBuilder<TResult>(_message, _choices, pageSize, _extensions);
+        }
+
+        public TResult Prompt()
+        {
+            return Build().Prompt();
         }
 
         public RawListBuilder<TResult> WithConfirmation()

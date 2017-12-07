@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
@@ -14,7 +15,7 @@ namespace InquirerCS.Questions
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<string> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _inputComponent;
 
         private IParseComponent<string, TResult> _parseComponent;
 
@@ -28,7 +29,7 @@ namespace InquirerCS.Questions
             List<TResult> choices,
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<string> inputComponent,
+            IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<string, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationResultComponent,
@@ -55,7 +56,7 @@ namespace InquirerCS.Questions
 
             Console.WriteLine();
             ConsoleHelper.Write("Answer: ");
-            var value = _inputComponent.WaitForInput();
+            var value = _inputComponent.WaitForInput().Value;
 
             var validationResult = _validationInputComponent.Run(value);
             if (validationResult.HasError)

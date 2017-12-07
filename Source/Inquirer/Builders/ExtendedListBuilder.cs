@@ -6,7 +6,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class ExtendedListBuilder<TResult> : Builder<ConsoleKey, TResult>
+    public class ExtendedListBuilder<TResult> : Builder<ExtendedList<TResult>, ConsoleKey, TResult>
     {
         private Dictionary<ConsoleKey, TResult> _choices;
 
@@ -22,14 +22,14 @@ namespace InquirerCS.Builders
             _validationInputComponent = new ValidationComponent<ConsoleKey>();
         }
 
-        public override TResult Prompt()
+        public override ExtendedList<TResult> Build()
         {
             _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<TResult>();
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<TResult>();
             _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<TResult>();
 
             _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
-            _inputComponent = new ReadConsoleKey();
+            _inputComponent = new StringOrKeyInputComponent();
             _parseComponent = new ParseComponent<ConsoleKey, TResult>(value =>
             {
                 return _choices[value];
@@ -55,7 +55,7 @@ namespace InquirerCS.Builders
                 return keys;
             });
 
-            return new ExtendedList<TResult>(_choices, _defaultValueComponent, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _validationInputComponent, _errorDisplay).Prompt();
+            return new ExtendedList<TResult>(_choices, _defaultValueComponent, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _validationInputComponent, _errorDisplay);
         }
 
         public ExtendedListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
@@ -66,6 +66,11 @@ namespace InquirerCS.Builders
             };
 
             return this;
+        }
+
+        public override TResult Prompt()
+        {
+            return Build().Prompt();
         }
 
         public ExtendedListBuilder<TResult> WithConfirmation()

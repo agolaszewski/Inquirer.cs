@@ -3,11 +3,12 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class ReadConsoleKey : IWaitForInputComponent<ConsoleKey>
+    public class ReadConsoleKey : IWaitForInputComponent<StringOrKey>
     {
-        public ConsoleKey WaitForInput()
+        public StringOrKey WaitForInput()
         {
-            return Console.ReadKey().Key;
+            var key = Console.ReadKey().Key;
+            return new StringOrKey(null, key);
         }
     }
 }

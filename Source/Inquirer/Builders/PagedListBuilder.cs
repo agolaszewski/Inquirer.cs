@@ -6,7 +6,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class PagedListBuilder<TResult> : IBuilder<TResult> where TResult : IComparable
+    public class PagedListBuilder<TResult> : IBuilder<PagedList<TResult>, TResult> where TResult : IComparable
     {
         private List<TResult> _choices;
 
@@ -18,7 +18,7 @@ namespace InquirerCS.Builders
 
         private Extensions<TResult> _extensions;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _inputComponent;
 
         private string _message;
 
@@ -42,6 +42,21 @@ namespace InquirerCS.Builders
             _extensions = extensions;
         }
 
+        public PagedList<TResult> Build()
+        {
+            _extensions.Build();
+
+            _pagingComponent = new PagingComponent<TResult>(_choices, _pageSize);
+
+            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _extensions.Convert, _extensions.Default);
+            _inputComponent = new ReadConsoleKey();
+            _parseComponent = new ParseListComponent<TResult>(_choices);
+            _displayChoices = new DisplayPagedListChoices<TResult>(_pagingComponent, _extensions.Convert);
+            _errorDisplay = new DisplayErrorCompnent();
+
+            return new PagedList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay);
+        }
+
         public PagedListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
         {
             _extensions.ConvertToStringComponentFn = () =>
@@ -54,17 +69,7 @@ namespace InquirerCS.Builders
 
         public TResult Prompt()
         {
-            _extensions.Build();
-
-            _pagingComponent = new PagingComponent<TResult>(_choices, _pageSize);
-
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _extensions.Convert, _extensions.Default);
-            _inputComponent = new ReadConsoleKey();
-            _parseComponent = new ParseListComponent<TResult>(_choices);
-            _displayChoices = new DisplayPagedListChoices<TResult>(_pagingComponent, _extensions.Convert);
-            _errorDisplay = new DisplayErrorCompnent();
-
-            return new PagedList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay).Prompt();
+            return Build().Prompt();
         }
 
         public PagedListBuilder<TResult> WithConfirmation()

@@ -7,7 +7,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class ListBuilder<TResult> : IBuilder<TResult> where TResult : IComparable
+    public class ListBuilder<TResult> : IBuilder<Listing<TResult>, TResult> where TResult : IComparable
     {
         private List<TResult> _choices;
 
@@ -19,7 +19,7 @@ namespace InquirerCS.Builders
 
         private Extensions<TResult> _extensions = new Extensions<TResult>();
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _inputComponent;
 
         private string _message;
 
@@ -29,6 +29,19 @@ namespace InquirerCS.Builders
         {
             _message = message;
             _choices = choices.ToList();
+        }
+
+        public Listing<TResult> Build()
+        {
+            _extensions.Build();
+
+            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _extensions.Convert, _extensions.Default);
+            _inputComponent = new ReadConsoleKey();
+            _parseComponent = new ParseListComponent<TResult>(_choices);
+            _displayChoices = new DisplayChoices<TResult>(_choices, _extensions.Convert);
+            _errorDisplay = new DisplayErrorCompnent();
+
+            return new Listing<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay);
         }
 
         public ListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
@@ -48,15 +61,7 @@ namespace InquirerCS.Builders
 
         public TResult Prompt()
         {
-            _extensions.Build();
-
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _extensions.Convert, _extensions.Default);
-            _inputComponent = new ReadConsoleKey();
-            _parseComponent = new ParseListComponent<TResult>(_choices);
-            _displayChoices = new DisplayChoices<TResult>(_choices, _extensions.Convert);
-            _errorDisplay = new DisplayErrorCompnent();
-
-            return new Listing<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay).Prompt();
+            return Build().Prompt();
         }
 
         public ListBuilder<TResult> WithConfirmation()

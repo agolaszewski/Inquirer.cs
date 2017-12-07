@@ -2,10 +2,20 @@
 using System.Collections.Generic;
 using InquirerCS.Builders;
 
-namespace InquirerCS.Beta2
+namespace InquirerCS
 {
     public static class Question
     {
+        public static InputStringBuilder _inputComponent(string message)
+        {
+            return new InputStringBuilder(message);
+        }
+
+        public static InputStructBuilder<TResult> _inputComponent<TResult>(string message) where TResult : struct
+        {
+            return new InputStructBuilder<TResult>(message);
+        }
+
         public static CheckboxBuilder<TResult> Checkbox<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
         {
             return new CheckboxBuilder<TResult>(message, choices);
@@ -24,16 +34,6 @@ namespace InquirerCS.Beta2
         public static ExtendedListBuilder<TResult> ExtendedList<TResult>(string message, IDictionary<ConsoleKey, TResult> choices) where TResult : IComparable
         {
             return new ExtendedListBuilder<TResult>(message, choices);
-        }
-
-        public static InputStringBuilder Input(string message)
-        {
-            return new InputStringBuilder(message);
-        }
-
-        public static InputStructBuilder<TResult> Input<TResult>(string message) where TResult : struct
-        {
-            return new InputStructBuilder<TResult>(message);
         }
 
         public static ListBuilder<TResult> List<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable

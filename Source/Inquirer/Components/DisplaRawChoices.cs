@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Builders

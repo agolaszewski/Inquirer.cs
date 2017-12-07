@@ -4,7 +4,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class InputStructBuilder<TResult> : Builder<string, TResult> where TResult : struct
+    public class InputStructBuilder<TResult> : Builder<_inputComponent<TResult>, string, TResult> where TResult : struct
     {
         private string _message;
 
@@ -13,7 +13,7 @@ namespace InquirerCS.Builders
             _message = message;
         }
 
-        public override TResult Prompt()
+        public override _inputComponent<TResult> Build()
         {
             _convertToStringComponent = new ConvertToStringComponent<TResult>();
 
@@ -21,7 +21,7 @@ namespace InquirerCS.Builders
             _defaultValueComponent = new DefaultValueComponent<TResult>();
 
             _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
-            _inputComponent = new ReadStringComponent();
+            _inputComponent = new StringOrKeyInputComponent();
             _parseComponent = new ParseComponent<string, TResult>(value =>
             {
                 return value.To<TResult>();
@@ -34,7 +34,12 @@ namespace InquirerCS.Builders
             var validationResultComponent = new ValidationComponent<TResult>();
             var errorDisplay = new DisplayErrorCompnent();
 
-            return new Input<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultValueComponent).Prompt();
+            return new _inputComponent<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultValueComponent);
+        }
+
+        public override TResult Prompt()
+        {
+            return Build().Prompt();
         }
 
         public InputStructBuilder<TResult> WithConfirmation()

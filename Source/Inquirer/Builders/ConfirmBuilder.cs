@@ -4,7 +4,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class ConfirmBuilder : Builder<ConsoleKey, bool>
+    public class ConfirmBuilder : Builder<InputKey<bool>, ConsoleKey, bool>
     {
         private string _message;
 
@@ -15,7 +15,7 @@ namespace InquirerCS.Builders
             _validationResultComponent = new ValidationComponent<bool>();
         }
 
-        public override bool Prompt()
+        public override InputKey<bool> Build()
         {
             _convertToStringComponent = new ConvertToStringComponent<bool>(value =>
             {
@@ -34,7 +34,12 @@ namespace InquirerCS.Builders
 
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new InputKey<bool>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent).Prompt();
+            return new InputKey<bool>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
+        }
+
+        public override bool Prompt()
+        {
+            return Build().Prompt();
         }
 
         public ConfirmBuilder WithConfirmation()

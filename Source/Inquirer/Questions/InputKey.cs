@@ -1,4 +1,5 @@
 ﻿using System;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
@@ -13,7 +14,7 @@ namespace InquirerCS.Questions
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _input;
 
         private IParseComponent<ConsoleKey, TResult> _parseComponent;
 
@@ -24,7 +25,7 @@ namespace InquirerCS.Questions
         public InputKey(
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<ConsoleKey> inputComponent,
+             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<ConsoleKey, TResult> parseComponent,
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<ConsoleKey> validationValueComponent,
@@ -33,7 +34,7 @@ namespace InquirerCS.Questions
         {
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
-            _inputComponent = inputComponent;
+            _input = inputComponent;
             _parseComponent = parseComponent;
             _validationResultComponent = validationResultComponent;
             _validationValueComponent = validationValueComponent;
@@ -47,7 +48,7 @@ namespace InquirerCS.Questions
         {
             _displayQuestion.Render();
 
-            var value = _inputComponent.WaitForInput();
+            var value = _input.WaitForInput().InterruptKey.Value;
             if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefaultValue)
             {
                 var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.DefaultValue);

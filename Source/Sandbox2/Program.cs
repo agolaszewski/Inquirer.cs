@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using InquirerCS;
-using InquirerCS.Beta2;
 
 namespace Sandbox2
 {
@@ -10,34 +9,17 @@ namespace Sandbox2
     {
         private static Inquirer _test = new Inquirer();
 
-        private static void Main(string[] args)
-        {
-            _test.Next(() => MenuTest());
-        }
-
-        private static void MenuTest()
-        {
-            _test.Menu("Choose")
-               .AddOption("InputTest", () => { InputTest(); })
-               .AddOption("PasswordTest", () => { PasswordTest(); })
-               .AddOption("ListTest", () => { ListTest(); })
-               .AddOption("ListRawTest", () => { ListRawTest(); })
-               .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
-               .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
-               .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
-        }
-
         private static void ConfirmTest()
         {
-            Question.Confirm("Are you sure?")
+            _test.Prompt(Question.Confirm("Are you sure?")
                 .WithConfirmation()
                 .WithDefaultValue(false)
-                .WithValidation(values => values == true, "You must be sure!").Prompt();
+                .WithValidation(values => values == true, "You must be sure!"));
         }
 
         private static void InputTest()
         {
-            Question.Input("How are you?")
+            Question._inputComponent("How are you?")
                 .WithDefaultValue("fine")
                 .WithConfirmation()
                 .WithValidation(value => value == "fine", "You cannot not be fine!").Prompt();
@@ -71,7 +53,7 @@ namespace Sandbox2
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             Question.RawList("Choose favourite color", colors)
-                 
+
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
                  .WithValidation(item => item == ConsoleColor.Black, "Choose black").Page(4).Prompt();
@@ -86,7 +68,22 @@ namespace Sandbox2
                  .WithValidation(item => item == ConsoleColor.Black, "Choose black").Page(3).Prompt();
         }
 
-      
+        private static void Main(string[] args)
+        {
+            _test.Next(() => MenuTest());
+        }
+
+        private static void MenuTest()
+        {
+            _test.Menu("Choose")
+               .AddOption("InputTest", () => { InputTest(); })
+               .AddOption("PasswordTest", () => { PasswordTest(); })
+               .AddOption("ListTest", () => { ListTest(); })
+               .AddOption("ListRawTest", () => { ListRawTest(); })
+               .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
+               .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
+               .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
+        }
 
         private static void PasswordTest()
         {

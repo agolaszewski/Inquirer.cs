@@ -7,7 +7,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class CheckboxBuilder<TResult> : IBuilder<List<TResult>> where TResult : IComparable
+    public class CheckboxBuilder<TResult> : IBuilder<Checkbox<List<TResult>, TResult>, List<TResult>> where TResult : IComparable
     {
         private IEnumerable<TResult> _choices;
 
@@ -17,7 +17,7 @@ namespace InquirerCS.Builders
 
         private ExtensionsCheckbox<TResult> _extensions;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _inputComponent;
 
         private string _message;
 
@@ -27,15 +27,26 @@ namespace InquirerCS.Builders
 
         private List<Selectable<TResult>> _selectedChoices;
 
-        private IValidateComponent<List<TResult>> _validationResultComponent;
-
         public CheckboxBuilder(string message, IEnumerable<TResult> choices)
         {
             _message = message;
             _choices = choices;
             _selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
-            _validationResultComponent = new ValidationComponent<List<TResult>>();
             _extensions = new ExtensionsCheckbox<TResult>();
+        }
+
+        public Checkbox<List<TResult>, TResult> Build()
+        {
+            _extensions.Build();
+
+            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_message, _extensions.Convert, _extensions.Default);
+
+            _inputComponent = new ReadConsoleKey();
+            _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);
+            _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _extensions.Convert);
+            _errorComponent = new DisplayErrorCompnent();
+
+            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _extensions.Validators, _errorComponent);
         }
 
         public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
@@ -55,16 +66,7 @@ namespace InquirerCS.Builders
 
         public List<TResult> Prompt()
         {
-            _extensions.Build();
-
-            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_message, _extensions.Convert, _extensions.Default);
-
-            _inputComponent = new ReadConsoleKey();
-            _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);
-            _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _extensions.Convert);
-            _errorComponent = new DisplayErrorCompnent();
-
-            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validationResultComponent, _errorComponent).Prompt();
+            return Build().Prompt();
         }
 
         public CheckboxBuilder<TResult> WithConfirmation()

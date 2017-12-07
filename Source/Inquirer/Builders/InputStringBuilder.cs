@@ -4,7 +4,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class InputStringBuilder : Builder<string, string>
+    public class InputStringBuilder : Builder<_inputComponent<string>, string, string>
     {
         private string _message;
 
@@ -15,14 +15,14 @@ namespace InquirerCS.Builders
             _validationResultComponent = new ValidationComponent<string>();
         }
 
-        public override string Prompt()
+        public override _inputComponent<string> Build()
         {
             _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<string>();
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<string>();
             _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<string>();
 
             _displayQuestionComponent = new DisplayQuestion<string>(_message, _convertToStringComponent, _defaultValueComponent);
-            _inputComponent = new ReadStringComponent();
+            _inputComponent = new StringOrKeyInputComponent();
             _parseComponent = new ParseComponent<string, string>(value =>
             {
                 return value;
@@ -31,7 +31,12 @@ namespace InquirerCS.Builders
             _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new Input<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent).Prompt();
+            return new _inputComponent<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
+        }
+
+        public override string Prompt()
+        {
+            return Build().Prompt();
         }
 
         public InputStringBuilder WithConfirmation()

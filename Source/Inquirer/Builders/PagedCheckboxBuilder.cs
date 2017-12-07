@@ -7,7 +7,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class PagedCheckboxBuilder<TResult> : IBuilder<List<TResult>> where TResult : IComparable
+    public class PagedCheckboxBuilder<TResult> : IBuilder<PagedCheckbox<List<TResult>, TResult>, List<TResult>> where TResult : IComparable
     {
         private List<Selectable<TResult>> _choices;
 
@@ -17,7 +17,7 @@ namespace InquirerCS.Builders
 
         private ExtensionsCheckbox<TResult> _extensions;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _inputComponent;
 
         private string _message;
 
@@ -37,17 +37,7 @@ namespace InquirerCS.Builders
             _extensions = extensions;
         }
 
-        public PagedCheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
-        {
-            _extensions.ConvertToStringComponentFn = () =>
-            {
-                return new ConvertToStringComponent<TResult>(convertFn);
-            };
-
-            return this;
-        }
-
-        public List<TResult> Prompt()
+        public PagedCheckbox<List<TResult>, TResult> Build()
         {
             _extensions.Build();
 
@@ -60,7 +50,22 @@ namespace InquirerCS.Builders
             _renderchoices = new DisplaySelectablePagedChoices<TResult>(_pagingComponent, _extensions.Convert);
             _errorComponent = new DisplayErrorCompnent();
 
-            return new PagedCheckbox<List<TResult>, TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _extensions.Validators, _errorComponent).Prompt();
+            return new PagedCheckbox<List<TResult>, TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _extensions.Validators, _errorComponent);
+        }
+
+        public PagedCheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
+        {
+            _extensions.ConvertToStringComponentFn = () =>
+            {
+                return new ConvertToStringComponent<TResult>(convertFn);
+            };
+
+            return this;
+        }
+
+        public List<TResult> Prompt()
+        {
+            return Build().Prompt();
         }
 
         public PagedCheckboxBuilder<TResult> WithConfirmation()

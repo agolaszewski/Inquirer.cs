@@ -5,7 +5,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class ExtendedBuilder : Builder<ConsoleKey, ConsoleKey>
+    public class ExtendedBuilder : Builder<InputKey<ConsoleKey>, ConsoleKey, ConsoleKey>
     {
         private string _message;
 
@@ -17,7 +17,7 @@ namespace InquirerCS.Builders
             _params = @params;
         }
 
-        public override ConsoleKey Prompt()
+        public override InputKey<ConsoleKey> Build()
         {
             _convertToStringComponent = new ConvertToStringComponent<ConsoleKey>();
 
@@ -25,7 +25,7 @@ namespace InquirerCS.Builders
             _confirmComponent = _confirmComponentFn() ?? new NoConfirmationComponent<ConsoleKey>();
 
             _displayQuestionComponent = new DisplayQuestion<ConsoleKey>(_message, _convertToStringComponent, _defaultValueComponent);
-            _inputComponent = new ReadConsoleKey();
+            _inputComponent = new StringOrKeyInputComponent();
             _parseComponent = new ParseComponent<ConsoleKey, ConsoleKey>(value =>
             {
                 return value;
@@ -51,7 +51,12 @@ namespace InquirerCS.Builders
             _validationResultComponent = new ValidationComponent<ConsoleKey>();
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new InputKey<ConsoleKey>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent).Prompt();
+            return new InputKey<ConsoleKey>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
+        }
+
+        public override ConsoleKey Prompt()
+        {
+            return Build().Prompt();
         }
 
         public ExtendedBuilder WithConfirmation()

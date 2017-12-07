@@ -17,7 +17,7 @@ namespace InquirerCS.Questions
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _input;
 
         private IPagingComponent<Selectable<TResult>> _pagingComponent;
 
@@ -31,7 +31,7 @@ namespace InquirerCS.Questions
             IPagingComponent<Selectable<TResult>> pagingComponent,
             IConfirmComponent<TList> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<ConsoleKey> inputComponent,
+             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<Dictionary<int, List<Selectable<TResult>>>, TList> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TList> validationComponent,
@@ -40,7 +40,7 @@ namespace InquirerCS.Questions
             _pagingComponent = pagingComponent;
             _confirmComponent = confirmComponent;
             _displayQuestionComponent = displayQuestion;
-            _inputComponent = inputComponent;
+            _input = inputComponent;
             _parseComponent = parseComponent;
             _renderchoices = renderChoices;
             _validationComponent = validationComponent;
@@ -60,7 +60,7 @@ namespace InquirerCS.Questions
 
             while (true)
             {
-                var keyPressed = _inputComponent.WaitForInput();
+                var keyPressed = _input.WaitForInput().InterruptKey;
                 switch (keyPressed)
                 {
                     case ConsoleKey.Spacebar:

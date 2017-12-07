@@ -6,7 +6,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class PagedRawListBuilder<TResult> : IBuilder<TResult> where TResult : IComparable
+    public class PagedRawListBuilder<TResult> : IBuilder<PagedRawList<TResult>, TResult> where TResult : IComparable
     {
         private List<TResult> _choices;
 
@@ -15,7 +15,9 @@ namespace InquirerCS.Builders
         private IDisplayQuestionComponent _displayQuestionComponent;
 
         private IDisplayErrorComponent _errorDisplay;
+
         private Extensions<TResult> _extensions;
+
         private IWaitForInputComponent<StringOrKey> _inputComponent;
 
         private string _message;
@@ -44,17 +46,7 @@ namespace InquirerCS.Builders
             _validationInputComponent = new ValidationComponent<string>();
         }
 
-        public PagedRawListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
-        {
-            _extensions.ConvertToStringComponentFn = () =>
-            {
-                return new ConvertToStringComponent<TResult>(fn);
-            };
-
-            return this;
-        }
-
-        public TResult Prompt()
+        public PagedRawList<TResult> Build()
         {
             _extensions.Build();
 
@@ -85,7 +77,22 @@ namespace InquirerCS.Builders
 
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new PagedRawList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay).Prompt();
+            return new PagedRawList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay);
+        }
+
+        public PagedRawListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
+        {
+            _extensions.ConvertToStringComponentFn = () =>
+            {
+                return new ConvertToStringComponent<TResult>(fn);
+            };
+
+            return this;
+        }
+
+        public TResult Prompt()
+        {
+            return Build().Prompt();
         }
 
         public PagedRawListBuilder<TResult> WithConfirmation()

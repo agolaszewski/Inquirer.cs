@@ -5,9 +5,9 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    internal class HideReadStringComponent : IWaitForInputComponent<string>
+    internal class HideReadStringComponent : IWaitForInputComponent<StringOrKey>
     {
-        public string WaitForInput()
+        public StringOrKey WaitForInput()
         {
             Stack<char> stringBuilder = new Stack<char>();
 
@@ -47,7 +47,7 @@ namespace InquirerCS.Components
             }
             while (key.Key != ConsoleKey.Enter);
 
-            return string.Join(string.Empty, stringBuilder.ToArray().Reverse());
+            return new StringOrKey(string.Join(string.Empty, stringBuilder.ToArray().Reverse()), null);
         }
     }
 }
