@@ -61,9 +61,9 @@ namespace InquirerCS.Traits
             trait.RenderQuestion = new DisplayQuestion<TResult>(message, convert, @default);
         }
 
-        public static void Validate<T>(this IValidateTrait<T> trait)
+        public static void Validate<T>(this IValidateResultTrait<T> trait)
         {
-            trait.Validators = new ValidationComponent<T>();
+            trait.ResultValidators = new ValidationComponent<T>();
         }
 
         public static void Input(this IWaitForInputTrait<StringOrKey> trait, params ConsoleKey[] intteruptedKeys)

@@ -11,7 +11,7 @@ namespace InquirerCS.Builders.NewFolder1
         : IConfirmTrait<List<TResult>>,
         IConvertToStringTrait<TResult>,
         IDefaultTrait<List<TResult>>,
-        IValidateTrait<List<TResult>>,
+        IValidateResultTrait<List<TResult>>,
         IRenderQuestionTrait,
         IRenderChoicesTrait<TResult>,
         IDisplayErrorTrait,
@@ -60,11 +60,11 @@ namespace InquirerCS.Builders.NewFolder1
 
         public IRenderQuestionComponent RenderQuestion { get; set; }
 
-        public IValidateComponent<List<TResult>> Validators { get; set; }
+        public IValidateComponent<List<TResult>> ResultValidators { get; set; }
 
         public Checkbox<List<TResult>, TResult> Build()
         {
-            return new Checkbox<List<TResult>, TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, Validators, DisplayError, OnKey);
+            return new Checkbox<List<TResult>, TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
 
         public virtual CheckboxBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
@@ -93,13 +93,13 @@ namespace InquirerCS.Builders.NewFolder1
 
         public CheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, Func<List<TResult>, string> errorMessageFn)
         {
-            Validators.Add(fn, errorMessageFn);
+            ResultValidators.Add(fn, errorMessageFn);
             return this;
         }
 
         public CheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, string errorMessage)
         {
-            Validators.Add(fn, errorMessage);
+            ResultValidators.Add(fn, errorMessage);
             return this;
         }
     }

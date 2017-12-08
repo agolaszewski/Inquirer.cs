@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\New\CheckboxBuilder.cs" />
+    <Compile Include="Builders\New\Confirm.cs" />
+    <Compile Include="Builders\New\InputBuilder.cs" />
     <Compile Include="Components\OnEscape.cs" />
     <Compile Include="Components\Extensions.cs" />
     <Compile Include="Components\DisplayPagedListComponent.cs" />
@@ -125,7 +127,8 @@
     <Compile Include="Traits\IParseTrait.cs" />
     <Compile Include="Traits\IRenderChoicesTrait.cs" />
     <Compile Include="Traits\IRenderQuestionTrait.cs" />
-    <Compile Include="Traits\IValidateTrait.cs" />
+    <Compile Include="Traits\IValidateInputTrait.cs" />
+    <Compile Include="Traits\IValidateResultTrait.cs" />
     <Compile Include="Traits\IWaitForInputTrait.cs" />
     <Compile Include="Traits\TraitExtensions.cs" />
   </ItemGroup>
