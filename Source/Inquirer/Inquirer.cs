@@ -34,9 +34,9 @@ namespace InquirerCS
             }
         }
 
-        public TResult Prompt<TQuestion, TResult>(IBuilder<TQuestion, TResult> question)
+        public TResult Prompt<TQuestion, TResult>(IBuilder<TQuestion, TResult> builder)
         {
-            return question.Prompt();
+            return builder.Prompt();
         }
     }
 }

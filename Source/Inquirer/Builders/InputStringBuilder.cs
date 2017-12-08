@@ -4,7 +4,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class InputStringBuilder : Builder<_inputComponent<string>, string, string>
+    public class InputStringBuilder : Builder<Input<string>, string, string>
     {
         private string _message;
 
@@ -15,7 +15,7 @@ namespace InquirerCS.Builders
             _validationResultComponent = new ValidationComponent<string>();
         }
 
-        public override _inputComponent<string> Build()
+        public override Input<string> Build()
         {
             _convertToStringComponent = _convertToStringComponentFn() ?? new ConvertToStringComponent<string>();
             _defaultValueComponent = _defaultValueComponentFn() ?? new DefaultValueComponent<string>();
@@ -31,7 +31,7 @@ namespace InquirerCS.Builders
             _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new _inputComponent<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
+            return new Input<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
         }
 
         public override string Prompt()

@@ -4,7 +4,7 @@ using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
 {
-    public class InputStructBuilder<TResult> : Builder<_inputComponent<TResult>, string, TResult> where TResult : struct
+    public class InputStructBuilder<TResult> : Builder<Input<TResult>, string, TResult> where TResult : struct
     {
         private string _message;
 
@@ -13,7 +13,7 @@ namespace InquirerCS.Builders
             _message = message;
         }
 
-        public override _inputComponent<TResult> Build()
+        public override Input<TResult> Build()
         {
             _convertToStringComponent = new ConvertToStringComponent<TResult>();
 
@@ -34,7 +34,7 @@ namespace InquirerCS.Builders
             var validationResultComponent = new ValidationComponent<TResult>();
             var errorDisplay = new DisplayErrorCompnent();
 
-            return new _inputComponent<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultValueComponent);
+            return new Input<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultValueComponent);
         }
 
         public override TResult Prompt()

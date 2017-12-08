@@ -25,6 +25,8 @@ namespace InquirerCS.Questions
 
         private IValidateComponent<TList> _validationComponent;
 
+        private IOnKey _onKey;
+
         public Checkbox(
             List<Selectable<TResult>> choices,
             IConfirmComponent<TList> confirmComponent,
@@ -33,7 +35,8 @@ namespace InquirerCS.Questions
             IParseComponent<List<Selectable<TResult>>, TList> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TList> validationComponent,
-            IDisplayErrorComponent errorComponent)
+            IDisplayErrorComponent errorComponent,
+            IOnKey onKey)
         {
             _choices = choices;
             _confirmComponent = confirmComponent;
@@ -43,6 +46,7 @@ namespace InquirerCS.Questions
             _renderchoices = renderChoices;
             _validationComponent = validationComponent;
             _errorComponent = errorComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = false;
         }
@@ -61,6 +65,7 @@ namespace InquirerCS.Questions
             while (true)
             {
                 var keyPressed = _input.WaitForInput().InterruptKey;
+                _onKey.OnKey(keyPressed);
                 switch (keyPressed)
                 {
                     case ConsoleKey.Spacebar:

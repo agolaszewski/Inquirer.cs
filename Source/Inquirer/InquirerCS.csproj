@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\OnEscape.cs" />
     <Compile Include="Components\Extensions.cs" />
     <Compile Include="Builders\PagedCheckboxBuilder.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Builders\PagedRawListBuilder.cs" />
     <Compile Include="Components\DisplayPagedListComponent.cs" />
     <Compile Include="Components\ExtensionsCheckbox.cs" />
+    <Compile Include="Components\OnNothing.cs" />
     <Compile Include="Components\StringOrKeyInputComponent.cs" />
     <Compile Include="Components\StringOrKey.cs" />
     <Compile Include="Components\DisplaRawPagedChoices.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
     <Compile Include="Interfaces\IDisplayError.cs" />
+    <Compile Include="Interfaces\IOnKey.cs" />
     <Compile Include="Interfaces\IPagingComponent.cs" />
     <Compile Include="Interfaces\IQuestion.cs" />
     <Compile Include="Interfaces\IRenderComponent.cs" />

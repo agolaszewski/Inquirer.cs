@@ -18,7 +18,7 @@ namespace InquirerCS.Questions
         private IDisplayErrorComponent _errorComponent;
 
         private IWaitForInputComponent<StringOrKey> _input;
-
+        private IOnKey _onKey;
         private IPagingComponent<TResult> _pagingComponent;
 
         private IParseComponent<int, TResult> _parseComponent;
@@ -35,7 +35,8 @@ namespace InquirerCS.Questions
             IParseComponent<int, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationComponent,
-            IDisplayErrorComponent errorComponent)
+            IDisplayErrorComponent errorComponent,
+              IOnKey onKey)
         {
             _pagingComponent = pagingComponent;
             _confirmComponent = confirmComponent;
@@ -45,6 +46,7 @@ namespace InquirerCS.Questions
             _renderChoices = renderChoices;
             _validationComponent = validationComponent;
             _errorComponent = errorComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = false;
         }
@@ -61,6 +63,9 @@ namespace InquirerCS.Questions
             while (true)
             {
                 var keyPressed = _input.WaitForInput().InterruptKey;
+                _onKey.OnKey(keyPressed);
+
+
                 switch (keyPressed)
                 {
                     case (ConsoleKey.LeftArrow):

@@ -18,7 +18,7 @@ namespace InquirerCS.Questions
         private IDisplayErrorComponent _errorComponent;
 
         private IWaitForInputComponent<StringOrKey> _input;
-
+        private IOnKey _onKey;
         private IParseComponent<ConsoleKey, TResult> _parseComponent;
 
         private IRenderChoices<TResult> _renderChoices;
@@ -37,7 +37,9 @@ namespace InquirerCS.Questions
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<ConsoleKey> validationInputComponent,
-            IDisplayErrorComponent errorComponent)
+            IDisplayErrorComponent errorComponent,
+            IOnKey onKey)
+
         {
             _choices = choices;
             _confirmComponent = confirmComponent;
@@ -49,6 +51,7 @@ namespace InquirerCS.Questions
             _validationResultComponent = validationResultComponent;
             _errorComponent = errorComponent;
             _defaultValueComponent = defaultValueComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = false;
         }
@@ -59,6 +62,8 @@ namespace InquirerCS.Questions
             _renderChoices.Render();
 
             var value = _input.WaitForInput().InterruptKey.Value;
+            _onKey.OnKey(value);
+
             if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefaultValue)
             {
                 if (_confirmComponent.Confirm(_defaultValueComponent.DefaultValue))

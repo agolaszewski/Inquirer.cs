@@ -4,7 +4,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
 {
-    public class _inputComponent<TResult> : IQuestion<TResult>
+    public class Input<TResult> : IQuestion<TResult>
     {
         public IWaitForInputComponent<StringOrKey> Reader;
 
@@ -15,14 +15,14 @@ namespace InquirerCS.Questions
         private IDisplayQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
-
+        private IOnKey _onKey;
         private IParseComponent<string, TResult> _parseComponent;
 
         private IValidateComponent<TResult> _validationResultComponent;
 
         private IValidateComponent<string> _validationValueComponent;
 
-        public _inputComponent(
+        public Input(
             IConfirmComponent<TResult> confirmComponent,
             IDisplayQuestionComponent displayQuestion,
             IWaitForInputComponent<StringOrKey> inputComponent,
@@ -30,7 +30,8 @@ namespace InquirerCS.Questions
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<string> validationValueComponent,
             IDisplayErrorComponent errorComponent,
-            IDefaultValueComponent<TResult> defaultComponent)
+            IDefaultValueComponent<TResult> defaultComponent,
+            IOnKey onKey)
         {
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
@@ -40,6 +41,7 @@ namespace InquirerCS.Questions
             _validationValueComponent = validationValueComponent;
             _errorComponent = errorComponent;
             _defaultValueComponent = defaultComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = true;
         }
@@ -48,8 +50,10 @@ namespace InquirerCS.Questions
         {
             _displayQuestion.Render();
 
-            var value = Reader.WaitForInput().Value;
-            if (string.IsNullOrWhiteSpace(value) && _defaultValueComponent.HasDefaultValue)
+            var value = Reader.WaitForInput();
+            _onKey.OnKey(value.InterruptKey);
+
+            if (string.IsNullOrWhiteSpace(value.Value) && _defaultValueComponent.HasDefaultValue)
             {
                 if (_confirmComponent.Confirm(_defaultValueComponent.DefaultValue))
                 {
@@ -67,14 +71,14 @@ namespace InquirerCS.Questions
                 return _defaultValueComponent.DefaultValue;
             }
 
-            var validationResult = _validationValueComponent.Run(value);
+            var validationResult = _validationValueComponent.Run(value.Value);
             if (validationResult.HasError)
             {
                 _errorComponent.Render(validationResult.ErrorMessage);
                 return Prompt();
             }
 
-            TResult answer = _parseComponent.Parse(value);
+            TResult answer = _parseComponent.Parse(value.Value);
             validationResult = _validationResultComponent.Run(answer);
 
             if (validationResult.HasError)
