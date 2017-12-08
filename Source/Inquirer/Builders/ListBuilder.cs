@@ -23,6 +23,8 @@ namespace InquirerCS.Builders
 
         private string _message;
 
+        private IOnKey _onKey;
+
         private IParseComponent<int, TResult> _parseComponent;
 
         public ListBuilder(string message, IEnumerable<TResult> choices)
@@ -41,7 +43,7 @@ namespace InquirerCS.Builders
             _displayChoices = new DisplayChoices<TResult>(_choices, _extensions.Convert);
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new Listing<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay);
+            return new Listing<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay, _onKey);
         }
 
         public ListBuilder<TResult> ConvertToString(Func<TResult, string> fn)

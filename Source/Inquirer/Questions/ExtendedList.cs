@@ -18,7 +18,9 @@ namespace InquirerCS.Questions
         private IDisplayErrorComponent _errorComponent;
 
         private IWaitForInputComponent<StringOrKey> _input;
+
         private IOnKey _onKey;
+
         private IParseComponent<ConsoleKey, TResult> _parseComponent;
 
         private IRenderChoices<TResult> _renderChoices;
@@ -39,7 +41,6 @@ namespace InquirerCS.Questions
             IValidateComponent<ConsoleKey> validationInputComponent,
             IDisplayErrorComponent errorComponent,
             IOnKey onKey)
-
         {
             _choices = choices;
             _confirmComponent = confirmComponent;

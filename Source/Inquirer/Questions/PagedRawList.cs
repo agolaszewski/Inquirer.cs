@@ -13,7 +13,9 @@ namespace InquirerCS.Questions
         private IDisplayErrorComponent _errorComponent;
 
         private IWaitForInputComponent<StringOrKey> _inputComponent;
+
         private IOnKey _onKey;
+
         private IPagingComponent<TResult> _pagingComponent;
 
         private IParseComponent<string, TResult> _parseComponent;

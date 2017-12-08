@@ -22,6 +22,8 @@ namespace InquirerCS.Builders
 
         private string _message;
 
+        private IOnKey _onKey;
+
         private int _pageSize;
 
         private IPagingComponent<TResult> _pagingComponent;
@@ -77,7 +79,7 @@ namespace InquirerCS.Builders
 
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new PagedRawList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay);
+            return new PagedRawList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay, _onKey);
         }
 
         public PagedRawListBuilder<TResult> ConvertToString(Func<TResult, string> fn)

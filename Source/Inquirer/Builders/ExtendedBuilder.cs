@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using InquirerCS.Components;
+using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
@@ -8,6 +9,8 @@ namespace InquirerCS.Builders
     public class ExtendedBuilder : Builder<InputKey<ConsoleKey>, ConsoleKey, ConsoleKey>
     {
         private string _message;
+
+        private IOnKey _onKey;
 
         private ConsoleKey[] _params;
 
@@ -51,7 +54,7 @@ namespace InquirerCS.Builders
             _validationResultComponent = new ValidationComponent<ConsoleKey>();
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new InputKey<ConsoleKey>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
+            return new InputKey<ConsoleKey>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent, _onKey);
         }
 
         public override ConsoleKey Prompt()

@@ -1,5 +1,6 @@
 ﻿using System;
 using InquirerCS.Components;
+using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
@@ -7,6 +8,8 @@ namespace InquirerCS.Builders
     public class ConfirmBuilder : Builder<InputKey<bool>, ConsoleKey, bool>
     {
         private string _message;
+
+        private IOnKey _onKey;
 
         public ConfirmBuilder(string message)
         {
@@ -34,7 +37,7 @@ namespace InquirerCS.Builders
 
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new InputKey<bool>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
+            return new InputKey<bool>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent, _onKey);
         }
 
         public override bool Prompt()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using InquirerCS.Components;
+using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
@@ -13,6 +14,8 @@ namespace InquirerCS.Builders
         private DisplayExtendedChoices<TResult> _displayChoices;
 
         private string _message;
+
+        private IOnKey _onKey;
 
         public ExtendedListBuilder(string message, IDictionary<ConsoleKey, TResult> choices)
         {
@@ -55,7 +58,7 @@ namespace InquirerCS.Builders
                 return keys;
             });
 
-            return new ExtendedList<TResult>(_choices, _defaultValueComponent, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _validationInputComponent, _errorDisplay);
+            return new ExtendedList<TResult>(_choices, _defaultValueComponent, _confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _validationResultComponent, _validationInputComponent, _errorDisplay, _onKey);
         }
 
         public ExtendedListBuilder<TResult> ConvertToString(Func<TResult, string> fn)

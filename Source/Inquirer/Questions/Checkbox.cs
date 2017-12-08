@@ -19,13 +19,13 @@ namespace InquirerCS.Questions
 
         private IWaitForInputComponent<StringOrKey> _input;
 
+        private IOnKey _onKey;
+
         private IParseComponent<List<Selectable<TResult>>, TList> _parseComponent;
 
         private IRenderChoices<TResult> _renderchoices;
 
         private IValidateComponent<TList> _validationComponent;
-
-        private IOnKey _onKey;
 
         public Checkbox(
             List<Selectable<TResult>> choices,

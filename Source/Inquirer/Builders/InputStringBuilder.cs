@@ -1,5 +1,6 @@
 ﻿using System;
 using InquirerCS.Components;
+using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
@@ -7,6 +8,8 @@ namespace InquirerCS.Builders
     public class InputStringBuilder : Builder<Input<string>, string, string>
     {
         private string _message;
+
+        private IOnKey _onKey;
 
         public InputStringBuilder(string message)
         {
@@ -31,7 +34,7 @@ namespace InquirerCS.Builders
             _validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new Input<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent);
+            return new Input<string>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, _validationResultComponent, _validationInputComponent, _errorDisplay, _defaultValueComponent, _onKey);
         }
 
         public override string Prompt()

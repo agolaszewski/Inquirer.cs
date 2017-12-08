@@ -22,6 +22,8 @@ namespace InquirerCS.Builders
 
         private string _message;
 
+        private IOnKey _onKey;
+
         private int _pageSize;
 
         private IPagingComponent<TResult> _pagingComponent;
@@ -54,7 +56,7 @@ namespace InquirerCS.Builders
             _displayChoices = new DisplayPagedListChoices<TResult>(_pagingComponent, _extensions.Convert);
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new PagedList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay);
+            return new PagedList<TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay, _onKey);
         }
 
         public PagedListBuilder<TResult> ConvertToString(Func<TResult, string> fn)

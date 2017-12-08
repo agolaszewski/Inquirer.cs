@@ -1,5 +1,6 @@
 ﻿using System;
 using InquirerCS.Components;
+using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 
 namespace InquirerCS.Builders
@@ -7,6 +8,8 @@ namespace InquirerCS.Builders
     public class InputStructBuilder<TResult> : Builder<Input<TResult>, string, TResult> where TResult : struct
     {
         private string _message;
+
+        private IOnKey _onKey;
 
         public InputStructBuilder(string message)
         {
@@ -34,7 +37,7 @@ namespace InquirerCS.Builders
             var validationResultComponent = new ValidationComponent<TResult>();
             var errorDisplay = new DisplayErrorCompnent();
 
-            return new Input<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultValueComponent);
+            return new Input<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultValueComponent, _onKey);
         }
 
         public override TResult Prompt()

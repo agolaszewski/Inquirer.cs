@@ -23,6 +23,8 @@ namespace InquirerCS.Builders
 
         private string _message;
 
+        private IOnKey _onKey;
+
         private IParseComponent<string, TResult> _parseComponent;
 
         private IValidateComponent<string> _validationInputComponent;
@@ -64,7 +66,7 @@ namespace InquirerCS.Builders
 
             _errorDisplay = new DisplayErrorCompnent();
 
-            return new RawList<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay);
+            return new RawList<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _validationInputComponent, _errorDisplay, _onKey);
         }
 
         public RawListBuilder<TResult> ConvertToString(Func<TResult, string> fn)

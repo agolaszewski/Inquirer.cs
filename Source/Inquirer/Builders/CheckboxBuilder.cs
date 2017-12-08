@@ -21,6 +21,8 @@ namespace InquirerCS.Builders
 
         private string _message;
 
+        private IOnKey _onKey;
+
         private IParseComponent<List<Selectable<TResult>>, List<TResult>> _parseComponent;
 
         private IRenderChoices<TResult> _renderchoices;
@@ -46,7 +48,7 @@ namespace InquirerCS.Builders
             _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _extensions.Convert);
             _errorComponent = new DisplayErrorCompnent();
 
-            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _extensions.Validators, _errorComponent);
+            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _extensions.Validators, _errorComponent, _onKey);
         }
 
         public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)

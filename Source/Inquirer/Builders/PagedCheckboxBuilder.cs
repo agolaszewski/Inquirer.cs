@@ -21,6 +21,8 @@ namespace InquirerCS.Builders
 
         private string _message;
 
+        private IOnKey _onKey;
+
         private int _pageSize;
 
         private IPagingComponent<Selectable<TResult>> _pagingComponent;
@@ -50,7 +52,7 @@ namespace InquirerCS.Builders
             _renderchoices = new DisplaySelectablePagedChoices<TResult>(_pagingComponent, _extensions.Convert);
             _errorComponent = new DisplayErrorCompnent();
 
-            return new PagedCheckbox<List<TResult>, TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _extensions.Validators, _errorComponent);
+            return new PagedCheckbox<List<TResult>, TResult>(_pagingComponent, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _extensions.Validators, _errorComponent, _onKey);
         }
 
         public PagedCheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
