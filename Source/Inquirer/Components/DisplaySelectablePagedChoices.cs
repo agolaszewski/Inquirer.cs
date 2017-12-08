@@ -22,7 +22,7 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (var choice in _pagingComponent.CurrentPage)
             {
-                ConsoleHelper.PositionWriteLine($"     {_convertToStringComponent.Convert(choice.Item)}", 0, index + _CURSOR_OFFSET);
+                ConsoleHelper.PositionWriteLine($"     {_convertToStringComponent.Run(choice.Item)}", 0, index + _CURSOR_OFFSET);
                 ConsoleHelper.PositionWriteLine(choice.IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET);
                 index++;
             }
@@ -30,7 +30,7 @@ namespace InquirerCS.Components
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"->   {_convertToStringComponent.Convert(_pagingComponent.CurrentPage[index].Item)}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine($"->   {_convertToStringComponent.Run(_pagingComponent.CurrentPage[index].Item)}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
             ConsoleHelper.PositionWriteLine(_pagingComponent.CurrentPage[index].IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }

@@ -9,8 +9,8 @@ namespace InquirerCS.Builders
     {
         public DefaultDictionaryValueComponent()
         {
-            HasDefaultValue = false;
-            DefaultValue = default(TResult);
+            HasDefault = false;
+            Value = default(TResult);
         }
 
         public DefaultDictionaryValueComponent(Dictionary<TKey, TResult> choices, TResult defaultValue)
@@ -20,12 +20,12 @@ namespace InquirerCS.Builders
                 throw new ArgumentNullException("defaultValue not found in choices collection");
             }
 
-            HasDefaultValue = true;
-            DefaultValue = defaultValue;
+            HasDefault = true;
+            Value = defaultValue;
         }
 
-        public TResult DefaultValue { get; }
+        public TResult Value { get; }
 
-        public bool HasDefaultValue { get; }
+        public bool HasDefault { get; }
     }
 }

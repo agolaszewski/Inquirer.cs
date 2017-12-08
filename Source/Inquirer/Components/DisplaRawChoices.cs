@@ -23,14 +23,14 @@ namespace InquirerCS.Builders
             int index = 0;
             foreach (TResult choice in _choices)
             {
-                ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convertToStringComponent.Convert(choice)}", 0, index + _CURSOR_OFFSET);
+                ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convertToStringComponent.Run(choice)}", 0, index + _CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convertToStringComponent.Convert(_choices[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convertToStringComponent.Run(_choices[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }
 }

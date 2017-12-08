@@ -13,7 +13,7 @@ namespace InquirerCS.Questions
 
         private int _cursorPosition = _CURSOR_OFFSET;
 
-        private IDisplayQuestionComponent _displayQuestionComponent;
+        private IRenderQuestionComponent _displayQuestionComponent;
 
         private IDisplayErrorComponent _errorComponent;
 
@@ -32,7 +32,7 @@ namespace InquirerCS.Questions
         public PagedCheckbox(
             IPagingComponent<Selectable<TResult>> pagingComponent,
             IConfirmComponent<TList> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
+            IRenderQuestionComponent displayQuestion,
              IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<Dictionary<int, List<Selectable<TResult>>>, TList> parseComponent,
             IRenderChoices<TResult> renderChoices,

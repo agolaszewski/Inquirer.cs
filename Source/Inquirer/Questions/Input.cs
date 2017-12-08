@@ -12,7 +12,7 @@ namespace InquirerCS.Questions
 
         private IDefaultValueComponent<TResult> _defaultValueComponent;
 
-        private IDisplayQuestionComponent _displayQuestion;
+        private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
@@ -26,7 +26,7 @@ namespace InquirerCS.Questions
 
         public Input(
             IConfirmComponent<TResult> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
+            IRenderQuestionComponent displayQuestion,
             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<string, TResult> parseComponent,
             IValidateComponent<TResult> validationResultComponent,
@@ -55,14 +55,14 @@ namespace InquirerCS.Questions
             var value = Reader.WaitForInput();
             _onKey.OnKey(value.InterruptKey);
 
-            if (string.IsNullOrWhiteSpace(value.Value) && _defaultValueComponent.HasDefaultValue)
+            if (string.IsNullOrWhiteSpace(value.Value) && _defaultValueComponent.HasDefault)
             {
-                if (_confirmComponent.Confirm(_defaultValueComponent.DefaultValue))
+                if (_confirmComponent.Confirm(_defaultValueComponent.Value))
                 {
                     return Prompt();
                 }
 
-                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.DefaultValue);
+                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.Value);
 
                 if (defaultValueValidation.HasError)
                 {
@@ -70,7 +70,7 @@ namespace InquirerCS.Questions
                     return Prompt();
                 }
 
-                return _defaultValueComponent.DefaultValue;
+                return _defaultValueComponent.Value;
             }
 
             var validationResult = _validationValueComponent.Run(value.Value);

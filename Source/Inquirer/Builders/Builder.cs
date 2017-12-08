@@ -18,7 +18,7 @@ namespace InquirerCS.Builders
 
         protected Func<IDefaultValueComponent<TResult>> _defaultValueComponentFn = () => { return null; };
 
-        protected IDisplayQuestionComponent _displayQuestionComponent;
+        protected IRenderQuestionComponent _displayQuestionComponent;
 
         protected IDisplayErrorComponent _errorDisplay;
 

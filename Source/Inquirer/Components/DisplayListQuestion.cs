@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
-    public class DisplayListQuestion<TList, TResult> : IDisplayQuestionComponent where TList : IEnumerable<TResult>
+    public class DisplayListQuestion<TList, TResult> : IRenderQuestionComponent where TList : IEnumerable<TResult>
     {
-        private IConvertToStringComponent<TResult> _convertToStringComponent;
-
-        private IDefaultValueComponent<TList> _defaultValueComponent;
+        private IConvertToStringTrait<TResult> _convert;
+        private IDefaultTrait<List<TResult>> _default;
 
         private string _message;
 
-        public DisplayListQuestion(string message, IConvertToStringComponent<TResult> convertToStringComponent, IDefaultValueComponent<TList> defaultValueComponent)
+        public DisplayListQuestion(string message, IConvertToStringTrait<TResult> convert, IDefaultTrait<List<TResult>> @default)
         {
             _message = message;
-            _convertToStringComponent = convertToStringComponent;
-            _defaultValueComponent = defaultValueComponent;
+            _convert = convert;
+            _default = @default;
         }
 
         public void Render()
@@ -29,10 +29,10 @@ namespace InquirerCS.Components
             ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
 
             sb.Append($"{_message} : ");
-            if (_defaultValueComponent.HasDefaultValue)
+            if (_default.Default.HasDefault)
             {
                 sb.Append("[");
-                sb.Append(string.Join(", ", _defaultValueComponent.DefaultValue.Select(item => _convertToStringComponent.Convert(item))));
+                sb.Append(string.Join(", ", _default.Default.Value.Select(item => _convert.Convert.Run(item))));
                 sb.Append("]");
             }
 

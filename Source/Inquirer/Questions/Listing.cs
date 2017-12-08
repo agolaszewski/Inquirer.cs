@@ -14,7 +14,7 @@ namespace InquirerCS.Questions
 
         private IConfirmComponent<TResult> _confirmComponent;
 
-        private IDisplayQuestionComponent _displayQuestion;
+        private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
@@ -31,7 +31,7 @@ namespace InquirerCS.Questions
         public Listing(
             List<TResult> choices,
             IConfirmComponent<TResult> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
+            IRenderQuestionComponent displayQuestion,
              IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<int, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,

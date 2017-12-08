@@ -13,7 +13,7 @@ namespace InquirerCS.Questions
 
         private IConfirmComponent<TList> _confirmComponent;
 
-        private IDisplayQuestionComponent _displayQuestionComponent;
+        private IRenderQuestionComponent _displayQuestionComponent;
 
         private IDisplayErrorComponent _errorComponent;
 
@@ -30,7 +30,7 @@ namespace InquirerCS.Questions
         public Checkbox(
             List<Selectable<TResult>> choices,
             IConfirmComponent<TList> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
+            IRenderQuestionComponent displayQuestion,
             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<List<Selectable<TResult>>, TList> parseComponent,
             IRenderChoices<TResult> renderChoices,

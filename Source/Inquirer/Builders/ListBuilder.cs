@@ -13,7 +13,7 @@ namespace InquirerCS.Builders
 
         private DisplayChoices<TResult> _displayChoices;
 
-        private IDisplayQuestionComponent _displayQuestionComponent;
+        private IRenderQuestionComponent _displayQuestionComponent;
 
         private IDisplayErrorComponent _errorDisplay;
 

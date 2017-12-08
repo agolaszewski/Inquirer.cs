@@ -13,7 +13,7 @@ namespace InquirerCS.Questions
 
         private int _cursorPosition = _CURSOR_OFFSET;
 
-        private IDisplayQuestionComponent _displayQuestion;
+        private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
@@ -32,7 +32,7 @@ namespace InquirerCS.Questions
         public PagedList(
             IPagingComponent<TResult> pagingComponent,
             IConfirmComponent<TResult> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
+            IRenderQuestionComponent displayQuestion,
             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<int, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
@@ -66,7 +66,6 @@ namespace InquirerCS.Questions
             {
                 var keyPressed = _input.WaitForInput().InterruptKey;
                 _onKey.OnKey(keyPressed);
-
 
                 switch (keyPressed)
                 {

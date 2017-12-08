@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using InquirerCS;
+using InquirerCS.Builders;
+using InquirerCS.Traits;
 
 namespace Sandbox2
 {
@@ -70,7 +72,7 @@ namespace Sandbox2
 
         private static void Main(string[] args)
         {
-            _test.Next(() => MenuTest());
+             new InquirerCS.Builders.NewFolder1.CheckboxBuilder<string>();
         }
 
         private static void MenuTest()

@@ -11,7 +11,7 @@ namespace InquirerCS.Builders
     {
         private IEnumerable<TResult> _choices;
 
-        private IDisplayQuestionComponent _displayQuestionComponent;
+        private IRenderQuestionComponent _displayQuestionComponent;
 
         private IDisplayErrorComponent _errorComponent;
 

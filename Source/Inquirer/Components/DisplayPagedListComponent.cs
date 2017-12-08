@@ -22,14 +22,14 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (TResult choice in _pagingComponent.CurrentPage)
             {
-                ConsoleHelper.PositionWriteLine($"   {_convertToStringComponent.Convert(choice)}", 0, index + _CURSOR_OFFSET);
+                ConsoleHelper.PositionWriteLine($"   {_convertToStringComponent.Run(choice)}", 0, index + _CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"-> {_convertToStringComponent.Convert(_pagingComponent.CurrentPage[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine($"-> {_convertToStringComponent.Run(_pagingComponent.CurrentPage[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }
 }

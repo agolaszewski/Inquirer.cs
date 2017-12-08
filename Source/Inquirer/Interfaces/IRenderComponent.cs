@@ -1,6 +1,6 @@
 ﻿namespace InquirerCS.Interfaces
 {
-    public interface IDisplayQuestionComponent
+    public interface IRenderQuestionComponent
     {
         void Render();
     }
