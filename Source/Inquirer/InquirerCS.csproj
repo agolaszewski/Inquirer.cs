@@ -48,28 +48,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Extensions.cs" />
-    <Compile Include="Builders\PagedCheckboxBuilder.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
-    <Compile Include="Builders\ConfirmBuilder.cs" />
+    <Compile Include="Builders\Confirm.cs" />
+    <Compile Include="Builders\ExtendedBuilder.cs" />
+    <Compile Include="Builders\InputBuilder.cs" />
+    <Compile Include="Builders\InputStringBuilder.cs" />
+    <Compile Include="Builders\InputStructBuilder.cs" />
+    <Compile Include="Builders\ListBuilder.cs" />
+    <Compile Include="Builders\PagedCheckboxBuilder.cs" />
     <Compile Include="Builders\PagedListBuilder.cs" />
     <Compile Include="Builders\PagedRawListBuilder.cs" />
+    <Compile Include="Builders\PasswordBuilder.cs" />
+    <Compile Include="Builders\RawListBuilder.cs" />
+    <Compile Include="Components\DisplayConfirmQuestion.cs" />
+    <Compile Include="Components\OnEscape.cs" />
+    <Compile Include="Components\Extensions.cs" />
     <Compile Include="Components\DisplayPagedListComponent.cs" />
     <Compile Include="Components\ExtensionsCheckbox.cs" />
+    <Compile Include="Components\OnNothing.cs" />
     <Compile Include="Components\StringOrKeyInputComponent.cs" />
     <Compile Include="Components\StringOrKey.cs" />
     <Compile Include="Components\DisplaRawPagedChoices.cs" />
     <Compile Include="Components\DisplaySelectablePagedChoices.cs" />
     <Compile Include="Components\ParseSelectablePagedListComponent.cs" />
     <Compile Include="Components\DisplaRawChoices.cs" />
-    <Compile Include="Builders\ExtendedBuilder.cs" />
-    <Compile Include="Builders\ExtendedListBuilder.cs" />
-    <Compile Include="Builders\Builder.cs" />
-    <Compile Include="Builders\InputStringBuilder.cs" />
-    <Compile Include="Builders\InputStructBuilder.cs" />
-    <Compile Include="Builders\ListBuilder.cs" />
-    <Compile Include="Builders\PasswordBuilder.cs" />
-    <Compile Include="Builders\RawListBuilder.cs" />
     <Compile Include="Components\DefaultSelectedValueComponent.cs" />
     <Compile Include="Components\DefaultDictionaryValue.cs" />
     <Compile Include="Components\ConfirmListComponent.cs" />
@@ -98,13 +100,13 @@
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
     <Compile Include="Interfaces\IDisplayError.cs" />
+    <Compile Include="Interfaces\IOnKey.cs" />
     <Compile Include="Interfaces\IPagingComponent.cs" />
     <Compile Include="Interfaces\IQuestion.cs" />
     <Compile Include="Interfaces\IRenderComponent.cs" />
     <Compile Include="Interfaces\IValidationResult.cs" />
     <Compile Include="Interfaces\IWaitForInputComponent.cs" />
     <Compile Include="Interfaces\IRenderChoicesComponent.cs" />
-    <Compile Include="Question.cs" />
     <Compile Include="Questions\PagedCheckbox.cs" />
     <Compile Include="Questions\Checkbox.cs" />
     <Compile Include="Questions\ExtendedList.cs" />
@@ -126,6 +128,19 @@
     <Compile Include="MathHelper.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Traits\IConfirmTrait.cs" />
+    <Compile Include="Traits\IConvertToStringTrait.cs" />
+    <Compile Include="Traits\IDefaultComponent.cs" />
+    <Compile Include="Traits\IDisplayErrorTrait.cs" />
+    <Compile Include="Traits\IOnKeyTrait.cs" />
+    <Compile Include="Traits\IPagingTrait.cs" />
+    <Compile Include="Traits\IParseTrait.cs" />
+    <Compile Include="Traits\IRenderChoicesTrait.cs" />
+    <Compile Include="Traits\IRenderQuestionTrait.cs" />
+    <Compile Include="Traits\IValidateInputTrait.cs" />
+    <Compile Include="Traits\IValidateResultTrait.cs" />
+    <Compile Include="Traits\IWaitForInputTrait.cs" />
+    <Compile Include="Traits\TraitExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

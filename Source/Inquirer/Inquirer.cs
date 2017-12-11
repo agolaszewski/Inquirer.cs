@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using InquirerCS.Interfaces;
 
 namespace InquirerCS
 {
@@ -31,6 +32,11 @@ namespace InquirerCS
                     Next(History.Pop());
                 }
             }
+        }
+
+        public TResult Prompt<TQuestion, TResult>(IBuilder<TQuestion, TResult> builder)
+        {
+            return builder.Prompt();
         }
     }
 }

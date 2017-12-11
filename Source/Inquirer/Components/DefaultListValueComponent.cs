@@ -9,14 +9,14 @@ namespace InquirerCS.Components
     {
         public DefaultListValueComponent()
         {
-            HasDefaultValue = false;
-            DefaultValue = default(TResult);
+            HasDefault = false;
+            Value = default(TResult);
         }
 
         public DefaultListValueComponent(List<TResult> choices, TResult defaultValue)
         {
-            HasDefaultValue = true;
-            DefaultValue = defaultValue;
+            HasDefault = true;
+            Value = defaultValue;
 
             if (!choices.Any(item => item.CompareTo(defaultValue) == 0))
             {
@@ -30,8 +30,8 @@ namespace InquirerCS.Components
             choices.Insert(0, selected);
         }
 
-        public TResult DefaultValue { get; }
+        public bool HasDefault { get; }
 
-        public bool HasDefaultValue { get; }
+        public TResult Value { get; }
     }
 }

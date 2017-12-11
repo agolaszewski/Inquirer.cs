@@ -4,90 +4,35 @@ using System.Linq;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Builders
 {
-    public class ListBuilder<TResult> : IBuilder<TResult> where TResult : IComparable
+    public class ListBuilder<TResult> : InputBuilder<Listing<TResult>, int, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
     {
         private List<TResult> _choices;
 
-        private DisplayChoices<TResult> _displayChoices;
-
-        private IDisplayQuestionComponent _displayQuestionComponent;
-
-        private IDisplayErrorComponent _errorDisplay;
-
-        private Extensions<TResult> _extensions = new Extensions<TResult>();
-
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
-
-        private string _message;
-
-        private IParseComponent<int, TResult> _parseComponent;
-
         public ListBuilder(string message, IEnumerable<TResult> choices)
         {
-            _message = message;
             _choices = choices.ToList();
+
+            this.RenderQuestion(message, this, this);
+            this.Parse(_choices);
+            this.RenderChoices(_choices, this);
+            this.Parse(_choices);
+            this.Input(ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
         }
 
-        public ListBuilder<TResult> ConvertToString(Func<TResult, string> fn)
-        {
-            _extensions.ConvertToStringComponentFn = () =>
-            {
-                return new ConvertToStringComponent<TResult>(fn);
-            };
+        public IRenderChoices<TResult> RenderChoices { get; set; }
 
-            return this;
+        public override Listing<TResult> Build()
+        {
+            return new Listing<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
 
-        public PagedListBuilder<TResult> Page(int pageSize)
+        public override InputBuilder<Listing<TResult>, int, TResult> WithDefaultValue(TResult defaultValue)
         {
-            return new PagedListBuilder<TResult>(_message, _choices, pageSize, _extensions);
-        }
-
-        public TResult Prompt()
-        {
-            _extensions.Build();
-
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _extensions.Convert, _extensions.Default);
-            _inputComponent = new ReadConsoleKey();
-            _parseComponent = new ParseListComponent<TResult>(_choices);
-            _displayChoices = new DisplayChoices<TResult>(_choices, _extensions.Convert);
-            _errorDisplay = new DisplayErrorCompnent();
-
-            return new Listing<TResult>(_choices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _displayChoices, _extensions.Validators, _errorDisplay).Prompt();
-        }
-
-        public ListBuilder<TResult> WithConfirmation()
-        {
-            _extensions.ConfirmComponentFn = () =>
-            {
-                return new ConfirmComponent<TResult>(_extensions.Convert);
-            };
-
-            return this;
-        }
-
-        public ListBuilder<TResult> WithDefaultValue(TResult defaultValue)
-        {
-            _extensions.DefaultValueComponentFn = () =>
-            {
-                return new DefaultListValueComponent<TResult>(_choices, defaultValue);
-            };
-
-            return this;
-        }
-
-        public ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
-        {
-            _extensions.Validators.Add(fn, errorMessageFn);
-            return this;
-        }
-
-        public ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
-        {
-            _extensions.Validators.Add(fn, errorMessage);
+            Default = new DefaultListValueComponent<TResult>(_choices, defaultValue);
             return this;
         }
     }

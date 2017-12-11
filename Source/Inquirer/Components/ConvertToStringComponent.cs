@@ -9,10 +9,10 @@ namespace InquirerCS.Components
         {
             if (convertToStringFn != null)
             {
-                Convert = convertToStringFn;
+                Run = convertToStringFn;
             }
         }
 
-        public Func<TResult, string> Convert { get; } = value => { return value.ToString(); };
+        public Func<TResult, string> Run { get; } = value => { return value.ToString(); };
     }
 }

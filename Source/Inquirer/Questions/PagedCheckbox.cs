@@ -13,11 +13,13 @@ namespace InquirerCS.Questions
 
         private int _cursorPosition = _CURSOR_OFFSET;
 
-        private IDisplayQuestionComponent _displayQuestionComponent;
+        private IRenderQuestionComponent _displayQuestionComponent;
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _input;
+
+        private IOnKey _onKey;
 
         private IPagingComponent<Selectable<TResult>> _pagingComponent;
 
@@ -30,21 +32,23 @@ namespace InquirerCS.Questions
         public PagedCheckbox(
             IPagingComponent<Selectable<TResult>> pagingComponent,
             IConfirmComponent<TList> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<ConsoleKey> inputComponent,
+            IRenderQuestionComponent displayQuestion,
+             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<Dictionary<int, List<Selectable<TResult>>>, TList> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TList> validationComponent,
-            IDisplayErrorComponent errorComponent)
+            IDisplayErrorComponent errorComponent,
+              IOnKey onKey)
         {
             _pagingComponent = pagingComponent;
             _confirmComponent = confirmComponent;
             _displayQuestionComponent = displayQuestion;
-            _inputComponent = inputComponent;
+            _input = inputComponent;
             _parseComponent = parseComponent;
             _renderchoices = renderChoices;
             _validationComponent = validationComponent;
             _errorComponent = errorComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = false;
         }
@@ -60,7 +64,9 @@ namespace InquirerCS.Questions
 
             while (true)
             {
-                var keyPressed = _inputComponent.WaitForInput();
+                var keyPressed = _input.WaitForInput().InterruptKey;
+                _onKey.OnKey(keyPressed);
+
                 switch (keyPressed)
                 {
                     case ConsoleKey.Spacebar:

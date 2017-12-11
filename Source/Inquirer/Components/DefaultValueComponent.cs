@@ -6,18 +6,18 @@ namespace InquirerCS.Components
     {
         public DefaultValueComponent()
         {
-            HasDefaultValue = false;
-            DefaultValue = default(TResult);
+            HasDefault = false;
+            Value = default(TResult);
         }
 
         public DefaultValueComponent(TResult defaultValue)
         {
-            HasDefaultValue = true;
-            DefaultValue = defaultValue;
+            HasDefault = true;
+            Value = defaultValue;
         }
 
-        public TResult DefaultValue { get; }
+        public bool HasDefault { get; }
 
-        public bool HasDefaultValue { get; }
+        public TResult Value { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
@@ -13,11 +14,13 @@ namespace InquirerCS.Questions
 
         private IConfirmComponent<TResult> _confirmComponent;
 
-        private IDisplayQuestionComponent _displayQuestion;
+        private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _input;
+
+        private IOnKey _onKey;
 
         private IParseComponent<int, TResult> _parseComponent;
 
@@ -28,21 +31,23 @@ namespace InquirerCS.Questions
         public Listing(
             List<TResult> choices,
             IConfirmComponent<TResult> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<ConsoleKey> inputComponent,
+            IRenderQuestionComponent displayQuestion,
+             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<int, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationComponent,
-            IDisplayErrorComponent errorComponent)
+            IDisplayErrorComponent errorComponent,
+              IOnKey onKey)
         {
             _choices = choices;
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
-            _inputComponent = inputComponent;
+            _input = inputComponent;
             _parseComponent = parseComponent;
             _renderChoices = renderChoices;
             _validationComponent = validationComponent;
             _errorComponent = errorComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = false;
         }
@@ -60,7 +65,9 @@ namespace InquirerCS.Questions
 
             while (true)
             {
-                var keyPressed = _inputComponent.WaitForInput();
+                var keyPressed = _input.WaitForInput().InterruptKey;
+                _onKey.OnKey(keyPressed);
+
                 switch (keyPressed)
                 {
                     case ConsoleKey.UpArrow:

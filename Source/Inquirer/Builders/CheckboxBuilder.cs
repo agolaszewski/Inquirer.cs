@@ -1,121 +1,102 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Builders
 {
-    public class CheckboxBuilder<TResult> : IBuilder<List<TResult>> where TResult : IComparable
+    public class CheckboxBuilder<TResult>
+        : IConfirmTrait<List<TResult>>,
+        IConvertToStringTrait<TResult>,
+        IDefaultTrait<List<TResult>>,
+        IValidateResultTrait<List<TResult>>,
+        IRenderQuestionTrait,
+        IRenderChoicesTrait<TResult>,
+        IDisplayErrorTrait,
+        IWaitForInputTrait<StringOrKey>,
+        IParseTrait<List<Selectable<TResult>>, List<TResult>>,
+        IOnKeyTrait where TResult : IComparable
     {
-        private IEnumerable<TResult> _choices;
+        private List<Selectable<TResult>> _choices;
 
-        private IDisplayQuestionComponent _displayQuestionComponent;
-
-        private IDisplayErrorComponent _errorComponent;
-
-        private ExtensionsCheckbox<TResult> _extensions;
-
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
-
-        private string _message;
-
-        private IParseComponent<List<Selectable<TResult>>, List<TResult>> _parseComponent;
-
-        private IRenderChoices<TResult> _renderchoices;
-
-        private List<Selectable<TResult>> _selectedChoices;
-
-        private IValidateComponent<List<TResult>> _validationResultComponent;
-
-        public CheckboxBuilder(string message, IEnumerable<TResult> choices)
+        public CheckboxBuilder()
         {
-            _message = message;
+            this.Confirm(this);
+            this.ConvertToString();
+            this.Default();
+            this.ResultValidate();
+            this.Input(ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            this.OnKey();
+        }
+
+        public CheckboxBuilder(string message, List<Selectable<TResult>> choices) : this()
+        {
             _choices = choices;
-            _selectedChoices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
-            _validationResultComponent = new ValidationComponent<List<TResult>>();
-            _extensions = new ExtensionsCheckbox<TResult>();
+            this.RenderQuestion(message, this, this);
+            this.RenderChoices(choices, this);
+            this.Parse(choices);
         }
 
-        public CheckboxBuilder<TResult> ConvertToString(Func<TResult, string> convertFn)
-        {
-            _extensions.ConvertToStringComponentFn = () =>
-            {
-                return new ConvertToStringComponent<TResult>(convertFn);
-            };
+        public IConfirmComponent<List<TResult>> Confirm { get; set; }
 
+        public IConvertToStringComponent<TResult> Convert { get; set; }
+
+        public IDefaultValueComponent<List<TResult>> Default { get; set; }
+
+        public IDisplayErrorComponent DisplayError { get; set; }
+
+        public IWaitForInputComponent<StringOrKey> Input { get; set; }
+
+        public IOnKey OnKey { get; set; }
+
+        public IParseComponent<List<Selectable<TResult>>, List<TResult>> Parse { get; set; }
+
+        public IRenderChoices<TResult> RenderChoices { get; set; }
+
+        public IRenderQuestionComponent RenderQuestion { get; set; }
+
+        public IValidateComponent<List<TResult>> ResultValidators { get; set; }
+
+        public Checkbox<List<TResult>, TResult> Build()
+        {
+            return new Checkbox<List<TResult>, TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
+        }
+
+        public virtual CheckboxBuilder<TResult> WithConfirmation()
+        {
+            this.Confirm(this);
             return this;
         }
 
-        public PagedCheckboxBuilder<TResult> Page(int pageSize)
+        public virtual CheckboxBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
         {
-            return new PagedCheckboxBuilder<TResult>(_message, _selectedChoices, pageSize, _extensions);
-        }
-
-        public List<TResult> Prompt()
-        {
-            _extensions.Build();
-
-            _displayQuestionComponent = new DisplayListQuestion<List<TResult>, TResult>(_message, _extensions.Convert, _extensions.Default);
-
-            _inputComponent = new ReadConsoleKey();
-            _parseComponent = new ParseSelectableListComponent<List<TResult>, TResult>(_selectedChoices);
-            _renderchoices = new DisplaySelectableChoices<TResult>(_selectedChoices, _extensions.Convert);
-            _errorComponent = new DisplayErrorCompnent();
-
-            return new Checkbox<List<TResult>, TResult>(_selectedChoices, _extensions.Confirm, _displayQuestionComponent, _inputComponent, _parseComponent, _renderchoices, _validationResultComponent, _errorComponent).Prompt();
-        }
-
-        public CheckboxBuilder<TResult> WithConfirmation()
-        {
-            _extensions.ConfirmComponentFn = () =>
-            {
-                return new ConfirmListComponent<List<TResult>, TResult>(_extensions.Convert);
-            };
-
+            this.ConvertToString(fn);
             return this;
         }
 
-        public CheckboxBuilder<TResult> WithDefaultValue(IEnumerable<TResult> defaultValues)
+        public virtual CheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
         {
-            _extensions.DefaultValueComponentFn = () =>
-            {
-                return new DefaultValueComponent<List<TResult>>(defaultValues.ToList());
-            };
-
+            this.Default(_choices, defaultValues);
             return this;
         }
 
-        public CheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
+        public virtual CheckboxBuilder<TResult> WithDefaultValue(TResult defaultValue)
         {
-            _extensions.DefaultValueComponentFn = () =>
-            {
-                return new DefaultSelectedValueComponent<TResult>(_selectedChoices, defaultValues);
-            };
-
-            return this;
-        }
-
-        public CheckboxBuilder<TResult> WithDefaultValue(TResult defaultValues)
-        {
-            _extensions.DefaultValueComponentFn = () =>
-            {
-                return new DefaultSelectedValueComponent<TResult>(_selectedChoices, new List<TResult>() { defaultValues });
-            };
-
+            this.Default(_choices, new List<TResult>() { defaultValue });
             return this;
         }
 
         public CheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, Func<List<TResult>, string> errorMessageFn)
         {
-            _extensions.Validators.Add(fn, errorMessageFn);
+            ResultValidators.Add(fn, errorMessageFn);
             return this;
         }
 
         public CheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, string errorMessage)
         {
-            _extensions.Validators.Add(fn, errorMessage);
+            ResultValidators.Add(fn, errorMessage);
             return this;
         }
     }

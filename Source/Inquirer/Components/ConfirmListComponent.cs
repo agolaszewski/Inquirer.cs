@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
     public class ConfirmListComponent<TList, TResult> : IConfirmComponent<TList> where TList : IEnumerable<TResult>
     {
-        private IConvertToStringComponent<TResult> _convertToStringComponent;
+        private IConvertToStringTrait<TResult> _convert;
 
-        public ConfirmListComponent(IConvertToStringComponent<TResult> convertToStringComponent)
+        public ConfirmListComponent(IConvertToStringTrait<TResult> convert)
         {
-            _convertToStringComponent = convertToStringComponent;
+            _convert = convert;
         }
 
         public bool Confirm(TList result)
@@ -24,7 +25,7 @@ namespace InquirerCS.Components
             sb.Append($"Are you sure? [y/n] : ");
 
             sb.Append("[");
-            sb.Append(string.Join(", ", result.Select(item => _convertToStringComponent.Convert(item))));
+            sb.Append(string.Join(", ", result.Select(item => _convert.Convert.Run(item))));
             sb.Append("]");
 
             ConsoleHelper.WriteLine(sb.ToString());

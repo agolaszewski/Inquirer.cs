@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
@@ -9,13 +10,19 @@ namespace InquirerCS.Questions
         private const int _CURSOR_OFFSET = 2;
 
         private IConfirmComponent<TResult> _confirmComponent;
+
         private int _cursorPosition = _CURSOR_OFFSET;
-        private IDisplayQuestionComponent _displayQuestion;
+
+        private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _input;
+
+        private IOnKey _onKey;
+
         private IPagingComponent<TResult> _pagingComponent;
+
         private IParseComponent<int, TResult> _parseComponent;
 
         private IRenderChoices<TResult> _renderChoices;
@@ -25,21 +32,23 @@ namespace InquirerCS.Questions
         public PagedList(
             IPagingComponent<TResult> pagingComponent,
             IConfirmComponent<TResult> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<ConsoleKey> inputComponent,
+            IRenderQuestionComponent displayQuestion,
+            IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<int, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationComponent,
-            IDisplayErrorComponent errorComponent)
+            IDisplayErrorComponent errorComponent,
+              IOnKey onKey)
         {
             _pagingComponent = pagingComponent;
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
-            _inputComponent = inputComponent;
+            _input = inputComponent;
             _parseComponent = parseComponent;
             _renderChoices = renderChoices;
             _validationComponent = validationComponent;
             _errorComponent = errorComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = false;
         }
@@ -55,7 +64,9 @@ namespace InquirerCS.Questions
 
             while (true)
             {
-                var keyPressed = _inputComponent.WaitForInput();
+                var keyPressed = _input.WaitForInput().InterruptKey;
+                _onKey.OnKey(keyPressed);
+
                 switch (keyPressed)
                 {
                     case (ConsoleKey.LeftArrow):

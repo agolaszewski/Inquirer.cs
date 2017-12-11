@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
@@ -9,12 +10,16 @@ namespace InquirerCS.Questions
         private Dictionary<ConsoleKey, TResult> _choices;
 
         private IConfirmComponent<TResult> _confirmComponent;
+
         private IDefaultValueComponent<TResult> _defaultValueComponent;
-        private IDisplayQuestionComponent _displayQuestion;
+
+        private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _input;
+
+        private IOnKey _onKey;
 
         private IParseComponent<ConsoleKey, TResult> _parseComponent;
 
@@ -28,24 +33,26 @@ namespace InquirerCS.Questions
             Dictionary<ConsoleKey, TResult> choices,
             IDefaultValueComponent<TResult> defaultValueComponent,
             IConfirmComponent<TResult> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<ConsoleKey> inputComponent,
+            IRenderQuestionComponent displayQuestion,
+             IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<ConsoleKey, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<ConsoleKey> validationInputComponent,
-            IDisplayErrorComponent errorComponent)
+            IDisplayErrorComponent errorComponent,
+            IOnKey onKey)
         {
             _choices = choices;
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
-            _inputComponent = inputComponent;
+            _input = inputComponent;
             _parseComponent = parseComponent;
             _renderChoices = renderChoices;
             _validationInputComponent = validationInputComponent;
             _validationResultComponent = validationResultComponent;
             _errorComponent = errorComponent;
             _defaultValueComponent = defaultValueComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = false;
         }
@@ -55,15 +62,17 @@ namespace InquirerCS.Questions
             _displayQuestion.Render();
             _renderChoices.Render();
 
-            var value = _inputComponent.WaitForInput();
-            if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefaultValue)
+            var value = _input.WaitForInput().InterruptKey.Value;
+            _onKey.OnKey(value);
+
+            if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefault)
             {
-                if (_confirmComponent.Confirm(_defaultValueComponent.DefaultValue))
+                if (_confirmComponent.Confirm(_defaultValueComponent.Value))
                 {
                     return Prompt();
                 }
 
-                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.DefaultValue);
+                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.Value);
 
                 if (defaultValueValidation.HasError)
                 {
@@ -71,7 +80,7 @@ namespace InquirerCS.Questions
                     return Prompt();
                 }
 
-                return _defaultValueComponent.DefaultValue;
+                return _defaultValueComponent.Value;
             }
 
             var validationResult = _validationInputComponent.Run(value);

@@ -1,21 +1,22 @@
 ﻿using System;
 using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
     public class ConfirmComponent<TResult> : IConfirmComponent<TResult>
     {
-        private IConvertToStringComponent<TResult> _convertToStringComponent;
+        private IConvertToStringTrait<TResult> _convert;
 
-        public ConfirmComponent(IConvertToStringComponent<TResult> convertToStringComponent)
+        public ConfirmComponent(IConvertToStringTrait<TResult> convert)
         {
-            _convertToStringComponent = convertToStringComponent;
+            _convert = convert;
         }
 
         public bool Confirm(TResult result)
         {
             Console.Clear();
-            ConsoleHelper.WriteLine($"Are you sure? [y/n] : {_convertToStringComponent.Convert(result)} ");
+            ConsoleHelper.WriteLine($"Are you sure? [y/n] : {_convert.Convert.Run(result)} ");
             ConsoleKeyInfo key = default(ConsoleKeyInfo);
             do
             {

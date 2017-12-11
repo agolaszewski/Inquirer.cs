@@ -1,19 +1,22 @@
 ﻿using System;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
 {
     public class Input<TResult> : IQuestion<TResult>
     {
+        public IWaitForInputComponent<StringOrKey> Reader;
+
         private IConfirmComponent<TResult> _confirmComponent;
 
         private IDefaultValueComponent<TResult> _defaultValueComponent;
 
-        private IDisplayQuestionComponent _displayQuestion;
+        private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<string> _inputComponent;
+        private IOnKey _onKey;
 
         private IParseComponent<string, TResult> _parseComponent;
 
@@ -23,22 +26,24 @@ namespace InquirerCS.Questions
 
         public Input(
             IConfirmComponent<TResult> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<string> inputComponent,
+            IRenderQuestionComponent displayQuestion,
+            IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<string, TResult> parseComponent,
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<string> validationValueComponent,
             IDisplayErrorComponent errorComponent,
-            IDefaultValueComponent<TResult> defaultComponent)
+            IDefaultValueComponent<TResult> defaultComponent,
+            IOnKey onKey)
         {
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
-            _inputComponent = inputComponent;
+            Reader = inputComponent;
             _parseComponent = parseComponent;
             _validationResultComponent = validationResultComponent;
             _validationValueComponent = validationValueComponent;
             _errorComponent = errorComponent;
             _defaultValueComponent = defaultComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = true;
         }
@@ -47,15 +52,17 @@ namespace InquirerCS.Questions
         {
             _displayQuestion.Render();
 
-            var value = _inputComponent.WaitForInput();
-            if (string.IsNullOrWhiteSpace(value) && _defaultValueComponent.HasDefaultValue)
+            var value = Reader.WaitForInput();
+            _onKey.OnKey(value.InterruptKey);
+
+            if (string.IsNullOrWhiteSpace(value.Value) && _defaultValueComponent.HasDefault)
             {
-                if (_confirmComponent.Confirm(_defaultValueComponent.DefaultValue))
+                if (_confirmComponent.Confirm(_defaultValueComponent.Value))
                 {
                     return Prompt();
                 }
 
-                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.DefaultValue);
+                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.Value);
 
                 if (defaultValueValidation.HasError)
                 {
@@ -63,17 +70,17 @@ namespace InquirerCS.Questions
                     return Prompt();
                 }
 
-                return _defaultValueComponent.DefaultValue;
+                return _defaultValueComponent.Value;
             }
 
-            var validationResult = _validationValueComponent.Run(value);
+            var validationResult = _validationValueComponent.Run(value.Value);
             if (validationResult.HasError)
             {
                 _errorComponent.Render(validationResult.ErrorMessage);
                 return Prompt();
             }
 
-            TResult answer = _parseComponent.Parse(value);
+            TResult answer = _parseComponent.Parse(value.Value);
             validationResult = _validationResultComponent.Run(answer);
 
             if (validationResult.HasError)

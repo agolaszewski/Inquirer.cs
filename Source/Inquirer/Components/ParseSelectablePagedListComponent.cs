@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
     public class ParseSelectablePagedListComponent<TList, TResult> : IParseComponent<Dictionary<int, List<Selectable<TResult>>>, TList> where TList : List<TResult>
     {
-        private Dictionary<int, List<Selectable<TResult>>> _choices;
-
-        public ParseSelectablePagedListComponent(Dictionary<int, List<Selectable<TResult>>> choices)
+        public ParseSelectablePagedListComponent(IPagingTrait<Selectable<TResult>> paging)
         {
-            _choices = choices;
             Parse = value =>
             {
-                return (TList)_choices.SelectMany(x => x.Value).Where(x => x.IsSelected).Select(x => x.Item).ToList();
+                return (TList)paging.Paging.PagedChoices.SelectMany(x => x.Value).Where(x => x.IsSelected).Select(x => x.Item).ToList();
             };
         }
 

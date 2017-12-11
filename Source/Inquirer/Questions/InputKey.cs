@@ -1,4 +1,5 @@
 ﻿using System;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
@@ -9,11 +10,13 @@ namespace InquirerCS.Questions
 
         private IDefaultValueComponent<TResult> _defaultValueComponent;
 
-        private IDisplayQuestionComponent _displayQuestion;
+        private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
 
-        private IWaitForInputComponent<ConsoleKey> _inputComponent;
+        private IWaitForInputComponent<StringOrKey> _input;
+
+        private IOnKey _onKey;
 
         private IParseComponent<ConsoleKey, TResult> _parseComponent;
 
@@ -23,22 +26,24 @@ namespace InquirerCS.Questions
 
         public InputKey(
             IConfirmComponent<TResult> confirmComponent,
-            IDisplayQuestionComponent displayQuestion,
-            IWaitForInputComponent<ConsoleKey> inputComponent,
+            IRenderQuestionComponent displayQuestion,
+            IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<ConsoleKey, TResult> parseComponent,
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<ConsoleKey> validationValueComponent,
             IDisplayErrorComponent errorComponent,
-            IDefaultValueComponent<TResult> defaultComponent)
+            IDefaultValueComponent<TResult> defaultComponent,
+              IOnKey onKey)
         {
             _confirmComponent = confirmComponent;
             _displayQuestion = displayQuestion;
-            _inputComponent = inputComponent;
+            _input = inputComponent;
             _parseComponent = parseComponent;
             _validationResultComponent = validationResultComponent;
             _validationValueComponent = validationValueComponent;
             _errorComponent = errorComponent;
             _defaultValueComponent = defaultComponent;
+            _onKey = onKey;
 
             Console.CursorVisible = true;
         }
@@ -47,10 +52,12 @@ namespace InquirerCS.Questions
         {
             _displayQuestion.Render();
 
-            var value = _inputComponent.WaitForInput();
-            if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefaultValue)
+            var value = _input.WaitForInput().InterruptKey.Value;
+            _onKey.OnKey(value);
+
+            if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefault)
             {
-                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.DefaultValue);
+                var defaultValueValidation = _validationResultComponent.Run(_defaultValueComponent.Value);
 
                 if (defaultValueValidation.HasError)
                 {
@@ -58,12 +65,12 @@ namespace InquirerCS.Questions
                     return Prompt();
                 }
 
-                if (_confirmComponent.Confirm(_defaultValueComponent.DefaultValue))
+                if (_confirmComponent.Confirm(_defaultValueComponent.Value))
                 {
                     return Prompt();
                 }
 
-                return _defaultValueComponent.DefaultValue;
+                return _defaultValueComponent.Value;
             }
 
             var validationResult = _validationValueComponent.Run(value);

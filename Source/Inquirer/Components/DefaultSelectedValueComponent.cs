@@ -9,16 +9,16 @@ namespace InquirerCS.Components
     {
         public DefaultSelectedValueComponent(List<Selectable<TResult>> selectedChoices, List<TResult> defaultValues)
         {
-            HasDefaultValue = true;
-            DefaultValue = defaultValues;
+            HasDefault = true;
+            Value = defaultValues;
             foreach (var defaultValue in defaultValues)
             {
                 selectedChoices.Where(x => x.Item.CompareTo(defaultValue) == 0).First().IsSelected = true;
             }
         }
 
-        public List<TResult> DefaultValue { get; }
+        public bool HasDefault { get; }
 
-        public bool HasDefaultValue { get; }
+        public List<TResult> Value { get; }
     }
 }

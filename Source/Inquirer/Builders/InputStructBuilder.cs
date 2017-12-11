@@ -1,72 +1,24 @@
 ﻿using System;
-using InquirerCS.Components;
 using InquirerCS.Questions;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Builders
 {
-    public class InputStructBuilder<TResult> : Builder<string, TResult> where TResult : struct
+    public class InputStructBuilder<TResult> : InputBuilder<Input<TResult>, string, TResult> where TResult : struct
     {
-        private string _message;
-
         public InputStructBuilder(string message)
         {
-            _message = message;
+            this.RenderQuestion(message, this, this);
+            this.Parse(value => { return value.To<TResult>(); });
+            this.Input(ConsoleKey.Escape);
+
+            InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
+            InputValidators.Add(value => { return value.ToN<TResult>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
         }
 
-        public override TResult Prompt()
+        public override Input<TResult> Build()
         {
-            _convertToStringComponent = new ConvertToStringComponent<TResult>();
-
-            _confirmComponent = new NoConfirmationComponent<TResult>();
-            _defaultValueComponent = new DefaultValueComponent<TResult>();
-
-            _displayQuestionComponent = new DisplayQuestion<TResult>(_message, _convertToStringComponent, _defaultValueComponent);
-            _inputComponent = new ReadStringComponent();
-            _parseComponent = new ParseComponent<string, TResult>(value =>
-            {
-                return value.To<TResult>();
-            });
-
-            var validationInputComponent = new ValidationComponent<string>();
-            validationInputComponent.Add(value => { return string.IsNullOrEmpty(value) == false || _defaultValueComponent.HasDefaultValue; }, "Empty line");
-            validationInputComponent.Add(value => { return value.ToN<TResult>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
-
-            var validationResultComponent = new ValidationComponent<TResult>();
-            var errorDisplay = new DisplayErrorCompnent();
-
-            return new Input<TResult>(_confirmComponent, _displayQuestionComponent, _inputComponent, _parseComponent, validationResultComponent, validationInputComponent, errorDisplay, _defaultValueComponent).Prompt();
-        }
-
-        public InputStructBuilder<TResult> WithConfirmation()
-        {
-            _confirmComponentFn = () =>
-            {
-                return new ConfirmComponent<TResult>(_convertToStringComponentFn());
-            };
-
-            return this;
-        }
-
-        public InputStructBuilder<TResult> WithDefaultValue(TResult defaultValues)
-        {
-            _defaultValueComponentFn = () =>
-            {
-                return new DefaultValueComponent<TResult>(defaultValues);
-            };
-
-            return this;
-        }
-
-        public InputStructBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
-        {
-            _validationResultComponent.Add(fn, errorMessageFn);
-            return this;
-        }
-
-        public InputStructBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
-        {
-            _validationResultComponent.Add(fn, errorMessage);
-            return this;
+            return new Input<TResult>(Confirm, RenderQuestion, Input, Parse, ResultValidators, InputValidators, DisplayError, Default, OnKey);
         }
     }
 }
