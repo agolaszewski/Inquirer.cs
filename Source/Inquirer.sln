@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InquirerCS", "Inquirer\InquirerCS.csproj", "{D9EFEA4B-C3A8-4237-82C7-4A91B8341BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox2", "Sandbox2\Sandbox2.csproj", "{4E628FA1-954D-4563-B807-E32FA8E14CEA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox3", "Sandbox3\Sandbox3.csproj", "{89E21DC7-023A-4520-B435-F97A3D43048B}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{D9EFEA4B-C3A8-4237-82C7-4A91B8341BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9EFEA4B-C3A8-4237-82C7-4A91B8341BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9EFEA4B-C3A8-4237-82C7-4A91B8341BE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E628FA1-954D-4563-B807-E32FA8E14CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E628FA1-954D-4563-B807-E32FA8E14CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E628FA1-954D-4563-B807-E32FA8E14CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E628FA1-954D-4563-B807-E32FA8E14CEA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89E21DC7-023A-4520-B435-F97A3D43048B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89E21DC7-023A-4520-B435-F97A3D43048B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89E21DC7-023A-4520-B435-F97A3D43048B}.Release|Any CPU.ActiveCfg = Release|Any CPU
