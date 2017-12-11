@@ -24,8 +24,8 @@ namespace InquirerCS.Builders
             Value = defaultValue;
         }
 
-        public TResult Value { get; }
-
         public bool HasDefault { get; }
+
+        public TResult Value { get; }
     }
 }

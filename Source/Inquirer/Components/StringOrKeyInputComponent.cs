@@ -8,14 +8,14 @@ namespace InquirerCS.Components
     {
         private ConsoleKey[] _intteruptedKeys;
 
-        public StringOrKeyInputComponent(params ConsoleKey[] intteruptedKeys)
-        {
-            _intteruptedKeys = intteruptedKeys;
-        }
-
         public StringOrKeyInputComponent()
         {
             _intteruptedKeys = Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>().ToArray();
+        }
+
+        public StringOrKeyInputComponent(params ConsoleKey[] intteruptedKeys)
+        {
+            _intteruptedKeys = intteruptedKeys;
         }
 
         public StringOrKey WaitForInput()

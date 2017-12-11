@@ -3,7 +3,7 @@ using System.Linq;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.New
+namespace InquirerCS.Builders
 {
     public class ExtendedBuilder : InputBuilder<InputKey<ConsoleKey>, ConsoleKey, ConsoleKey>
     {

@@ -2,7 +2,7 @@
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.New
+namespace InquirerCS.Builders
 {
     public class ConfirmBuilder : InputBuilder<InputKey<bool>, ConsoleKey, bool>
     {

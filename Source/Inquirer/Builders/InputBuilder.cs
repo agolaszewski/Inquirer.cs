@@ -1,10 +1,9 @@
 ﻿using System;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
-using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.New
+namespace InquirerCS.Builders
 {
     public abstract class InputBuilder<TQuestion, TInput, TResult>
         : IConfirmTrait<TResult>,

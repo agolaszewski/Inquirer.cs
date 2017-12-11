@@ -48,16 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\New\CheckboxBuilder.cs" />
-    <Compile Include="Builders\New\Confirm.cs" />
-    <Compile Include="Builders\New\ExtendedBuilder.cs" />
-    <Compile Include="Builders\New\InputBuilder.cs" />
-    <Compile Include="Builders\New\InputStringBuilder.cs" />
-    <Compile Include="Builders\New\InputStructBuilder.cs" />
-    <Compile Include="Builders\New\ListBuilder.cs" />
-    <Compile Include="Builders\New\PagedCheckboxBuilder.cs" />
-    <Compile Include="Builders\New\PasswordBuilder.cs" />
-    <Compile Include="Builders\New\RawListBuilder.cs" />
+    <Compile Include="Builders\CheckboxBuilder.cs" />
+    <Compile Include="Builders\Confirm.cs" />
+    <Compile Include="Builders\ExtendedBuilder.cs" />
+    <Compile Include="Builders\InputBuilder.cs" />
+    <Compile Include="Builders\InputStringBuilder.cs" />
+    <Compile Include="Builders\InputStructBuilder.cs" />
+    <Compile Include="Builders\ListBuilder.cs" />
+    <Compile Include="Builders\PagedCheckboxBuilder.cs" />
+    <Compile Include="Builders\PagedListBuilder.cs" />
+    <Compile Include="Builders\PagedRawListBuilder.cs" />
+    <Compile Include="Builders\PasswordBuilder.cs" />
+    <Compile Include="Builders\RawListBuilder.cs" />
     <Compile Include="Components\DisplayConfirmQuestion.cs" />
     <Compile Include="Components\OnEscape.cs" />
     <Compile Include="Components\Extensions.cs" />

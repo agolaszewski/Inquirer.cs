@@ -9,6 +9,7 @@ namespace InquirerCS.Components
         private const int _CURSOR_OFFSET = 2;
 
         private IConvertToStringTrait<TResult> _convert;
+
         private IPagingTrait<Selectable<TResult>> _paging;
 
         public DisplaySelectablePagedChoices(IPagingTrait<Selectable<TResult>> paging, IConvertToStringTrait<TResult> convert)

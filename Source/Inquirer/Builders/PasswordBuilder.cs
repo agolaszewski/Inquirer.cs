@@ -1,16 +1,16 @@
-﻿using System;
+﻿using InquirerCS.Components;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.New
+namespace InquirerCS.Builders
 {
-    public class InputStringBuilder : InputBuilder<Input<string>, string, string>
+    public class PasswordBuilder : InputBuilder<Input<string>, string, string>
     {
-        public InputStringBuilder(string message)
+        public PasswordBuilder(string message)
         {
             this.RenderQuestion(message, this, this);
             this.Parse(value => { return value; });
-            this.Input(ConsoleKey.Escape);
+            this.PasswordInput();
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
         }
@@ -18,6 +18,12 @@ namespace InquirerCS.Builders.New
         public override Input<string> Build()
         {
             return new Input<string>(Confirm, RenderQuestion, Input, Parse, ResultValidators, InputValidators, DisplayError, Default, OnKey);
+        }
+
+        public override InputBuilder<Input<string>, string, string> WithConfirmation()
+        {
+            Confirm = new ConfirmPasswordComponent(new ReadStringComponent());
+            return this;
         }
     }
 }

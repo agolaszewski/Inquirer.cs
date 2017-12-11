@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
 
@@ -11,6 +7,7 @@ namespace InquirerCS.Components
     public class DisplayConfirmQuestion<TResult> : IRenderQuestionComponent
     {
         private IConvertToStringTrait<TResult> _convert;
+
         private IDefaultTrait<TResult> _default;
 
         private string _message;

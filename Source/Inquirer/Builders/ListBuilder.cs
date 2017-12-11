@@ -6,7 +6,7 @@ using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.New
+namespace InquirerCS.Builders
 {
     public class ListBuilder<TResult> : InputBuilder<Listing<TResult>, int, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
     {
@@ -20,19 +20,20 @@ namespace InquirerCS.Builders.New
             this.Parse(_choices);
             this.RenderChoices(_choices, this);
             this.Parse(_choices);
+            this.Input(ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
         }
 
         public IRenderChoices<TResult> RenderChoices { get; set; }
+
+        public override Listing<TResult> Build()
+        {
+            return new Listing<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
+        }
 
         public override InputBuilder<Listing<TResult>, int, TResult> WithDefaultValue(TResult defaultValue)
         {
             Default = new DefaultListValueComponent<TResult>(_choices, defaultValue);
             return this;
-        }
-
-        public override Listing<TResult> Build()
-        {
-            return new Listing<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
     }
 }

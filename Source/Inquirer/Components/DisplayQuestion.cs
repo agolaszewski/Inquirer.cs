@@ -7,6 +7,7 @@ namespace InquirerCS.Components
     public class DisplayQuestion<TResult> : IRenderQuestionComponent
     {
         private IConvertToStringTrait<TResult> _convert;
+
         private IDefaultTrait<TResult> _default;
 
         private string _message;

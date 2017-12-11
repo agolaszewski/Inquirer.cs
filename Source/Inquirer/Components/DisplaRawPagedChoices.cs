@@ -1,5 +1,6 @@
 ﻿using System;
 using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
@@ -7,29 +8,29 @@ namespace InquirerCS.Components
     {
         private const int _CURSOR_OFFSET = 2;
 
-        private IConvertToStringComponent<TResult> _convertToStringComponent;
+        private IConvertToStringTrait<TResult> _convert;
 
-        private IPagingComponent<TResult> _pagingComponent;
+        private IPagingTrait<TResult> _paging;
 
-        public DisplaPagedRawChoices(IPagingComponent<TResult> pagingComponent, IConvertToStringComponent<TResult> convertToString)
+        public DisplaPagedRawChoices(IPagingTrait<TResult> paging, IConvertToStringTrait<TResult> convert)
         {
-            _pagingComponent = pagingComponent;
-            _convertToStringComponent = convertToString;
+            _paging = paging;
+            _convert = convert;
         }
 
         public void Render()
         {
             int index = 0;
-            foreach (TResult choice in _pagingComponent.CurrentPage)
+            foreach (TResult choice in _paging.Paging.CurrentPage)
             {
-                ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convertToStringComponent.Run(choice)}", 0, index + _CURSOR_OFFSET);
+                ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(choice)}", 0, index + _CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convertToStringComponent.Run(_pagingComponent.CurrentPage[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(_paging.Paging.CurrentPage[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     public interface IDefaultValueComponent<TResult>
     {
-        TResult Value { get; }
-
         bool HasDefault { get; }
+
+        TResult Value { get; }
     }
 }

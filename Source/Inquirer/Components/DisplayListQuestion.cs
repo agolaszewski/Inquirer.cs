@@ -10,6 +10,7 @@ namespace InquirerCS.Components
     public class DisplayListQuestion<TList, TResult> : IRenderQuestionComponent where TList : IEnumerable<TResult>
     {
         private IConvertToStringTrait<TResult> _convert;
+
         private IDefaultTrait<List<TResult>> _default;
 
         private string _message;

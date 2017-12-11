@@ -2,7 +2,7 @@
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.New
+namespace InquirerCS.Builders
 {
     public class InputStructBuilder<TResult> : InputBuilder<Input<TResult>, string, TResult> where TResult : struct
     {

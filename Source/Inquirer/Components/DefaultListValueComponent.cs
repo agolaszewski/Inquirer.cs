@@ -30,8 +30,8 @@ namespace InquirerCS.Components
             choices.Insert(0, selected);
         }
 
-        public TResult Value { get; }
-
         public bool HasDefault { get; }
+
+        public TResult Value { get; }
     }
 }

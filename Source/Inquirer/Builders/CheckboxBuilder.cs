@@ -5,7 +5,7 @@ using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.NewFolder1
+namespace InquirerCS.Builders
 {
     public class CheckboxBuilder<TResult>
         : IConfirmTrait<List<TResult>>,
@@ -64,6 +64,12 @@ namespace InquirerCS.Builders.NewFolder1
             return new Checkbox<List<TResult>, TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
 
+        public virtual CheckboxBuilder<TResult> WithConfirmation()
+        {
+            this.Confirm(this);
+            return this;
+        }
+
         public virtual CheckboxBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
         {
             this.ConvertToString(fn);
@@ -79,12 +85,6 @@ namespace InquirerCS.Builders.NewFolder1
         public virtual CheckboxBuilder<TResult> WithDefaultValue(TResult defaultValue)
         {
             this.Default(_choices, new List<TResult>() { defaultValue });
-            return this;
-        }
-
-        public virtual CheckboxBuilder<TResult> WithConfirmation()
-        {
-            this.Confirm(this);
             return this;
         }
 

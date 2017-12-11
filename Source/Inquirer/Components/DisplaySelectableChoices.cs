@@ -8,8 +8,10 @@ namespace InquirerCS.Components
     public class DisplaySelectableChoices<TResult> : IRenderChoices<TResult>
     {
         private const int _CURSOR_OFFSET = 2;
-        private IConvertToStringTrait<TResult> _convert;
+
         private List<Selectable<TResult>> _choices;
+
+        private IConvertToStringTrait<TResult> _convert;
 
         public DisplaySelectableChoices(List<Selectable<TResult>> choices, IConvertToStringTrait<TResult> convert)
         {

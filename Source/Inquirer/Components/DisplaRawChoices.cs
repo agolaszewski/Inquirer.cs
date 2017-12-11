@@ -9,8 +9,9 @@ namespace InquirerCS.Components
     {
         private const int _CURSOR_OFFSET = 2;
 
-        private IConvertToStringTrait<TResult> _convert;
         private List<TResult> _choices;
+
+        private IConvertToStringTrait<TResult> _convert;
 
         public DisplaRawChoices(List<TResult> choices, IConvertToStringTrait<TResult> convert)
         {

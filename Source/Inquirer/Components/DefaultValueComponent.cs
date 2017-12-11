@@ -16,8 +16,8 @@ namespace InquirerCS.Components
             Value = defaultValue;
         }
 
-        public TResult Value { get; }
-
         public bool HasDefault { get; }
+
+        public TResult Value { get; }
     }
 }

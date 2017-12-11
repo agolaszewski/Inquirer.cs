@@ -5,7 +5,7 @@ using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.New
+namespace InquirerCS.Builders
 {
     public class RawListBuilder<TResult> : InputBuilder<RawList<TResult>, string, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
     {
@@ -42,6 +42,12 @@ namespace InquirerCS.Builders.New
         public override RawList<TResult> Build()
         {
             return new RawList<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, InputValidators, DisplayError, OnKey);
+        }
+
+        public override InputBuilder<RawList<TResult>, string, TResult> WithDefaultValue(TResult defaultValue)
+        {
+            this.Default(_choices, defaultValue);
+            return this;
         }
     }
 }
