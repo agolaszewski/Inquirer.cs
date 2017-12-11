@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Linq;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
+using InquirerCS.Questions;
 using InquirerCS.Traits;
 
 namespace InquirerCS.Builders.New
 {
-    public class InputBuilder<TInput, TResult>
+    public abstract class InputBuilder<TQuestion, TInput, TResult>
         : IConfirmTrait<TResult>,
         IConvertToStringTrait<TResult>,
         IDefaultTrait<TResult>,
@@ -16,16 +16,18 @@ namespace InquirerCS.Builders.New
         IValidateInputTrait<TInput>,
         IValidateResultTrait<TResult>,
         IWaitForInputTrait<StringOrKey>,
-        IOnKeyTrait
+        IOnKeyTrait where TQuestion : IQuestion<TResult>
     {
         public InputBuilder()
         {
             this.Confirm(this);
             this.ConvertToString();
             this.Default();
-            this.Validate();
-            this.Input(Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>().ToArray());
+            this.InputValidate();
+            this.ResultValidate();
+            this.Input();
             this.OnKey();
+            this.RenderError();
         }
 
         public IConfirmComponent<TResult> Confirm { get; set; }
@@ -48,21 +50,29 @@ namespace InquirerCS.Builders.New
 
         public IValidateComponent<TResult> ResultValidators { get; set; }
 
-        public InputBuilder<TInput, TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        public abstract TQuestion Build();
+
+        public virtual InputBuilder<TQuestion, TInput, TResult> WithConfirmation()
+        {
+            this.Confirm(this);
+            return this;
+        }
+
+        public virtual InputBuilder<TQuestion, TInput, TResult> WithDefaultValue(TResult defaultValue)
+        {
+            Default = new DefaultValueComponent<TResult>(defaultValue);
+            return this;
+        }
+
+        public virtual InputBuilder<TQuestion, TInput, TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
             ResultValidators.Add(fn, errorMessageFn);
             return this;
         }
 
-        public InputBuilder<TInput, TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        public virtual InputBuilder<TQuestion, TInput, TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
             ResultValidators.Add(fn, errorMessage);
-            return this;
-        }
-
-        public InputBuilder<TInput, TResult> WithConfirmation()
-        {
-            this.Confirm(this);
             return this;
         }
     }

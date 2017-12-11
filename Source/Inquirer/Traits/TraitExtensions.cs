@@ -13,6 +13,11 @@ namespace InquirerCS.Traits
 
         public static void Confirm<TResult>(this IConfirmTrait<TResult> trait, IConvertToStringTrait<TResult> convert)
         {
+            trait.Confirm = new ConfirmComponent<TResult>(convert);
+        }
+
+        public static void Confirm<TResult>(this IConfirmTrait<TResult> trait)
+        {
             trait.Confirm = new NoConfirmationComponent<TResult>();
         }
 
@@ -46,9 +51,19 @@ namespace InquirerCS.Traits
             trait.RenderChoices = new DisplaySelectableChoices<TResult>(choices, convert);
         }
 
+        public static void RenderChoices<TResult>(this IRenderChoicesTrait<TResult> trait, IPagingTrait<Selectable<TResult>> paging, IConvertToStringTrait<TResult> convert)
+        {
+            trait.RenderChoices = new DisplaySelectablePagedChoices<TResult>(paging, convert);
+        }
+
         public static void RenderChoices<TResult>(this IRenderChoicesTrait<TResult> trait, List<TResult> choices, IConvertToStringTrait<TResult> convert)
         {
             trait.RenderChoices = new DisplayChoices<TResult>(choices, convert);
+        }
+
+        public static void RenderRawChoices<TResult>(this IRenderChoicesTrait<TResult> trait, List<TResult> choices, IConvertToStringTrait<TResult> convert)
+        {
+            trait.RenderChoices = new DisplaRawChoices<TResult>(choices, convert);
         }
 
         public static void RenderQuestion<TResult>(this IRenderQuestionTrait trait, string message, IConvertToStringTrait<TResult> convert, IDefaultTrait<List<TResult>> @default)
@@ -56,19 +71,39 @@ namespace InquirerCS.Traits
             trait.RenderQuestion = new DisplayListQuestion<List<TResult>, TResult>(message, convert, @default);
         }
 
+        public static void RenderConfirmQuestion(this IRenderQuestionTrait trait, string message, IConvertToStringTrait<bool> convert, IDefaultTrait<bool> @default)
+        {
+            trait.RenderQuestion = new DisplayConfirmQuestion<bool>(message, convert, @default);
+        }
+
         public static void RenderQuestion<TResult>(this IRenderQuestionTrait trait, string message, IConvertToStringTrait<TResult> convert, IDefaultTrait<TResult> @default)
         {
             trait.RenderQuestion = new DisplayQuestion<TResult>(message, convert, @default);
         }
 
-        public static void Validate<T>(this IValidateResultTrait<T> trait)
+        public static void ResultValidate<T>(this IValidateResultTrait<T> trait)
         {
             trait.ResultValidators = new ValidationComponent<T>();
+        }
+
+        public static void InputValidate<T>(this IValidateInputTrait<T> trait)
+        {
+            trait.InputValidators = new ValidationComponent<T>();
         }
 
         public static void Input(this IWaitForInputTrait<StringOrKey> trait, params ConsoleKey[] intteruptedKeys)
         {
             trait.Input = new StringOrKeyInputComponent(intteruptedKeys);
+        }
+
+        public static void Input(this IWaitForInputTrait<StringOrKey> trait)
+        {
+            trait.Input = new StringOrKeyInputComponent();
+        }
+
+        public static void PasswordInput(this IWaitForInputTrait<StringOrKey> trait)
+        {
+            trait.Input = new HideReadStringComponent();
         }
 
         public static void OnKey(this IOnKeyTrait trait)
@@ -81,9 +116,34 @@ namespace InquirerCS.Traits
             trait.Parse = new ParseComponent<string, TResult>(value => value.To<TResult>());
         }
 
+        public static void Parse<TInput, TResult>(this IParseTrait<TInput, TResult> trait, Func<TInput, TResult> parseFn)
+        {
+            trait.Parse = new ParseComponent<TInput, TResult>(parseFn);
+        }
+
+        public static void Parse<TResult>(this IParseTrait<int, TResult> trait, List<TResult> choices)
+        {
+            trait.Parse = new ParseListComponent<TResult>(choices);
+        }
+
         public static void Parse<TResult>(this IParseTrait<List<Selectable<TResult>>, List<TResult>> trait, List<Selectable<TResult>> choices)
         {
             trait.Parse = new ParseSelectableListComponent<List<TResult>, TResult>(choices);
+        }
+
+        public static void RenderError(this IDisplayErrorTrait trait)
+        {
+            trait.DisplayError = new DisplayErrorCompnent();
+        }
+
+        public static void Paging<TResult>(this IPagingTrait<TResult> trait, List<TResult> chocies, int pageSize)
+        {
+            trait.Paging = new PagingComponent<TResult>(chocies, pageSize);
+        }
+
+        public static void Parse<TResult>(this IParseTrait<Dictionary<int, List<Selectable<TResult>>>, List<TResult>> trait, IPagingTrait<Selectable<TResult>> paging)
+        {
+            trait.Parse = new ParseSelectablePagedListComponent<List<TResult>, TResult>(paging);
         }
     }
 }

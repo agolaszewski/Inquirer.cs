@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
-namespace InquirerCS.Builders
+namespace InquirerCS.Components
 {
     internal class DisplaRawChoices<TResult> : IRenderChoices<TResult>
     {
         private const int _CURSOR_OFFSET = 2;
 
+        private IConvertToStringTrait<TResult> _convert;
         private List<TResult> _choices;
 
-        private IConvertToStringComponent<TResult> _convertToStringComponent;
-
-        public DisplaRawChoices(List<TResult> choices, IConvertToStringComponent<TResult> convertToString)
+        public DisplaRawChoices(List<TResult> choices, IConvertToStringTrait<TResult> convert)
         {
             _choices = choices;
-            _convertToStringComponent = convertToString;
+            _convert = convert;
         }
 
         public void Render()
@@ -23,14 +23,14 @@ namespace InquirerCS.Builders
             int index = 0;
             foreach (TResult choice in _choices)
             {
-                ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convertToStringComponent.Run(choice)}", 0, index + _CURSOR_OFFSET);
+                ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(choice)}", 0, index + _CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convertToStringComponent.Run(_choices[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(_choices[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }
 }

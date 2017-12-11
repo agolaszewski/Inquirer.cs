@@ -5,9 +5,9 @@ using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
-namespace InquirerCS.Builders.NewFolder1
+namespace InquirerCS.Builders.New
 {
-    public class CheckboxBuilder<TResult>
+    public class PagedCheckboxBuilder<TResult>
         : IConfirmTrait<List<TResult>>,
         IConvertToStringTrait<TResult>,
         IDefaultTrait<List<TResult>>,
@@ -16,27 +16,28 @@ namespace InquirerCS.Builders.NewFolder1
         IRenderChoicesTrait<TResult>,
         IDisplayErrorTrait,
         IWaitForInputTrait<StringOrKey>,
-        IParseTrait<List<Selectable<TResult>>, List<TResult>>,
-        IOnKeyTrait where TResult : IComparable
+        IParseTrait<Dictionary<int, List<Selectable<TResult>>>, List<TResult>>,
+        IOnKeyTrait,
+        IPagingTrait<Selectable<TResult>> where TResult : IComparable
     {
         private List<Selectable<TResult>> _choices;
 
-        public CheckboxBuilder()
+        public PagedCheckboxBuilder()
         {
             this.Confirm(this);
             this.ConvertToString();
             this.Default();
             this.ResultValidate();
-            this.Input(ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            this.Input(ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter);
             this.OnKey();
         }
 
-        public CheckboxBuilder(string message, List<Selectable<TResult>> choices) : this()
+        public PagedCheckboxBuilder(string message, List<Selectable<TResult>> choices, int pageSize) : this()
         {
             _choices = choices;
+            this.Paging(choices, pageSize);
             this.RenderQuestion(message, this, this);
-            this.RenderChoices(choices, this);
-            this.Parse(choices);
+            this.RenderChoices(this, this);
         }
 
         public IConfirmComponent<List<TResult>> Confirm { get; set; }
@@ -51,7 +52,9 @@ namespace InquirerCS.Builders.NewFolder1
 
         public IOnKey OnKey { get; set; }
 
-        public IParseComponent<List<Selectable<TResult>>, List<TResult>> Parse { get; set; }
+        public IPagingComponent<Selectable<TResult>> Paging { get; set; }
+
+        public IParseComponent<Dictionary<int, List<Selectable<TResult>>>, List<TResult>> Parse { get; set; }
 
         public IRenderChoices<TResult> RenderChoices { get; set; }
 
@@ -59,42 +62,42 @@ namespace InquirerCS.Builders.NewFolder1
 
         public IValidateComponent<List<TResult>> ResultValidators { get; set; }
 
-        public Checkbox<List<TResult>, TResult> Build()
+        public PagedCheckbox<List<TResult>, TResult> Build()
         {
-            return new Checkbox<List<TResult>, TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
+            return new PagedCheckbox<List<TResult>, TResult>(Paging, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
 
-        public virtual CheckboxBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
+        public virtual PagedCheckboxBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
         {
             this.ConvertToString(fn);
             return this;
         }
 
-        public virtual CheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
+        public virtual PagedCheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
         {
             this.Default(_choices, defaultValues);
             return this;
         }
 
-        public virtual CheckboxBuilder<TResult> WithDefaultValue(TResult defaultValue)
+        public virtual PagedCheckboxBuilder<TResult> WithDefaultValue(TResult defaultValue)
         {
             this.Default(_choices, new List<TResult>() { defaultValue });
             return this;
         }
 
-        public virtual CheckboxBuilder<TResult> WithConfirmation()
+        public virtual PagedCheckboxBuilder<TResult> WithConfirmation()
         {
             this.Confirm(this);
             return this;
         }
 
-        public CheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, Func<List<TResult>, string> errorMessageFn)
+        public PagedCheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, Func<List<TResult>, string> errorMessageFn)
         {
             ResultValidators.Add(fn, errorMessageFn);
             return this;
         }
 
-        public CheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, string errorMessage)
+        public PagedCheckboxBuilder<TResult> WithValidation(Func<List<TResult>, bool> fn, string errorMessage)
         {
             ResultValidators.Add(fn, errorMessage);
             return this;

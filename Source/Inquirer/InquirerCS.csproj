@@ -50,7 +50,15 @@
   <ItemGroup>
     <Compile Include="Builders\New\CheckboxBuilder.cs" />
     <Compile Include="Builders\New\Confirm.cs" />
+    <Compile Include="Builders\New\ExtendedBuilder.cs" />
     <Compile Include="Builders\New\InputBuilder.cs" />
+    <Compile Include="Builders\New\InputStringBuilder.cs" />
+    <Compile Include="Builders\New\InputStructBuilder.cs" />
+    <Compile Include="Builders\New\ListBuilder.cs" />
+    <Compile Include="Builders\New\PagedCheckboxBuilder.cs" />
+    <Compile Include="Builders\New\PasswordBuilder.cs" />
+    <Compile Include="Builders\New\RawListBuilder.cs" />
+    <Compile Include="Components\DisplayConfirmQuestion.cs" />
     <Compile Include="Components\OnEscape.cs" />
     <Compile Include="Components\Extensions.cs" />
     <Compile Include="Components\DisplayPagedListComponent.cs" />

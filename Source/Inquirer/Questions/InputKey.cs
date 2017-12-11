@@ -27,7 +27,7 @@ namespace InquirerCS.Questions
         public InputKey(
             IConfirmComponent<TResult> confirmComponent,
             IRenderQuestionComponent displayQuestion,
-             IWaitForInputComponent<StringOrKey> inputComponent,
+            IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<ConsoleKey, TResult> parseComponent,
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<ConsoleKey> validationValueComponent,

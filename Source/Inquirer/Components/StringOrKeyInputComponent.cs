@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
@@ -10,6 +11,11 @@ namespace InquirerCS.Components
         public StringOrKeyInputComponent(params ConsoleKey[] intteruptedKeys)
         {
             _intteruptedKeys = intteruptedKeys;
+        }
+
+        public StringOrKeyInputComponent()
+        {
+            _intteruptedKeys = Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>().ToArray();
         }
 
         public StringOrKey WaitForInput()
