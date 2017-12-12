@@ -15,12 +15,12 @@ namespace InquirerCS.Components
         public bool Confirm(string result)
         {
             Console.Clear();
-            ConsoleHelper.Write("Type again : ");
+            AppConsole2.Write("Type again : ");
 
             var repeated = _input.WaitForInput();
             if (repeated != result)
             {
-                ConsoleHelper.WriteError("Strings don't match");
+                AppConsole2.WriteError("Strings don't match");
                 return true;
             }
 

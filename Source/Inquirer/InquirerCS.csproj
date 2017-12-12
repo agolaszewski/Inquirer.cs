@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppConsole.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
     <Compile Include="Builders\Confirm.cs" />
     <Compile Include="Builders\ExtendedBuilder.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Components\DisplayQuestion.cs" />
     <Compile Include="Components\ParseComponent.cs" />
     <Compile Include="Components\DisplayExtendedChoices.cs" />
+    <Compile Include="IConsole.cs" />
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
     <Compile Include="Interfaces\IDisplayError.cs" />
@@ -124,7 +126,7 @@
     <Compile Include="Questions\RawList.cs" />
     <Compile Include="Inquirer.cs" />
     <Compile Include="InquirerMenu.cs" />
-    <Compile Include="ConsoleHelper.cs" />
+    <Compile Include="AppConsoleOld.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

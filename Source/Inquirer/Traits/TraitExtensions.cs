@@ -16,9 +16,9 @@ namespace InquirerCS.Traits
             trait.Confirm = new NoConfirmationComponent<TResult>();
         }
 
-        public static void Confirm<TResult>(this IConfirmTrait<TResult> trait, IConvertToStringTrait<TResult> convert)
+        public static void Confirm<TResult>(this IConfirmTrait<TResult> trait, IConvertToStringTrait<TResult> convert, IConsole console)
         {
-            trait.Confirm = new ConfirmComponent<TResult>(convert);
+            trait.Confirm = new ConfirmComponent<TResult>(convert, console);
         }
 
         public static void ConvertToString<TResult>(this IConvertToStringTrait<TResult> trait)

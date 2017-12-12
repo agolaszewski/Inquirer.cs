@@ -27,7 +27,7 @@ namespace InquirerCS.Components
                         {
                             if (stringBuilder.Any())
                             {
-                                ConsoleHelper.PositionWrite(" ", Console.CursorLeft, Console.CursorTop);
+                                AppConsole2.PositionWrite(" ", Console.CursorLeft, Console.CursorTop);
                                 Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                                 stringBuilder.Pop();
                                 break;
@@ -39,7 +39,7 @@ namespace InquirerCS.Components
 
                     default:
                         {
-                            ConsoleHelper.PositionWrite("*", Console.CursorLeft - 1, Console.CursorTop);
+                            AppConsole2.PositionWrite("*", Console.CursorLeft - 1, Console.CursorTop);
                             stringBuilder.Push(key.KeyChar);
                             break;
                         }

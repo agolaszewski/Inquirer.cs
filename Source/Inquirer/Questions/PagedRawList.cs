@@ -58,7 +58,7 @@ namespace InquirerCS.Questions
             _renderChoices.Render();
 
             Console.WriteLine();
-            ConsoleHelper.Write("Answer: ");
+            AppConsole2.Write("Answer: ");
             StringOrKey value = _inputComponent.WaitForInput();
             _onKey.OnKey(value.InterruptKey);
 

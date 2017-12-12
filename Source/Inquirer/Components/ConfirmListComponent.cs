@@ -28,7 +28,7 @@ namespace InquirerCS.Components
             sb.Append(string.Join(", ", result.Select(item => _convert.Convert.Run(item))));
             sb.Append("]");
 
-            ConsoleHelper.WriteLine(sb.ToString());
+            AppConsole2.WriteLine(sb.ToString());
             ConsoleKeyInfo key = default(ConsoleKeyInfo);
             do
             {

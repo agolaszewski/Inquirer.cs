@@ -8,7 +8,7 @@ namespace InquirerCS.Components
         public void Render(string errorMessage)
         {
             Console.Clear();
-            ConsoleHelper.WriteError(errorMessage);
+            AppConsole2.WriteError(errorMessage);
             Console.ReadKey();
         }
     }

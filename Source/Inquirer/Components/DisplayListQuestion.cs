@@ -27,7 +27,7 @@ namespace InquirerCS.Components
             StringBuilder sb = new StringBuilder();
 
             Console.Clear();
-            ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
+            AppConsole2.Write("[?] ", ConsoleColor.Yellow);
 
             sb.Append($"{_message} : ");
             if (_default.Default.HasDefault)

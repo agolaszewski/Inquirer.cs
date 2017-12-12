@@ -22,7 +22,7 @@ namespace InquirerCS.Components
         public void Render()
         {
             Console.Clear();
-            ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
+            AppConsole2.Write("[?] ", ConsoleColor.Yellow);
             var question = $"{_message} [y/n] : ";
             if (_default.Default.HasDefault)
             {

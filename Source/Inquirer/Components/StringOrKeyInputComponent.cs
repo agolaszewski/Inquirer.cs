@@ -21,7 +21,7 @@ namespace InquirerCS.Components
         public StringOrKey WaitForInput()
         {
             ConsoleKey? intteruptedKey;
-            string result = ConsoleHelper.Read(out intteruptedKey, _intteruptedKeys);
+            string result = AppConsole2.Read(out intteruptedKey, _intteruptedKeys);
             return new StringOrKey(result, intteruptedKey);
         }
     }

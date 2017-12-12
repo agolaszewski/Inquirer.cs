@@ -15,11 +15,17 @@ namespace InquirerCS.Builders
         IValidateInputTrait<TInput>,
         IValidateResultTrait<TResult>,
         IWaitForInputTrait<StringOrKey>,
-        IOnKeyTrait where TQuestion : IQuestion<TResult>
+        IOnKeyTrait
+        where TQuestion : IQuestion<TResult>
     {
+        public InputBuilder(IConsole console) : this()
+        {
+            _console = console;
+        }
+
         public InputBuilder()
         {
-            this.Confirm(this);
+            this.Confirm(this, _console);
             this.ConvertToString();
             this.Default();
             this.InputValidate();
@@ -30,6 +36,8 @@ namespace InquirerCS.Builders
         }
 
         public IConfirmComponent<TResult> Confirm { get; set; }
+
+        public IConsole _console { get; set; }
 
         public IConvertToStringComponent<TResult> Convert { get; set; }
 
@@ -53,7 +61,7 @@ namespace InquirerCS.Builders
 
         public virtual InputBuilder<TQuestion, TInput, TResult> WithConfirmation()
         {
-            this.Confirm(this);
+            this.Confirm(this, _console);
             return this;
         }
 
