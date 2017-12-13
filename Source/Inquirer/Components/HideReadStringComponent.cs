@@ -34,19 +34,19 @@ namespace InquirerCS.Components
                         {
                             if (stringBuilder.Any())
                             {
-                                _console.PositionWrite(" ", Console.CursorLeft, Console.CursorTop);
-                                _console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                                _console.PositionWrite(" ", _console.CursorLeft, _console.CursorTop);
+                                _console.SetCursorPosition(_console.CursorLeft - 1, _console.CursorTop);
                                 stringBuilder.Pop();
                                 break;
                             }
 
-                            _console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                            _console.SetCursorPosition(_console.CursorLeft + 1, _console.CursorTop);
                             break;
                         }
 
                     default:
                         {
-                            _console.PositionWrite("*", Console.CursorLeft - 1, Console.CursorTop);
+                            _console.PositionWrite("*", _console.CursorLeft - 1, _console.CursorTop);
                             stringBuilder.Push(key.KeyChar);
                             break;
                         }

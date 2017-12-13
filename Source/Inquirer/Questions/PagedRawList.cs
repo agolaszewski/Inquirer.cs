@@ -26,6 +26,8 @@ namespace InquirerCS.Questions
 
         private IValidateComponent<TResult> _validationResultComponent;
 
+        private IConsole _console;
+
         public PagedRawList(
             IPagingComponent<TResult> pagingComponent,
             IConfirmComponent<TResult> confirmComponent,
@@ -36,7 +38,8 @@ namespace InquirerCS.Questions
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<string> validationInputComponent,
             IDisplayErrorComponent errorComponent,
-              IOnKey onKey)
+            IOnKey onKey,
+            IConsole console)
         {
             _pagingComponent = pagingComponent;
             _confirmComponent = confirmComponent;
@@ -48,6 +51,7 @@ namespace InquirerCS.Questions
             _validationResultComponent = validationResultComponent;
             _errorComponent = errorComponent;
             _onKey = onKey;
+            _console = console;
 
             Console.CursorVisible = false;
         }
@@ -58,7 +62,7 @@ namespace InquirerCS.Questions
             _renderChoices.Render();
 
             Console.WriteLine();
-            AppConsole2.Write("Answer: ");
+            _console.Write("Answer: ");
             StringOrKey value = _inputComponent.WaitForInput();
             _onKey.OnKey(value.InterruptKey);
 

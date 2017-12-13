@@ -42,7 +42,7 @@ namespace InquirerCS.Builders
 
         public override RawList<TResult> Build()
         {
-            return new RawList<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, InputValidators, DisplayError, OnKey);
+            return new RawList<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, InputValidators, DisplayError, OnKey, _console);
         }
 
         public override InputBuilder<RawList<TResult>, string, TResult> WithDefaultValue(TResult defaultValue)

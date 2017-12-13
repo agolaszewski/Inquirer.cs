@@ -4,11 +4,32 @@ using System.Text;
 
 namespace InquirerCS
 {
-    internal class AppConsole : IConsole
+    public class AppConsole : IConsole
     {
+        public int CursorLeft
+        {
+            get
+            {
+                return Console.CursorLeft;
+            }
+        }
+
+        public int CursorTop
+        {
+            get
+            {
+                return Console.CursorTop;
+            }
+        }
+
         public void Clear()
         {
             Console.Clear();
+        }
+
+        public void PositionWrite(string v, object cursorLeft, int cursorTop)
+        {
+            throw new NotImplementedException();
         }
 
         public void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)

@@ -36,7 +36,7 @@ namespace InquirerCS.Components
             do
             {
                 key = _console.ReadKey();
-                _console.SetCursorPosition(0, Console.CursorTop);
+                _console.SetCursorPosition(0, _console.CursorTop);
             }
             while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape);
 

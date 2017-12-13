@@ -10,7 +10,7 @@ namespace InquirerCS.Questions
         private List<TResult> _choices;
 
         private IConfirmComponent<TResult> _confirmComponent;
-
+        private IConsole _console;
         private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
@@ -37,7 +37,8 @@ namespace InquirerCS.Questions
             IValidateComponent<TResult> validationResultComponent,
             IValidateComponent<string> validationInputComponent,
             IDisplayErrorComponent errorComponent,
-              IOnKey onKey)
+            IOnKey onKey,
+            IConsole console)
         {
             _choices = choices;
             _confirmComponent = confirmComponent;
@@ -49,6 +50,7 @@ namespace InquirerCS.Questions
             _validationResultComponent = validationResultComponent;
             _errorComponent = errorComponent;
             _onKey = onKey;
+            _console = console;
 
             Console.CursorVisible = false;
         }
@@ -58,8 +60,8 @@ namespace InquirerCS.Questions
             _displayQuestion.Render();
             _renderChoices.Render();
 
-            Console.WriteLine();
-            AppConsole2.Write("Answer: ");
+            _console.WriteLine();
+            _console.Write("Answer: ");
             var value = _inputComponent.WaitForInput();
             _onKey.OnKey(value.InterruptKey);
 

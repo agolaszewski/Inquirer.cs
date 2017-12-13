@@ -4,9 +4,15 @@ namespace InquirerCS
 {
     public interface IConsole
     {
+        int CursorLeft { get; }
+
+        int CursorTop { get; }
+
         void Clear();
 
         void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White);
+
+        void PositionWrite(string v, object cursorLeft, int cursorTop);
 
         void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White);
 

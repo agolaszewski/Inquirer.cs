@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
@@ -35,13 +36,13 @@ namespace InquirerCS.Builders
             this.OnKey();
         }
 
-        public CheckboxBuilder(string message, List<Selectable<TResult>> choices, IConsole console) : this(console)
+        public CheckboxBuilder(string message, IEnumerable<TResult> choices, IConsole console) : this(console)
         {
-            _choices = choices;
+            _choices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
 
             this.RenderQuestion(message, this, this, _console);
-            this.RenderChoices(choices, this, _console);
-            this.Parse(choices);
+            this.RenderChoices(_choices, this, _console);
+            this.Parse(_choices);
         }
 
         public IConfirmComponent<List<TResult>> Confirm { get; set; }

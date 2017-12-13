@@ -23,6 +23,10 @@ namespace Tests
             }
         }
 
+        public int CursorTop { get { return _currentY; } }
+
+        public int CursorLeft { get { return 0; } }
+
         public AssertConsole()
         {
         }
@@ -107,7 +111,11 @@ namespace Tests
 
         public void SetCursorPosition(int v, int cursorTop)
         {
-            
+        }
+
+        public void PositionWrite(string v, object cursorLeft, int cursorTop)
+        {
+            throw new NotImplementedException();
         }
     }
 }

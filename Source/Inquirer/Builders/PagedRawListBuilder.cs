@@ -36,7 +36,7 @@ namespace InquirerCS.Builders
 
         public new PagedRawList<TResult> Build()
         {
-            return new PagedRawList<TResult>(Paging, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, InputValidators, DisplayError, OnKey);
+            return new PagedRawList<TResult>(Paging, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, InputValidators, DisplayError, OnKey, _console);
         }
     }
 }
