@@ -7,6 +7,7 @@ namespace InquirerCS.Components
     public class ConfirmComponent<TResult> : IConfirmComponent<TResult>
     {
         private IConsole _console;
+
         private IConvertToStringTrait<TResult> _convert;
 
         public ConfirmComponent(IConvertToStringTrait<TResult> convert, IConsole console)

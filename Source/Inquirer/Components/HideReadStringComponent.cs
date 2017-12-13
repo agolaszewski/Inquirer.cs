@@ -7,6 +7,13 @@ namespace InquirerCS.Components
 {
     internal class HideReadStringComponent : IWaitForInputComponent<StringOrKey>
     {
+        private IConsole _console;
+
+        public HideReadStringComponent(IConsole console)
+        {
+            _console = console;
+        }
+
         public StringOrKey WaitForInput()
         {
             Stack<char> stringBuilder = new Stack<char>();
@@ -27,19 +34,19 @@ namespace InquirerCS.Components
                         {
                             if (stringBuilder.Any())
                             {
-                                AppConsole2.PositionWrite(" ", Console.CursorLeft, Console.CursorTop);
-                                Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                                _console.PositionWrite(" ", Console.CursorLeft, Console.CursorTop);
+                                _console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                                 stringBuilder.Pop();
                                 break;
                             }
 
-                            Console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
+                            _console.SetCursorPosition(Console.CursorLeft + 1, Console.CursorTop);
                             break;
                         }
 
                     default:
                         {
-                            AppConsole2.PositionWrite("*", Console.CursorLeft - 1, Console.CursorTop);
+                            _console.PositionWrite("*", Console.CursorLeft - 1, Console.CursorTop);
                             stringBuilder.Push(key.KeyChar);
                             break;
                         }

@@ -16,7 +16,7 @@ namespace InquirerCS.Builders
             _choices = choices.ToList();
             _console = console;
 
-            this.RenderQuestion(message, this, this);
+            this.RenderQuestion(message, this, this, console);
             this.Parse(value =>
             {
                 return _choices[value.To<int>() - 1];

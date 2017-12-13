@@ -32,16 +32,17 @@ namespace InquirerCS.Builders
             this.ConvertToString();
             this.Default();
             this.ResultValidate();
-            this.Input(ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter);
+            this.Input(_console, ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter);
             this.OnKey();
         }
 
         public PagedCheckboxBuilder(string message, List<Selectable<TResult>> choices, int pageSize, IConsole console) : this(console)
         {
             _choices = choices;
+
             this.Paging(choices, pageSize);
-            this.RenderQuestion(message, this, this);
-            this.RenderChoices(this, this);
+            this.RenderQuestion(message, this, this, _console);
+            this.RenderChoices(this, this, _console);
             this.Parse(this);
         }
 

@@ -6,11 +6,11 @@ namespace InquirerCS.Builders
 {
     public class InputStringBuilder : InputBuilder<Input<string>, string, string>
     {
-        public InputStringBuilder(string message)
+        public InputStringBuilder(string message, IConsole console) : base(console)
         {
-            this.RenderQuestion(message, this, this);
+            this.RenderQuestion(message, this, this, _console);
             this.Parse(value => { return value; });
-            this.Input(ConsoleKey.Escape);
+            this.Input(_console, ConsoleKey.Escape);
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
         }

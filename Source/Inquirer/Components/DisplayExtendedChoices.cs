@@ -10,12 +10,15 @@ namespace InquirerCS.Components
 
         private Dictionary<ConsoleKey, TResult> _choicesDictionary;
 
+        private IConsole _console;
+
         private IConvertToStringComponent<TResult> _convertToStringComponent;
 
-        public DisplayExtendedChoices(Dictionary<ConsoleKey, TResult> choicesDictionary, IConvertToStringComponent<TResult> convertToString)
+        public DisplayExtendedChoices(Dictionary<ConsoleKey, TResult> choicesDictionary, IConvertToStringComponent<TResult> convertToString, IConsole console)
         {
             _choicesDictionary = choicesDictionary;
             _convertToStringComponent = convertToString;
+            _console = console;
         }
 
         public void Render()
@@ -23,7 +26,7 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (var choice in _choicesDictionary)
             {
-                AppConsole2.PositionWriteLine($"[{choice.Key}] {_convertToStringComponent.Run(choice.Value)}", 0, index + _CURSOR_OFFSET);
+                _console.PositionWriteLine($"[{choice.Key}] {_convertToStringComponent.Run(choice.Value)}", 0, index + _CURSOR_OFFSET);
                 index++;
             }
         }

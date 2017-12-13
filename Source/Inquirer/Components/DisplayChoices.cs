@@ -11,7 +11,9 @@ namespace InquirerCS.Components
         private const int _CURSOR_OFFSET = 2;
 
         private List<TResult> _choices;
+
         private IConsole _console;
+
         private IConvertToStringTrait<TResult> _convert;
 
         public DisplayChoices(List<TResult> choices, IConvertToStringTrait<TResult> convert, IConsole console)

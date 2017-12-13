@@ -11,9 +11,9 @@ namespace InquirerCS.Builders
             _console = console;
 
             this.Confirm();
-            this.RenderQuestion(message, this, this);
+            this.RenderQuestion(message, this, this, console);
             this.Parse(value => { return value; });
-            this.PasswordInput();
+            this.PasswordInput(_console);
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
         }

@@ -63,9 +63,7 @@
     <Compile Include="Builders\RawListBuilder.cs" />
     <Compile Include="Components\DisplayConfirmQuestion.cs" />
     <Compile Include="Components\OnEscape.cs" />
-    <Compile Include="Components\Extensions.cs" />
     <Compile Include="Components\DisplayPagedListComponent.cs" />
-    <Compile Include="Components\ExtensionsCheckbox.cs" />
     <Compile Include="Components\OnNothing.cs" />
     <Compile Include="Components\StringOrKeyInputComponent.cs" />
     <Compile Include="Components\StringOrKey.cs" />
@@ -87,13 +85,11 @@
     <Compile Include="Components\ParseListComponent.cs" />
     <Compile Include="Components\ParseSelectableListComponent.cs" />
     <Compile Include="Components\ParseStructComponent.cs" />
-    <Compile Include="Components\ReadConsoleKey.cs" />
     <Compile Include="Components\DisplayChoices.cs" />
     <Compile Include="Components\SelectableListChoices.cs" />
     <Compile Include="Components\Selectable.cs" />
     <Compile Include="Components\ValidationComponent.cs" />
     <Compile Include="Components\ValidationResult.cs" />
-    <Compile Include="Components\ReadStringComponent.cs" />
     <Compile Include="Components\DisplayQuestion.cs" />
     <Compile Include="Components\ParseComponent.cs" />
     <Compile Include="Components\DisplayExtendedChoices.cs" />

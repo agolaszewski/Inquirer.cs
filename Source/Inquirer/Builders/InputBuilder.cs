@@ -18,11 +18,6 @@ namespace InquirerCS.Builders
         IOnKeyTrait
         where TQuestion : IQuestion<TResult>
     {
-        public InputBuilder(IConsole console) : this()
-        {
-            _console = console;
-        }
-
         public InputBuilder()
         {
             this.Confirm(this, _console);
@@ -30,14 +25,19 @@ namespace InquirerCS.Builders
             this.Default();
             this.InputValidate();
             this.ResultValidate();
-            this.Input();
+            this.Input(_console);
             this.OnKey();
-            this.RenderError();
+            this.RenderError(_console);
         }
 
-        public IConfirmComponent<TResult> Confirm { get; set; }
+        public InputBuilder(IConsole console) : this()
+        {
+            _console = console;
+        }
 
         public IConsole _console { get; set; }
+
+        public IConfirmComponent<TResult> Confirm { get; set; }
 
         public IConvertToStringComponent<TResult> Convert { get; set; }
 

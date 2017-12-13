@@ -20,6 +20,7 @@ namespace InquirerCS.Builders
         IOnKeyTrait where TResult : IComparable
     {
         private List<Selectable<TResult>> _choices;
+
         private IConsole _console;
 
         public CheckboxBuilder(IConsole console)
@@ -30,15 +31,16 @@ namespace InquirerCS.Builders
             this.ConvertToString();
             this.Default();
             this.ResultValidate();
-            this.Input(ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            this.Input(_console, ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
             this.OnKey();
         }
 
         public CheckboxBuilder(string message, List<Selectable<TResult>> choices, IConsole console) : this(console)
         {
             _choices = choices;
-            this.RenderQuestion(message, this, this);
-            this.RenderChoices(choices, this);
+
+            this.RenderQuestion(message, this, this, _console);
+            this.RenderChoices(choices, this, _console);
             this.Parse(choices);
         }
 

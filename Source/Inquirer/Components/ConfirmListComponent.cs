@@ -9,8 +9,9 @@ namespace InquirerCS.Components
 {
     public class ConfirmListComponent<TList, TResult> : IConfirmComponent<TList> where TList : IEnumerable<TResult>
     {
-        private IConvertToStringTrait<TResult> _convert;
         private IConsole _console;
+
+        private IConvertToStringTrait<TResult> _convert;
 
         public ConfirmListComponent(IConvertToStringTrait<TResult> convert, IConsole console)
         {
