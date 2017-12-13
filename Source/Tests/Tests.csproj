@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="AssertConsole.cs" />
     <Compile Include="ConfirmListTests.cs" />
+    <Compile Include="ConfirmPasswordComponentTests.cs" />
     <Compile Include="ConfirmTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

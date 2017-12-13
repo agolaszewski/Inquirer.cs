@@ -22,7 +22,7 @@ namespace InquirerCS.Builders
 
         public override InputBuilder<Input<string>, string, string> WithConfirmation()
         {
-            Confirm = new ConfirmPasswordComponent(new ReadStringComponent());
+            Confirm = new ConfirmPasswordComponent(new ReadStringComponent(),);
             return this;
         }
     }

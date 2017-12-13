@@ -5,22 +5,24 @@ namespace InquirerCS.Components
 {
     internal class ConfirmPasswordComponent : IConfirmComponent<string>
     {
+        private IConsole _console;
         private IWaitForInputComponent<string> _input;
 
-        public ConfirmPasswordComponent(IWaitForInputComponent<string> inputComponent)
+        public ConfirmPasswordComponent(IWaitForInputComponent<string> inputComponent, IConsole console)
         {
             _input = inputComponent;
+            _console = console;
         }
 
         public bool Confirm(string result)
         {
-            Console.Clear();
-            AppConsole2.Write("Type again : ");
+            _console.Clear();
+            _console.Write("Type again : ");
 
             var repeated = _input.WaitForInput();
             if (repeated != result)
             {
-                AppConsole2.WriteError("Strings don't match");
+                _console.WriteError("Strings don't match");
                 return true;
             }
 
