@@ -18,7 +18,7 @@ namespace InquirerCS.Components
         public bool Confirm(TResult result)
         {
             _console.Clear();
-            _console.WriteLine($"Are you sure? [y/n] : {_convert.Convert.Run(result)} ");
+            _console.WriteLine($"Are you sure? [y/n] : {_convert.Convert.Run(result)}");
             ConsoleKeyInfo key = default(ConsoleKeyInfo);
             do
             {
@@ -29,7 +29,6 @@ namespace InquirerCS.Components
 
             if (key.Key == ConsoleKey.N || key.Key == ConsoleKey.Escape)
             {
-                _console.WriteLine();
                 return true;
             }
 

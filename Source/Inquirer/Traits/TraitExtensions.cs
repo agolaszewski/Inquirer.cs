@@ -6,9 +6,9 @@ namespace InquirerCS.Traits
 {
     public static class TraitExtensions
     {
-        public static void Confirm<TResult>(this IConfirmTrait<List<TResult>> trait, IConvertToStringTrait<TResult> convert)
+        public static void Confirm<TResult>(this IConfirmTrait<List<TResult>> trait, IConvertToStringTrait<TResult> convert, IConsole console)
         {
-            trait.Confirm = new ConfirmListComponent<List<TResult>, TResult>(convert);
+            trait.Confirm = new ConfirmListComponent<List<TResult>, TResult>(convert, console);
         }
 
         public static void Confirm<TResult>(this IConfirmTrait<TResult> trait)

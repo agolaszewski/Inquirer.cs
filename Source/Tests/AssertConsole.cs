@@ -104,5 +104,10 @@ namespace Tests
 
             buffer[_currentY] = buffer[_currentY].Insert(0, text);
         }
+
+        public void SetCursorPosition(int v, int cursorTop)
+        {
+            
+        }
     }
 }

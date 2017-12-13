@@ -22,9 +22,13 @@ namespace InquirerCS.Builders
     {
         private List<Selectable<TResult>> _choices;
 
-        public PagedCheckboxBuilder()
+        private IConsole _console;
+
+        public PagedCheckboxBuilder(IConsole console)
         {
-            this.Confirm(this);
+            _console = console;
+
+            this.Confirm(this, _console);
             this.ConvertToString();
             this.Default();
             this.ResultValidate();
@@ -32,7 +36,7 @@ namespace InquirerCS.Builders
             this.OnKey();
         }
 
-        public PagedCheckboxBuilder(string message, List<Selectable<TResult>> choices, int pageSize) : this()
+        public PagedCheckboxBuilder(string message, List<Selectable<TResult>> choices, int pageSize, IConsole console) : this(console)
         {
             _choices = choices;
             this.Paging(choices, pageSize);
@@ -70,7 +74,7 @@ namespace InquirerCS.Builders
 
         public virtual PagedCheckboxBuilder<TResult> WithConfirmation()
         {
-            this.Confirm(this);
+            this.Confirm(this, _console);
             return this;
         }
 

@@ -125,6 +125,11 @@ namespace InquirerCS
             return key;
         }
 
+        public void SetCursorPosition(int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+        }
+
         public void Write(string text, ConsoleColor color = ConsoleColor.White)
         {
             Console.ForegroundColor = color;

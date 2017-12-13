@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
@@ -9,48 +10,27 @@ using Xunit;
 namespace Tests
 {
     [Category("Confirm")]
-    public class ConfirmComponentShould : IClassFixture<ConfirmFixture<string>>
+    public class ConfirmListComponentShould : IClassFixture<ConfirmListFixture<string>>
     {
-        private ConfirmFixture<string> _fixture;
+        private ConfirmListFixture<string> _fixture;
 
-        public ConfirmComponentShould(ConfirmFixture<string> fixture)
+        public ConfirmListComponentShould(ConfirmListFixture<string> fixture)
         {
             _fixture = fixture;
+        }
+
+        [Fact]
+        public void Be_Type_ConfirmListComponent()
+        {
+            _fixture.Confirm(_fixture, _fixture.Console);
+            _fixture.Confirm.ShouldBeType(typeof(ConfirmListComponent<List<string>, string>));
         }
 
         [Fact]
         public void Always_Return_False_When_NoConfirmationComponent()
         {
             _fixture.Confirm();
-            _fixture.Confirm.Confirm("Test").ShouldBeFalse();
-        }
-
-        [Fact]
-        public void Be_Type_ConfirmComponent()
-        {
-            _fixture.Confirm(_fixture, _fixture.Console);
-            _fixture.Confirm.ShouldBeType(typeof(ConfirmComponent<string>));
-        }
-
-        [Fact]
-        public void Be_Type_NoConfirmationComponent()
-        {
-            _fixture.Confirm();
-            _fixture.Confirm.ShouldBeType(typeof(NoConfirmationComponent<string>));
-        }
-
-        [Theory]
-        [InlineData(ConsoleKey.Y)]
-        [InlineData(ConsoleKey.N)]
-        public void Display(ConsoleKey key)
-        {
-            _fixture.Confirm(_fixture, _fixture.Console);
-            _fixture.ConvertToString();
-
-            _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
-
-            _fixture.Confirm.Confirm("Test");
-            _fixture.Console.ExceptedResult.ShouldEqual("Are you sure? [y/n] : Test");
+            _fixture.Confirm.Confirm(_fixture.TestValues).ShouldBeFalse();
         }
 
         [Theory]
@@ -63,7 +43,7 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm("Test").ShouldBeFalse();
+            _fixture.Confirm.Confirm(_fixture.TestValues).ShouldBeFalse();
         }
 
         [Theory]
@@ -76,7 +56,7 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm("Test").ShouldBeTrue();
+            _fixture.Confirm.Confirm(_fixture.TestValues).ShouldBeTrue();
         }
 
         [Fact]
@@ -92,20 +72,36 @@ namespace Tests
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)ConsoleKey.Enter, ConsoleKey.Enter, false, false, false));
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)ConsoleKey.B, ConsoleKey.B, false, false, false));
 
-            _fixture.Confirm.Confirm("Test");
+            _fixture.Confirm.Confirm(_fixture.TestValues);
 
             _fixture.Console.ReadKeyValue.Count.ShouldEqual(1);
             _fixture.Console.ReadKeyValue.Peek().Key.ShouldEqual(ConsoleKey.B);
         }
+
+        [Theory]
+        [InlineData(ConsoleKey.Y)]
+        [InlineData(ConsoleKey.N)]
+        public void Display(ConsoleKey key)
+        {
+            _fixture.Confirm(_fixture, _fixture.Console);
+            _fixture.ConvertToString();
+
+            _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
+
+            _fixture.Confirm.Confirm(_fixture.TestValues);
+            _fixture.Console.ExceptedResult.ShouldEqual("Are you sure? [y/n] : [Yes, No, Maybe, Not Sure]");
+        }
     }
 
-    public class ConfirmFixture<TResult> : IConfirmTrait<TResult>, IConvertToStringTrait<TResult>
+    public class ConfirmListFixture<TResult> : IConfirmTrait<List<TResult>>, IConvertToStringTrait<TResult>
     {
-        public ConfirmFixture()
+        public ConfirmListFixture()
         {
         }
 
-        public IConfirmComponent<TResult> Confirm { get; set; }
+        public List<string> TestValues = new List<string>() { "Yes", "No", "Maybe", "Not Sure" };
+
+        public IConfirmComponent<List<TResult>> Confirm { get; set; }
 
         public AssertConsole Console { get; set; } = new AssertConsole();
 
