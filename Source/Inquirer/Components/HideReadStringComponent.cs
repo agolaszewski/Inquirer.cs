@@ -14,6 +14,8 @@ namespace InquirerCS.Components
             _console = console;
         }
 
+        public Func<char, bool> AllowTypeFn { get; set; }
+
         public StringOrKey WaitForInput()
         {
             Stack<char> stringBuilder = new Stack<char>();

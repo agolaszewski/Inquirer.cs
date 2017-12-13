@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using InquirerCS;
-using InquirerCS.Traits;
 
 namespace Sandbox2
 {
     internal class Program
     {
         private static Inquirer _test = new Inquirer();
+
+        private static void Main(string[] args)
+        {
+            ListCheckboxTest();
+        }
 
         private static void ConfirmTest()
         {
@@ -41,7 +45,7 @@ namespace Sandbox2
         {
             var colors = Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>().ToList();
             Question.Checkbox(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()), colors)
-                 .Page(11)
+                 //.Page(11)
                  .WithDefaultValue(colors)
                  .WithConfirmation()
                  .WithValidation(values => values.Any(item => item == ConsoleKey.A), "Choose black")
@@ -75,11 +79,6 @@ namespace Sandbox2
                  .WithConfirmation()
                  .WithValidation(item => item == ConsoleColor.Black, "Choose black")
                  .Build().Prompt();
-        }
-
-        private static void Main(string[] args)
-        {
-            ListCheckboxTest();
         }
 
         private static void PasswordTest()

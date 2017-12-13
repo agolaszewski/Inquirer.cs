@@ -61,7 +61,7 @@ namespace Tests
             return ReadValue;
         }
 
-        public string Read(out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys)
+        public string Read(out ConsoleKey? intteruptedKey, Func<char, bool> allowTypeFn, params ConsoleKey[] interruptKeys)
         {
             intteruptedKey = IntteruptedKey;
             return ReadValue;

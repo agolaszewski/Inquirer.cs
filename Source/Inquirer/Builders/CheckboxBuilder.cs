@@ -28,7 +28,7 @@ namespace InquirerCS.Builders
             this.ConvertToString();
             this.Default();
             this.ResultValidate();
-            this.Input(Console, ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            this.Input(Console, true, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
             this.OnKey();
         }
 

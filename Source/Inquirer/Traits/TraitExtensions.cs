@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using InquirerCS.Components;
 
 namespace InquirerCS.Traits
@@ -56,9 +57,29 @@ namespace InquirerCS.Traits
             trait.Input = new StringOrKeyInputComponent(console);
         }
 
+        public static void Input(this IWaitForInputTrait<StringOrKey> trait, IConsole console, Func<char, bool> allowFn = null, params ConsoleKey[] intteruptedKeys)
+        {
+            trait.Input = new StringOrKeyInputComponent(console, allowFn, intteruptedKeys);
+        }
+
         public static void Input(this IWaitForInputTrait<StringOrKey> trait, IConsole console, params ConsoleKey[] intteruptedKeys)
         {
-            trait.Input = new StringOrKeyInputComponent(console, intteruptedKeys);
+            trait.Input = new StringOrKeyInputComponent(console, null, intteruptedKeys);
+        }
+
+        public static void Input(this IWaitForInputTrait<StringOrKey> trait, IConsole console, bool onlyIntteruptedKeys, params ConsoleKey[] intteruptedKeys)
+        {
+            Func<char, bool> allowFn = null;
+            if (onlyIntteruptedKeys)
+            {
+                List<char> chars = intteruptedKeys.Select(item => (char)item).ToList();
+                allowFn = value =>
+                {
+                    return chars.Any(item => item == value);
+                };
+            }
+
+            trait.Input = new StringOrKeyInputComponent(console, null, intteruptedKeys);
         }
 
         public static void InputValidate<T>(this IValidateInputTrait<T> trait)

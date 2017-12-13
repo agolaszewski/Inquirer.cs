@@ -47,10 +47,10 @@ namespace InquirerCS
         public string Read()
         {
             ConsoleKey? interruptKey;
-            return Read(out interruptKey);
+            return Read(out interruptKey, value => { return true; });
         }
 
-        public string Read(out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys)
+        public string Read(out ConsoleKey? intteruptedKey, Func<char, bool> allowTypeFn, params ConsoleKey[] interruptKeys)
         {
             intteruptedKey = null;
 
@@ -107,7 +107,7 @@ namespace InquirerCS
 
                     default:
                         {
-                            if (!char.IsControl(keyInfo.KeyChar))
+                            if (allowTypeFn(keyInfo.KeyChar))
                             {
                                 stringBuilder.Append(keyInfo.KeyChar);
                                 returnToPreviousLine = false;

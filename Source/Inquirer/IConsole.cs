@@ -18,7 +18,7 @@ namespace InquirerCS
 
         string Read();
 
-        string Read(out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys);
+        string Read(out ConsoleKey? intteruptedKey, Func<char, bool> allowTypeFn, params ConsoleKey[] interruptKeys);
 
         ConsoleKeyInfo ReadKey();
 
