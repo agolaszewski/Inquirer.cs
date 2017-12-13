@@ -7,11 +7,9 @@ namespace InquirerCS.Questions
 {
     public class PagedList<TResult> : IQuestion<TResult>
     {
-        private const int _CURSOR_OFFSET = 2;
-
         private IConfirmComponent<TResult> _confirmComponent;
 
-        private int _cursorPosition = _CURSOR_OFFSET;
+        private int _cursorPosition = Consts.CURSOR_OFFSET;
 
         private IRenderQuestionComponent _displayQuestion;
 
@@ -57,7 +55,7 @@ namespace InquirerCS.Questions
         {
             _displayQuestion.Render();
             _renderChoices.Render();
-            _renderChoices.Select(_cursorPosition - _CURSOR_OFFSET);
+            _renderChoices.Select(_cursorPosition - Consts.CURSOR_OFFSET);
 
             int boundryTop = 2;
             int boundryBottom = boundryTop + _pagingComponent.CurrentPage.Count() - 1;
@@ -91,7 +89,7 @@ namespace InquirerCS.Questions
                             {
                                 if (_pagingComponent.Previous())
                                 {
-                                    _cursorPosition = _pagingComponent.CurrentPage.Count - 1 + _CURSOR_OFFSET;
+                                    _cursorPosition = _pagingComponent.CurrentPage.Count - 1 + Consts.CURSOR_OFFSET;
                                     return Prompt();
                                 }
                             }
@@ -109,7 +107,7 @@ namespace InquirerCS.Questions
                             {
                                 if (_pagingComponent.Next())
                                 {
-                                    _cursorPosition = _CURSOR_OFFSET;
+                                    _cursorPosition = Consts.CURSOR_OFFSET;
                                     return Prompt();
                                 }
                             }
@@ -124,11 +122,11 @@ namespace InquirerCS.Questions
                 }
 
                 _renderChoices.Render();
-                _renderChoices.Select(_cursorPosition - _CURSOR_OFFSET);
+                _renderChoices.Select(_cursorPosition - Consts.CURSOR_OFFSET);
             }
 
         Escape:
-            TResult result = _parseComponent.Parse(_cursorPosition - _CURSOR_OFFSET);
+            TResult result = _parseComponent.Parse(_cursorPosition - Consts.CURSOR_OFFSET);
             var validationResult = _validationComponent.Run(result);
             if (validationResult.HasError)
             {

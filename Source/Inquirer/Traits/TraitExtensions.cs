@@ -143,7 +143,7 @@ namespace InquirerCS.Traits
 
         public static void RenderQuestion<TResult>(this IRenderQuestionTrait trait, string message, IConvertToStringTrait<TResult> convert, IDefaultTrait<TResult> @default, IConsole console)
         {
-            trait.RenderQuestion = new DisplayQuestion<TResult>(message, convert, @default, console);
+            trait.RenderQuestion = new RenderQuestion<TResult>(message, convert, @default, console);
         }
 
         public static void RenderRawChoices<TResult>(this IRenderChoicesTrait<TResult> trait, IPagingTrait<TResult> paging, IConvertToStringTrait<TResult> convert, IConsole console)

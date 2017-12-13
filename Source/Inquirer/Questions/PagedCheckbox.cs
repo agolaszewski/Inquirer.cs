@@ -7,11 +7,9 @@ namespace InquirerCS.Questions
 {
     public class PagedCheckbox<TList, TResult> : IQuestion<TList> where TList : IEnumerable<TResult>
     {
-        private const int _CURSOR_OFFSET = 2;
-
         private IConfirmComponent<TList> _confirmComponent;
 
-        private int _cursorPosition = _CURSOR_OFFSET;
+        private int _cursorPosition;
 
         private IRenderQuestionComponent _displayQuestionComponent;
 
@@ -57,9 +55,12 @@ namespace InquirerCS.Questions
         {
             _displayQuestionComponent.Render();
             _renderchoices.Render();
-            _renderchoices.Select(_cursorPosition - _CURSOR_OFFSET);
 
-            int boundryTop = 2;
+            _cursorPosition = Consts.CURSOR_OFFSET;
+
+            _renderchoices.Select(_cursorPosition - Consts.CURSOR_OFFSET);
+
+            int boundryTop = Consts.CURSOR_OFFSET;
             int boundryBottom = boundryTop + _pagingComponent.CurrentPage.Count - 1;
 
             while (true)
@@ -71,7 +72,7 @@ namespace InquirerCS.Questions
                 {
                     case ConsoleKey.Spacebar:
                         {
-                            _pagingComponent.CurrentPage[_cursorPosition - _CURSOR_OFFSET].IsSelected ^= true;
+                            _pagingComponent.CurrentPage[_cursorPosition - Consts.CURSOR_OFFSET].IsSelected ^= true;
                             break;
                         }
 
@@ -89,7 +90,7 @@ namespace InquirerCS.Questions
                         {
                             if (_pagingComponent.Next())
                             {
-                                _cursorPosition = MathHelper.Clamp(_cursorPosition, _CURSOR_OFFSET, _pagingComponent.CurrentPage.Count - 1 + _CURSOR_OFFSET);
+                                _cursorPosition = MathHelper.Clamp(_cursorPosition, Consts.CURSOR_OFFSET, _pagingComponent.CurrentPage.Count - 1 + Consts.CURSOR_OFFSET);
                                 return Prompt();
                             }
 
@@ -106,7 +107,7 @@ namespace InquirerCS.Questions
                             {
                                 if (_pagingComponent.Previous())
                                 {
-                                    _cursorPosition = _pagingComponent.CurrentPage.Count - 1 + _CURSOR_OFFSET;
+                                    _cursorPosition = _pagingComponent.CurrentPage.Count - 1 + Consts.CURSOR_OFFSET;
                                     return Prompt();
                                 }
                             }
@@ -124,7 +125,7 @@ namespace InquirerCS.Questions
                             {
                                 if (_pagingComponent.Next())
                                 {
-                                    _cursorPosition = _CURSOR_OFFSET;
+                                    _cursorPosition = Consts.CURSOR_OFFSET;
                                     return Prompt();
                                 }
                             }
@@ -139,7 +140,7 @@ namespace InquirerCS.Questions
                 }
 
                 _renderchoices.Render();
-                _renderchoices.Select(_cursorPosition - _CURSOR_OFFSET);
+                _renderchoices.Select(_cursorPosition - Consts.CURSOR_OFFSET);
             }
 
         Escape:

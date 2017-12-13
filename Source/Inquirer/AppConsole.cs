@@ -27,15 +27,15 @@ namespace InquirerCS
             Console.Clear();
         }
 
-        public void PositionWrite(string v, object cursorLeft, int cursorTop)
-        {
-            throw new NotImplementedException();
-        }
-
         public void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
         {
             Console.SetCursorPosition(x, y);
             Write(text, color);
+        }
+
+        public void PositionWrite(string v, object cursorLeft, int cursorTop)
+        {
+            throw new NotImplementedException();
         }
 
         public void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)

@@ -20,32 +20,32 @@ namespace InquirerCS.Builders
         IParseTrait<List<Selectable<TResult>>, List<TResult>>,
         IOnKeyTrait where TResult : IComparable
     {
-        private List<Selectable<TResult>> _choices;
-
-        private IConsole _console;
-
         public CheckboxBuilder(IConsole console)
         {
-            _console = console;
+            Console = console;
 
-            this.Confirm(this, _console);
+            this.Confirm(this, Console);
             this.ConvertToString();
             this.Default();
             this.ResultValidate();
-            this.Input(_console, ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            this.Input(Console, ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
             this.OnKey();
         }
 
         public CheckboxBuilder(string message, IEnumerable<TResult> choices, IConsole console) : this(console)
         {
-            _choices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
+            Choices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
 
-            this.RenderQuestion(message, this, this, _console);
-            this.RenderChoices(_choices, this, _console);
-            this.Parse(_choices);
+            this.RenderQuestion(message, this, this, Console);
+            this.RenderChoices(Choices, this, Console);
+            this.Parse(Choices);
         }
 
+        public List<Selectable<TResult>> Choices { get; set; }
+
         public IConfirmComponent<List<TResult>> Confirm { get; set; }
+
+        public IConsole Console { get; set; }
 
         public IConvertToStringComponent<TResult> Convert { get; set; }
 
@@ -67,12 +67,17 @@ namespace InquirerCS.Builders
 
         public Checkbox<List<TResult>, TResult> Build()
         {
-            return new Checkbox<List<TResult>, TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
+            return new Checkbox<List<TResult>, TResult>(Choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
+        }
+
+        public PagedCheckboxBuilder<TResult> Page(int pageSize)
+        {
+            return new PagedCheckboxBuilder<TResult>(this, pageSize);
         }
 
         public virtual CheckboxBuilder<TResult> WithConfirmation()
         {
-            this.Confirm(this, _console);
+            this.Confirm(this, Console);
             return this;
         }
 
@@ -84,13 +89,13 @@ namespace InquirerCS.Builders
 
         public virtual CheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
         {
-            this.Default(_choices, defaultValues);
+            this.Default(Choices, defaultValues);
             return this;
         }
 
         public virtual CheckboxBuilder<TResult> WithDefaultValue(TResult defaultValue)
         {
-            this.Default(_choices, new List<TResult>() { defaultValue });
+            this.Default(Choices, new List<TResult>() { defaultValue });
             return this;
         }
 

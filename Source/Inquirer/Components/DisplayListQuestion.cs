@@ -41,6 +41,7 @@ namespace InquirerCS.Components
             }
 
             _console.Write(sb.ToString());
+            Consts.CURSOR_OFFSET = _console.CursorTop + 2;
         }
     }
 }

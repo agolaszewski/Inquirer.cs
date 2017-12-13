@@ -8,8 +8,6 @@ namespace InquirerCS.Questions
 {
     public class Listing<TResult> : IQuestion<TResult>
     {
-        private const int _CURSOR_OFFSET = 2;
-
         private List<TResult> _choices;
 
         private IConfirmComponent<TResult> _confirmComponent;
@@ -61,7 +59,7 @@ namespace InquirerCS.Questions
             int boundryTop = 2;
             int boundryBottom = boundryTop + _choices.Count() - 1;
 
-            int cursorPosition = _CURSOR_OFFSET;
+            int cursorPosition = Consts.CURSOR_OFFSET;
 
             while (true)
             {
@@ -78,7 +76,7 @@ namespace InquirerCS.Questions
                             }
 
                             _renderChoices.Render();
-                            _renderChoices.Select(cursorPosition - _CURSOR_OFFSET);
+                            _renderChoices.Select(cursorPosition - Consts.CURSOR_OFFSET);
 
                             break;
                         }
@@ -91,7 +89,7 @@ namespace InquirerCS.Questions
                             }
 
                             _renderChoices.Render();
-                            _renderChoices.Select(cursorPosition - _CURSOR_OFFSET);
+                            _renderChoices.Select(cursorPosition - Consts.CURSOR_OFFSET);
 
                             break;
                         }
@@ -104,7 +102,7 @@ namespace InquirerCS.Questions
             }
 
         Escape:
-            TResult result = _parseComponent.Parse(cursorPosition - _CURSOR_OFFSET);
+            TResult result = _parseComponent.Parse(cursorPosition - Consts.CURSOR_OFFSET);
             var validationResult = _validationComponent.Run(result);
             if (validationResult.HasError)
             {

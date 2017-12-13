@@ -10,7 +10,9 @@ namespace InquirerCS.Questions
         private List<TResult> _choices;
 
         private IConfirmComponent<TResult> _confirmComponent;
+
         private IConsole _console;
+
         private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;

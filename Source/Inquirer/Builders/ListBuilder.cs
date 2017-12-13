@@ -12,7 +12,7 @@ namespace InquirerCS.Builders
     {
         private List<TResult> _choices;
 
-        public ListBuilder(string message, IEnumerable<TResult> choices, IConsole console)
+        public ListBuilder(string message, IEnumerable<TResult> choices, IConsole console) : base(console)
         {
             _choices = choices.ToList();
             _console = console;
