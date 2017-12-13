@@ -79,7 +79,7 @@ namespace InquirerCS.Traits
                 };
             }
 
-            trait.Input = new StringOrKeyInputComponent(console, null, intteruptedKeys);
+            trait.Input = new StringOrKeyInputComponent(console, allowFn, intteruptedKeys);
         }
 
         public static void InputValidate<T>(this IValidateInputTrait<T> trait)
