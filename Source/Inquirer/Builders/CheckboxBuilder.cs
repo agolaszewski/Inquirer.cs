@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
@@ -21,22 +22,27 @@ namespace InquirerCS.Builders
     {
         private List<Selectable<TResult>> _choices;
 
-        public CheckboxBuilder()
+        private IConsole _console;
+
+        public CheckboxBuilder(IConsole console)
         {
-            this.Confirm(this);
+            _console = console;
+
+            this.Confirm(this, _console);
             this.ConvertToString();
             this.Default();
             this.ResultValidate();
-            this.Input(ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            this.Input(_console, ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
             this.OnKey();
         }
 
-        public CheckboxBuilder(string message, List<Selectable<TResult>> choices) : this()
+        public CheckboxBuilder(string message, IEnumerable<TResult> choices, IConsole console) : this(console)
         {
-            _choices = choices;
-            this.RenderQuestion(message, this, this);
-            this.RenderChoices(choices, this);
-            this.Parse(choices);
+            _choices = choices.Select(item => new Selectable<TResult>(false, item)).ToList();
+
+            this.RenderQuestion(message, this, this, _console);
+            this.RenderChoices(_choices, this, _console);
+            this.Parse(_choices);
         }
 
         public IConfirmComponent<List<TResult>> Confirm { get; set; }
@@ -66,7 +72,7 @@ namespace InquirerCS.Builders
 
         public virtual CheckboxBuilder<TResult> WithConfirmation()
         {
-            this.Confirm(this);
+            this.Confirm(this, _console);
             return this;
         }
 

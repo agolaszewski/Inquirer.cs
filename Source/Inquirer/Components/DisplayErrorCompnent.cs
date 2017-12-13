@@ -5,10 +5,17 @@ namespace InquirerCS.Components
 {
     public class DisplayErrorCompnent : IDisplayErrorComponent
     {
+        private IConsole _console;
+
+        public DisplayErrorCompnent(IConsole console)
+        {
+            _console = console;
+        }
+
         public void Render(string errorMessage)
         {
             Console.Clear();
-            ConsoleHelper.WriteError(errorMessage);
+            _console.WriteError(errorMessage);
             Console.ReadKey();
         }
     }

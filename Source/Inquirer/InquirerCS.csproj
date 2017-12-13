@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppConsole.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
     <Compile Include="Builders\Confirm.cs" />
     <Compile Include="Builders\ExtendedBuilder.cs" />
@@ -62,9 +63,7 @@
     <Compile Include="Builders\RawListBuilder.cs" />
     <Compile Include="Components\DisplayConfirmQuestion.cs" />
     <Compile Include="Components\OnEscape.cs" />
-    <Compile Include="Components\Extensions.cs" />
     <Compile Include="Components\DisplayPagedListComponent.cs" />
-    <Compile Include="Components\ExtensionsCheckbox.cs" />
     <Compile Include="Components\OnNothing.cs" />
     <Compile Include="Components\StringOrKeyInputComponent.cs" />
     <Compile Include="Components\StringOrKey.cs" />
@@ -73,7 +72,6 @@
     <Compile Include="Components\ParseSelectablePagedListComponent.cs" />
     <Compile Include="Components\DisplaRawChoices.cs" />
     <Compile Include="Components\DefaultSelectedValueComponent.cs" />
-    <Compile Include="Components\DefaultDictionaryValue.cs" />
     <Compile Include="Components\ConfirmListComponent.cs" />
     <Compile Include="Components\ConfirmComponent.cs" />
     <Compile Include="Components\ConfirmPasswordComponent.cs" />
@@ -87,16 +85,15 @@
     <Compile Include="Components\ParseListComponent.cs" />
     <Compile Include="Components\ParseSelectableListComponent.cs" />
     <Compile Include="Components\ParseStructComponent.cs" />
-    <Compile Include="Components\ReadConsoleKey.cs" />
     <Compile Include="Components\DisplayChoices.cs" />
     <Compile Include="Components\SelectableListChoices.cs" />
     <Compile Include="Components\Selectable.cs" />
     <Compile Include="Components\ValidationComponent.cs" />
     <Compile Include="Components\ValidationResult.cs" />
-    <Compile Include="Components\ReadStringComponent.cs" />
     <Compile Include="Components\DisplayQuestion.cs" />
     <Compile Include="Components\ParseComponent.cs" />
     <Compile Include="Components\DisplayExtendedChoices.cs" />
+    <Compile Include="IConsole.cs" />
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
     <Compile Include="Interfaces\IDisplayError.cs" />
@@ -107,6 +104,7 @@
     <Compile Include="Interfaces\IValidationResult.cs" />
     <Compile Include="Interfaces\IWaitForInputComponent.cs" />
     <Compile Include="Interfaces\IRenderChoicesComponent.cs" />
+    <Compile Include="Question.cs" />
     <Compile Include="Questions\PagedCheckbox.cs" />
     <Compile Include="Questions\Checkbox.cs" />
     <Compile Include="Questions\ExtendedList.cs" />
@@ -124,7 +122,6 @@
     <Compile Include="Questions\RawList.cs" />
     <Compile Include="Inquirer.cs" />
     <Compile Include="InquirerMenu.cs" />
-    <Compile Include="ConsoleHelper.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

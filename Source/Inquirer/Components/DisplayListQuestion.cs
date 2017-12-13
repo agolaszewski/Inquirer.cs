@@ -9,25 +9,28 @@ namespace InquirerCS.Components
 {
     public class DisplayListQuestion<TList, TResult> : IRenderQuestionComponent where TList : IEnumerable<TResult>
     {
+        private IConsole _console;
+
         private IConvertToStringTrait<TResult> _convert;
 
         private IDefaultTrait<List<TResult>> _default;
 
         private string _message;
 
-        public DisplayListQuestion(string message, IConvertToStringTrait<TResult> convert, IDefaultTrait<List<TResult>> @default)
+        public DisplayListQuestion(string message, IConvertToStringTrait<TResult> convert, IDefaultTrait<List<TResult>> @default, IConsole console)
         {
             _message = message;
             _convert = convert;
             _default = @default;
+            _console = console;
         }
 
         public void Render()
         {
             StringBuilder sb = new StringBuilder();
 
-            Console.Clear();
-            ConsoleHelper.Write("[?] ", ConsoleColor.Yellow);
+            _console.Clear();
+            _console.Write("[?] ", ConsoleColor.Yellow);
 
             sb.Append($"{_message} : ");
             if (_default.Default.HasDefault)
@@ -37,7 +40,7 @@ namespace InquirerCS.Components
                 sb.Append("]");
             }
 
-            Console.Write(sb.ToString());
+            _console.Write(sb.ToString());
         }
     }
 }

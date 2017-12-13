@@ -11,12 +11,15 @@ namespace InquirerCS.Components
 
         private List<TResult> _choices;
 
+        private IConsole _console;
+
         private IConvertToStringTrait<TResult> _convert;
 
-        public DisplaRawChoices(List<TResult> choices, IConvertToStringTrait<TResult> convert)
+        public DisplaRawChoices(List<TResult> choices, IConvertToStringTrait<TResult> convert, IConsole console)
         {
             _choices = choices;
             _convert = convert;
+            _console = console;
         }
 
         public void Render()
@@ -24,14 +27,14 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (TResult choice in _choices)
             {
-                ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(choice)}", 0, index + _CURSOR_OFFSET);
+                _console.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(choice)}", 0, index + _CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            ConsoleHelper.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(_choices[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            _console.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(_choices[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
         }
     }
 }

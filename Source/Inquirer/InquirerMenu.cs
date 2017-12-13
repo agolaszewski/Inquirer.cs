@@ -25,91 +25,91 @@ namespace InquirerCS
 
         public void Prompt()
         {
-            if (_options.Count == 0)
-            {
-                throw new Exception("No options defined");
-            }
+            ////if (_options.Count == 0)
+            ////{
+            ////    throw new Exception("No options defined");
+            ////}
 
-            Console.Clear();
-            ConsoleHelper.WriteLine(_header + " :");
-            ConsoleHelper.WriteLine();
+            ////Console.Clear();
+            ////AppConsole2.WriteLine(_header + " :");
+            ////AppConsole2.WriteLine();
 
-            ConsoleHelper.WriteLine("  " + DisplayChoice(0), ConsoleColor.DarkYellow);
-            for (int i = 1; i < _options.Count; i++)
-            {
-                ConsoleHelper.WriteLine("  " + DisplayChoice(i));
-            }
+            ////AppConsole2.WriteLine("  " + DisplayChoice(0), ConsoleColor.DarkYellow);
+            ////for (int i = 1; i < _options.Count; i++)
+            ////{
+            ////    AppConsole2.WriteLine("  " + DisplayChoice(i));
+            ////}
 
-            Console.CursorVisible = false;
+            ////Console.CursorVisible = false;
 
-            int boundryTop = Console.CursorTop - _options.Count;
-            int boundryBottom = boundryTop + _options.Count - 1;
+            ////int boundryTop = _console - _options.Count;
+            ////int boundryBottom = boundryTop + _options.Count - 1;
 
-            ConsoleHelper.PositionWrite("→", 0, boundryTop);
+            ////AppConsole2.PositionWrite("→", 0, boundryTop);
 
-            bool move = true;
-            while (move)
-            {
-                int y = Console.CursorTop;
+            ////bool move = true;
+            ////while (move)
+            ////{
+            ////    int y = _console;
 
-                bool isCanceled = false;
-                var key = ConsoleHelper.ReadKey(out isCanceled);
-                if (isCanceled)
-                {
-                    if (_inquirer.History.Count > 1)
-                    {
-                        _inquirer.History.Pop();
-                        _inquirer.Next(_inquirer.History.Pop());
-                    }
-                    else
-                    {
-                        _inquirer.Next(_inquirer.History.Pop());
-                    }
+            ////    bool isCanceled = false;
+            ////    var key = AppConsole2.ReadKey(out isCanceled);
+            ////    if (isCanceled)
+            ////    {
+            ////        if (_inquirer.History.Count > 1)
+            ////        {
+            ////            _inquirer.History.Pop();
+            ////            _inquirer.Next(_inquirer.History.Pop());
+            ////        }
+            ////        else
+            ////        {
+            ////            _inquirer.Next(_inquirer.History.Pop());
+            ////        }
 
-                    return;
-                }
+            ////        return;
+            ////    }
 
-                Console.SetCursorPosition(0, y);
-                ConsoleHelper.Write("  " + DisplayChoice(y - boundryTop));
-                Console.SetCursorPosition(0, y);
+            ////    Console.SetCursorPosition(0, y);
+            ////    AppConsole2.Write("  " + DisplayChoice(y - boundryTop));
+            ////    Console.SetCursorPosition(0, y);
 
-                switch (key)
-                {
-                    case (ConsoleKey.UpArrow):
-                        {
-                            if (y > boundryTop)
-                            {
-                                y -= 1;
-                            }
+            ////    switch (key)
+            ////    {
+            ////        case (ConsoleKey.UpArrow):
+            ////            {
+            ////                if (y > boundryTop)
+            ////                {
+            ////                    y -= 1;
+            ////                }
 
-                            break;
-                        }
+            ////                break;
+            ////            }
 
-                    case (ConsoleKey.DownArrow):
-                        {
-                            if (y < boundryBottom)
-                            {
-                                y += 1;
-                            }
+            ////        case (ConsoleKey.DownArrow):
+            ////            {
+            ////                if (y < boundryBottom)
+            ////                {
+            ////                    y += 1;
+            ////                }
 
-                            break;
-                        }
+            ////                break;
+            ////            }
 
-                    case (ConsoleKey.Enter):
-                        {
-                            Console.CursorVisible = true;
-                            var answer = _options[Console.CursorTop - boundryTop];
-                            move = false;
-                            _inquirer.Next(answer.Item2);
+            ////        case (ConsoleKey.Enter):
+            ////            {
+            ////                Console.CursorVisible = true;
+            ////                var answer = _options[_console - boundryTop];
+            ////                move = false;
+            ////                _inquirer.Next(answer.Item2);
 
-                            return;
-                        }
-                }
+            ////                return;
+            ////            }
+            ////    }
 
-                ConsoleHelper.PositionWrite("  " + DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
-                ConsoleHelper.PositionWrite("→", 0, y);
-                Console.SetCursorPosition(0, y);
-            }
+            ////    AppConsole2.PositionWrite("  " + DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
+            ////    AppConsole2.PositionWrite("→", 0, y);
+            ////    Console.SetCursorPosition(0, y);
+            ////}
         }
 
         private string DisplayChoice(int index)

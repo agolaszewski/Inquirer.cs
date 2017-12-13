@@ -13,7 +13,7 @@ namespace Sandbox3
             //new CheckboxBuilder<ConsoleColor>("Test", colors.Select(x => new InquirerCS.Components.Selectable<ConsoleColor>(false, x)).ToList())
             //    .WithDefaultValue(ConsoleColor.Red)
             //    .WithConvertToString(x => x + "Test").Build().Prompt();
-            new PagedListBuilder<ConsoleKey>("test",colors.ToList(),5).WithConfirmation().WithDefaultValue(ConsoleKey.B).Build().Prompt();
+            //new PagedListBuilder<ConsoleKey>("test",colors.ToList(),5).WithConfirmation().WithDefaultValue(ConsoleKey.B).Build().Prompt();
         }
     }
 }

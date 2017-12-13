@@ -9,16 +9,19 @@ namespace InquirerCS.Components
 {
     public class ConfirmListComponent<TList, TResult> : IConfirmComponent<TList> where TList : IEnumerable<TResult>
     {
+        private IConsole _console;
+
         private IConvertToStringTrait<TResult> _convert;
 
-        public ConfirmListComponent(IConvertToStringTrait<TResult> convert)
+        public ConfirmListComponent(IConvertToStringTrait<TResult> convert, IConsole console)
         {
             _convert = convert;
+            _console = console;
         }
 
         public bool Confirm(TList result)
         {
-            Console.Clear();
+            _console.Clear();
 
             StringBuilder sb = new StringBuilder();
 
@@ -28,18 +31,17 @@ namespace InquirerCS.Components
             sb.Append(string.Join(", ", result.Select(item => _convert.Convert.Run(item))));
             sb.Append("]");
 
-            ConsoleHelper.WriteLine(sb.ToString());
+            _console.WriteLine(sb.ToString());
             ConsoleKeyInfo key = default(ConsoleKeyInfo);
             do
             {
-                key = Console.ReadKey();
-                Console.SetCursorPosition(0, Console.CursorTop);
+                key = _console.ReadKey();
+                _console.SetCursorPosition(0, _console.CursorTop);
             }
             while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape);
 
             if (key.Key == ConsoleKey.N || key.Key == ConsoleKey.Escape)
             {
-                Console.WriteLine();
                 return true;
             }
 

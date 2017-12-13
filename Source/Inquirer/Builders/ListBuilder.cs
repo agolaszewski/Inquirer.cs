@@ -12,15 +12,16 @@ namespace InquirerCS.Builders
     {
         private List<TResult> _choices;
 
-        public ListBuilder(string message, IEnumerable<TResult> choices)
+        public ListBuilder(string message, IEnumerable<TResult> choices, IConsole console)
         {
             _choices = choices.ToList();
+            _console = console;
 
-            this.RenderQuestion(message, this, this);
+            this.RenderQuestion(message, this, this, console);
             this.Parse(_choices);
-            this.RenderChoices(_choices, this);
+            this.RenderChoices(_choices, this, _console);
             this.Parse(_choices);
-            this.Input(ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
+            this.Input(_console, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
         }
 
         public IRenderChoices<TResult> RenderChoices { get; set; }

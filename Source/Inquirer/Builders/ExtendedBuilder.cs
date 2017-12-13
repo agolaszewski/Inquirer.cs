@@ -7,9 +7,9 @@ namespace InquirerCS.Builders
 {
     public class ExtendedBuilder : InputBuilder<InputKey<ConsoleKey>, ConsoleKey, ConsoleKey>
     {
-        public ExtendedBuilder(string message, params ConsoleKey[] @params)
+        public ExtendedBuilder(string message, IConsole console, params ConsoleKey[] @params) : base(console)
         {
-            this.RenderQuestion(message, this, this);
+            this.RenderQuestion(message, this, this, _console);
 
             this.Parse(value => { return value; });
 

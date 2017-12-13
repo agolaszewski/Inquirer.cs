@@ -4,27 +4,53 @@ using System.Text;
 
 namespace InquirerCS
 {
-    internal static class ConsoleHelper
+    public class AppConsole : IConsole
     {
-        internal static void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
+        public int CursorLeft
+        {
+            get
+            {
+                return Console.CursorLeft;
+            }
+        }
+
+        public int CursorTop
+        {
+            get
+            {
+                return Console.CursorTop;
+            }
+        }
+
+        public void Clear()
+        {
+            Console.Clear();
+        }
+
+        public void PositionWrite(string v, object cursorLeft, int cursorTop)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
         {
             Console.SetCursorPosition(x, y);
             Write(text, color);
         }
 
-        internal static void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
+        public void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
         {
             Console.SetCursorPosition(x, y);
             WriteLine(text, color);
         }
 
-        internal static string Read()
+        public string Read()
         {
             ConsoleKey? interruptKey;
             return Read(out interruptKey);
         }
 
-        internal static string Read(out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys)
+        public string Read(out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys)
         {
             intteruptedKey = null;
 
@@ -100,17 +126,17 @@ namespace InquirerCS
             return stringBuilder.ToString();
         }
 
-        internal static ConsoleKey ReadKey()
+        public ConsoleKeyInfo ReadKey()
         {
-            return Console.ReadKey().Key;
+            return Console.ReadKey();
         }
 
-        internal static ConsoleKey ReadKey(out bool isCanceled)
+        public ConsoleKeyInfo ReadKey(out bool isCanceled)
         {
             isCanceled = false;
 
-            var key = Console.ReadKey().Key;
-            if (key == ConsoleKey.Escape)
+            var key = Console.ReadKey();
+            if (key.Key == ConsoleKey.Escape)
             {
                 isCanceled = true;
             }
@@ -118,14 +144,19 @@ namespace InquirerCS
             return key;
         }
 
-        internal static void Write(string text, ConsoleColor color = ConsoleColor.White)
+        public void SetCursorPosition(int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+        }
+
+        public void Write(string text, ConsoleColor color = ConsoleColor.White)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ResetColor();
         }
 
-        internal static void WriteError(string error)
+        public void WriteError(string error)
         {
             Write(">> ", ConsoleColor.Red);
             Write(error);
@@ -133,7 +164,7 @@ namespace InquirerCS
             Write("Press any key to continue");
         }
 
-        internal static void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
+        public void WriteLine(string text = " ", ConsoleColor color = ConsoleColor.White)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);

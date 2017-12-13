@@ -8,15 +8,15 @@ namespace InquirerCS.Builders
 {
     public class PagedRawListBuilder<TResult> : RawListBuilder<TResult>, IPagingTrait<TResult> where TResult : IComparable
     {
-        public PagedRawListBuilder(string message, List<TResult> choices, int pageSize) : base(message, choices)
+        public PagedRawListBuilder(string message, List<TResult> choices, int pageSize, IConsole console) : base(message, choices, console)
         {
             this.Parse(value =>
             {
                 return Paging.CurrentPage[value.To<int>() - 1];
             });
-            this.RenderChoices(this, this);
+            this.RenderChoices(this, this, console);
             this.Paging(choices, pageSize);
-            this.Input(ConsoleKey.LeftArrow, ConsoleKey.RightArrow);
+            this.Input(_console, ConsoleKey.LeftArrow, ConsoleKey.RightArrow);
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
             InputValidators.Add(value => { return value.ToN<int>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
@@ -36,7 +36,7 @@ namespace InquirerCS.Builders
 
         public new PagedRawList<TResult> Build()
         {
-            return new PagedRawList<TResult>(Paging, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, InputValidators, DisplayError, OnKey);
+            return new PagedRawList<TResult>(Paging, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, InputValidators, DisplayError, OnKey, _console);
         }
     }
 }

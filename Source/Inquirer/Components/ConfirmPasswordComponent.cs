@@ -1,26 +1,25 @@
-﻿using System;
-using InquirerCS.Interfaces;
+﻿using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    internal class ConfirmPasswordComponent : IConfirmComponent<string>
+    public class ConfirmPasswordComponent : IConfirmComponent<string>
     {
-        private IWaitForInputComponent<string> _input;
+        private IConsole _console;
 
-        public ConfirmPasswordComponent(IWaitForInputComponent<string> inputComponent)
+        public ConfirmPasswordComponent(IConsole console)
         {
-            _input = inputComponent;
+            _console = console;
         }
 
         public bool Confirm(string result)
         {
-            Console.Clear();
-            ConsoleHelper.Write("Type again : ");
+            _console.Clear();
+            _console.Write("Type again : ");
 
-            var repeated = _input.WaitForInput();
+            var repeated = _console.Read();
             if (repeated != result)
             {
-                ConsoleHelper.WriteError("Strings don't match");
+                _console.WriteError("Strings don't match");
                 return true;
             }
 
