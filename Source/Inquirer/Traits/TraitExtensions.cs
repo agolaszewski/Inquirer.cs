@@ -151,9 +151,9 @@ namespace InquirerCS.Traits
             trait.RenderChoices = new DisplaPagedRawChoices<TResult>(paging, convert);
         }
 
-        public static void RenderRawChoices<TResult>(this IRenderChoicesTrait<TResult> trait, List<TResult> choices, IConvertToStringTrait<TResult> convert)
+        public static void RenderRawChoices<TResult>(this IRenderChoicesTrait<TResult> trait, List<TResult> choices, IConvertToStringTrait<TResult> convert, IConsole console)
         {
-            trait.RenderChoices = new DisplaRawChoices<TResult>(choices, convert);
+            trait.RenderChoices = new DisplaRawChoices<TResult>(choices, convert, console);
         }
 
         public static void ResultValidate<T>(this IValidateResultTrait<T> trait)

@@ -8,7 +8,7 @@ namespace InquirerCS.Builders
 {
     public class PagedRawListBuilder<TResult> : RawListBuilder<TResult>, IPagingTrait<TResult> where TResult : IComparable
     {
-        public PagedRawListBuilder(string message, List<TResult> choices, int pageSize) : base(message, choices)
+        public PagedRawListBuilder(string message, List<TResult> choices, int pageSize, IConsole console) : base(message, choices, console)
         {
             this.Parse(value =>
             {

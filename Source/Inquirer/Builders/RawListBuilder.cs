@@ -11,9 +11,10 @@ namespace InquirerCS.Builders
     {
         private List<TResult> _choices;
 
-        public RawListBuilder(string message, IEnumerable<TResult> choices)
+        public RawListBuilder(string message, IEnumerable<TResult> choices, IConsole console)
         {
             _choices = choices.ToList();
+            _console = console;
 
             this.RenderQuestion(message, this, this);
             this.Parse(value =>
@@ -21,7 +22,7 @@ namespace InquirerCS.Builders
                 return _choices[value.To<int>() - 1];
             });
 
-            this.RenderRawChoices(_choices, this);
+            this.RenderRawChoices(_choices, this, _console);
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
             InputValidators.Add(value => { return value.ToN<int>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });

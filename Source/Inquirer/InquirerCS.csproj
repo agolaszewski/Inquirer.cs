@@ -74,7 +74,6 @@
     <Compile Include="Components\ParseSelectablePagedListComponent.cs" />
     <Compile Include="Components\DisplaRawChoices.cs" />
     <Compile Include="Components\DefaultSelectedValueComponent.cs" />
-    <Compile Include="Components\DefaultDictionaryValue.cs" />
     <Compile Include="Components\ConfirmListComponent.cs" />
     <Compile Include="Components\ConfirmComponent.cs" />
     <Compile Include="Components\ConfirmPasswordComponent.cs" />

@@ -80,9 +80,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertConsole.cs" />
-    <Compile Include="ConfirmListTests.cs" />
-    <Compile Include="ConfirmPasswordComponentTests.cs" />
-    <Compile Include="ConfirmTests.cs" />
+    <Compile Include="DefaultSelectedValueComponentShould.cs" />
+    <Compile Include="ConfirmListComponentShould.cs" />
+    <Compile Include="ConfirmPasswordComponentShould.cs" />
+    <Compile Include="ConfirmComponentShould.cs" />
+    <Compile Include="DefaultListValueComponent.cs" />
+    <Compile Include="DefaultValueComponentShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

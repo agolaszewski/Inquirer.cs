@@ -6,8 +6,11 @@ namespace InquirerCS.Builders
 {
     public class PasswordBuilder : InputBuilder<Input<string>, string, string>
     {
-        public PasswordBuilder(string message)
+        public PasswordBuilder(string message, IConsole console)
         {
+            _console = console;
+
+            this.Confirm();
             this.RenderQuestion(message, this, this);
             this.Parse(value => { return value; });
             this.PasswordInput();
@@ -22,7 +25,7 @@ namespace InquirerCS.Builders
 
         public override InputBuilder<Input<string>, string, string> WithConfirmation()
         {
-            Confirm = new ConfirmPasswordComponent(new ReadStringComponent(),);
+            Confirm = new ConfirmPasswordComponent(_console);
             return this;
         }
     }
