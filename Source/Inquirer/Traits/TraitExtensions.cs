@@ -121,14 +121,14 @@ namespace InquirerCS.Traits
             trait.RenderChoices = new DisplaySelectableChoices<TResult>(choices, convert);
         }
 
-        public static void RenderChoices<TResult>(this IRenderChoicesTrait<TResult> trait, List<TResult> choices, IConvertToStringTrait<TResult> convert)
+        public static void RenderChoices<TResult>(this IRenderChoicesTrait<TResult> trait, List<TResult> choices, IConvertToStringTrait<TResult> convert, IConsole console)
         {
-            trait.RenderChoices = new DisplayChoices<TResult>(choices, convert);
+            trait.RenderChoices = new DisplayChoices<TResult>(choices, convert, console);
         }
 
-        public static void RenderConfirmQuestion(this IRenderQuestionTrait trait, string message, IConvertToStringTrait<bool> convert, IDefaultTrait<bool> @default)
+        public static void RenderConfirmQuestion(this IRenderQuestionTrait trait, string message, IConvertToStringTrait<bool> convert, IDefaultTrait<bool> @default, IConsole console)
         {
-            trait.RenderQuestion = new DisplayConfirmQuestion<bool>(message, convert, @default);
+            trait.RenderQuestion = new DisplayConfirmQuestion<bool>(message, convert, @default, console);
         }
 
         public static void RenderError(this IDisplayErrorTrait trait)
@@ -146,9 +146,9 @@ namespace InquirerCS.Traits
             trait.RenderQuestion = new DisplayQuestion<TResult>(message, convert, @default);
         }
 
-        public static void RenderRawChoices<TResult>(this IRenderChoicesTrait<TResult> trait, IPagingTrait<TResult> paging, IConvertToStringTrait<TResult> convert)
+        public static void RenderRawChoices<TResult>(this IRenderChoicesTrait<TResult> trait, IPagingTrait<TResult> paging, IConvertToStringTrait<TResult> convert, IConsole console)
         {
-            trait.RenderChoices = new DisplaPagedRawChoices<TResult>(paging, convert);
+            trait.RenderChoices = new DisplaPagedRawChoices<TResult>(paging, convert, console);
         }
 
         public static void RenderRawChoices<TResult>(this IRenderChoicesTrait<TResult> trait, List<TResult> choices, IConvertToStringTrait<TResult> convert, IConsole console)
