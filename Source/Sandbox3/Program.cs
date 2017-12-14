@@ -11,12 +11,14 @@ namespace Sandbox2
 
         private static void Main(string[] args)
         {
-            ListCheckboxTest();
+            PasswordTest();
         }
 
         private static void ConfirmTest()
         {
-            Question.Confirm("Are you sure?")
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+
+            Question.Confirm(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()))
                 .WithConfirmation()
                 .WithDefaultValue(false)
                 .WithValidation(values => values == true, "You must be sure!")
@@ -26,7 +28,7 @@ namespace Sandbox2
         private static void ExtendedTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            Question.Extended("[Y]es or [N] or [M]aybe", ConsoleKey.Y, ConsoleKey.N, ConsoleKey.M)
+            Question.Extended(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()), ConsoleKey.Y, ConsoleKey.N, ConsoleKey.M)
                  .WithDefaultValue(ConsoleKey.N)
                  .WithConfirmation()
                  .WithValidation(values => values != ConsoleKey.M, "You must be sure").Build().Prompt();
@@ -34,8 +36,10 @@ namespace Sandbox2
 
         private static void InputTest()
         {
-            Question.Input("How are you?")
-                .WithDefaultValue("fine")
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+
+            Question.Input(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()))
+                .WithDefaultValue(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()))
                 .WithConfirmation()
                 .WithValidation(value => value == "fine", "You cannot be not fine!")
                 .Build().Prompt();
@@ -64,9 +68,10 @@ namespace Sandbox2
         private static void ListRawTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            Question.RawList("Choose favourite color", colors)
+            Question.RawList(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()), colors)
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
+                 .WithConvertToString(x => { return x + " Test"; })
                  //.Page(10)
                  .WithValidation(item => item == ConsoleColor.Black, "Choose black").Build().Prompt();
         }
@@ -74,7 +79,7 @@ namespace Sandbox2
         private static void ListTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            Question.List("Choose favourite color", colors)
+            Question.List(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()), colors)
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
                  .WithValidation(item => item == ConsoleColor.Black, "Choose black")
@@ -83,7 +88,9 @@ namespace Sandbox2
 
         private static void PasswordTest()
         {
-            Question.Password("Type password")
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+
+            Question.Password(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()))
                 .WithDefaultValue("123456789")
                 .WithConfirmation()
                 .WithValidation(value => value.Length > 8 && value.Length < 10, "Password length must be between 8-10 characters")

@@ -62,6 +62,12 @@ namespace InquirerCS.Builders
             return this;
         }
 
+        public virtual InputBuilder<TQuestion, TInput, TResult> WithConvertToString(Func<TResult, string> fn)
+        {
+            this.ConvertToString(fn);
+            return this;
+        }
+
         public virtual InputBuilder<TQuestion, TInput, TResult> WithDefaultValue(TResult defaultValue)
         {
             Default = new DefaultValueComponent<TResult>(defaultValue);

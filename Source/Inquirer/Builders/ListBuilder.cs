@@ -8,7 +8,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Builders
 {
-    public class ListBuilder<TResult> : InputBuilder<Listing<TResult>, int, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
+    public class ListBuilder<TResult> : InputBuilder<ConsoleList<TResult>, int, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
     {
         private List<TResult> _choices;
 
@@ -21,17 +21,17 @@ namespace InquirerCS.Builders
             this.Parse(_choices);
             this.RenderChoices(_choices, this, _console);
             this.Parse(_choices);
-            this.Input(_console, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
+            this.Input(_console, true, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
         }
 
         public IRenderChoices<TResult> RenderChoices { get; set; }
 
-        public override Listing<TResult> Build()
+        public override ConsoleList<TResult> Build()
         {
-            return new Listing<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
+            return new ConsoleList<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
 
-        public override InputBuilder<Listing<TResult>, int, TResult> WithDefaultValue(TResult defaultValue)
+        public override InputBuilder<ConsoleList<TResult>, int, TResult> WithDefaultValue(TResult defaultValue)
         {
             Default = new DefaultListValueComponent<TResult>(_choices, defaultValue);
             return this;

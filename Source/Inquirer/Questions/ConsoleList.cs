@@ -6,7 +6,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Questions
 {
-    public class Listing<TResult> : IQuestion<TResult>
+    public class ConsoleList<TResult> : IQuestion<TResult>
     {
         private List<TResult> _choices;
 
@@ -26,16 +26,16 @@ namespace InquirerCS.Questions
 
         private IValidateComponent<TResult> _validationComponent;
 
-        public Listing(
+        public ConsoleList(
             List<TResult> choices,
             IConfirmComponent<TResult> confirmComponent,
             IRenderQuestionComponent displayQuestion,
-             IWaitForInputComponent<StringOrKey> inputComponent,
+            IWaitForInputComponent<StringOrKey> inputComponent,
             IParseComponent<int, TResult> parseComponent,
             IRenderChoices<TResult> renderChoices,
             IValidateComponent<TResult> validationComponent,
             IDisplayErrorComponent errorComponent,
-              IOnKey onKey)
+            IOnKey onKey)
         {
             _choices = choices;
             _confirmComponent = confirmComponent;
@@ -56,7 +56,7 @@ namespace InquirerCS.Questions
             _renderChoices.Render();
             _renderChoices.Select(0);
 
-            int boundryTop = 2;
+            int boundryTop = Consts.CURSOR_OFFSET;
             int boundryBottom = boundryTop + _choices.Count() - 1;
 
             int cursorPosition = Consts.CURSOR_OFFSET;

@@ -114,6 +114,7 @@ namespace InquirerCS
                             }
                             else
                             {
+                                PositionWrite(" ", Console.CursorLeft - 1, Console.CursorTop);
                                 Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                             }
 

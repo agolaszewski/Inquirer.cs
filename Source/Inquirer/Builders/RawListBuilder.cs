@@ -36,6 +36,8 @@ namespace InquirerCS.Builders
             {
                 return $"Choosen number must be between 1 and {_choices.Count}";
             });
+
+            this.Input(_console, value => { return char.IsNumber(value); });
         }
 
         public IRenderChoices<TResult> RenderChoices { get; set; }

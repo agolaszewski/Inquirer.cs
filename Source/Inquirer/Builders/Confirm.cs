@@ -14,7 +14,7 @@ namespace InquirerCS.Builders
             {
                 return value ? "yes" : "no";
             });
-            this.Input(_console, ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
+            this.Input(_console, true, ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
         }
 
         public override InputKey<bool> Build()

@@ -36,8 +36,17 @@ namespace InquirerCS.Components
                         {
                             if (stringBuilder.Any())
                             {
-                                _console.PositionWrite(" ", _console.CursorLeft, _console.CursorTop);
-                                _console.SetCursorPosition(_console.CursorLeft - 1, _console.CursorTop);
+                                if (_console.CursorLeft == 0)
+                                {
+                                    _console.PositionWrite(" ", 0, _console.CursorTop);
+                                    _console.SetCursorPosition(Console.BufferWidth - 1, _console.CursorTop - 1);
+                                }
+                                else
+                                {
+                                    _console.PositionWrite(" ", _console.CursorLeft, _console.CursorTop);
+                                    _console.SetCursorPosition(_console.CursorLeft - 1, _console.CursorTop);
+                                }
+
                                 stringBuilder.Pop();
                                 break;
                             }
@@ -48,7 +57,15 @@ namespace InquirerCS.Components
 
                     default:
                         {
-                            _console.PositionWrite("*", _console.CursorLeft - 1, _console.CursorTop);
+                            if (_console.CursorLeft - 1 < 0)
+                            {
+                                _console.PositionWrite("*", Console.BufferWidth - 1, _console.CursorTop - 1);
+                            }
+                            else
+                            {
+                                _console.PositionWrite("*", _console.CursorLeft - 1, _console.CursorTop);
+                            }
+
                             stringBuilder.Push(key.KeyChar);
                             break;
                         }
