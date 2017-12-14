@@ -11,7 +11,7 @@ namespace InquirerCS.Builders
             this.Confirm();
             this.RenderQuestion(message, this, this, console);
             this.Parse(value => { return value; });
-            this.PasswordInput(_console);
+            this.PasswordInput(Console);
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
         }
@@ -23,7 +23,7 @@ namespace InquirerCS.Builders
 
         public override InputBuilder<Input<string>, string, string> WithConfirmation()
         {
-            Confirm = new ConfirmPasswordComponent(_console);
+            Confirm = new ConfirmPasswordComponent(Console);
             return this;
         }
     }

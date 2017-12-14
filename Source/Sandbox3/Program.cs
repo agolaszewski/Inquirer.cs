@@ -11,7 +11,7 @@ namespace Sandbox2
 
         private static void Main(string[] args)
         {
-            PasswordTest();
+            ListRawTest();
         }
 
         private static void ConfirmTest()
@@ -49,7 +49,7 @@ namespace Sandbox2
         {
             var colors = Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>().ToList();
             Question.Checkbox(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()), colors)
-                 //.Page(11)
+                 .Page(11)
                  .WithDefaultValue(colors)
                  .WithConfirmation()
                  .WithValidation(values => values.Any(item => item == ConsoleKey.A), "Choose black")
@@ -72,7 +72,7 @@ namespace Sandbox2
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
                  .WithConvertToString(x => { return x + " Test"; })
-                 //.Page(10)
+                 .Page(10)
                  .WithValidation(item => item == ConsoleColor.Black, "Choose black").Build().Prompt();
         }
 
@@ -80,9 +80,12 @@ namespace Sandbox2
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
             Question.List(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()), colors)
+                .WithConfirmation()
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black")
+                 .WithConvertToString(x => { return x + " Test"; })
+                 .Page(4)
+                 //.WithValidation(item => item == ConsoleColor.Black, "Choose black")
                  .Build().Prompt();
         }
 

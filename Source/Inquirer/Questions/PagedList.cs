@@ -9,7 +9,7 @@ namespace InquirerCS.Questions
     {
         private IConfirmComponent<TResult> _confirmComponent;
 
-        private int _cursorPosition = Consts.CURSOR_OFFSET;
+        private int _cursorPosition = -1;
 
         private IRenderQuestionComponent _displayQuestion;
 
@@ -55,9 +55,15 @@ namespace InquirerCS.Questions
         {
             _displayQuestion.Render();
             _renderChoices.Render();
+
+            if (_cursorPosition < 0)
+            {
+                _cursorPosition = Consts.CURSOR_OFFSET;
+            }
+
             _renderChoices.Select(_cursorPosition - Consts.CURSOR_OFFSET);
 
-            int boundryTop = 2;
+            int boundryTop = Consts.CURSOR_OFFSET;
             int boundryBottom = boundryTop + _pagingComponent.CurrentPage.Count() - 1;
 
             while (true)

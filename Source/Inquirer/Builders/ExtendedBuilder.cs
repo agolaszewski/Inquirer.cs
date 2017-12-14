@@ -9,7 +9,7 @@ namespace InquirerCS.Builders
     {
         public ExtendedBuilder(string message, IConsole console, params ConsoleKey[] @params) : base(console)
         {
-            this.RenderQuestion(message, this, this, _console);
+            this.RenderQuestion(message, this, this, Console);
 
             this.Parse(value => { return value; });
 

@@ -20,19 +20,19 @@ namespace InquirerCS.Builders
     {
         public InputBuilder(IConsole console)
         {
-            _console = console;
+            Console = console;
 
-            this.Confirm(this, _console);
+            this.Confirm(this, Console);
             this.ConvertToString();
             this.Default();
             this.InputValidate();
             this.ResultValidate();
-            this.Input(_console);
+            this.Input(Console);
             this.OnKey();
-            this.RenderError(_console);
+            this.RenderError(Console);
         }
 
-        public IConsole _console { get; set; }
+        public IConsole Console { get; set; }
 
         public IConfirmComponent<TResult> Confirm { get; set; }
 
@@ -58,7 +58,7 @@ namespace InquirerCS.Builders
 
         public virtual InputBuilder<TQuestion, TInput, TResult> WithConfirmation()
         {
-            this.Confirm(this, _console);
+            this.Confirm(this, Console);
             return this;
         }
 
