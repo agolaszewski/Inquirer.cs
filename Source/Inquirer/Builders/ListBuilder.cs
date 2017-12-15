@@ -48,6 +48,12 @@ namespace InquirerCS.Builders
             return this;
         }
 
+        public new ListBuilder<TResult> WithDefaultValue(TResult defaultValue)
+        {
+            Default = new DefaultListValueComponent<TResult>(Choices, defaultValue);
+            return this;
+        }
+
         public new ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
             ResultValidators.Add(fn, errorMessageFn);
@@ -57,12 +63,6 @@ namespace InquirerCS.Builders
         public new ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
             ResultValidators.Add(fn, errorMessage);
-            return this;
-        }
-
-        public new ListBuilder<TResult> WithDefaultValue(TResult defaultValue)
-        {
-            Default = new DefaultListValueComponent<TResult>(Choices, defaultValue);
             return this;
         }
     }

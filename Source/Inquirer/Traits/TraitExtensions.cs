@@ -57,16 +57,6 @@ namespace InquirerCS.Traits
             trait.Input = new StringOrKeyInputComponent(console);
         }
 
-        public static void Input(this IWaitForInputTrait<StringOrKey> trait, IConsole console, Func<char, bool> allowFn = null, params ConsoleKey[] intteruptedKeys)
-        {
-            trait.Input = new StringOrKeyInputComponent(console, allowFn, intteruptedKeys);
-        }
-
-        public static void Input(this IWaitForInputTrait<StringOrKey> trait, IConsole console, params ConsoleKey[] intteruptedKeys)
-        {
-            trait.Input = new StringOrKeyInputComponent(console, null, intteruptedKeys);
-        }
-
         public static void Input(this IWaitForInputTrait<StringOrKey> trait, IConsole console, bool onlyIntteruptedKeys, params ConsoleKey[] intteruptedKeys)
         {
             Func<char, bool> allowFn = null;
@@ -80,6 +70,16 @@ namespace InquirerCS.Traits
             }
 
             trait.Input = new StringOrKeyInputComponent(console, allowFn, intteruptedKeys);
+        }
+
+        public static void Input(this IWaitForInputTrait<StringOrKey> trait, IConsole console, Func<char, bool> allowFn = null, params ConsoleKey[] intteruptedKeys)
+        {
+            trait.Input = new StringOrKeyInputComponent(console, allowFn, intteruptedKeys);
+        }
+
+        public static void Input(this IWaitForInputTrait<StringOrKey> trait, IConsole console, params ConsoleKey[] intteruptedKeys)
+        {
+            trait.Input = new StringOrKeyInputComponent(console, null, intteruptedKeys);
         }
 
         public static void InputValidate<T>(this IValidateInputTrait<T> trait)

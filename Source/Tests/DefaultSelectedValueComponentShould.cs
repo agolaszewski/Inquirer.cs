@@ -9,6 +9,20 @@ using Xunit;
 
 namespace Tests
 {
+    public class DefaultSelectedValueComponentFixture<TResult> : IDefaultTrait<List<ConsoleColor>>
+    {
+        public List<Selectable<ConsoleColor>> Colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().Select(x => new Selectable<ConsoleColor>(false, x)).ToList();
+
+        public DefaultSelectedValueComponentFixture()
+        {
+            this.Default(Colors, new List<ConsoleColor>() { ConsoleColor.Red, ConsoleColor.Yellow });
+        }
+
+        public AssertConsole Console { get; set; } = new AssertConsole();
+
+        public IDefaultValueComponent<List<ConsoleColor>> Default { get; set; }
+    }
+
     public class DefaultSelectedValueComponentShould : IClassFixture<DefaultSelectedValueComponentFixture<ConsoleColor>>
     {
         private DefaultSelectedValueComponentFixture<ConsoleColor> _fixture;
@@ -48,19 +62,5 @@ namespace Tests
                 ex.ShouldBeType<ArgumentNullException>();
             }
         }
-    }
-
-    public class DefaultSelectedValueComponentFixture<TResult> : IDefaultTrait<List<ConsoleColor>>
-    {
-        public DefaultSelectedValueComponentFixture()
-        {
-            this.Default(Colors, new List<ConsoleColor>() { ConsoleColor.Red, ConsoleColor.Yellow });
-        }
-
-        public List<Selectable<ConsoleColor>> Colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().Select(x => new Selectable<ConsoleColor>(false, x)).ToList();
-
-        public AssertConsole Console { get; set; } = new AssertConsole();
-
-        public IDefaultValueComponent<List<ConsoleColor>> Default { get; set; }
     }
 }

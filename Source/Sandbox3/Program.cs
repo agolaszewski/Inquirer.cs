@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using InquirerCS;
-using InquirerCS.Builders;
-using InquirerCS.Questions;
 
 namespace Sandbox2
 {
@@ -11,36 +9,25 @@ namespace Sandbox2
     {
         private static Inquirer _test = new Inquirer();
 
-        private static void Main(string[] args)
-        {
-            _test.Menu("ders")
-                .AddOption("ASdas", () => ConfirmTest())
-            .AddOption("ASdas", () => ConfirmTest())
-            .AddOption("ASdas", () => ConfirmTest())
-            .AddOption("ASdas", () => ConfirmTest());
-
-            _test.Next(() => { ConfirmTest(); });
-            _test.Prompt(Question.Input("asdasd"));
-        }
-
         private static void ConfirmTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
 
-            Question.Confirm(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()))
+            _test.Prompt(Question.Confirm(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()))
                 .WithConfirmation()
                 .WithDefaultValue(false)
-                .WithValidation(values => values == true, "You must be sure!")
-                .Build().Prompt();
+                .WithValidation(values => values == true, "You must be sure!"));
+
+            _test.Next(() => ExtendedTest());
         }
 
         private static void ExtendedTest()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            Question.Extended(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()), ConsoleKey.Y, ConsoleKey.N, ConsoleKey.M)
+            _test.Prompt(Question.Extended(string.Join(" ", Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>()), ConsoleKey.Y, ConsoleKey.N, ConsoleKey.M)
                  .WithDefaultValue(ConsoleKey.N)
                  .WithConfirmation()
-                 .WithValidation(values => values != ConsoleKey.M, "You must be sure").Build().Prompt();
+                 .WithValidation(values => values != ConsoleKey.M, "You must be sure"));
         }
 
         private static void InputTest()
@@ -98,7 +85,9 @@ namespace Sandbox2
                  .Build().Prompt();
         }
 
-        
+        private static void Main(string[] args)
+        {
+        }
 
         private static void PasswordTest()
         {

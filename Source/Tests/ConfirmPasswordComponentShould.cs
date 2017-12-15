@@ -24,19 +24,19 @@ namespace Tests
         }
 
         [Fact]
-        public void Returns_True_When_Strings_Doesnt_Match()
-        {
-            _fixture.Console.ReadValue = "12345678";
-
-            _fixture.Confirm.Confirm("1234567").ShouldBeTrue();
-        }
-
-        [Fact]
         public void Returns_False_When_Strings_Match()
         {
             _fixture.Console.ReadValue = "1234567";
 
             _fixture.Confirm.Confirm("1234567").ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Returns_True_When_Strings_Doesnt_Match()
+        {
+            _fixture.Console.ReadValue = "12345678";
+
+            _fixture.Confirm.Confirm("1234567").ShouldBeTrue();
         }
     }
 

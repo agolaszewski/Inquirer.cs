@@ -7,6 +7,18 @@ using Xunit;
 
 namespace Tests
 {
+    public class DefaultValueComponentFixture : IDefaultTrait<ConsoleColor>
+    {
+        public DefaultValueComponentFixture()
+        {
+            this.Default(ConsoleColor.Red);
+        }
+
+        public AssertConsole Console { get; set; } = new AssertConsole();
+
+        public IDefaultValueComponent<ConsoleColor> Default { get; set; }
+    }
+
     public class DefaultValueComponentShould : IClassFixture<DefaultValueComponentFixture>
     {
         private DefaultValueComponentFixture _fixture;
@@ -28,17 +40,5 @@ namespace Tests
             _fixture.Default.HasDefault.ShouldBeTrue();
             _fixture.Default.Value.ShouldEqual(ConsoleColor.Red);
         }
-    }
-
-    public class DefaultValueComponentFixture : IDefaultTrait<ConsoleColor>
-    {
-        public DefaultValueComponentFixture()
-        {
-            this.Default(ConsoleColor.Red);
-        }
-
-        public AssertConsole Console { get; set; } = new AssertConsole();
-
-        public IDefaultValueComponent<ConsoleColor> Default { get; set; }
     }
 }
