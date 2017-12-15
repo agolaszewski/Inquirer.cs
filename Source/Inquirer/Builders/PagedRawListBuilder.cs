@@ -40,7 +40,7 @@ namespace InquirerCS.Builders
             },
             value =>
             {
-                return $"Choosen number must be between 1 and {Choices.Count}";
+                return $"Chosen number must be between 1 and {Choices.Count}";
             });
 
             OnKey = listBuilder.OnKey;

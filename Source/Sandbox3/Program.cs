@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using InquirerCS;
+using InquirerCS.Builders;
+using InquirerCS.Questions;
 
 namespace Sandbox2
 {
@@ -11,7 +13,14 @@ namespace Sandbox2
 
         private static void Main(string[] args)
         {
-            ListRawTest();
+            _test.Menu("ders")
+                .AddOption("ASdas", () => ConfirmTest())
+            .AddOption("ASdas", () => ConfirmTest())
+            .AddOption("ASdas", () => ConfirmTest())
+            .AddOption("ASdas", () => ConfirmTest());
+
+            _test.Next(() => { ConfirmTest(); });
+            _test.Prompt(Question.Input("asdasd"));
         }
 
         private static void ConfirmTest()
@@ -88,6 +97,8 @@ namespace Sandbox2
                  //.WithValidation(item => item == ConsoleColor.Black, "Choose black")
                  .Build().Prompt();
         }
+
+        
 
         private static void PasswordTest()
         {

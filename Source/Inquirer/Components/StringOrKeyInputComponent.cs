@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using InquirerCS.Interfaces;
 
@@ -8,27 +9,27 @@ namespace InquirerCS.Components
     {
         private IConsole _console;
 
-        private ConsoleKey[] _intteruptedKeys;
-
         public StringOrKeyInputComponent(IConsole console)
         {
             _console = console;
-            _intteruptedKeys = Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>().ToArray();
+            IntteruptedKeys = Enum.GetValues(typeof(ConsoleKey)).Cast<ConsoleKey>().ToList();
         }
 
         public StringOrKeyInputComponent(IConsole console, Func<char, bool> allowFn = null, params ConsoleKey[] intteruptedKeys)
         {
-            _intteruptedKeys = intteruptedKeys;
+            IntteruptedKeys = intteruptedKeys.ToList();
             _console = console;
             AllowTypeFn = allowFn ?? AllowTypeFn;
         }
 
         public Func<char, bool> AllowTypeFn { get; set; } = value => { return !char.IsControl(value); };
 
+        public List<ConsoleKey> IntteruptedKeys { get; set; }
+
         public StringOrKey WaitForInput()
         {
             ConsoleKey? intteruptedKey;
-            string result = _console.Read(out intteruptedKey, AllowTypeFn, _intteruptedKeys);
+            string result = _console.Read(out intteruptedKey, AllowTypeFn, IntteruptedKeys.ToArray());
             return new StringOrKey(result, intteruptedKey);
         }
     }

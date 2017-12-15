@@ -23,7 +23,7 @@ namespace InquirerCS.Builders
 
             this.RenderRawChoices(Choices, this, Console);
 
-            InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
+            InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDafault; }, "Empty line");
             InputValidators.Add(value => { return value.ToN<int>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
             InputValidators.Add(
             value =>
@@ -33,7 +33,7 @@ namespace InquirerCS.Builders
             },
             value =>
             {
-                return $"Choosen number must be between 1 and {Choices.Count}";
+                return $"Chosen number must be between 1 and {Choices.Count}";
             });
 
             this.Input(Console, value => { return char.IsNumber(value); });

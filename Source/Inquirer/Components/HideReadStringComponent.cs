@@ -16,6 +16,8 @@ namespace InquirerCS.Components
 
         public Func<char, bool> AllowTypeFn { get; set; }
 
+        public List<ConsoleKey> IntteruptedKeys { get; set; }
+
         public StringOrKey WaitForInput()
         {
             Stack<char> stringBuilder = new Stack<char>();
@@ -24,6 +26,11 @@ namespace InquirerCS.Components
             do
             {
                 key = Console.ReadKey();
+
+                if (IntteruptedKeys.Contains(key.Key))
+                {
+                    return new StringOrKey(string.Join(string.Empty, stringBuilder.ToArray().Reverse()), key.Key);
+                }
 
                 switch (key.Key)
                 {
