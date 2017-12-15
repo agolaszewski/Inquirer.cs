@@ -22,10 +22,25 @@ namespace InquirerCS.Builders
             this.RenderRawChoices(this, this, Console);
             DisplayError = listBuilder.DisplayError;
 
-            this.Input(Console);
+            this.Input(Console, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter);
+            Input.AllowTypeFn = value => { return char.IsNumber(value); };
+
             this.Parse(value =>
             {
                 return Paging.CurrentPage[value.To<int>()];
+            });
+
+            InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
+            InputValidators.Add(value => { return value.ToN<int>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });
+            InputValidators.Add(
+            value =>
+            {
+                var index = value.To<int>();
+                return index > 0 && index <= Choices.Count;
+            },
+            value =>
+            {
+                return $"Choosen number must be between 1 and {Choices.Count}";
             });
 
             OnKey = listBuilder.OnKey;

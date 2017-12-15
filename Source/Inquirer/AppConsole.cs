@@ -65,7 +65,7 @@ namespace InquirerCS
                 if (interruptKeys.Contains(keyInfo.Key))
                 {
                     intteruptedKey = keyInfo.Key;
-                    return string.Empty;
+                    return stringBuilder.ToString();
                 }
 
                 switch (keyInfo.Key)
