@@ -4,7 +4,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
-    public class DisplayQuestion<TResult> : IRenderQuestionComponent
+    public class RenderQuestion<TResult> : IRenderQuestionComponent
     {
         private IConsole _console;
 
@@ -14,7 +14,7 @@ namespace InquirerCS.Components
 
         private string _message;
 
-        public DisplayQuestion(string message, IConvertToStringTrait<TResult> convert, IDefaultTrait<TResult> @default, IConsole console)
+        public RenderQuestion(string message, IConvertToStringTrait<TResult> convert, IDefaultTrait<TResult> @default, IConsole console)
         {
             _message = message;
             _convert = convert;
@@ -33,6 +33,7 @@ namespace InquirerCS.Components
             }
 
             _console.Write(question);
+            Consts.CURSOR_OFFSET = _console.CursorTop + 2;
         }
     }
 }

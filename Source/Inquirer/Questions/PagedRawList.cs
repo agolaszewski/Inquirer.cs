@@ -8,6 +8,8 @@ namespace InquirerCS.Questions
     {
         private IConfirmComponent<TResult> _confirmComponent;
 
+        private IConsole _console;
+
         private IRenderQuestionComponent _displayQuestion;
 
         private IDisplayErrorComponent _errorComponent;
@@ -25,8 +27,6 @@ namespace InquirerCS.Questions
         private IValidateComponent<string> _validationInputComponent;
 
         private IValidateComponent<TResult> _validationResultComponent;
-
-        private IConsole _console;
 
         public PagedRawList(
             IPagingComponent<TResult> pagingComponent,

@@ -20,33 +20,31 @@ namespace InquirerCS.Builders
         IOnKeyTrait,
         IPagingTrait<Selectable<TResult>> where TResult : IComparable
     {
-        private List<Selectable<TResult>> _choices;
-
-        private IConsole _console;
-
-        public PagedCheckboxBuilder(IConsole console)
+        public PagedCheckboxBuilder(CheckboxBuilder<TResult> checkboxBuilder, int pageSize)
         {
-            _console = console;
+            Choices = checkboxBuilder.Choices;
+            Console = checkboxBuilder.Console;
 
-            this.Confirm(this, _console);
-            this.ConvertToString();
-            this.Default();
-            this.ResultValidate();
-            this.Input(_console, ConsoleKey.Spacebar, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.Enter);
-            this.OnKey();
-        }
+            Confirm = checkboxBuilder.Confirm;
+            Convert = checkboxBuilder.Convert;
+            Default = checkboxBuilder.Default;
+            ResultValidators = checkboxBuilder.ResultValidators;
+            RenderQuestion = checkboxBuilder.RenderQuestion;
 
-        public PagedCheckboxBuilder(string message, List<Selectable<TResult>> choices, int pageSize, IConsole console) : this(console)
-        {
-            _choices = choices;
+            this.RenderChoices(this, this, Console);
+            DisplayError = checkboxBuilder.DisplayError;
 
-            this.Paging(choices, pageSize);
-            this.RenderQuestion(message, this, this, _console);
-            this.RenderChoices(this, this, _console);
+            this.Input(Console);
             this.Parse(this);
+            OnKey = checkboxBuilder.OnKey;
+            this.Paging(checkboxBuilder.Choices, pageSize);
         }
+
+        public List<Selectable<TResult>> Choices { get; set; }
 
         public IConfirmComponent<List<TResult>> Confirm { get; set; }
+
+        public IConsole Console { get; set; }
 
         public IConvertToStringComponent<TResult> Convert { get; set; }
 
@@ -75,7 +73,7 @@ namespace InquirerCS.Builders
 
         public virtual PagedCheckboxBuilder<TResult> WithConfirmation()
         {
-            this.Confirm(this, _console);
+            this.Confirm(this, Console);
             return this;
         }
 
@@ -87,13 +85,13 @@ namespace InquirerCS.Builders
 
         public virtual PagedCheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
         {
-            this.Default(_choices, defaultValues);
+            this.Default(Choices, defaultValues);
             return this;
         }
 
         public virtual PagedCheckboxBuilder<TResult> WithDefaultValue(TResult defaultValue)
         {
-            this.Default(_choices, new List<TResult>() { defaultValue });
+            this.Default(Choices, new List<TResult>() { defaultValue });
             return this;
         }
 

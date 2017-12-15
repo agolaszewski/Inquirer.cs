@@ -27,15 +27,15 @@ namespace InquirerCS
             Console.Clear();
         }
 
-        public void PositionWrite(string v, object cursorLeft, int cursorTop)
-        {
-            throw new NotImplementedException();
-        }
-
         public void PositionWrite(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
         {
             Console.SetCursorPosition(x, y);
             Write(text, color);
+        }
+
+        public void PositionWrite(string v, object cursorLeft, int cursorTop)
+        {
+            throw new NotImplementedException();
         }
 
         public void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
@@ -47,10 +47,10 @@ namespace InquirerCS
         public string Read()
         {
             ConsoleKey? interruptKey;
-            return Read(out interruptKey);
+            return Read(out interruptKey, value => { return true; });
         }
 
-        public string Read(out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys)
+        public string Read(out ConsoleKey? intteruptedKey, Func<char, bool> allowTypeFn, params ConsoleKey[] interruptKeys)
         {
             intteruptedKey = null;
 
@@ -65,7 +65,7 @@ namespace InquirerCS
                 if (interruptKeys.Contains(keyInfo.Key))
                 {
                     intteruptedKey = keyInfo.Key;
-                    return string.Empty;
+                    return stringBuilder.ToString();
                 }
 
                 switch (keyInfo.Key)
@@ -107,13 +107,14 @@ namespace InquirerCS
 
                     default:
                         {
-                            if (!char.IsControl(keyInfo.KeyChar))
+                            if (allowTypeFn(keyInfo.KeyChar))
                             {
                                 stringBuilder.Append(keyInfo.KeyChar);
                                 returnToPreviousLine = false;
                             }
                             else
                             {
+                                PositionWrite(" ", Console.CursorLeft - 1, Console.CursorTop);
                                 Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                             }
 

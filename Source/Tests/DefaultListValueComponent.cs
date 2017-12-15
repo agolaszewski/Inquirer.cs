@@ -9,6 +9,23 @@ using Xunit;
 
 namespace Tests
 {
+    public class DefaultListValueComponentFixture<TResult> : IDefaultTrait<TResult>, IConvertToStringTrait<TResult>
+    {
+        public List<ConsoleColor> Colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+
+        public DefaultListValueComponentFixture()
+        {
+        }
+
+        public IConfirmComponent<List<TResult>> Confirm { get; set; }
+
+        public AssertConsole Console { get; set; } = new AssertConsole();
+
+        public IConvertToStringComponent<TResult> Convert { get; set; }
+
+        public IDefaultValueComponent<TResult> Default { get; set; }
+    }
+
     public class DefaultListValueComponentShould : IClassFixture<DefaultListValueComponentFixture<ConsoleColor>>
     {
         private DefaultListValueComponentFixture<ConsoleColor> _fixture;
@@ -47,22 +64,5 @@ namespace Tests
                 ex.ShouldBeType<ArgumentNullException>();
             }
         }
-    }
-
-    public class DefaultListValueComponentFixture<TResult> : IDefaultTrait<TResult>, IConvertToStringTrait<TResult>
-    {
-        public DefaultListValueComponentFixture()
-        {
-        }
-
-        public List<ConsoleColor> Colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-
-        public IConfirmComponent<List<TResult>> Confirm { get; set; }
-
-        public AssertConsole Console { get; set; } = new AssertConsole();
-
-        public IConvertToStringComponent<TResult> Convert { get; set; }
-
-        public IDefaultValueComponent<TResult> Default { get; set; }
     }
 }

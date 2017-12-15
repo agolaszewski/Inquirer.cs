@@ -7,8 +7,6 @@ namespace InquirerCS.Components
 {
     public class DisplaySelectableChoices<TResult> : IRenderChoices<TResult>
     {
-        private const int _CURSOR_OFFSET = 2;
-
         private List<Selectable<TResult>> _choices;
 
         private IConsole _console;
@@ -27,16 +25,25 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (Selectable<TResult> choice in _choices)
             {
-                _console.PositionWriteLine($"     {_convert.Convert.Run(choice.Item)}", 0, index + _CURSOR_OFFSET);
-                _console.PositionWriteLine(choice.IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET);
+                _console.PositionWriteLine($"     {_convert.Convert.Run(choice.Item)}", 0, index + Consts.CURSOR_OFFSET);
+                _console.PositionWriteLine(choice.IsSelected ? "*" : " ", 3, index + Consts.CURSOR_OFFSET);
                 index++;
             }
+
+            _console.SetCursorPosition(0, 0);
+            _console.SetCursorPosition(0, Consts.CURSOR_OFFSET);
         }
 
         public void Select(int index)
         {
-            _console.PositionWriteLine($"->   {_convert.Convert.Run(_choices[index].Item)}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
-            _console.PositionWriteLine(_choices[index].IsSelected ? "*" : " ", 3, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            _console.PositionWriteLine($"->   {_convert.Convert.Run(_choices[index].Item)}", 0, index + Consts.CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            _console.PositionWriteLine(_choices[index].IsSelected ? "*" : " ", 3, index + Consts.CURSOR_OFFSET, ConsoleColor.DarkYellow);
+        }
+
+        public void UnSelect(int index)
+        {
+            _console.PositionWriteLine($"     {_convert.Convert.Run(_choices[index].Item)}", 0, index + Consts.CURSOR_OFFSET);
+            _console.PositionWriteLine(_choices[index].IsSelected ? "*" : " ", 3, index + Consts.CURSOR_OFFSET);
         }
     }
 }

@@ -7,8 +7,6 @@ namespace InquirerCS.Components
 {
     internal class DisplaRawChoices<TResult> : IRenderChoices<TResult>
     {
-        private const int _CURSOR_OFFSET = 2;
-
         private List<TResult> _choices;
 
         private IConsole _console;
@@ -27,14 +25,18 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (TResult choice in _choices)
             {
-                _console.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(choice)}", 0, index + _CURSOR_OFFSET);
+                _console.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(choice)}", 0, index + Consts.CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            _console.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(_choices[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            _console.PositionWriteLine($"[{index + 1}] {_convert.Convert.Run(_choices[index])}", 0, index + Consts.CURSOR_OFFSET, ConsoleColor.DarkYellow);
+        }
+
+        public void UnSelect(int index)
+        {
         }
     }
 }

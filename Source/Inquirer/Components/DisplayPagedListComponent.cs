@@ -6,8 +6,6 @@ namespace InquirerCS.Components
 {
     public class DisplayPagedListChoices<TResult> : IRenderChoices<TResult>
     {
-        private const int _CURSOR_OFFSET = 2;
-
         private IConsole _console;
 
         private IConvertToStringTrait<TResult> _convert;
@@ -26,14 +24,19 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (TResult choice in _paging.Paging.CurrentPage)
             {
-                _console.PositionWriteLine($"   {_convert.Convert.Run(choice)}", 0, index + _CURSOR_OFFSET);
+                _console.PositionWriteLine($"   {_convert.Convert.Run(choice)}", 0, index + Consts.CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
         {
-            _console.PositionWriteLine($"-> {_convert.Convert.Run(_paging.Paging.CurrentPage[index])}", 0, index + _CURSOR_OFFSET, ConsoleColor.DarkYellow);
+            _console.PositionWriteLine($"-> {_convert.Convert.Run(_paging.Paging.CurrentPage[index])}", 0, index + Consts.CURSOR_OFFSET, ConsoleColor.DarkYellow);
+        }
+
+        public void UnSelect(int index)
+        {
+            _console.PositionWriteLine($"   {_convert.Convert.Run(_paging.Paging.CurrentPage[index])}", 0, index + Consts.CURSOR_OFFSET);
         }
     }
 }

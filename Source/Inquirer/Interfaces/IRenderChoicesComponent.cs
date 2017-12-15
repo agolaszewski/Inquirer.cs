@@ -5,5 +5,7 @@
         void Render();
 
         void Select(int index);
+
+        void UnSelect(int index);
     }
 }

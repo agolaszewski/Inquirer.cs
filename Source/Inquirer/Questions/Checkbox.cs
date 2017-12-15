@@ -7,8 +7,6 @@ namespace InquirerCS.Questions
 {
     public class Checkbox<TList, TResult> : IQuestion<TList> where TList : IEnumerable<TResult>
     {
-        private const int _CURSOR_OFFSET = 2;
-
         private List<Selectable<TResult>> _choices;
 
         private IConfirmComponent<TList> _confirmComponent;
@@ -57,22 +55,22 @@ namespace InquirerCS.Questions
             _renderchoices.Render();
             _renderchoices.Select(0);
 
-            int boundryTop = 2;
+            int boundryTop = Consts.CURSOR_OFFSET;
             int boundryBottom = boundryTop + _choices.Count - 1;
 
-            int cursorPosition = _CURSOR_OFFSET;
+            int cursorPosition = Consts.CURSOR_OFFSET;
 
             while (true)
             {
                 var keyPressed = _input.WaitForInput().InterruptKey;
                 _onKey.OnKey(keyPressed);
+
                 switch (keyPressed)
                 {
                     case ConsoleKey.Spacebar:
                         {
-                            _choices[cursorPosition - _CURSOR_OFFSET].IsSelected ^= true;
-                            _renderchoices.Render();
-                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
+                            _choices[cursorPosition - Consts.CURSOR_OFFSET].IsSelected ^= true;
+                            _renderchoices.Select(cursorPosition - Consts.CURSOR_OFFSET);
 
                             break;
                         }
@@ -81,11 +79,11 @@ namespace InquirerCS.Questions
                         {
                             if (cursorPosition > boundryTop)
                             {
+                                _renderchoices.UnSelect(cursorPosition - Consts.CURSOR_OFFSET);
                                 cursorPosition -= 1;
                             }
 
-                            _renderchoices.Render();
-                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
+                            _renderchoices.Select(cursorPosition - Consts.CURSOR_OFFSET);
 
                             break;
                         }
@@ -94,11 +92,11 @@ namespace InquirerCS.Questions
                         {
                             if (cursorPosition < boundryBottom)
                             {
+                                _renderchoices.UnSelect(cursorPosition - Consts.CURSOR_OFFSET);
                                 cursorPosition += 1;
                             }
 
-                            _renderchoices.Render();
-                            _renderchoices.Select(cursorPosition - _CURSOR_OFFSET);
+                            _renderchoices.Select(cursorPosition - Consts.CURSOR_OFFSET);
 
                             break;
                         }

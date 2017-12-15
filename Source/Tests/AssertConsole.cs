@@ -7,13 +7,23 @@ namespace Tests
 {
     public class AssertConsole : IConsole
     {
-        private Dictionary<int, string> buffer = new Dictionary<int, string>();
-        public string ReadValue { get; set; }
-        public Queue<ConsoleKeyInfo> ReadKeyValue { get; set; } = new Queue<ConsoleKeyInfo>();
-        public ConsoleKey IntteruptedKey { get; set; }
-        public bool IsCanceled { get; set; }
-
         private int _currentY = 0;
+
+        private Dictionary<int, string> buffer = new Dictionary<int, string>();
+
+        public AssertConsole()
+        {
+        }
+
+        public int CursorLeft
+        {
+            get { return 0; }
+        }
+
+        public int CursorTop
+        {
+            get { return _currentY; }
+        }
 
         public string ExceptedResult
         {
@@ -23,13 +33,13 @@ namespace Tests
             }
         }
 
-        public int CursorTop { get { return _currentY; } }
+        public ConsoleKey IntteruptedKey { get; set; }
 
-        public int CursorLeft { get { return 0; } }
+        public bool IsCanceled { get; set; }
 
-        public AssertConsole()
-        {
-        }
+        public Queue<ConsoleKeyInfo> ReadKeyValue { get; set; } = new Queue<ConsoleKeyInfo>();
+
+        public string ReadValue { get; set; }
 
         public void Clear()
         {
@@ -44,6 +54,11 @@ namespace Tests
                 buffer.Add(y, string.Empty);
             }
             buffer[_currentY] = buffer[y].Insert(x, text);
+        }
+
+        public void PositionWrite(string v, object cursorLeft, int cursorTop)
+        {
+            throw new NotImplementedException();
         }
 
         public void PositionWriteLine(string text, int x = 0, int y = 0, ConsoleColor color = ConsoleColor.White)
@@ -61,7 +76,7 @@ namespace Tests
             return ReadValue;
         }
 
-        public string Read(out ConsoleKey? intteruptedKey, params ConsoleKey[] interruptKeys)
+        public string Read(out ConsoleKey? intteruptedKey, Func<char, bool> allowTypeFn, params ConsoleKey[] interruptKeys)
         {
             intteruptedKey = IntteruptedKey;
             return ReadValue;
@@ -76,6 +91,10 @@ namespace Tests
         {
             isCanceled = IsCanceled;
             return ReadKeyValue.Dequeue();
+        }
+
+        public void SetCursorPosition(int v, int cursorTop)
+        {
         }
 
         public void Write(string text, ConsoleColor color = ConsoleColor.White)
@@ -107,15 +126,6 @@ namespace Tests
             }
 
             buffer[_currentY] = buffer[_currentY].Insert(0, text);
-        }
-
-        public void SetCursorPosition(int v, int cursorTop)
-        {
-        }
-
-        public void PositionWrite(string v, object cursorLeft, int cursorTop)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -90,9 +90,10 @@
     <Compile Include="Components\Selectable.cs" />
     <Compile Include="Components\ValidationComponent.cs" />
     <Compile Include="Components\ValidationResult.cs" />
-    <Compile Include="Components\DisplayQuestion.cs" />
+    <Compile Include="Components\RenderQuestion.cs" />
     <Compile Include="Components\ParseComponent.cs" />
     <Compile Include="Components\DisplayExtendedChoices.cs" />
+    <Compile Include="Consts.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
@@ -110,7 +111,7 @@
     <Compile Include="Questions\ExtendedList.cs" />
     <Compile Include="Questions\Input.cs" />
     <Compile Include="Questions\InputKey.cs" />
-    <Compile Include="Questions\Listing.cs" />
+    <Compile Include="Questions\ConsoleList.cs" />
     <Compile Include="Components\ConvertToStringComponent.cs" />
     <Compile Include="Components\DefaultListValueComponent.cs" />
     <Compile Include="Interfaces\IParseComponent.cs" />

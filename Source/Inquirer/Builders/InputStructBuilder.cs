@@ -10,7 +10,7 @@ namespace InquirerCS.Builders
         {
             this.RenderQuestion(message, this, this, console);
             this.Parse(value => { return value.To<TResult>(); });
-            this.Input(_console, ConsoleKey.Escape);
+            this.Input(Console, ConsoleKey.Escape);
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
             InputValidators.Add(value => { return value.ToN<TResult>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(TResult)}"; });

@@ -6,8 +6,6 @@ namespace InquirerCS.Components
 {
     internal class DisplayExtendedChoices<TResult> : IRenderChoices<TResult>
     {
-        private const int _CURSOR_OFFSET = 2;
-
         private Dictionary<ConsoleKey, TResult> _choicesDictionary;
 
         private IConsole _console;
@@ -26,12 +24,16 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (var choice in _choicesDictionary)
             {
-                _console.PositionWriteLine($"[{choice.Key}] {_convertToStringComponent.Run(choice.Value)}", 0, index + _CURSOR_OFFSET);
+                _console.PositionWriteLine($"[{choice.Key}] {_convertToStringComponent.Run(choice.Value)}", 0, index + Consts.CURSOR_OFFSET);
                 index++;
             }
         }
 
         public void Select(int index)
+        {
+        }
+
+        public void UnSelect(int index)
         {
         }
     }

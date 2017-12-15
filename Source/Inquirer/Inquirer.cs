@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using InquirerCS.Components;
 using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS
 {
@@ -36,6 +38,18 @@ namespace InquirerCS
 
         public TResult Prompt<TQuestion, TResult>(IBuilder<TQuestion, TResult> builder)
         {
+            if (builder is IWaitForInputTrait<StringOrKey>)
+            {
+                var waitForInputTrait = builder as IWaitForInputTrait<StringOrKey>;
+                waitForInputTrait.Input.IntteruptedKeys.Add(ConsoleKey.Escape);
+            }
+
+            if (builder is IOnKeyTrait)
+            {
+                var waitForInputTrait = builder as IOnKeyTrait;
+                waitForInputTrait.OnKey = new OnEscape(this);
+            }
+
             return builder.Prompt();
         }
     }

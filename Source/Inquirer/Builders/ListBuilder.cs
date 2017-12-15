@@ -8,32 +8,61 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Builders
 {
-    public class ListBuilder<TResult> : InputBuilder<Listing<TResult>, int, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
+    public class ListBuilder<TResult> : InputBuilder<ConsoleList<TResult>, int, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
     {
-        private List<TResult> _choices;
-
-        public ListBuilder(string message, IEnumerable<TResult> choices, IConsole console)
+        public ListBuilder(string message, IEnumerable<TResult> choices, IConsole console) : base(console)
         {
-            _choices = choices.ToList();
-            _console = console;
+            Choices = choices.ToList();
+            Console = console;
 
             this.RenderQuestion(message, this, this, console);
-            this.Parse(_choices);
-            this.RenderChoices(_choices, this, _console);
-            this.Parse(_choices);
-            this.Input(_console, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
+            this.Parse(Choices);
+            this.RenderChoices(Choices, this, Console);
+            this.Parse(Choices);
+            this.Input(Console, true, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
         }
+
+        public List<TResult> Choices { get; set; }
 
         public IRenderChoices<TResult> RenderChoices { get; set; }
 
-        public override Listing<TResult> Build()
+        public override ConsoleList<TResult> Build()
         {
-            return new Listing<TResult>(_choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
+            return new ConsoleList<TResult>(Choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
 
-        public override InputBuilder<Listing<TResult>, int, TResult> WithDefaultValue(TResult defaultValue)
+        public PagedListBuilder<TResult> Page(int pageSize)
         {
-            Default = new DefaultListValueComponent<TResult>(_choices, defaultValue);
+            return new PagedListBuilder<TResult>(this, pageSize);
+        }
+
+        public new ListBuilder<TResult> WithConfirmation()
+        {
+            this.Confirm(this, Console);
+            return this;
+        }
+
+        public new ListBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
+        {
+            this.ConvertToString(fn);
+            return this;
+        }
+
+        public new ListBuilder<TResult> WithDefaultValue(TResult defaultValue)
+        {
+            Default = new DefaultListValueComponent<TResult>(Choices, defaultValue);
+            return this;
+        }
+
+        public new ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        {
+            ResultValidators.Add(fn, errorMessageFn);
+            return this;
+        }
+
+        public new ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        {
+            ResultValidators.Add(fn, errorMessage);
             return this;
         }
     }

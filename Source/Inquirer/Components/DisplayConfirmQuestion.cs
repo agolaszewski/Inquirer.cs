@@ -33,6 +33,7 @@ namespace InquirerCS.Components
             }
 
             _console.Write(question);
+            Consts.CURSOR_OFFSET = _console.CursorTop;
         }
     }
 }

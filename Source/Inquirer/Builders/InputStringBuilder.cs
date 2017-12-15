@@ -8,9 +8,9 @@ namespace InquirerCS.Builders
     {
         public InputStringBuilder(string message, IConsole console) : base(console)
         {
-            this.RenderQuestion(message, this, this, _console);
+            this.RenderQuestion(message, this, this, Console);
             this.Parse(value => { return value; });
-            this.Input(_console, ConsoleKey.Escape);
+            this.Input(Console, ConsoleKey.Escape);
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");
         }

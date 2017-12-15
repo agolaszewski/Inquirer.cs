@@ -6,7 +6,7 @@ namespace InquirerCS.Builders
 {
     public class ConfirmBuilder : InputBuilder<InputKey<bool>, ConsoleKey, bool>
     {
-        public ConfirmBuilder(string message, IConsole console)
+        public ConfirmBuilder(string message, IConsole console) : base(console)
         {
             this.RenderConfirmQuestion(message, this, this, console);
             this.Parse(value => value == ConsoleKey.Y);
@@ -14,7 +14,7 @@ namespace InquirerCS.Builders
             {
                 return value ? "yes" : "no";
             });
-            this.Input(_console, ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
+            this.Input(Console, true, ConsoleKey.Y, ConsoleKey.N, ConsoleKey.Enter);
         }
 
         public override InputKey<bool> Build()
