@@ -18,7 +18,7 @@ namespace InquirerCS
             return new InputStructBuilder<TResult>(message, _console);
         }
 
-        public static CheckboxBuilder<TResult> Checkbox<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
+        public static CheckboxBuilder<TResult> Checkbox<TResult>(string message, IEnumerable<TResult> choices)
         {
             return new CheckboxBuilder<TResult>(message, choices, _console);
         }
@@ -42,7 +42,7 @@ namespace InquirerCS
         ////{
         ////    return new ExtendedListBuilder<TResult>(message, choices);
         ////}
-        public static ListBuilder<TResult> List<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
+        public static ListBuilder<TResult> List<TResult>(string message, IEnumerable<TResult> choices)
         {
             return new ListBuilder<TResult>(message, choices, _console);
         }
@@ -52,7 +52,7 @@ namespace InquirerCS
             return new PasswordBuilder(message, _console);
         }
 
-        public static RawListBuilder<TResult> RawList<TResult>(string message, IEnumerable<TResult> choices) where TResult : IComparable
+        public static RawListBuilder<TResult> RawList<TResult>(string message, IEnumerable<TResult> choices)
         {
             return new RawListBuilder<TResult>(message, choices, _console);
         }
