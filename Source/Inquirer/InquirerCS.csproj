@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConsole.cs" />
+    <Compile Include="BuildersExtensions.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
     <Compile Include="Builders\Confirm.cs" />
     <Compile Include="Builders\ExtendedBuilder.cs" />
@@ -61,7 +62,9 @@
     <Compile Include="Builders\PagedRawListBuilder.cs" />
     <Compile Include="Builders\PasswordBuilder.cs" />
     <Compile Include="Builders\RawListBuilder.cs" />
+    <Compile Include="Components\NonComperableDefaultSelectedValueComponent.cs" />
     <Compile Include="Components\DisplayConfirmQuestion.cs" />
+    <Compile Include="Components\NonComparableDefaultListValueComponent.cs" />
     <Compile Include="Components\OnEscape.cs" />
     <Compile Include="Components\DisplayPagedListComponent.cs" />
     <Compile Include="Components\OnNothing.cs" />

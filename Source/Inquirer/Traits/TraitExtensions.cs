@@ -32,6 +32,11 @@ namespace InquirerCS.Traits
             trait.Convert = new ConvertToStringComponent<TResult>(convertFn);
         }
 
+        public static void Default<TResult>(this IDefaultTrait<List<TResult>> trait, List<Selectable<TResult>> choices, Func<TResult, bool> compareTo)
+        {
+            trait.Default = null;
+        }
+
         public static void Default<TResult>(this IDefaultTrait<List<TResult>> trait, List<Selectable<TResult>> choices, List<TResult> defaultValues) where TResult : IComparable
         {
             trait.Default = new DefaultSelectedValueComponent<TResult>(choices, defaultValues);

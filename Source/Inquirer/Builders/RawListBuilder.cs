@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
 
 namespace InquirerCS.Builders
 {
-    public class RawListBuilder<TResult> : InputBuilder<RawList<TResult>, string, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
+    public class RawListBuilder<TResult> : InputBuilder<RawList<TResult>, string, TResult>, IRenderChoicesTrait<TResult>
     {
         public RawListBuilder(string message, IEnumerable<TResult> choices, IConsole console) : base(console)
         {
@@ -53,31 +52,25 @@ namespace InquirerCS.Builders
             return new PagedRawListBuilder<TResult>(this, pageSize);
         }
 
-        public new RawListBuilder<TResult> WithConfirmation()
+        public RawListBuilder<TResult> WithConfirmation()
         {
             this.Confirm(this, Console);
             return this;
         }
 
-        public new RawListBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
+        public RawListBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
         {
             this.ConvertToString(fn);
             return this;
         }
 
-        public new RawListBuilder<TResult> WithDefaultValue(TResult defaultValue)
-        {
-            Default = new DefaultListValueComponent<TResult>(Choices, defaultValue);
-            return this;
-        }
-
-        public new RawListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        public RawListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
             ResultValidators.Add(fn, errorMessageFn);
             return this;
         }
 
-        public new RawListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        public RawListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
             ResultValidators.Add(fn, errorMessage);
             return this;

@@ -18,7 +18,7 @@ namespace InquirerCS.Builders
         IWaitForInputTrait<StringOrKey>,
         IParseTrait<Dictionary<int, List<Selectable<TResult>>>, List<TResult>>,
         IOnKeyTrait,
-        IPagingTrait<Selectable<TResult>> where TResult : IComparable
+        IPagingTrait<Selectable<TResult>>
     {
         public PagedCheckboxBuilder(CheckboxBuilder<TResult> checkboxBuilder, int pageSize)
         {
@@ -80,18 +80,6 @@ namespace InquirerCS.Builders
         public virtual PagedCheckboxBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
         {
             this.ConvertToString(fn);
-            return this;
-        }
-
-        public virtual PagedCheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
-        {
-            this.Default(Choices, defaultValues);
-            return this;
-        }
-
-        public virtual PagedCheckboxBuilder<TResult> WithDefaultValue(TResult defaultValue)
-        {
-            this.Default(Choices, new List<TResult>() { defaultValue });
             return this;
         }
 

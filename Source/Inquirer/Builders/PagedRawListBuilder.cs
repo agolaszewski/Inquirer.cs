@@ -6,7 +6,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Builders
 {
-    public class PagedRawListBuilder<TResult> : InputBuilder<PagedRawList<TResult>, string, TResult>, IRenderChoicesTrait<TResult>, IPagingTrait<TResult> where TResult : IComparable
+    public class PagedRawListBuilder<TResult> : InputBuilder<PagedRawList<TResult>, string, TResult>, IRenderChoicesTrait<TResult>, IPagingTrait<TResult>
     {
         public PagedRawListBuilder(RawListBuilder<TResult> listBuilder, int pageSize) : base(listBuilder.Console)
         {

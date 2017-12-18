@@ -61,35 +61,5 @@ namespace InquirerCS.Builders
         {
             return Build().Prompt();
         }
-
-        public virtual InputBuilder<TQuestion, TInput, TResult> WithConfirmation()
-        {
-            this.Confirm(this, Console);
-            return this;
-        }
-
-        public virtual InputBuilder<TQuestion, TInput, TResult> WithConvertToString(Func<TResult, string> fn)
-        {
-            this.ConvertToString(fn);
-            return this;
-        }
-
-        public virtual InputBuilder<TQuestion, TInput, TResult> WithDefaultValue(TResult defaultValue)
-        {
-            Default = new DefaultValueComponent<TResult>(defaultValue);
-            return this;
-        }
-
-        public virtual InputBuilder<TQuestion, TInput, TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
-        {
-            ResultValidators.Add(fn, errorMessageFn);
-            return this;
-        }
-
-        public virtual InputBuilder<TQuestion, TInput, TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
-        {
-            ResultValidators.Add(fn, errorMessage);
-            return this;
-        }
     }
 }

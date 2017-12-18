@@ -8,7 +8,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Builders
 {
-    public class ListBuilder<TResult> : InputBuilder<ConsoleList<TResult>, int, TResult>, IRenderChoicesTrait<TResult> where TResult : IComparable
+    public class ListBuilder<TResult> : InputBuilder<ConsoleList<TResult>, int, TResult>, IRenderChoicesTrait<TResult>
     {
         public ListBuilder(string message, IEnumerable<TResult> choices, IConsole console) : base(console)
         {
@@ -36,31 +36,25 @@ namespace InquirerCS.Builders
             return new PagedListBuilder<TResult>(this, pageSize);
         }
 
-        public new ListBuilder<TResult> WithConfirmation()
+        public ListBuilder<TResult> WithConfirmation()
         {
             this.Confirm(this, Console);
             return this;
         }
 
-        public new ListBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
+        public ListBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
         {
             this.ConvertToString(fn);
             return this;
         }
 
-        public new ListBuilder<TResult> WithDefaultValue(TResult defaultValue)
-        {
-            Default = new DefaultListValueComponent<TResult>(Choices, defaultValue);
-            return this;
-        }
-
-        public new ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
+        public ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
         {
             ResultValidators.Add(fn, errorMessageFn);
             return this;
         }
 
-        public new ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
+        public ListBuilder<TResult> WithValidation(Func<TResult, bool> fn, string errorMessage)
         {
             ResultValidators.Add(fn, errorMessage);
             return this;

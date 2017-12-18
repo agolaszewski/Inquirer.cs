@@ -18,7 +18,7 @@ namespace InquirerCS.Builders
         IDisplayErrorTrait,
         IWaitForInputTrait<StringOrKey>,
         IParseTrait<List<Selectable<TResult>>, List<TResult>>,
-        IOnKeyTrait where TResult : IComparable
+        IOnKeyTrait
     {
         public CheckboxBuilder(IConsole console)
         {
@@ -84,18 +84,6 @@ namespace InquirerCS.Builders
         public virtual CheckboxBuilder<TResult> WithConvertToString(Func<TResult, string> fn)
         {
             this.ConvertToString(fn);
-            return this;
-        }
-
-        public virtual CheckboxBuilder<TResult> WithDefaultValue(List<TResult> defaultValues)
-        {
-            this.Default(Choices, defaultValues);
-            return this;
-        }
-
-        public virtual CheckboxBuilder<TResult> WithDefaultValue(TResult defaultValue)
-        {
-            this.Default(Choices, new List<TResult>() { defaultValue });
             return this;
         }
 

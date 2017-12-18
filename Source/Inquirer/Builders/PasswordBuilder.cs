@@ -21,7 +21,7 @@ namespace InquirerCS.Builders
             return new Input<string>(Confirm, RenderQuestion, Input, Parse, ResultValidators, InputValidators, DisplayError, Default, OnKey);
         }
 
-        public override InputBuilder<Input<string>, string, string> WithConfirmation()
+        public InputBuilder<Input<string>, string, string> WithConfirmation()
         {
             Confirm = new ConfirmPasswordComponent(Console);
             return this;
