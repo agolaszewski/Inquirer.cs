@@ -60,6 +60,15 @@ namespace InquirerCS.Questions
         public TResult Prompt()
         {
             _displayQuestion.Render();
+
+            if (_choices.Count == 0)
+            {
+                _errorComponent.Render("No choices");
+                var keyPressed = _inputComponent.WaitForInput().InterruptKey;
+                _onKey.OnKey(keyPressed);
+                return default(TResult);
+            }
+
             _renderChoices.Render();
 
             _console.WriteLine();

@@ -54,6 +54,15 @@ namespace InquirerCS.Questions
         public TList Prompt()
         {
             _displayQuestionComponent.Render();
+
+            if (_pagingComponent.PagedChoices.Count == 0)
+            {
+                _errorComponent.Render("No choices");
+                var keyPressed = _input.WaitForInput().InterruptKey;
+                _onKey.OnKey(keyPressed);
+                return default(TList);
+            }
+
             _renderchoices.Render();
 
             _cursorPosition = Consts.CURSOR_OFFSET;
