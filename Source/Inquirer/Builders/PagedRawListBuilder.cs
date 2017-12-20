@@ -36,11 +36,11 @@ namespace InquirerCS.Builders
             value =>
             {
                 var index = value.To<int>();
-                return index > 0 && index <= Choices.Count;
+                return index > 0 && index <= Paging.CurrentPage.Count;
             },
             value =>
             {
-                return $"Chosen number must be between 1 and {Choices.Count}";
+                return $"Chosen number must be between 1 and {Paging.CurrentPage.Count} ";
             });
 
             OnKey = listBuilder.OnKey;

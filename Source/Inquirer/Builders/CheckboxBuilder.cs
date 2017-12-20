@@ -18,7 +18,8 @@ namespace InquirerCS.Builders
         IDisplayErrorTrait,
         IWaitForInputTrait<StringOrKey>,
         IParseTrait<List<Selectable<TResult>>, List<TResult>>,
-        IOnKeyTrait
+        IOnKeyTrait,
+        IBuilder<Checkbox<List<TResult>, TResult>, List<TResult>>
     {
         public CheckboxBuilder(IConsole console)
         {
@@ -28,8 +29,9 @@ namespace InquirerCS.Builders
             this.ConvertToString();
             this.Default();
             this.ResultValidate();
-            this.Input(Console, true, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            this.Input(Console, true, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.Spacebar);
             this.OnKey();
+            this.RenderError(Console);
         }
 
         public CheckboxBuilder(string message, IEnumerable<TResult> choices, IConsole console) : this(console)
@@ -73,6 +75,11 @@ namespace InquirerCS.Builders
         public PagedCheckboxBuilder<TResult> Page(int pageSize)
         {
             return new PagedCheckboxBuilder<TResult>(this, pageSize);
+        }
+
+        public List<TResult> Prompt()
+        {
+            return Build().Prompt();
         }
 
         public virtual CheckboxBuilder<TResult> WithConfirmation()

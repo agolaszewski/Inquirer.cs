@@ -13,7 +13,7 @@ namespace InquirerCS
             _console = new AppConsole();
         }
 
-        public static InputStructBuilder<TResult> _inputComponent<TResult>(string message) where TResult : struct
+        public static InputStructBuilder<TResult> Input<TResult>(string message) where TResult : struct
         {
             return new InputStructBuilder<TResult>(message, _console);
         }
@@ -33,15 +33,16 @@ namespace InquirerCS
             return new ExtendedBuilder(message, _console, @params);
         }
 
+        public static ExtendedListBuilder<TResult> ExtendedList<TResult>(string message, Dictionary<ConsoleKey, TResult> choices)
+        {
+            return new ExtendedListBuilder<TResult>(message, choices, _console);
+        }
+
         public static InputStringBuilder Input(string message)
         {
             return new InputStringBuilder(message, _console);
         }
 
-        ////public static ExtendedListBuilder<TResult> ExtendedList<TResult>(string message, IDictionary<ConsoleKey, TResult> choices) where TResult : IComparable
-        ////{
-        ////    return new ExtendedListBuilder<TResult>(message, choices);
-        ////}
         public static ListBuilder<TResult> List<TResult>(string message, IEnumerable<TResult> choices)
         {
             return new ListBuilder<TResult>(message, choices, _console);

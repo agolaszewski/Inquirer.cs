@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
@@ -10,12 +11,12 @@ namespace InquirerCS.Components
 
         private IConsole _console;
 
-        private IConvertToStringComponent<TResult> _convertToStringComponent;
+        private IConvertToStringTrait<TResult> _convertToString;
 
-        public DisplayExtendedChoices(Dictionary<ConsoleKey, TResult> choicesDictionary, IConvertToStringComponent<TResult> convertToString, IConsole console)
+        public DisplayExtendedChoices(Dictionary<ConsoleKey, TResult> choicesDictionary, IConvertToStringTrait<TResult> convertToString, IConsole console)
         {
             _choicesDictionary = choicesDictionary;
-            _convertToStringComponent = convertToString;
+            _convertToString = convertToString;
             _console = console;
         }
 
@@ -24,7 +25,7 @@ namespace InquirerCS.Components
             int index = 0;
             foreach (var choice in _choicesDictionary)
             {
-                _console.PositionWriteLine($"[{choice.Key}] {_convertToStringComponent.Run(choice.Value)}", 0, index + Consts.CURSOR_OFFSET);
+                _console.PositionWriteLine($"[{choice.Key}] {_convertToString.Convert.Run(choice.Value)}", 0, index + Consts.CURSOR_OFFSET);
                 index++;
             }
         }

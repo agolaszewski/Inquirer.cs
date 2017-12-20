@@ -18,7 +18,8 @@ namespace InquirerCS.Builders
         IWaitForInputTrait<StringOrKey>,
         IParseTrait<Dictionary<int, List<Selectable<TResult>>>, List<TResult>>,
         IOnKeyTrait,
-        IPagingTrait<Selectable<TResult>>
+        IPagingTrait<Selectable<TResult>>,
+        IBuilder<PagedCheckbox<List<TResult>, TResult>, List<TResult>>
     {
         public PagedCheckboxBuilder(CheckboxBuilder<TResult> checkboxBuilder, int pageSize)
         {
@@ -69,6 +70,11 @@ namespace InquirerCS.Builders
         public PagedCheckbox<List<TResult>, TResult> Build()
         {
             return new PagedCheckbox<List<TResult>, TResult>(Paging, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
+        }
+
+        public List<TResult> Prompt()
+        {
+            return Build().Prompt();
         }
 
         public virtual PagedCheckboxBuilder<TResult> WithConfirmation()

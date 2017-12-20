@@ -16,7 +16,7 @@ namespace InquirerCS.Components
 
         public Func<char, bool> AllowTypeFn { get; set; }
 
-        public List<ConsoleKey> IntteruptedKeys { get; set; }
+        public List<ConsoleKey> IntteruptedKeys { get; set; } = new List<ConsoleKey>();
 
         public StringOrKey WaitForInput()
         {

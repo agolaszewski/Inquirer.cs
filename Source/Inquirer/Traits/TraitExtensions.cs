@@ -102,6 +102,11 @@ namespace InquirerCS.Traits
             trait.Paging = new PagingComponent<TResult>(chocies, pageSize);
         }
 
+        public static void Parse<TResult>(this IParseTrait<ConsoleKey, TResult> trait, Dictionary<ConsoleKey, TResult> choices)
+        {
+            trait.Parse = new ParseDictionaryComponent<ConsoleKey, TResult>(choices);
+        }
+
         public static void Parse<TResult>(this IParseTrait<Dictionary<int, List<Selectable<TResult>>>, List<TResult>> trait, IPagingTrait<Selectable<TResult>> paging)
         {
             trait.Parse = new ParseSelectablePagedListComponent<List<TResult>, TResult>(paging);
@@ -130,6 +135,11 @@ namespace InquirerCS.Traits
         public static void PasswordInput(this IWaitForInputTrait<StringOrKey> trait, IConsole console)
         {
             trait.Input = new HideReadStringComponent(console);
+        }
+
+        public static void RenderChoices<TResult>(this IRenderChoicesTrait<TResult> trait, Dictionary<ConsoleKey, TResult> choices, IConvertToStringTrait<TResult> convert, IConsole console)
+        {
+            trait.RenderChoices = new DisplayExtendedChoices<TResult>(choices, convert, console);
         }
 
         public static void RenderChoices<TResult>(this IRenderChoicesTrait<TResult> trait, IPagingTrait<Selectable<TResult>> paging, IConvertToStringTrait<TResult> convert, IConsole console)
