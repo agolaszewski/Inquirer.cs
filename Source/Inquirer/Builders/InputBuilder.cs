@@ -23,7 +23,7 @@ namespace InquirerCS.Builders
         {
             Console = console;
 
-            this.Confirm(this, Console);
+            this.Confirm();
             this.ConvertToString();
             this.Default();
             this.InputValidate();

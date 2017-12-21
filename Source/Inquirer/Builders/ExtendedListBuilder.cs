@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
@@ -16,7 +17,7 @@ namespace InquirerCS.Builders
             this.RenderQuestion(message, this, this, console);
             this.Parse(Choices);
             this.RenderChoices(Choices, this, Console);
-            this.Input(Console, true, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
+            this.Input(Console, true, choices.Keys.ToArray());
         }
 
         public Dictionary<ConsoleKey, TResult> Choices { get; set; }
