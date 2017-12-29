@@ -28,6 +28,9 @@ namespace InquirerCS.Components
                 _console.PositionWriteLine(choice.IsSelected ? "*" : " ", 3, index + Consts.CURSOR_OFFSET);
                 index++;
             }
+
+            _console.WriteLine(" ");
+            _console.WriteLine($"Page {_paging.Paging.CurrentPageNumber + 1} of {_paging.Paging.PagedChoices.Count}");
         }
 
         public void Select(int index)
