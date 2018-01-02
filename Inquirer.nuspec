@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Inquirer.cs</id>
-    <version>0.2.0-alpha</version>
+    <version>1.0.0</version>
     <title>Inquirer.cs</title>
     <authors>Andrzej Gołaszewski</authors>
     <owners>Andrzej Gołaszewski</owners>
@@ -11,7 +11,7 @@
     <!--<iconUrl></iconUrl>-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Inquirer.cs provides the user interface and the inquiry session flow.</description>
-    <releaseNotes>Very early build. Lot of TODO</releaseNotes>
+    <releaseNotes>https://github.com/agolaszewski/Inquirer.cs</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>Inquirer</tags>
   </metadata>

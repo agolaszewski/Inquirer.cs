@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace InquirerCS
 {
@@ -11,6 +10,8 @@ namespace InquirerCS
         private Inquirer _inquirer;
 
         private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
+
+        private IConsole _console = new AppConsole();
 
         internal InquirerMenu(string header, Inquirer inquirer)
         {
@@ -31,30 +32,30 @@ namespace InquirerCS
                 throw new Exception("No options defined");
             }
 
-            Console.Clear();
-            ConsoleHelper.WriteLine(_header + " :");
-            ConsoleHelper.WriteLine();
+            _console.Clear();
+            _console.WriteLine(_header + " :");
+            _console.WriteLine();
 
-            ConsoleHelper.WriteLine("  " + DisplayChoice(0), ConsoleColor.DarkYellow);
+            _console.WriteLine("  " + DisplayChoice(0), ConsoleColor.DarkYellow);
             for (int i = 1; i < _options.Count; i++)
             {
-                ConsoleHelper.WriteLine("  " + DisplayChoice(i));
+                _console.WriteLine("  " + DisplayChoice(i));
             }
 
             Console.CursorVisible = false;
 
-            int boundryTop = Console.CursorTop - _options.Count;
+            int boundryTop = _console.CursorTop - _options.Count;
             int boundryBottom = boundryTop + _options.Count - 1;
 
-            ConsoleHelper.PositionWrite("→", 0, boundryTop);
+            _console.PositionWrite("→", 0, boundryTop);
 
             bool move = true;
             while (move)
             {
-                int y = Console.CursorTop;
+                int y = _console.CursorTop;
 
                 bool isCanceled = false;
-                var key = ConsoleHelper.ReadKey(out isCanceled);
+                var key = _console.ReadKey(out isCanceled);
                 if (isCanceled)
                 {
                     if (_inquirer.History.Count > 1)
@@ -70,11 +71,11 @@ namespace InquirerCS
                     return;
                 }
 
-                Console.SetCursorPosition(0, y);
-                ConsoleHelper.Write("  " + DisplayChoice(y - boundryTop));
-                Console.SetCursorPosition(0, y);
+                _console.SetCursorPosition(0, y);
+                _console.Write("  " + DisplayChoice(y - boundryTop));
+                _console.SetCursorPosition(0, y);
 
-                switch (key)
+                switch (key.Key)
                 {
                     case (ConsoleKey.UpArrow):
                         {
@@ -99,7 +100,7 @@ namespace InquirerCS
                     case (ConsoleKey.Enter):
                         {
                             Console.CursorVisible = true;
-                            var answer = _options[Console.CursorTop - boundryTop];
+                            var answer = _options[_console.CursorTop - boundryTop];
                             move = false;
                             _inquirer.Next(answer.Item2);
 
@@ -107,8 +108,8 @@ namespace InquirerCS
                         }
                 }
 
-                ConsoleHelper.PositionWrite("  " + DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
-                ConsoleHelper.PositionWrite("→", 0, y);
+                _console.PositionWrite("  " + DisplayChoice(y - boundryTop), 0, y, ConsoleColor.DarkYellow);
+                _console.PositionWrite("→", 0, y);
                 Console.SetCursorPosition(0, y);
             }
         }

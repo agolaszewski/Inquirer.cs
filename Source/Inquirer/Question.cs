@@ -1,158 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using InquirerCS.Builders;
 
 namespace InquirerCS
 {
     public static class Question
     {
-        public static QuestionCheckbox<List<TResult>, TResult> Checkbox<TResult>(string message, List<TResult> choices)
+        private static AppConsole _console;
+
+        static Question()
         {
-            var inquire = new QuestionCheckbox<List<TResult>, TResult>(message);
-
-            inquire.ReadFn = () => { return Console.ReadKey().Key; };
-            inquire.Choices = choices;
-            inquire.ConvertToStringFn = answer => { return string.Join(",", answer); };
-
-            return inquire;
+            _console = new AppConsole();
         }
 
-        public static QuestionInputKey<bool> Confirm(string message)
+        public static InputStructBuilder<TResult> Input<TResult>(string message) where TResult : struct
         {
-            var inquire = new QuestionInputKey<bool>(message);
-
-            inquire.ReadFn = () => { return Console.ReadKey().Key; };
-            inquire.Message += " [y/n]";
-            inquire.WithInputValidation(value => { return value == ConsoleKey.Y ? true : false; }, "Press [[Y]] or [[N]]");
-
-            inquire.Parse(answer =>
-            {
-                return answer == System.ConsoleKey.Y;
-            });
-
-            return inquire;
+            return new InputStructBuilder<TResult>(message, _console);
         }
 
-        public static QuestionInputKey<ConsoleKey> Extended(string message, params ConsoleKey[] @params)
+        public static CheckboxBuilder<TResult> Checkbox<TResult>(string message, IEnumerable<TResult> choices)
         {
-            var inquire = new QuestionInputKey<ConsoleKey>(message);
-            inquire.ReadFn = () => { return Console.ReadKey().Key; };
-
-            inquire.WithInputValidation(
-            value =>
-            {
-                return @params.Any(p => p == value);
-            },
-            value =>
-            {
-                string keys = " Press : ";
-                foreach (var key in @params)
-                {
-                    keys += $"[{(char)key}] ";
-                }
-
-                return keys;
-            });
-
-            inquire.Parse(answer =>
-            {
-                return answer;
-            });
-
-            return inquire;
+            return new CheckboxBuilder<TResult>(message, choices, _console);
         }
 
-        public static QuestionExtendedList<Dictionary<ConsoleKey, TResult>, TResult> ExtendedList<TResult>(string message, Dictionary<ConsoleKey, TResult> choices)
+        public static ConfirmBuilder Confirm(string message)
         {
-            var inquire = new QuestionExtendedList<Dictionary<ConsoleKey, TResult>, TResult>(message);
-
-            inquire.Choices = choices;
-            inquire.ReadFn = () => { return Console.ReadKey().Key; };
-            inquire.WithInputValidation(value => { return inquire.Choices.ContainsKey(value); }, "Invalid key");
-
-            inquire.Parse(answer =>
-            {
-                return inquire.Choices[answer];
-            });
-
-            return inquire;
+            return new ConfirmBuilder(message, _console);
         }
 
-        public static QuestionInput<T> Input<T>(string message) where T : struct
+        public static ExtendedBuilder Extended(string message, params ConsoleKey[] @params)
         {
-            var inquire = new QuestionInput<T>(message);
-
-            inquire.ReadFn = () => { return ConsoleHelper.Read(); };
-            inquire.WithInputValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
-            inquire.WithInputValidation(value => { return value.ToN<T>().HasValue; }, value => { return $"Cannot parse {value} to {typeof(T)}"; });
-
-            inquire.Parse(answer =>
-            {
-                return answer.To<T>();
-            });
-
-            return inquire;
+            return new ExtendedBuilder(message, _console, @params);
         }
 
-        public static QuestionInput<string> Input(string message)
+        public static ExtendedListBuilder<TResult> ExtendedList<TResult>(string message, Dictionary<ConsoleKey, TResult> choices)
         {
-            var inquire = new QuestionInput<string>(message);
-
-            inquire.ReadFn = () => { return ConsoleHelper.Read(); };
-            inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
-
-            inquire.Parse(answer =>
-            {
-                return answer;
-            });
-
-            return inquire;
+            return new ExtendedListBuilder<TResult>(message, choices, _console);
         }
 
-        public static QuestionList<TResult> List<TResult>(string message, List<TResult> choices)
+        public static InputStringBuilder Input(string message)
         {
-            var inquire = new QuestionList<TResult>(message);
-
-            inquire.ReadFn = () => { return ConsoleHelper.Read().ToN<int>(); };
-            inquire.Choices = choices;
-
-            inquire.Parse(answer =>
-            {
-                return inquire.Choices[answer.Value];
-            });
-
-            return inquire;
+            return new InputStringBuilder(message, _console);
         }
 
-        public static QuestionPassword<string> Password(string message)
+        public static ListBuilder<TResult> List<TResult>(string message, IEnumerable<TResult> choices)
         {
-            var inquire = new QuestionPassword<string>(message);
-
-            inquire.ReadFn = () => { return ConsoleHelper.Read(); };
-            inquire.WithValidation(value => { return string.IsNullOrEmpty(value) == false || inquire.HasDefaultValue; }, "Empty line");
-
-            inquire.Parse(answer =>
-            {
-                return answer;
-            });
-
-            return inquire;
+            return new ListBuilder<TResult>(message, choices, _console);
         }
 
-        public static QuestionRawList<TResult> RawList<TResult>(string message, List<TResult> choices)
+        public static PasswordBuilder Password(string message)
         {
-            var inquire = new QuestionRawList<TResult>(message);
-            inquire.Choices = choices;
+            return new PasswordBuilder(message, _console);
+        }
 
-            inquire.ReadFn = () => { return ConsoleHelper.Read().ToN<int>(); };
-            inquire.WithInputValidation(value => { return value > 0 && value <= inquire.Choices.Count; }, value => { return $"Choosen number must be between 1 and {inquire.Choices.Count}"; });
-
-            inquire.Parse(answer =>
-            {
-                return inquire.Choices[answer.Value - 1];
-            });
-
-            return inquire;
+        public static RawListBuilder<TResult> RawList<TResult>(string message, IEnumerable<TResult> choices)
+        {
+            return new RawListBuilder<TResult>(message, choices, _console);
         }
     }
 }

@@ -113,12 +113,9 @@ Should return true if the value is valid, and an error message (String) otherwis
 ## Inquirer
 
 ```csharp
-new Inquirer<Answers>();
-
-_answers = new Answers();
-_test = new Inquirer<Answers>(_answers);
+_test = new Inquirer();
 ```
-Inquirer is for preserving history and assigning answer to TAnswer class.
+Inquirer is for preserving history
 It works by wrapping  ```csharp Prompt ``` or ```csharp Menu ``` methods in another method.
 
 ```csharp
@@ -129,9 +126,9 @@ private static void PagingCheckboxTest()
                 .Page(3)
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                 .WithConfirmation()
-                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"))
-            .Return();
-            MenuTest();
+                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
+
+            _test.Next(() => MenuTest());
         }
 ```
 
@@ -139,7 +136,9 @@ private static void PagingCheckboxTest()
 #### Menu
 
 ```csharp
-_test.Menu("Choose")
+private static void MenuTest()
+        {
+            _test.Menu("Choose")
                .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
                .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
                .AddOption("PagingListTest", () => { PagingListTest(); })
@@ -150,25 +149,7 @@ _test.Menu("Choose")
                .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
                .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
                .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
-```
-
-#### Prompt
-
-```csharp
-public InquirerFor<TAnswers, TResult> Prompt<TResult>(QuestionBase<TResult> question)
-```
-
-#### For
-
-```csharp
-public TResult For(Expression<Func<TAnswers, TResult>> answerProperty)
-```
-
-#### Return
-
-```csharp
-public TResult Return()
-public InquirerFor<TAnswers, TConvert> Return<TConvert>(Func<TResult, TConvert> convertFn)
+        }
 ```
 
 
