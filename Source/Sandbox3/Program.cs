@@ -5,6 +5,12 @@ using InquirerCS;
 
 namespace ConsoleApp1
 {
+    internal class TestClass
+    {
+        public string Name { get; set; }
+        public bool IsActive { get; set; }
+    }
+
     internal class Program
     {
         private static Inquirer _test = new Inquirer();
