@@ -5,6 +5,12 @@ using InquirerCS;
 
 namespace ConsoleApp1
 {
+    internal class TestClass
+    {
+        public string Name { get; set; }
+        public bool IsActive { get; set; }
+    }
+
     internal class Program
     {
         private static Inquirer _test = new Inquirer();
@@ -18,7 +24,7 @@ namespace ConsoleApp1
         private static void MenuTest()
         {
             _test.Menu("Choose")
-               .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
+               .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest2(); })
                .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
                .AddOption("PagingListTest", () => { PagingListTest(); })
                .AddOption("InputTest", () => { InputTest(); })
@@ -38,6 +44,19 @@ namespace ConsoleApp1
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                 .WithConfirmation()
                 .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
+
+            _test.Next(() => MenuTest());
+        }
+
+        private static void PagingCheckboxTest2()
+        {
+            var colors = new List<TestClass>() { new TestClass() { Name = "zzzz" }, new TestClass() { IsActive = true, Name = "asdasda" } };
+
+            var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
+                .Page(2)
+                .WithDefaultValue(x => { return true; })
+                .WithConfirmation()
+                .WithConvertToString(item => item.Name));
 
             _test.Next(() => MenuTest());
         }

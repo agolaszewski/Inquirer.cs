@@ -34,7 +34,7 @@ namespace InquirerCS.Traits
 
         public static void Default<TResult>(this IDefaultTrait<List<TResult>> trait, List<Selectable<TResult>> choices, Func<TResult, bool> compareTo)
         {
-            trait.Default = null;
+            trait.Default = new NonComperableDefaultSelectedValueComponent<TResult>(choices, compareTo);
         }
 
         public static void Default<TResult>(this IDefaultTrait<List<TResult>> trait, List<Selectable<TResult>> choices, List<TResult> defaultValues) where TResult : IComparable
