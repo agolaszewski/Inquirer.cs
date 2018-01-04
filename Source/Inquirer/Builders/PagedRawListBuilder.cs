@@ -27,7 +27,7 @@ namespace InquirerCS.Builders
 
             this.Parse(value =>
             {
-                return Paging.CurrentPage[value.To<int>()];
+                return Paging.CurrentPage[value.To<int>() - 1];
             });
 
             InputValidators.Add(value => { return string.IsNullOrEmpty(value) == false || Default.HasDefault; }, "Empty line");

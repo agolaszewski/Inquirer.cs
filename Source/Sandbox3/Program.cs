@@ -44,8 +44,6 @@ namespace ConsoleApp1
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                 .WithConfirmation()
                 .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
-
-            _test.Next(() => MenuTest());
         }
 
         private static void PagingRawListTest()
@@ -56,7 +54,6 @@ namespace ConsoleApp1
                 .WithDefaultValue(ConsoleColor.DarkCyan)
                 .WithConfirmation()
                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-            _test.Next(() => MenuTest());
         }
 
         private static void PagingListTest()
@@ -67,14 +64,11 @@ namespace ConsoleApp1
                 .WithDefaultValue(ConsoleColor.DarkCyan)
                 .WithConfirmation()
                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-
-            _test.Next(() => MenuTest());
         }
 
         private static void InputTest2()
         {
             _test.Prompt(Question.Input<int>("2 + 2").WithDefaultValue(4).WithConfirmation().WithValidation(value => value == 4, "Answer not equal 4"));
-            _test.Next(() => MenuTest());
         }
 
         private static void InputTest()
@@ -83,16 +77,12 @@ namespace ConsoleApp1
                 .WithDefaultValue("fine")
                 .WithConfirmation()
                 .WithValidation(value => value == "fine", "You cannot be not fine!"));
-
-            _test.Next(() => MenuTest());
         }
 
         private static void ConfirmTest()
         {
             var answer = _test.Prompt(Question.Confirm("Are you sure?")
                 .WithDefaultValue(false));
-
-            _test.Next(() => MenuTest());
         }
 
         private static void PasswordTest()
@@ -101,8 +91,6 @@ namespace ConsoleApp1
                 .WithDefaultValue("123456789")
                 .WithConfirmation()
                 .WithValidation(value => value.Length >= 8 && value.Length <= 10, "Password length must be between 8-10 characters"));
-
-            _test.Next(() => MenuTest());
         }
 
         private static void ListTest()
@@ -112,8 +100,6 @@ namespace ConsoleApp1
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
                  .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-
-            _test.Next(() => MenuTest());
         }
 
         private static void ListRawTest()
@@ -123,8 +109,6 @@ namespace ConsoleApp1
                  .WithDefaultValue(ConsoleColor.DarkCyan)
                  .WithConfirmation()
                  .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-
-            _test.Next(() => MenuTest());
         }
 
         private static void ListCheckboxTest()
@@ -134,8 +118,6 @@ namespace ConsoleApp1
                 .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
                 .WithConfirmation()
                 .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
-
-            _test.Next(() => MenuTest());
         }
 
         private static void ListExtendedTest()
@@ -149,8 +131,6 @@ namespace ConsoleApp1
                 .WithDefaultValue(ConsoleColor.Black)
                 .WithConfirmation()
                 .WithValidation(values => values == ConsoleColor.Black, "Choose black"));
-
-            _test.Next(() => MenuTest());
         }
     }
 }

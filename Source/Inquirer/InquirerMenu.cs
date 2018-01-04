@@ -21,16 +21,13 @@ namespace InquirerCS
 
         public InquirerMenu AddOption(string description, Action option)
         {
-            _options.Add(new Tuple<string, Action>(description, option));
+            _options.Add(new Tuple<string, Action>(description, () => { option.Invoke(); Prompt(); }));
             return this;
         }
 
         public void Prompt()
         {
-            if (_options.Count == 0)
-            {
-                throw new Exception("No options defined");
-            }
+            _options.Add(new Tuple<string, Action>("Exit", () => { return; }));
 
             _console.Clear();
             _console.WriteLine(_header + " :");
