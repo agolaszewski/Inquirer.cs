@@ -35,8 +35,8 @@ namespace InquirerCS.Builders
             InputValidators.Add(
             value =>
             {
-                var index = value.To<int>() - 1;
-                return index >= 0 && index < Paging.CurrentPage.Count;
+                var index = value.To<int>();
+                return index > 0 && index <= Paging.CurrentPage.Count;
             },
             value =>
             {
