@@ -27,10 +27,7 @@ namespace InquirerCS
 
         public void Prompt()
         {
-            if (_options.Count == 0)
-            {
-                throw new Exception("No options defined");
-            }
+            _options.Add(new Tuple<string, Action>("Exit", () => { return; }));
 
             _console.Clear();
             _console.WriteLine(_header + " :");
