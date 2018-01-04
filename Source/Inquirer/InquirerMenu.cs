@@ -21,7 +21,7 @@ namespace InquirerCS
 
         public InquirerMenu AddOption(string description, Action option)
         {
-            _options.Add(new Tuple<string, Action>(description, option));
+            _options.Add(new Tuple<string, Action>(description, () => { option.Invoke(); Prompt(); }));
             return this;
         }
 
