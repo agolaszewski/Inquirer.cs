@@ -11,14 +11,47 @@ namespace ConsoleApp1
         public bool IsActive { get; set; }
     }
 
-    internal class Program
+    internal class Program : InquirerProgram
     {
         private static Inquirer _test = new Inquirer();
 
         private static void Main(string[] args)
         {
-            _test.Next(() => MenuTest());
+            Does(() =>
+            {
+                var derp = Question.Input("Name").Prompt();
+            });
+
+            Does(() =>
+            {
+                var derp = Question.Input("Name").Prompt();
+            });
+
+            Does(() =>
+            {
+                var derp = Question.Input("Name").Prompt();
+            });
+
+            Menu("asdasd");
+            AddOption("dasdasd", () => { PagingCheckboxTest } );
+            AddOption("asdasdasda");
+            AddOption("dasdasd");
+            AddOption("asdasdasda");
+            AddOption("dasdasd");
+            AddOption("asdasdasda");
+            AddOption("asdasdasdasdasd");
+
             Console.ReadKey();
+        }
+
+        private static void Menu(string name)
+        {
+
+        }
+
+        private static void AddOption(string name)
+        {
+            Does()
         }
 
         private static void MenuTest()
@@ -34,6 +67,19 @@ namespace ConsoleApp1
                .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
                .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
                .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
+
+            _test.Next(() => Test());
+        }
+
+        private static void Test()
+        {
+            var test = new TestClass()
+            {
+                Name = _test.Prompt(Question.Input("Name")),
+                IsActive = Question.Confirm("Is Active").Prompt()
+            };
+
+            Console.WriteLine(test.Name + " " + test.IsActive);
         }
 
         private static void PagingCheckboxTest()

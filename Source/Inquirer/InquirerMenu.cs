@@ -27,6 +27,7 @@ namespace InquirerCS
 
         public void Prompt()
         {
+            _options.RemoveAt(_options.Count - 1);
             _options.Add(new Tuple<string, Action>("Exit", () => { return; }));
 
             _console.Clear();
