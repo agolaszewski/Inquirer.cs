@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace InquirerCS
 {
@@ -27,7 +28,10 @@ namespace InquirerCS
 
         public void Prompt()
         {
-            _options.Add(new Tuple<string, Action>("Exit", () => { return; }));
+            if (!_options.Any(item => item.Item1 == "Exit"))
+            {
+                _options.Add(new Tuple<string, Action>("Exit", () => { return; }));
+            }
 
             _console.Clear();
             _console.WriteLine(_header + " :");
