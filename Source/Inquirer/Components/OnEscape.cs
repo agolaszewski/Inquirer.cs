@@ -13,10 +13,7 @@ namespace InquirerCS.Components
 
         public void OnKey(ConsoleKey? key)
         {
-            if (key == ConsoleKey.Escape)
-            {
-                IsInterrupted = true;
-            }
+            IsInterrupted = key == ConsoleKey.Escape;
         }
     }
 }

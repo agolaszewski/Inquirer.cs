@@ -17,7 +17,7 @@ namespace ConsoleApp1
 
         private static void Main(string[] args)
         {
-            Test();
+            B();
             Console.ReadKey();
         }
 
@@ -33,10 +33,13 @@ namespace ConsoleApp1
         public static void B()
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            Question.List("B", colors.ToList()).WithConfirmation().Then(answer =>
-            {
-                Console.WriteLine(answer);
-            });
+
+            var derp = new QuestionForms();
+            derp.Add(Question.List("A", colors.ToList()).WithConfirmation(), answer => { });
+            derp.Add(Question.List("B", colors.ToList()).WithConfirmation(), answer => { });
+            derp.Add(Question.List("C", colors.ToList()).WithConfirmation(), answer => { });
+            derp.Add(Question.List("D", colors.ToList()).WithConfirmation(), answer => { });
+            derp.Fill();
         }
 
         public static void Test()

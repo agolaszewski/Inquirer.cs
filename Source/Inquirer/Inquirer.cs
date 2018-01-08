@@ -36,7 +36,7 @@ namespace InquirerCS
             }
         }
 
-        public TResult Prompt<TQuestion, TResult>(IBuilder<TQuestion, TResult> builder)
+        public TResult Prompt<TQuestion, TResult>(IBuilder<TQuestion, TResult> builder) where TQuestion : IQuestion<TResult>
         {
             if (builder is IWaitForInputTrait<StringOrKey>)
             {
