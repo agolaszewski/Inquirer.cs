@@ -57,6 +57,29 @@ namespace InquirerCS.Builders
 
         public abstract TQuestion Build();
 
+        public void Then(Action<TResult> action)
+        {
+            Input.IntteruptedKeys.Add(ConsoleKey.Escape);
+            OnKey = new OnEscape();
+
+            var answer = Build().Prompt();
+            if (OnKey.IsInterrupted)
+            {
+                if (History.Stack.Count > 0)
+                {
+                    History.Stack.Pop()();
+                    return;
+                }
+
+                Then(action);
+            }
+            else
+            {
+                History.Stack.Push(() => { Then(action); });
+                action(answer);
+            }
+        }
+
         public TResult Prompt()
         {
             return Build().Prompt();

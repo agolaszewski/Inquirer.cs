@@ -99,6 +99,7 @@
     <Compile Include="Components\ParseComponent.cs" />
     <Compile Include="Components\DisplayExtendedChoices.cs" />
     <Compile Include="Consts.cs" />
+    <Compile Include="History.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />

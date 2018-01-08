@@ -47,7 +47,7 @@ namespace InquirerCS
             if (builder is IOnKeyTrait)
             {
                 var waitForInputTrait = builder as IOnKeyTrait;
-                waitForInputTrait.OnKey = new OnEscape(this);
+                waitForInputTrait.OnKey = new OnEscape();
             }
 
             return builder.Prompt();

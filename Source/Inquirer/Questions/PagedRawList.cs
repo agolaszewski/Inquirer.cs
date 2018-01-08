@@ -70,10 +70,14 @@ namespace InquirerCS.Questions
 
             _renderChoices.Render();
 
-            Console.WriteLine();
+            _console.WriteLine();
             _console.Write("Answer: ");
             StringOrKey value = _inputComponent.WaitForInput();
             _onKey.OnKey(value.InterruptKey);
+            if (_onKey.IsInterrupted)
+            {
+                return default(TResult);
+            }
 
             switch (value.InterruptKey)
             {

@@ -17,8 +17,45 @@ namespace ConsoleApp1
 
         private static void Main(string[] args)
         {
-            _test.Next(() => MenuTest());
+            Test();
             Console.ReadKey();
+        }
+
+        public static void A()
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            Question.List("A", colors.ToList()).WithConfirmation().Then(answer =>
+            {
+                Console.WriteLine(answer);
+            });
+        }
+
+        public static void B()
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            Question.List("B", colors.ToList()).WithConfirmation().Then(answer =>
+            {
+                Console.WriteLine(answer);
+            });
+        }
+
+        public static void Test()
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            Question.List("C", colors.ToList()).WithConfirmation().Then(answer =>
+            {
+                Console.WriteLine(answer);
+                if (answer == ConsoleColor.Black)
+                {
+                    B();
+                    B();
+                }
+                else
+                {
+                    A();
+                    B();
+                }
+            });
         }
 
         private static void MenuTest()
