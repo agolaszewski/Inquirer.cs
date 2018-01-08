@@ -7,7 +7,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS
 {
-    public class QuestionForms
+    public class QuestionForm
     {
         private NavigationList<Action> _questions = new NavigationList<Action>();
 

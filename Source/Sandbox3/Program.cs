@@ -34,7 +34,7 @@ namespace ConsoleApp1
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
 
-            var derp = new QuestionForms();
+            var derp = new QuestionForm();
             derp.Add(Question.List("A", colors.ToList()).WithConfirmation(), answer => { });
             derp.Add(Question.List("B", colors.ToList()).WithConfirmation(), answer => { });
             derp.Add(Question.List("C", colors.ToList()).WithConfirmation(), answer => { });

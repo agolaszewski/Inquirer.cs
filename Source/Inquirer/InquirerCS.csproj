@@ -113,7 +113,7 @@
     <Compile Include="Interfaces\IRenderChoicesComponent.cs" />
     <Compile Include="NavigationList.cs" />
     <Compile Include="Question.cs" />
-    <Compile Include="QuestionsForm.cs" />
+    <Compile Include="QuestionForm.cs" />
     <Compile Include="Questions\PagedCheckbox.cs" />
     <Compile Include="Questions\Checkbox.cs" />
     <Compile Include="Questions\ExtendedList.cs" />
