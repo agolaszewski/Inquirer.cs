@@ -54,5 +54,11 @@ namespace InquirerCS
                 return this[CurrnetIndex];
             }
         }
+
+        public void Add(T item)
+        {
+            base.Add(item);
+            _currentIndex += 1;
+        }
     }
 }

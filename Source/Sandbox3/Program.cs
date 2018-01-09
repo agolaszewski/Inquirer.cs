@@ -17,7 +17,7 @@ namespace ConsoleApp1
 
         private static void Main(string[] args)
         {
-            B();
+            Test();
             Console.ReadKey();
         }
 
@@ -34,30 +34,38 @@ namespace ConsoleApp1
         {
             var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
 
-            var derp = new QuestionForm();
-            derp.Add(Question.List("A", colors.ToList()).WithConfirmation(), answer => { });
-            derp.Add(Question.List("B", colors.ToList()).WithConfirmation(), answer => { });
-            derp.Add(Question.List("C", colors.ToList()).WithConfirmation(), answer => { });
-            derp.Add(Question.List("D", colors.ToList()).WithConfirmation(), answer => { });
-            derp.Fill();
+            var form = new QuestionForm();
+            form.Add(Question.List("A", colors.ToList()).WithConfirmation(), answer => { });
+            form.Add(Question.List("B", colors.ToList()).WithConfirmation(), answer => { });
+            form.Add(Question.List("C", colors.ToList()).WithConfirmation(), answer => { });
+            form.Add(Question.List("D", colors.ToList()).WithConfirmation(), answer => { });
+            form.Fill();
         }
 
         public static void Test()
         {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            Question.List("C", colors.ToList()).WithConfirmation().Then(answer =>
+            Question.Ask(Question.Input("A"), answer =>
             {
                 Console.WriteLine(answer);
-                if (answer == ConsoleColor.Black)
+                Question.Ask(Question.Input("A1"), answer2 =>
                 {
-                    B();
-                    B();
-                }
-                else
-                {
-                    A();
-                    B();
-                }
+                    Console.WriteLine(answer);
+                });
+            });
+
+            Question.Ask(Question.Input("B"), answer =>
+            {
+                Console.WriteLine(answer);
+            });
+
+            Question.Ask(Question.Input("C"), answer =>
+            {
+                Console.WriteLine(answer);
+            });
+
+            Question.Ask(Question.Input("D"), answer =>
+            {
+                Console.WriteLine(answer);
             });
         }
 
