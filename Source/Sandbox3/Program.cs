@@ -44,29 +44,29 @@ namespace ConsoleApp1
 
         public static void Test()
         {
-            Question.Ask(Question.Input("A"), answer =>
-            {
-                Console.WriteLine(answer);
-                Question.Ask(Question.Input("A1"), answer2 =>
-                {
-                    Console.WriteLine(answer);
-                });
-            });
+            Question.Ask()
+                .Then(() => { Test2(); })
+                .Then(() => { Question.Ask(Question.Input("2"), answer => { }); })
+                .Then(() => { Console.WriteLine("3"); })
+            .Go();
+        }
 
-            Question.Ask(Question.Input("B"), answer =>
-            {
-                Console.WriteLine(answer);
-            });
+        private static void Test2()
+        {
+            Question.Ask()
+                .Then(() => { Question.Ask(Question.Input("1.1"), answer => { }); })
+                .Then(() => { Question.Ask(Question.Input("1.2"), answer => { }); })
+                .Then(() => { Console.WriteLine("1.3"); })
+            .Go();
+        }
 
-            Question.Ask(Question.Input("C"), answer =>
-            {
-                Console.WriteLine(answer);
-            });
-
-            Question.Ask(Question.Input("D"), answer =>
-            {
-                Console.WriteLine(answer);
-            });
+        private static void Test3()
+        {
+            Question.Ask()
+                .Then(() => { Console.WriteLine("2.1"); })
+                .Then(() => { Console.WriteLine("2.2"); })
+                .Then(() => { Console.WriteLine("2.3"); })
+            .Go();
         }
 
         private static void MenuTest()
