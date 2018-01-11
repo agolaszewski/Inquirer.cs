@@ -75,6 +75,10 @@ namespace InquirerCS.Questions
             _console.Write("Answer: ");
             var value = _inputComponent.WaitForInput();
             _onKey.OnKey(value.InterruptKey);
+            if (_onKey.IsInterrupted)
+            {
+                return default(TResult);
+            }
 
             var validationResult = _validationInputComponent.Run(value.Value);
             if (validationResult.HasError)

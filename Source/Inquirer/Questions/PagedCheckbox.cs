@@ -76,6 +76,10 @@ namespace InquirerCS.Questions
             {
                 var keyPressed = _input.WaitForInput().InterruptKey;
                 _onKey.OnKey(keyPressed);
+                if (_onKey.IsInterrupted)
+                {
+                    return default(TList);
+                }
 
                 switch (keyPressed)
                 {

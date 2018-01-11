@@ -73,6 +73,10 @@ namespace InquirerCS.Questions
 
             var value = _input.WaitForInput().InterruptKey.Value;
             _onKey.OnKey(value);
+            if (_onKey.IsInterrupted)
+            {
+                return default(TResult);
+            }
 
             if (value == ConsoleKey.Enter && _defaultValueComponent.HasDefault)
             {

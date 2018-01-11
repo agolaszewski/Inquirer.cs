@@ -5,19 +5,15 @@ namespace InquirerCS.Components
 {
     public class OnEscape : IOnKey
     {
-        private Inquirer _inquirer;
-
-        public OnEscape(Inquirer inquirer)
+        public OnEscape()
         {
-            _inquirer = inquirer;
         }
+
+        public bool IsInterrupted { get; set; }
 
         public void OnKey(ConsoleKey? key)
         {
-            if (key == ConsoleKey.Escape)
-            {
-                throw new OperationCanceledException();
-            }
+            IsInterrupted = key == ConsoleKey.Escape;
         }
     }
 }

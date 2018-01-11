@@ -54,6 +54,10 @@ namespace InquirerCS.Questions
 
             var value = Reader.WaitForInput();
             _onKey.OnKey(value.InterruptKey);
+            if (_onKey.IsInterrupted)
+            {
+                return default(TResult);
+            }
 
             if (string.IsNullOrWhiteSpace(value.Value) && _defaultValueComponent.HasDefault)
             {

@@ -13,124 +13,150 @@ namespace ConsoleApp1
 
     internal class Program
     {
-        private static Inquirer _test = new Inquirer();
-
         private static void Main(string[] args)
         {
-            _test.Next(() => MenuTest());
+            MenuTest();
             Console.ReadKey();
         }
 
+        public static void A()
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+            Question.List("A", colors.ToList()).WithConfirmation().Then(answer =>
+            {
+                Console.WriteLine(answer);
+            });
+        }
+
+        public static void Test()
+        {
+            Question.Ask()
+                .Then(() => { Question.Ask(Question.Input("2")); })
+                .Then(() => { Question.Ask(Question.Input("2")); })
+                .Then(() => { Console.WriteLine("3"); })
+            .Go();
+        }
+
+        //private static void Test2()
+        //{
+        //    Question.Ask()
+        //        .Then(() => { Question.Ask(Question.Input("1.1")); })
+        //        .Then(() => { Question.Ask(Question.Input("1.2")); })
+        //        .Then(() => { Console.WriteLine("1.3"); })
+        //    .Go();
+        //}
+
+        //private static void Test3()
+        //{
+        //    Question.Ask()
+        //        .Then(() => { Console.WriteLine("2.1"); })
+        //        .Then(() => { Console.WriteLine("2.2"); })
+        //        .Then(() => { Console.WriteLine("2.3"); })
+        //    .Go();
+        //}
+
         private static void MenuTest()
         {
-            _test.Menu("Choose")
-               .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
-               .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
-               .AddOption("PagingListTest", () => { PagingListTest(); })
-               .AddOption("InputTest", () => { InputTest(); })
-               .AddOption("PasswordTest", () => { PasswordTest(); })
-               .AddOption("ListTest", () => { ListTest(); })
-               .AddOption("ListRawTest", () => { ListRawTest(); })
-               .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
-               .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
-               .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
+            Question.Menu("Choose")
+               .AddOption("PagingCheckboxTest", () => { Test(); })
+               .AddOption("PagingRawListTest", () => { Test(); }).Prompt();
         }
 
-        private static void PagingCheckboxTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
-                .Page(3)
-                .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
-                .WithConfirmation()
-                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
-        }
+        //private static void PagingCheckboxTest()
+        //{
+        //    var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+        //    var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
+        //        .Page(3)
+        //        .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
+        //        .WithConfirmation()
+        //        .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
+        //}
 
-        private static void PagingRawListTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.RawList("Choose favourite color", colors)
-                .Page(3)
-                .WithDefaultValue(ConsoleColor.DarkCyan)
-                .WithConfirmation()
-                .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-        }
+        //private static void PagingRawListTest()
+        //{
+        //    var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+        //    var answer = _test.Prompt(Question.RawList("Choose favourite color", colors)
+        //        .Page(3)
+        //        .WithDefaultValue(ConsoleColor.DarkCyan)
+        //        .WithConfirmation()
+        //        .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
+        //}
 
-        private static void PagingListTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.List("Choose favourite color", colors)
-                .Page(3)
-                .WithDefaultValue(ConsoleColor.DarkCyan)
-                .WithConfirmation()
-                .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-        }
+        //private static void PagingListTest()
+        //{
+        //    var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+        //    var answer = _test.Prompt(Question.List("Choose favourite color", colors)
+        //        .Page(3)
+        //        .WithDefaultValue(ConsoleColor.DarkCyan)
+        //        .WithConfirmation()
+        //        .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
+        //}
 
-        private static void InputTest2()
-        {
-            _test.Prompt(Question.Input<int>("2 + 2").WithDefaultValue(4).WithConfirmation().WithValidation(value => value == 4, "Answer not equal 4"));
-        }
+        //private static void InputTest2()
+        //{
+        //    _test.Prompt(Question.Input<int>("2 + 2").WithDefaultValue(4).WithConfirmation().WithValidation(value => value == 4, "Answer not equal 4"));
+        //}
 
-        private static void InputTest()
-        {
-            string answer = _test.Prompt(Question.Input("How are you?")
-                .WithDefaultValue("fine")
-                .WithConfirmation()
-                .WithValidation(value => value == "fine", "You cannot be not fine!"));
-        }
+        //private static void InputTest()
+        //{
+        //    string answer = _test.Prompt(Question.Input("How are you?")
+        //        .WithDefaultValue("fine")
+        //        .WithConfirmation()
+        //        .WithValidation(value => value == "fine", "You cannot be not fine!"));
+        //}
 
-        private static void ConfirmTest()
-        {
-            var answer = _test.Prompt(Question.Confirm("Are you sure?")
-                .WithDefaultValue(false));
-        }
+        //private static void ConfirmTest()
+        //{
+        //    var answer = _test.Prompt(Question.Confirm("Are you sure?")
+        //        .WithDefaultValue(false));
+        //}
 
-        private static void PasswordTest()
-        {
-            string answer = _test.Prompt(Question.Password("Type password")
-                .WithDefaultValue("123456789")
-                .WithConfirmation()
-                .WithValidation(value => value.Length >= 8 && value.Length <= 10, "Password length must be between 8-10 characters"));
-        }
+        //private static void PasswordTest()
+        //{
+        //    string answer = _test.Prompt(Question.Password("Type password")
+        //        .WithDefaultValue("123456789")
+        //        .WithConfirmation()
+        //        .WithValidation(value => value.Length >= 8 && value.Length <= 10, "Password length must be between 8-10 characters"));
+        //}
 
-        private static void ListTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.List("Choose favourite color", colors)
-                 .WithDefaultValue(ConsoleColor.DarkCyan)
-                 .WithConfirmation()
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-        }
+        //private static void ListTest()
+        //{
+        //    var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+        //    var answer = _test.Prompt(Question.List("Choose favourite color", colors)
+        //         .WithDefaultValue(ConsoleColor.DarkCyan)
+        //         .WithConfirmation()
+        //         .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
+        //}
 
-        private static void ListRawTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.RawList("Choose favourite color", colors)
-                 .WithDefaultValue(ConsoleColor.DarkCyan)
-                 .WithConfirmation()
-                 .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
-        }
+        //private static void ListRawTest()
+        //{
+        //    var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+        //    var answer = _test.Prompt(Question.RawList("Choose favourite color", colors)
+        //         .WithDefaultValue(ConsoleColor.DarkCyan)
+        //         .WithConfirmation()
+        //         .WithValidation(item => item == ConsoleColor.Black, "Choose black"));
+        //}
 
-        private static void ListCheckboxTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
-                .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
-                .WithConfirmation()
-                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
-        }
+        //private static void ListCheckboxTest()
+        //{
+        //    var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
+        //    var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
+        //        .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
+        //        .WithConfirmation()
+        //        .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
+        //}
 
-        private static void ListExtendedTest()
-        {
-            var colors = new Dictionary<ConsoleKey, ConsoleColor>();
-            colors.Add(ConsoleKey.B, ConsoleColor.Black);
-            colors.Add(ConsoleKey.C, ConsoleColor.Cyan);
-            colors.Add(ConsoleKey.D, ConsoleColor.DarkBlue);
+        //private static void ListExtendedTest()
+        //{
+        //    var colors = new Dictionary<ConsoleKey, ConsoleColor>();
+        //    colors.Add(ConsoleKey.B, ConsoleColor.Black);
+        //    colors.Add(ConsoleKey.C, ConsoleColor.Cyan);
+        //    colors.Add(ConsoleKey.D, ConsoleColor.DarkBlue);
 
-            ConsoleColor answer = _test.Prompt(Question.ExtendedList("Choose favourite color", colors)
-                .WithDefaultValue(ConsoleColor.Black)
-                .WithConfirmation()
-                .WithValidation(values => values == ConsoleColor.Black, "Choose black"));
-        }
+        //    ConsoleColor answer = _test.Prompt(Question.ExtendedList("Choose favourite color", colors)
+        //        .WithDefaultValue(ConsoleColor.Black)
+        //        .WithConfirmation()
+        //        .WithValidation(values => values == ConsoleColor.Black, "Choose black"));
+        //}
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace InquirerCS
 {
@@ -7,31 +8,42 @@ namespace InquirerCS
     {
         private string _header;
 
-        private Inquirer _inquirer;
-
-        private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
+        private List<Tuple<string, Node>> _options = new List<Tuple<string, Node>>();
 
         private IConsole _console = new AppConsole();
+        private Node _root;
 
-        internal InquirerMenu(string header, Inquirer inquirer)
+        internal InquirerMenu(string header)
         {
             _header = header;
-            _inquirer = inquirer;
+
+            _root = new Node(null, Node.CurrentNode);
+            _root.Then(() => { Prompt(); });
         }
 
         public InquirerMenu AddOption(string description, Action option)
         {
-            _options.Add(new Tuple<string, Action>(description, () => { option.Invoke(); Prompt(); }));
+            var node = new Node(_root);
+            node.Then(() => { option.Invoke(); Prompt(); });
+
+            _options.Add(new Tuple<string, Node>(description, node));
             return this;
         }
 
         public void Prompt()
         {
-            _options.Add(new Tuple<string, Action>("Exit", () => { return; }));
+            if (!_options.Any(item => item.Item1 == "Exit"))
+            {
+                _options.Add(new Tuple<string, Node>("Exit", new Node(_root)));
+            }
 
             _console.Clear();
-            _console.WriteLine(_header + " :");
-            _console.WriteLine();
+
+            if (_header != null)
+            {
+                _console.WriteLine(_header + " :");
+                _console.WriteLine();
+            }
 
             _console.WriteLine("  " + DisplayChoice(0), ConsoleColor.DarkYellow);
             for (int i = 1; i < _options.Count; i++)
@@ -53,20 +65,20 @@ namespace InquirerCS
 
                 bool isCanceled = false;
                 var key = _console.ReadKey(out isCanceled);
-                if (isCanceled)
-                {
-                    if (_inquirer.History.Count > 1)
-                    {
-                        _inquirer.History.Pop();
-                        _inquirer.Next(_inquirer.History.Pop());
-                    }
-                    else
-                    {
-                        _inquirer.Next(_inquirer.History.Pop());
-                    }
+                ////if (isCanceled)
+                ////{
+                ////    if (Node.CurrentNode.Parent != null)
+                ////    {
+                ////        Node.CurrentNode.Next = null;
+                ////        Node.CurrentNode.Parent.Go();
+                ////    }
 
-                    return;
-                }
+                ////    if (Node.CurrentNode.Sibling != null)
+                ////    {
+                ////        Node.CurrentNode.Next = null;
+                ////        Node.CurrentNode.Sibling.Go();
+                ////    }
+                ////}
 
                 _console.SetCursorPosition(0, y);
                 _console.Write("  " + DisplayChoice(y - boundryTop));
@@ -98,9 +110,7 @@ namespace InquirerCS
                         {
                             Console.CursorVisible = true;
                             var answer = _options[_console.CursorTop - boundryTop];
-                            move = false;
-                            _inquirer.Next(answer.Item2);
-
+                            answer.Item2.Task();
                             return;
                         }
                 }
