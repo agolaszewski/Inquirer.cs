@@ -41,6 +41,13 @@ namespace ConsoleApp1
             .Prompt();
         }
 
+        public static void XXXX()
+        {
+            Question.Menu("Actions")
+                .AddOption("Create New Client", () => CreateNewClient())
+            .Prompt();
+        }
+
         private static void SetClientActiveStatus()
         {
             var clients = new List<ClientAPI>()
@@ -81,7 +88,7 @@ namespace ConsoleApp1
             .Then(() => { Question.Confirm("Is Active").Then(answer => client.IsActive = answer); })
             .Then(() =>
             {
-                client.Secret = "";
+                XXXX();
             })
             .Go();
         }

@@ -87,13 +87,11 @@ namespace InquirerCS.Builders
             {
                 if (Node.CurrentNode.Parent != null)
                 {
-                    ////Node.CurrentNode.Next = null;
-                    Node.CurrentNode.Parent.Go();
+                    Node.CurrentNode.Parent.Task();
                 }
 
                 if (Node.CurrentNode.Sibling != null)
                 {
-                    Node.CurrentNode.Next = null;
                     Node.CurrentNode.Sibling.Go();
                 }
             }

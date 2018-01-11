@@ -68,6 +68,20 @@ namespace InquirerCS
 
                 bool isCanceled = false;
                 var key = _console.ReadKey(out isCanceled);
+                if (isCanceled)
+                {
+                    if (Node.CurrentNode.Parent != null)
+                    {
+                        Node.CurrentNode.Parent.Task();
+                        return;
+                    }
+
+                    if (Node.CurrentNode.Sibling != null)
+                    {
+                        Node.CurrentNode.Sibling.Go();
+                        return;
+                    }
+                }
 
                 _console.SetCursorPosition(0, y);
                 _console.Write("  " + DisplayChoice(y - boundryTop));
