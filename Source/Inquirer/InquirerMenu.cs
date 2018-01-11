@@ -8,16 +8,13 @@ namespace InquirerCS
     {
         private string _header;
 
-        private Inquirer _inquirer;
-
         private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
 
         private IConsole _console = new AppConsole();
 
-        internal InquirerMenu(string header, Inquirer inquirer)
+        internal InquirerMenu(string header)
         {
             _header = header;
-            _inquirer = inquirer;
         }
 
         public InquirerMenu AddOption(string description, Action option)
