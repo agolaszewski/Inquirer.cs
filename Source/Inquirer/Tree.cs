@@ -19,8 +19,6 @@ namespace InquirerCS
 
         public static Node CurrentNode { get; private set; }
 
-        public Node Sibling { get; set; }
-
         public Func<bool> Condition { get; private set; }
 
         public Guid Id { get; private set; } = Guid.NewGuid();
@@ -29,12 +27,27 @@ namespace InquirerCS
 
         public Node Parent { get; private set; }
 
+        public Node Sibling { get; set; }
+
         public Action Task { get; private set; }
+
+        public void Flow(bool runNext = true)
+        {
+            if (Condition())
+            {
+                Task();
+            }
+
+            if (Next != null)
+            {
+                Flow(Next);
+            }
+        }
 
         public void Go()
         {
-            var root = GoToRoot(this);
-            Flow(root);
+            CurrentNode = GoToRoot(this);
+            CurrentNode.Task();
         }
 
         public Node Then(Action task)

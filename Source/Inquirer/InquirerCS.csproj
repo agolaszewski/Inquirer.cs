@@ -99,7 +99,6 @@
     <Compile Include="Components\ParseComponent.cs" />
     <Compile Include="Components\DisplayExtendedChoices.cs" />
     <Compile Include="Consts.cs" />
-    <Compile Include="History.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
@@ -111,7 +110,6 @@
     <Compile Include="Interfaces\IValidationResult.cs" />
     <Compile Include="Interfaces\IWaitForInputComponent.cs" />
     <Compile Include="Interfaces\IRenderChoicesComponent.cs" />
-    <Compile Include="NavigationList.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Questions\PagedCheckbox.cs" />
     <Compile Include="Questions\Checkbox.cs" />

@@ -65,18 +65,20 @@ namespace InquirerCS.Builders
             var answer = Build().Prompt();
             if (OnKey.IsInterrupted)
             {
-                if (History.Stack.Count > 0)
+                if (Node.CurrentNode.Parent != null)
                 {
-                    History.Stack.Pop()();
-                    return;
+                    Node.CurrentNode.Parent.Task();
                 }
 
-                Then(action);
+                if (Node.CurrentNode.Sibling != null)
+                {
+                    Node.CurrentNode.Sibling.Go();
+                }
             }
             else
             {
-                History.Stack.Push(() => { Then(action); });
                 action(answer);
+                Node.CurrentNode.Next.Task();
             }
         }
 

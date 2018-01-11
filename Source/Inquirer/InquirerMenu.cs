@@ -24,7 +24,7 @@ namespace InquirerCS
         public InquirerMenu AddOption(string description, Action option)
         {
             var node = new Node(_root);
-            node.Then(() => { option.Invoke(); Prompt(); });
+            node.Then(() => { option.Invoke(); _root.Task(); });
 
             _options.Add(new Tuple<string, Node>(description, node));
             return this;
@@ -34,7 +34,10 @@ namespace InquirerCS
         {
             if (!_options.Any(item => item.Item1 == "Exit"))
             {
-                _options.Add(new Tuple<string, Node>("Exit", new Node(_root)));
+                var node = new Node(_root);
+                node.Then(() => { });
+
+                _options.Add(new Tuple<string, Node>("Exit", node));
             }
 
             _console.Clear();
@@ -65,20 +68,6 @@ namespace InquirerCS
 
                 bool isCanceled = false;
                 var key = _console.ReadKey(out isCanceled);
-                ////if (isCanceled)
-                ////{
-                ////    if (Node.CurrentNode.Parent != null)
-                ////    {
-                ////        Node.CurrentNode.Next = null;
-                ////        Node.CurrentNode.Parent.Go();
-                ////    }
-
-                ////    if (Node.CurrentNode.Sibling != null)
-                ////    {
-                ////        Node.CurrentNode.Next = null;
-                ////        Node.CurrentNode.Sibling.Go();
-                ////    }
-                ////}
 
                 _console.SetCursorPosition(0, y);
                 _console.Write("  " + DisplayChoice(y - boundryTop));
