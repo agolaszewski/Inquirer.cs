@@ -15,7 +15,7 @@ namespace ConsoleApp1
     {
         private static void Main(string[] args)
         {
-            Test();
+            MenuTest();
             Console.ReadKey();
         }
 
@@ -28,14 +28,14 @@ namespace ConsoleApp1
             });
         }
 
-        //public static void Test()
-        //{
-        //    Question.Ask()
-        //        .Then(() => { Test2(); })
-        //        .Then(() => { Question.Ask(Question.Input("2")); })
-        //        .Then(() => { Console.WriteLine("3"); })
-        //    .Go();
-        //}
+        public static void Test()
+        {
+            Question.Ask()
+                .Then(() => { Question.Ask(Question.Input("2")); })
+                .Then(() => { Question.Ask(Question.Input("2")); })
+                .Then(() => { Console.WriteLine("3"); })
+            .Go();
+        }
 
         //private static void Test2()
         //{
@@ -55,20 +55,12 @@ namespace ConsoleApp1
         //    .Go();
         //}
 
-        //private static void MenuTest()
-        //{
-        //    ////_test.Menu("Choose")
-        //    ////   .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
-        //    ////   .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
-        //    ////   .AddOption("PagingListTest", () => { PagingListTest(); })
-        //    ////   .AddOption("InputTest", () => { InputTest(); })
-        //    ////   .AddOption("PasswordTest", () => { PasswordTest(); })
-        //    ////   .AddOption("ListTest", () => { ListTest(); })
-        //    ////   .AddOption("ListRawTest", () => { ListRawTest(); })
-        //    ////   .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
-        //    ////   .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
-        //    ////   .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
-        //}
+        private static void MenuTest()
+        {
+            Question.Menu("Choose")
+               .AddOption("PagingCheckboxTest", () => { Test(); })
+               .AddOption("PagingRawListTest", () => { Test(); }).Prompt();
+        }
 
         //private static void PagingCheckboxTest()
         //{

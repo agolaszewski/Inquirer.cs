@@ -146,5 +146,10 @@ namespace InquirerCS
         {
             return new RawListBuilder<TResult>(message, choices, _console);
         }
+
+        public static InquirerMenu Menu(string header = null)
+        {
+            return new InquirerMenu(header);
+        }
     }
 }
