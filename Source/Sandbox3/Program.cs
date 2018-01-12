@@ -35,7 +35,7 @@ namespace ConsoleApp1
 
         public static void Menssu()
         {
-            Question.Menu("Actions")
+            Question.Menu()
                 .AddOption("Create New Client", () => CreateNewClient())
                 .AddOption("Set Client Status", () => SetClientActiveStatus())
             .Prompt();
@@ -43,7 +43,7 @@ namespace ConsoleApp1
 
         public static void XXXX()
         {
-            Question.Menu("Actions")
+            Question.Menu()
                 .AddOption("Create New Client", () => CreateNewClient())
             .Prompt();
         }
