@@ -143,7 +143,7 @@
     <Compile Include="Traits\IValidateResultTrait.cs" />
     <Compile Include="Traits\IWaitForInputTrait.cs" />
     <Compile Include="Traits\TraitExtensions.cs" />
-    <Compile Include="Tree.cs" />
+    <Compile Include="Node.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
