@@ -31,7 +31,7 @@ namespace InquirerCS
 
         public Action Task { get; private set; }
 
-        public void Flow(bool runNext = true)
+        public void Flow()
         {
             if (Condition())
             {
