@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace InquirerCS
 {
@@ -19,27 +18,26 @@ namespace InquirerCS
 
             _root = new Node(null, Node.CurrentNode);
             _root.Then(() => { Prompt(); });
+
+            var node = new Node(_root);
+            node.Then(() => { });
+
+            _options.Add(new Tuple<string, Node>("Exit", node));
         }
 
         public InquirerMenu AddOption(string description, Action option)
         {
             var node = new Node(_root);
-            node.Then(() => { option.Invoke(); _root.Task(); });
+            node.Then(() => { option.Invoke(); });
+            var next = new Node(node);
+            node.Then(() => { Prompt(); });
 
-            _options.Add(new Tuple<string, Node>(description, node));
+            _options.Insert(_options.Count - 1, new Tuple<string, Node>(description, node));
             return this;
         }
 
         public void Prompt()
         {
-            if (!_options.Any(item => item.Item1 == "Exit"))
-            {
-                var node = new Node(_root);
-                node.Then(() => { });
-
-                _options.Add(new Tuple<string, Node>("Exit", node));
-            }
-
             _console.Clear();
 
             if (_header != null)
