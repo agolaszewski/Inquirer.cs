@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConsole.cs" />
+    <Compile Include="BaseNode.cs" />
     <Compile Include="BuildersExtensions.cs" />
     <Compile Include="Builders\CheckboxBuilder.cs" />
     <Compile Include="Builders\Confirm.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Interfaces\IValidationResult.cs" />
     <Compile Include="Interfaces\IWaitForInputComponent.cs" />
     <Compile Include="Interfaces\IRenderChoicesComponent.cs" />
+    <Compile Include="Node2.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Questions\PagedCheckbox.cs" />
     <Compile Include="Questions\Checkbox.cs" />
@@ -143,7 +145,6 @@
     <Compile Include="Traits\IValidateResultTrait.cs" />
     <Compile Include="Traits\IWaitForInputTrait.cs" />
     <Compile Include="Traits\TraitExtensions.cs" />
-    <Compile Include="Node.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

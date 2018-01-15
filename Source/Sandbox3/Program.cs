@@ -30,7 +30,9 @@ namespace ConsoleApp1
     {
         private static void Main(string[] args)
         {
-            Menssu();
+            //Menssu();
+
+            Question.Prompt(Question.Input("asdasda")).
         }
 
         public static void Menssu()
@@ -80,17 +82,17 @@ namespace ConsoleApp1
         {
             var client = new ClientAPI();
 
-            Question.Ask()
-            .Then(() => { Question.Input("Id").Then(answer => client.Id = answer); })
-            .Then(() => { Question.Input("Name").WithDefaultValue(client.Id).Then(answer => client.Name = answer); })
-            .Then(() => { Question.Input("Allowed Origin").WithDefaultValue("*").Then(answer => client.AllowedOrigin = answer); })
-            .Then(() => { Question.Input<int>("Refresh Token Lifetime (hours)").WithValidation(answer => answer > 0, "answer > 0").Then(answer => client.RefreshTokenLifeTime = answer * 60); })
-            .Then(() => { Question.Confirm("Is Active").Then(answer => client.IsActive = answer); })
-            .Then(() =>
-            {
-                XXXX();
-            })
-            .Go();
+            //Question.Ask()
+            //.Then(() => { Question.Input("Id").Then(answer => client.Id = answer); })
+            //.Then(() => { Question.Input("Name").WithDefaultValue(client.Id).Then(answer => client.Name = answer); })
+            //.Then(() => { Question.Input("Allowed Origin").WithDefaultValue("*").Then(answer => client.AllowedOrigin = answer); })
+            //.Then(() => { Question.Input<int>("Refresh Token Lifetime (hours)").WithValidation(answer => answer > 0, "answer > 0").Then(answer => client.RefreshTokenLifeTime = answer * 60); })
+            //.Then(() => { Question.Confirm("Is Active").Then(answer => client.IsActive = answer); })
+            //.Then(() =>
+            //{
+              
+            //})
+            //.Go();
         }
     }
 }

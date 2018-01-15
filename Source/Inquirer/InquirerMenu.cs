@@ -7,32 +7,17 @@ namespace InquirerCS
     {
         private string _header;
 
-        private List<Tuple<string, Node>> _options = new List<Tuple<string, Node>>();
+        private List<Tuple<string, Action>> _options = new List<Tuple<string, Action>>();
 
         private IConsole _console = new AppConsole();
-        private Node _root;
 
         internal InquirerMenu(string header)
         {
             _header = header;
-
-            _root = new Node(null, Node.CurrentNode);
-            _root.Then(() => { Prompt(); });
-
-            var node = new Node(_root);
-            node.Then(() => { });
-
-            _options.Add(new Tuple<string, Node>("Exit", node));
         }
 
         public InquirerMenu AddOption(string description, Action option)
         {
-            var node = new Node(_root);
-            node.Then(() => { option.Invoke(); });
-            var next = new Node(node);
-            node.Then(() => { Prompt(); });
-
-            _options.Insert(_options.Count - 1, new Tuple<string, Node>(description, node));
             return this;
         }
 
@@ -68,17 +53,6 @@ namespace InquirerCS
                 var key = _console.ReadKey(out isCanceled);
                 if (isCanceled)
                 {
-                    if (Node.CurrentNode.Parent != null)
-                    {
-                        Node.CurrentNode.Parent.Task();
-                        return;
-                    }
-
-                    if (Node.CurrentNode.Sibling != null)
-                    {
-                        Node.CurrentNode.Sibling.Go();
-                        return;
-                    }
                 }
 
                 _console.SetCursorPosition(0, y);
@@ -111,7 +85,7 @@ namespace InquirerCS
                         {
                             Console.CursorVisible = true;
                             var answer = _options[_console.CursorTop - boundryTop];
-                            answer.Item2.Task();
+                            answer.Item2();
                             return;
                         }
                 }

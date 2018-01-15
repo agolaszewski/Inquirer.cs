@@ -72,34 +72,6 @@ namespace InquirerCS.Builders
             return new PagedCheckbox<List<TResult>, TResult>(Paging, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
 
-        public void Then(Action<List<TResult>> action)
-        {
-            Input.IntteruptedKeys.Add(ConsoleKey.Escape);
-            OnKey = new OnEscape();
-
-            var answer = Build().Prompt();
-            if (OnKey.IsInterrupted)
-            {
-                if (Node.CurrentNode.Parent != null)
-                {
-                    Node.CurrentNode.Parent.Task();
-                }
-
-                if (Node.CurrentNode.Sibling != null)
-                {
-                    Node.CurrentNode.Sibling.Go();
-                }
-            }
-            else
-            {
-                action(answer);
-                if (Node.CurrentNode.Next != null)
-                {
-                    Node.CurrentNode.Next.Task();
-                }
-            }
-        }
-
         public List<TResult> Prompt()
         {
             return Build().Prompt();
