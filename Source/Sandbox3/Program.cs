@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using InquirerCS;
 
 namespace ConsoleApp1
@@ -30,9 +29,7 @@ namespace ConsoleApp1
     {
         private static void Main(string[] args)
         {
-            //Menssu();
-
-            Question.Prompt(Question.Input("asdasda")).
+            SetClientActiveStatus();
         }
 
         public static void Menssu()
@@ -58,24 +55,32 @@ namespace ConsoleApp1
                 new ClientAPI() {  Name = "Asdasdasdasasdasdadasda" }
             };
 
-            Question.Checkbox("Chose record to deactivate", clients)
-            .Page(10)
-            .WithDefaultValue(item => { return clients.Where(c => c.IsActive).Any(c => c.Id == item.Id); })
-            .WithConfirmation()
-            .WithConvertToString(item => { return $"{item.Name}"; }).Then(answer =>
-            {
-                var toDiactivate = clients.Where(c => c.IsActive).Where(c => !answer.Any(a => a.Id == c.Id)).ToList();
-                toDiactivate.ForEach(item =>
-                {
-                    item.IsActive = false;
-                });
 
-                var toActivate = clients.Where(c => !c.IsActive).Where(c => answer.Any(a => a.Id == c.Id)).ToList();
-                toActivate.ForEach(item =>
-                {
-                    item.IsActive = true;
-                });
+            Question.Prompt(Question.Input<int>("Asdasd")).Then(answer =>
+            {
+                string herp = string.Empty;
+                Question.Prompt(Question.Input("asdasda")).Then(ref herp);
             });
+
+           
+            //Question.Checkbox("Chose record to deactivate", clients)
+            //.Page(10)
+            //.WithDefaultValue(item => { return clients.Where(c => c.IsActive).Any(c => c.Id == item.Id); })
+            //.WithConfirmation()
+            //.WithConvertToString(item => { return $"{item.Name}"; }).Then(answer =>
+            //{
+            //    var toDiactivate = clients.Where(c => c.IsActive).Where(c => !answer.Any(a => a.Id == c.Id)).ToList();
+            //    toDiactivate.ForEach(item =>
+            //    {
+            //        item.IsActive = false;
+            //    });
+
+            //    var toActivate = clients.Where(c => !c.IsActive).Where(c => answer.Any(a => a.Id == c.Id)).ToList();
+            //    toActivate.ForEach(item =>
+            //    {
+            //        item.IsActive = true;
+            //    });
+            //});
         }
 
         private static void CreateNewClient()
@@ -90,7 +95,6 @@ namespace ConsoleApp1
             //.Then(() => { Question.Confirm("Is Active").Then(answer => client.IsActive = answer); })
             //.Then(() =>
             //{
-              
             //})
             //.Go();
         }

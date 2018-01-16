@@ -67,52 +67,52 @@ namespace InquirerCS
             return new RawListBuilder<TResult>(message, choices, _console);
         }
 
-        public static BaseNode Prompt<TResult>(CheckboxBuilder<TResult> builder)
+        public static Node2<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(CheckboxBuilder<TResult> builder)
         {
             return Prompt<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>>(builder);
         }
 
-        public static BaseNode Prompt(ExtendedBuilder builder)
+        public static Node2<ExtendedBuilder, InputKey<ConsoleKey>, ConsoleKey> Prompt(ExtendedBuilder builder)
         {
             return Prompt<ExtendedBuilder, InputKey<ConsoleKey>, ConsoleKey>(builder);
         }
 
-        public static BaseNode Prompt<TResult>(ExtendedListBuilder<TResult> builder)
+        public static Node2<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult> Prompt<TResult>(ExtendedListBuilder<TResult> builder)
         {
             return Prompt<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult>(builder);
         }
 
-        public static BaseNode Prompt(InputStringBuilder builder)
+        public static Node2<InputStringBuilder, Input<string>, string> Prompt(InputStringBuilder builder)
         {
             return Prompt<InputStringBuilder, Input<string>, string>(builder);
         }
 
-        public static BaseNode Prompt<TResult>(InputStructBuilder<TResult> builder) where TResult : struct
+        public static Node2<InputStructBuilder<TResult>, Input<TResult>, TResult> Prompt<TResult>(InputStructBuilder<TResult> builder) where TResult : struct
         {
             return Prompt<InputStructBuilder<TResult>, Input<TResult>, TResult>(builder);
         }
 
-        public static BaseNode Prompt<TResult>(ListBuilder<TResult> builder)
+        public static Node2<ListBuilder<TResult>, ConsoleList<TResult>, TResult> Prompt<TResult>(ListBuilder<TResult> builder)
         {
             return Prompt<ListBuilder<TResult>, ConsoleList<TResult>, TResult>(builder);
         }
 
-        public static BaseNode Prompt<TResult>(PagedCheckboxBuilder<TResult> builder)
+        public static Node2<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(PagedCheckboxBuilder<TResult> builder)
         {
             return Prompt<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>>(builder);
         }
 
-        public static BaseNode Prompt<TResult>(PagedListBuilder<TResult> builder)
+        public static Node2<PagedListBuilder<TResult>, PagedList<TResult>, TResult> Prompt<TResult>(PagedListBuilder<TResult> builder)
         {
             return Prompt<PagedListBuilder<TResult>, PagedList<TResult>, TResult>(builder);
         }
 
-        public static BaseNode Prompt<TResult>(PagedRawListBuilder<TResult> builder)
+        public static Node2<PagedRawListBuilder<TResult>, PagedRawList<TResult>, TResult> Prompt<TResult>(PagedRawListBuilder<TResult> builder)
         {
             return Prompt<PagedRawListBuilder<TResult>, PagedRawList<TResult>, TResult>(builder);
         }
 
-        public static BaseNode Prompt(PasswordBuilder builder)
+        public static Node2<PasswordBuilder, Input<string>, string> Prompt(PasswordBuilder builder)
         {
             return Prompt<PasswordBuilder, Input<string>, string>(builder);
         }
