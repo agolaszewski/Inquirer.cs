@@ -67,64 +67,64 @@ namespace InquirerCS
             return new RawListBuilder<TResult>(message, choices, _console);
         }
 
-        public static Node2<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(CheckboxBuilder<TResult> builder)
+        public static Node<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(CheckboxBuilder<TResult> builder)
         {
             return Prompt<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>>(builder);
         }
 
-        public static Node2<ExtendedBuilder, InputKey<ConsoleKey>, ConsoleKey> Prompt(ExtendedBuilder builder)
+        public static Node<ExtendedBuilder, InputKey<ConsoleKey>, ConsoleKey> Prompt(ExtendedBuilder builder)
         {
             return Prompt<ExtendedBuilder, InputKey<ConsoleKey>, ConsoleKey>(builder);
         }
 
-        public static Node2<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult> Prompt<TResult>(ExtendedListBuilder<TResult> builder)
+        public static Node<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult> Prompt<TResult>(ExtendedListBuilder<TResult> builder)
         {
             return Prompt<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult>(builder);
         }
 
-        public static Node2<InputStringBuilder, Input<string>, string> Prompt(InputStringBuilder builder)
+        public static Node<InputStringBuilder, Input<string>, string> Prompt(InputStringBuilder builder)
         {
             return Prompt<InputStringBuilder, Input<string>, string>(builder);
         }
 
-        public static Node2<InputStructBuilder<TResult>, Input<TResult>, TResult> Prompt<TResult>(InputStructBuilder<TResult> builder) where TResult : struct
+        public static Node<InputStructBuilder<TResult>, Input<TResult>, TResult> Prompt<TResult>(InputStructBuilder<TResult> builder) where TResult : struct
         {
             return Prompt<InputStructBuilder<TResult>, Input<TResult>, TResult>(builder);
         }
 
-        public static Node2<ListBuilder<TResult>, ConsoleList<TResult>, TResult> Prompt<TResult>(ListBuilder<TResult> builder)
+        public static Node<ListBuilder<TResult>, ConsoleList<TResult>, TResult> Prompt<TResult>(ListBuilder<TResult> builder)
         {
             return Prompt<ListBuilder<TResult>, ConsoleList<TResult>, TResult>(builder);
         }
 
-        public static Node2<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(PagedCheckboxBuilder<TResult> builder)
+        public static Node<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(PagedCheckboxBuilder<TResult> builder)
         {
             return Prompt<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>>(builder);
         }
 
-        public static Node2<PagedListBuilder<TResult>, PagedList<TResult>, TResult> Prompt<TResult>(PagedListBuilder<TResult> builder)
+        public static Node<PagedListBuilder<TResult>, PagedList<TResult>, TResult> Prompt<TResult>(PagedListBuilder<TResult> builder)
         {
             return Prompt<PagedListBuilder<TResult>, PagedList<TResult>, TResult>(builder);
         }
 
-        public static Node2<PagedRawListBuilder<TResult>, PagedRawList<TResult>, TResult> Prompt<TResult>(PagedRawListBuilder<TResult> builder)
+        public static Node<PagedRawListBuilder<TResult>, PagedRawList<TResult>, TResult> Prompt<TResult>(PagedRawListBuilder<TResult> builder)
         {
             return Prompt<PagedRawListBuilder<TResult>, PagedRawList<TResult>, TResult>(builder);
         }
 
-        public static Node2<PasswordBuilder, Input<string>, string> Prompt(PasswordBuilder builder)
+        public static Node<PasswordBuilder, Input<string>, string> Prompt(PasswordBuilder builder)
         {
             return Prompt<PasswordBuilder, Input<string>, string>(builder);
         }
 
-        public static Node2<RawListBuilder<TResult>, RawList<TResult>, TResult> Prompt<TResult>(RawListBuilder<TResult> builder)
+        public static Node<RawListBuilder<TResult>, RawList<TResult>, TResult> Prompt<TResult>(RawListBuilder<TResult> builder)
         {
             return Prompt<RawListBuilder<TResult>, RawList<TResult>, TResult>(builder);
         }
 
-        public static Node2<TBuilder, TQuestion, TResult> Prompt<TBuilder, TQuestion, TResult>(TBuilder builder) where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
+        public static Node<TBuilder, TQuestion, TResult> Prompt<TBuilder, TQuestion, TResult>(TBuilder builder) where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
         {
-            return new Node2<TBuilder, TQuestion, TResult>(builder);
+            return new Node<TBuilder, TQuestion, TResult>(builder);
         }
     }
 }

@@ -5,13 +5,13 @@ using InquirerCS.Traits;
 
 namespace InquirerCS
 {
-    public class Node2<TBuilder, TQuestion, TResult> : BaseNode where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
+    public class Node<TBuilder, TQuestion, TResult> : BaseNode where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
     {
         private Action<TResult> _then;
 
         private TBuilder _builder;
 
-        public Node2(TBuilder builder)
+        public Node(TBuilder builder)
         {
             _builder = builder;
             _builder.Input.IntteruptedKeys.Add(ConsoleKey.Escape);
