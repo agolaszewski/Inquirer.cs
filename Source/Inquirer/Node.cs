@@ -7,9 +7,9 @@ namespace InquirerCS
 {
     public class Node<TBuilder, TQuestion, TResult> : BaseNode where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
     {
-        private Action<TResult> _then;
-
         private TBuilder _builder;
+
+        private Action<TResult> _then;
 
         public Node(TBuilder builder)
         {
@@ -23,9 +23,18 @@ namespace InquirerCS
             var answer = _builder.Build().Prompt();
             if (_builder.OnKey.IsInterrupted)
             {
+                if (History.Stack.Count != 0)
+                {
+                    History.Stack.Pop().Run();
+                }
+                else
+                {
+                    Run();
+                }
             }
             else
             {
+                History.Stack.Push(this);
                 _then(answer);
             }
         }
