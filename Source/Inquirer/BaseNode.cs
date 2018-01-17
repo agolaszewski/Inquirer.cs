@@ -13,5 +13,8 @@ namespace InquirerCS
         public BaseNode Sibling { get; set; }
 
         public abstract void Run();
+
+        public abstract BaseNode Next(Action then);
+
     }
 }

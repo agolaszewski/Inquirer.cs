@@ -62,11 +62,6 @@ namespace InquirerCS
             return new PasswordBuilder(message, _console);
         }
 
-        public static RawListBuilder<TResult> RawList<TResult>(string message, IEnumerable<TResult> choices)
-        {
-            return new RawListBuilder<TResult>(message, choices, _console);
-        }
-
         public static Node<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(CheckboxBuilder<TResult> builder)
         {
             return Prompt<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>>(builder);
@@ -80,6 +75,46 @@ namespace InquirerCS
         public static Node<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult> Prompt<TResult>(ExtendedListBuilder<TResult> builder)
         {
             return Prompt<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult>(builder);
+        }
+
+        public static Node<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(Func<CheckboxBuilder<TResult>> fn)
+        {
+            return Prompt<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>>(fn);
+        }
+
+        public static Node<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult> Prompt<TResult>(Func<ExtendedListBuilder<TResult>> fn)
+        {
+            return Prompt<ExtendedListBuilder<TResult>, ExtendedList<TResult>, TResult>(fn);
+        }
+
+        public static Node<ListBuilder<TResult>, ConsoleList<TResult>, TResult> Prompt<TResult>(Func<ListBuilder<TResult>> fn)
+        {
+            return Prompt<ListBuilder<TResult>, ConsoleList<TResult>, TResult>(fn);
+        }
+
+        public static Node<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(Func<PagedCheckboxBuilder<TResult>> fn)
+        {
+            return Prompt<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>>(fn);
+        }
+
+        public static Node<PagedListBuilder<TResult>, PagedList<TResult>, TResult> Prompt<TResult>(Func<PagedListBuilder<TResult>> fn)
+        {
+            return Prompt<PagedListBuilder<TResult>, PagedList<TResult>, TResult>(fn);
+        }
+
+        public static Node<PagedRawListBuilder<TResult>, PagedRawList<TResult>, TResult> Prompt<TResult>(Func<PagedRawListBuilder<TResult>> fn)
+        {
+            return Prompt<PagedRawListBuilder<TResult>, PagedRawList<TResult>, TResult>(fn);
+        }
+
+        public static Node<RawListBuilder<TResult>, RawList<TResult>, TResult> Prompt<TResult>(Func<RawListBuilder<TResult>> fn)
+        {
+            return Prompt<RawListBuilder<TResult>, RawList<TResult>, TResult>(fn);
+        }
+
+        public static Node<TBuilder, TQuestion, TResult> Prompt<TBuilder, TQuestion, TResult>(Func<TBuilder> fn) where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
+        {
+            return Prompt<TBuilder, TQuestion, TResult>(fn());
         }
 
         public static Node<InputStringBuilder, Input<string>, string> Prompt(InputStringBuilder builder)
@@ -125,6 +160,11 @@ namespace InquirerCS
         public static Node<TBuilder, TQuestion, TResult> Prompt<TBuilder, TQuestion, TResult>(TBuilder builder) where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
         {
             return new Node<TBuilder, TQuestion, TResult>(builder);
+        }
+
+        public static RawListBuilder<TResult> RawList<TResult>(string message, IEnumerable<TResult> choices)
+        {
+            return new RawListBuilder<TResult>(message, choices, _console);
         }
     }
 }

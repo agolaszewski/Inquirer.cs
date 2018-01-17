@@ -18,6 +18,11 @@ namespace InquirerCS
             _builder.OnKey = new OnEscape();
         }
 
+        public override BaseNode Next(Action then)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Run()
         {
             var answer = _builder.Build().Prompt();
@@ -37,12 +42,6 @@ namespace InquirerCS
                 History.Stack.Push(this);
                 _then(answer);
             }
-        }
-
-        public void Then(Action<TResult> then)
-        {
-            _then = then;
-            Run();
         }
 
         public void Then(ref TResult toBind)

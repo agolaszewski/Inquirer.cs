@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using InquirerCS;
 
 namespace ConsoleApp1
@@ -55,14 +54,29 @@ namespace ConsoleApp1
                 new ClientAPI() {  Name = "Asdasdasdasasdasdadasda" }
             };
 
+            string herp = string.Empty;
 
             Question.Prompt(Question.Input<int>("Asdasd")).Then(answer =>
             {
-                string herp = string.Empty;
+                
+            }).Next(Question.Input<int>("Asdasd"))
+
+            Question.Prompt(Question.Input<int>("Asdasd")).Then(answer =>
+            {
+                Question.Prompt(Question.Input("asdasda")).Then(ref herp);
+            }).Then(() =>
+            {
+                Question.Prompt(Question.Input("asdasda")).Then(ref herp);
+            }).Then(() =>
+            {
                 Question.Prompt(Question.Input("asdasda")).Then(ref herp);
             });
 
-           
+            //Question.Prompt(() =>
+            //{
+            //    return Question.Input("Sadasd");
+            //});
+
             //Question.Checkbox("Chose record to deactivate", clients)
             //.Page(10)
             //.WithDefaultValue(item => { return clients.Where(c => c.IsActive).Any(c => c.Id == item.Id); })
