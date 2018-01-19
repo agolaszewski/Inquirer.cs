@@ -4,6 +4,8 @@ namespace InquirerCS
 {
     public abstract class BaseNode
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
+
         public Func<bool> Condition { get; private set; }
 
         public BaseNode Next { get; set; }
@@ -13,8 +15,5 @@ namespace InquirerCS
         public BaseNode Sibling { get; set; }
 
         public abstract void Run();
-
-        public abstract BaseNode Next(Action then);
-
     }
 }

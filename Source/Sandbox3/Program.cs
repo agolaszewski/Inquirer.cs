@@ -56,21 +56,12 @@ namespace ConsoleApp1
 
             string herp = string.Empty;
 
-            Question.Prompt(Question.Input<int>("Asdasd")).Then(answer =>
+            Question.Prompt(Question.Input("1")).Then(ref herp);
+            Question.Prompt(Question.Input("2")).Then(x =>
             {
-                
-            }).Next(Question.Input<int>("Asdasd"))
-
-            Question.Prompt(Question.Input<int>("Asdasd")).Then(answer =>
-            {
-                Question.Prompt(Question.Input("asdasda")).Then(ref herp);
-            }).Then(() =>
-            {
-                Question.Prompt(Question.Input("asdasda")).Then(ref herp);
-            }).Then(() =>
-            {
-                Question.Prompt(Question.Input("asdasda")).Then(ref herp);
+                Question.Prompt(Question.Input("2.1")).Then(ref herp);
             });
+            Question.Prompt(Question.Input("3")).Then(ref herp);
 
             //Question.Prompt(() =>
             //{
