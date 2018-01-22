@@ -9,25 +9,30 @@ namespace InquirerCS
 
         public static int Scope { get; set; }
 
-        public static BaseNode Pop(bool isParent = false)
+        public static BaseNode Next(BaseNode node)
         {
-            if (Scope == 0)
+            if (ScopedStack.ContainsKey(Scope))
             {
-                return ScopedStack[Scope].Last();
+                return ScopedStack[Scope].SkipWhile(x => x.Id != node.Id).Skip(1).FirstOrDefault();
             }
 
-            if (ScopedStack.ContainsKey(Scope) && ScopedStack[Scope].Count > 1)
+            return null;
+        }
+
+        public static BaseNode Pop(BaseNode node)
+        {
+            int lastIndex = ScopedStack[Scope].FindIndex(x => x.Id == node.Id) - 1;
+            if (lastIndex >= 0)
             {
-                int lastIndex = ScopedStack[Scope].Count - 1;
-                return ScopedStack[Scope][lastIndex - 1];
-            }
-            else if (ScopedStack.ContainsKey(Scope) && isParent)
-            {
-                return ScopedStack[Scope][ScopedStack[Scope].Count - 1];
+                return ScopedStack[Scope][lastIndex];
             }
 
-            --Scope;
-            return Pop(true);
+            if (Scope - 1 == 0)
+            {
+                return ScopedStack[1].FirstOrDefault();
+            }
+
+            return ScopedStack[Scope - 1].Last();
         }
 
         public static void Push(BaseNode node)
@@ -47,21 +52,6 @@ namespace InquirerCS
             }
         }
 
-        public static BaseNode Next(BaseNode node)
-        {
-            if (ScopedStack.ContainsKey(Scope))
-            {
-                return ScopedStack[Scope].SkipWhile(x => x.Id != node.Id).Skip(1).FirstOrDefault();
-            }
-
-            return null;
-        }
-
-        internal static void IncreaseScope()
-        {
-            Scope++;
-        }
-
         internal static void DecreaseScope()
         {
             int nextScope = Scope + 1;
@@ -72,6 +62,29 @@ namespace InquirerCS
             }
 
             Scope--;
+        }
+
+        internal static void IncreaseScope()
+        {
+            Scope++;
+        }
+
+        private static BaseNode Pop()
+        {
+            if (Scope < 1)
+            {
+                Scope = 1;
+                return ScopedStack[Scope].FirstOrDefault();
+            }
+
+            if (ScopedStack.ContainsKey(Scope))
+            {
+                int lastIndex = ScopedStack[Scope].Count - 1;
+                return ScopedStack[Scope][lastIndex];
+            }
+
+            --Scope;
+            return Pop();
         }
     }
 }

@@ -24,16 +24,15 @@ namespace InquirerCS
             var answer = _builder.Build().Prompt();
             if (_builder.OnKey.IsInterrupted)
             {
-                History.Pop().Run();
+                History.Pop(this).Run();
             }
             else
             {
                 _then(answer);
                 BaseNode nextNode = History.Next(this);
-                while (nextNode != null)
+                if (nextNode != null)
                 {
                     nextNode.Run();
-                    nextNode = History.Next(nextNode);
                 }
             }
         }
