@@ -59,7 +59,10 @@ namespace ConsoleApp1
             Question.Prompt(Question.Input("1")).Then(ref herp);
             Question.Prompt(Question.Input("2")).Then(x =>
             {
-                Question.Prompt(Question.Input("2.1")).Then(ref herp);
+                Question.Prompt(Question.Input("2.1")).Then(answer =>
+                {
+                    Question.Prompt(Question.Input("2.2")).Then(ref herp);
+                });
             });
             Question.Prompt(Question.Input("3")).Then(ref herp);
 

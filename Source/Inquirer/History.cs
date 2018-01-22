@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace InquirerCS
@@ -10,7 +9,7 @@ namespace InquirerCS
 
         public static int Scope { get; set; }
 
-        public static BaseNode Pop()
+        public static BaseNode Pop(bool isParent = false)
         {
             if (Scope == 0)
             {
@@ -22,9 +21,13 @@ namespace InquirerCS
                 int lastIndex = ScopedStack[Scope].Count - 1;
                 return ScopedStack[Scope][lastIndex - 1];
             }
+            else if (ScopedStack.ContainsKey(Scope) && isParent)
+            {
+                return ScopedStack[Scope][ScopedStack[Scope].Count - 1];
+            }
 
             --Scope;
-            return Pop();
+            return Pop(true);
         }
 
         public static void Push(BaseNode node)
@@ -61,12 +64,14 @@ namespace InquirerCS
 
         internal static void DecreaseScope()
         {
-            Scope--;
             int nextScope = Scope + 1;
-            while(ScopedStack.ContainsKey(nextScope))
+            while (ScopedStack.ContainsKey(nextScope))
             {
-
+                ScopedStack[nextScope].Clear();
+                nextScope++;
             }
+
+            Scope--;
         }
     }
 }
