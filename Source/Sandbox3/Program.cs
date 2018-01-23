@@ -31,14 +31,6 @@ namespace ConsoleApp1
             SetClientActiveStatus();
         }
 
-        public static void Menssu()
-        {
-            Question.Menu()
-                .AddOption("Create New Client", () => CreateNewClient())
-                .AddOption("Set Client Status", () => SetClientActiveStatus())
-            .Prompt();
-        }
-
         public static void XXXX(string name)
         {
             string herp = string.Empty;
@@ -55,6 +47,8 @@ namespace ConsoleApp1
 
             string herp = string.Empty;
 
+            Question.Prompt(Question.Menu("ASdasda").AddOption("asdasda", () => { XXXX("1"); }));
+
             XXXX("1");
             Question.Prompt(Question.Input("2")).Then(x =>
             {
@@ -64,8 +58,12 @@ namespace ConsoleApp1
                     XXXX("2.1.2");
                     XXXX("2.1.3");
                 });
-                XXXX("2.2");
-                XXXX("2.3");
+                Question.Prompt(Question.Input("2.2")).Then(answer =>
+                {
+                    XXXX("2.2.1");
+                    XXXX("2.2.2");
+                    XXXX("2.2.3");
+                });
             });
             XXXX("3");
             XXXX("4");

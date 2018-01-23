@@ -52,9 +52,9 @@ namespace InquirerCS
             return new ListBuilder<TResult>(message, choices, _console);
         }
 
-        public static InquirerMenu Menu(string header = null)
+        public static MenuBuilder Menu(string header = null)
         {
-            return new InquirerMenu(header);
+            return new MenuBuilder(header, _console);
         }
 
         public static PasswordBuilder Password(string message)
@@ -130,6 +130,12 @@ namespace InquirerCS
         public static Node<ListBuilder<TResult>, ConsoleList<TResult>, TResult> Prompt<TResult>(ListBuilder<TResult> builder)
         {
             return Prompt<ListBuilder<TResult>, ConsoleList<TResult>, TResult>(builder);
+        }
+
+        public static void Prompt(MenuBuilder builder)
+        {
+            var node = Prompt<MenuBuilder, ConsoleList<MenuAction>, MenuAction>(builder);
+            node.Then(answer => answer.Action());
         }
 
         public static Node<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(PagedCheckboxBuilder<TResult> builder)

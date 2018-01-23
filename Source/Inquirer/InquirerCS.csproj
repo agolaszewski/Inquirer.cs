@@ -59,11 +59,13 @@
     <Compile Include="Builders\InputStringBuilder.cs" />
     <Compile Include="Builders\InputStructBuilder.cs" />
     <Compile Include="Builders\ListBuilder.cs" />
+    <Compile Include="Builders\MenuBuilder.cs" />
     <Compile Include="Builders\PagedCheckboxBuilder.cs" />
     <Compile Include="Builders\PagedListBuilder.cs" />
     <Compile Include="Builders\PagedRawListBuilder.cs" />
     <Compile Include="Builders\PasswordBuilder.cs" />
     <Compile Include="Builders\RawListBuilder.cs" />
+    <Compile Include="Components\MenuAction.cs" />
     <Compile Include="Components\ParseDictionaryComponent.cs" />
     <Compile Include="Components\NonComperableDefaultSelectedValueComponent.cs" />
     <Compile Include="Components\DisplayConfirmQuestion.cs" />
@@ -129,7 +131,6 @@
     <Compile Include="Questions\PagedList.cs" />
     <Compile Include="Questions\PagedRawList.cs" />
     <Compile Include="Questions\RawList.cs" />
-    <Compile Include="InquirerMenu.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

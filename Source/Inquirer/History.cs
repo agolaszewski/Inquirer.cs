@@ -7,13 +7,16 @@ namespace InquirerCS
     {
         public static Dictionary<int, List<BaseNode>> ScopedStack = new Dictionary<int, List<BaseNode>>();
 
+        private static BaseNode _currentRoot;
+
         public static int Scope { get; set; }
 
         public static BaseNode Next(BaseNode node)
         {
             if (ScopedStack.ContainsKey(Scope))
             {
-                return ScopedStack[Scope].SkipWhile(x => x.Id != node.Id).Skip(1).FirstOrDefault();
+                var next = ScopedStack[Scope].SkipWhile(x => x.Id != node.Id).Skip(1).FirstOrDefault();
+                return next;
             }
 
             return null;
@@ -21,22 +24,17 @@ namespace InquirerCS
 
         public static BaseNode Pop(BaseNode node)
         {
-            int lastIndex = ScopedStack[Scope].FindIndex(x => x.Id == node.Id) - 1;
-            if (lastIndex >= 0)
-            {
-                return ScopedStack[Scope][lastIndex];
-            }
-
-            if (Scope - 1 == 0)
-            {
-                return ScopedStack[1].FirstOrDefault();
-            }
-
-            return ScopedStack[Scope - 1].Last();
+            return node.Parent ?? node;
         }
 
         public static void Push(BaseNode node)
         {
+            if (node.Parent == null)
+            {
+                node.Parent = _currentRoot;
+                _currentRoot = node;
+            }
+
             if (ScopedStack.ContainsKey(Scope))
             {
                 if (ScopedStack[Scope].All(x => x.Id != node.Id))

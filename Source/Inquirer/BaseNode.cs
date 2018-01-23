@@ -10,7 +10,7 @@ namespace InquirerCS
 
         public BaseNode Next { get; set; }
 
-        public BaseNode Parent { get; private set; }
+        public BaseNode Parent { get;  set; }
 
         public BaseNode Sibling { get; set; }
 
