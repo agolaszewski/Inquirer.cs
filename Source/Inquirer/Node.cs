@@ -1,99 +1,68 @@
 ﻿using System;
+using InquirerCS.Components;
+using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS
 {
-    public class Node
+    public class Node<TBuilder, TQuestion, TResult> : BaseNode where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
     {
-        public Node(Node parent)
+        private TBuilder _builder;
+
+        private Action<TResult> _then;
+
+        public Node(TBuilder builder)
         {
-            Parent = parent;
-            Condition = () => { return true; };
+            _builder = builder;
+            _builder.Input.IntteruptedKeys.Add(ConsoleKey.Escape);
+            _builder.OnKey = new OnEscape();
         }
 
-        public Node(Node parent, Node sibling)
+        public override void Run()
         {
-            Parent = parent;
-            Sibling = sibling;
-            Condition = () => { return true; };
-        }
-
-        public static Node CurrentNode { get; private set; }
-
-        public Func<bool> Condition { get; private set; }
-
-        public Guid Id { get; private set; } = Guid.NewGuid();
-
-        public Node Next { get; set; }
-
-        public Node Parent { get; private set; }
-
-        public Node Sibling { get; set; }
-
-        public Action Task { get; private set; }
-
-        public void Flow()
-        {
-            if (Condition())
+            History.Push(this);
+            var answer = _builder.Build().Prompt();
+            if (_builder.OnKey.IsInterrupted)
             {
-                Task();
+                History.Pop(this).Run();
             }
-
-            if (Next != null)
+            else
             {
-                Flow(Next);
+                _then(answer);
+                BaseNode nextNode = History.Next(this);
+                if (nextNode != null)
+                {
+                    nextNode.Run();
+                }
             }
         }
 
-        public void Go()
+        public void Then(Action<TResult> toBind)
         {
-            CurrentNode = GoToRoot(this);
-            CurrentNode.Task();
+            _then = toBind;
+            History.IncreaseScope();
+            Run();
+            History.DecreaseScope();
         }
 
-        public Node Then(Action task)
+        public void Then(ref TResult toBind)
         {
-            if (Task == null)
-            {
-                Task = () => { CurrentNode = this; task(); };
-                return this;
-            }
-
-            var node = new Node(this);
-            Next = node;
-
-            node.Then(task);
-            return node;
+            TResult temp = toBind;
+            _then = answer => { temp = answer; };
+            History.IncreaseScope();
+            Run();
+            History.DecreaseScope();
+            toBind = temp;
         }
 
-        public Node When(Func<bool> condition)
+        public void Then(TResult toBind)
         {
-            var node = new Node(this);
-            node.Condition = condition;
-            Next = node;
-            return node;
-        }
-
-        private void Flow(Node node)
-        {
-            if (node.Condition())
-            {
-                node.Task();
-            }
-
-            if (node.Next != null)
-            {
-                Flow(node.Next);
-            }
-        }
-
-        private Node GoToRoot(Node node)
-        {
-            if (node.Parent != null)
-            {
-                return GoToRoot(node.Parent);
-            }
-
-            return node;
+            TResult temp = toBind;
+            _then = answer => { temp = answer; };
+            History.IncreaseScope();
+            Run();
+            History.DecreaseScope();
+            toBind = temp;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using InquirerCS.Components;
+﻿using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
 
@@ -56,31 +55,6 @@ namespace InquirerCS.Builders
         public IValidateComponent<TResult> ResultValidators { get; set; }
 
         public abstract TQuestion Build();
-
-        public void Then(Action<TResult> action)
-        {
-            Input.IntteruptedKeys.Add(ConsoleKey.Escape);
-            OnKey = new OnEscape();
-
-            var answer = Build().Prompt();
-            if (OnKey.IsInterrupted)
-            {
-                if (Node.CurrentNode.Parent != null)
-                {
-                    Node.CurrentNode.Parent.Task();
-                }
-
-                if (Node.CurrentNode.Sibling != null)
-                {
-                    Node.CurrentNode.Sibling.Go();
-                }
-            }
-            else
-            {
-                action(answer);
-                Node.CurrentNode.Next.Task();
-            }
-        }
 
         public TResult Prompt()
         {
