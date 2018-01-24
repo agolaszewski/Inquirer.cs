@@ -156,7 +156,7 @@ namespace InquirerCS.Questions
                 _renderchoices.Select(_cursorPosition - Consts.CURSOR_OFFSET);
             }
 
-        Escape:
+            Escape:
             TList result = _parseComponent.Parse(_pagingComponent.PagedChoices);
             var validationResult = _validationComponent.Run(result);
             if (validationResult.HasError)

@@ -5,7 +5,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class DefaultSelectedValueComponent<TResult> : IDefaultValueComponent<List<TResult>> where TResult : IComparable
+    internal class DefaultSelectedValueComponent<TResult> : IDefaultValueComponent<List<TResult>> where TResult : IComparable
     {
         public DefaultSelectedValueComponent(List<Selectable<TResult>> selectedChoices, List<TResult> defaultValues)
         {

@@ -3,7 +3,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class OnNothing : IOnKey
+    internal class OnNothing : IOnKey
     {
         public bool IsInterrupted { get; }
 

@@ -3,7 +3,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class ConvertToStringComponent<TResult> : IConvertToStringComponent<TResult>
+    internal class ConvertToStringComponent<TResult> : IConvertToStringComponent<TResult>
     {
         public ConvertToStringComponent(Func<TResult, string> convertToStringFn = null)
         {

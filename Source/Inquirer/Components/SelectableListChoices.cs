@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace InquirerCS.Components
 {
-    public class SelectableListChoices<TResult> : List<Selectable<TResult>>
+    internal class SelectableListChoices<TResult> : List<Selectable<TResult>>
     {
         public SelectableListChoices(IEnumerable<TResult> choices)
         {

@@ -11,7 +11,7 @@ namespace InquirerCS
 
         private Action<TResult> _then;
 
-        public Node(TBuilder builder)
+        internal Node(TBuilder builder)
         {
             _builder = builder;
             _builder.Input.IntteruptedKeys.Add(ConsoleKey.Escape);

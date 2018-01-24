@@ -4,7 +4,7 @@ namespace InquirerCS.Components
 {
     public class StringOrKey
     {
-        public StringOrKey(string value, ConsoleKey? interruptKey)
+        internal StringOrKey(string value, ConsoleKey? interruptKey)
         {
             Value = value;
             InterruptKey = interruptKey;

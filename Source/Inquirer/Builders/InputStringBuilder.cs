@@ -6,7 +6,7 @@ namespace InquirerCS.Builders
 {
     public class InputStringBuilder : InputBuilder<Input<string>, string, string>
     {
-        public InputStringBuilder(string message, IConsole console) : base(console)
+        internal InputStringBuilder(string message, IConsole console) : base(console)
         {
             this.RenderQuestion(message, this, this, Console);
             this.Parse(value => { return value; });

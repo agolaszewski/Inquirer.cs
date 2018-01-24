@@ -114,7 +114,7 @@ namespace InquirerCS.Questions
                 }
             }
 
-        Escape:
+            Escape:
             TResult result = _parseComponent.Parse(cursorPosition - Consts.CURSOR_OFFSET);
             var validationResult = _validationComponent.Run(result);
             if (validationResult.HasError)

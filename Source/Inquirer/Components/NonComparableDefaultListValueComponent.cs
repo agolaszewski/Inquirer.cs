@@ -5,7 +5,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class NonComparableDefaultListValueComponent<TResult> : IDefaultValueComponent<TResult>
+    internal class NonComparableDefaultListValueComponent<TResult> : IDefaultValueComponent<TResult>
     {
         public NonComparableDefaultListValueComponent()
         {

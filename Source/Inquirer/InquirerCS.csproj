@@ -104,6 +104,7 @@
     <Compile Include="Consts.cs" />
     <Compile Include="History.cs" />
     <Compile Include="IConsole.cs" />
+    <Compile Include="Inquirer.cs" />
     <Compile Include="Interfaces\IBuilder.cs" />
     <Compile Include="Interfaces\IConfirmComponent.cs" />
     <Compile Include="Interfaces\IDisplayError.cs" />

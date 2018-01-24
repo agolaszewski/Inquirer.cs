@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
@@ -21,7 +22,7 @@ namespace InquirerCS.Builders
         IPagingTrait<Selectable<TResult>>,
         IBuilder<PagedCheckbox<List<TResult>, TResult>, List<TResult>>
     {
-        public PagedCheckboxBuilder(CheckboxBuilder<TResult> checkboxBuilder, int pageSize)
+        internal PagedCheckboxBuilder(CheckboxBuilder<TResult> checkboxBuilder, int pageSize)
         {
             Choices = checkboxBuilder.Choices;
             Console = checkboxBuilder.Console;
@@ -41,30 +42,43 @@ namespace InquirerCS.Builders
             this.Paging(checkboxBuilder.Choices, pageSize);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public List<Selectable<TResult>> Choices { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IConfirmComponent<List<TResult>> Confirm { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IConsole Console { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IConvertToStringComponent<TResult> Convert { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IDefaultValueComponent<List<TResult>> Default { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IDisplayErrorComponent DisplayError { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IWaitForInputComponent<StringOrKey> Input { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IOnKey OnKey { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IPagingComponent<Selectable<TResult>> Paging { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IParseComponent<Dictionary<int, List<Selectable<TResult>>>, List<TResult>> Parse { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IRenderChoices<TResult> RenderChoices { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IRenderQuestionComponent RenderQuestion { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IValidateComponent<List<TResult>> ResultValidators { get; set; }
 
         public PagedCheckbox<List<TResult>, TResult> Build()

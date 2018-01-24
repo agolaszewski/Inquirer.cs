@@ -3,7 +3,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class ParseStructComponent<TResult> : IParseComponent<string, TResult> where TResult : struct
+    internal class ParseStructComponent<TResult> : IParseComponent<string, TResult> where TResult : struct
     {
         public ParseStructComponent()
         {

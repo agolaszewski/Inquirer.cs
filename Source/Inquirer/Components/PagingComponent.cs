@@ -4,7 +4,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class PagingComponent<TResult> : IPagingComponent<TResult>
+    internal class PagingComponent<TResult> : IPagingComponent<TResult>
     {
         private int _page;
 

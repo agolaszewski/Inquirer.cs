@@ -4,7 +4,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
-    public class DisplayConfirmQuestion<TResult> : IRenderQuestionComponent
+    internal class DisplayConfirmQuestion<TResult> : IRenderQuestionComponent
     {
         private IConsole _console;
 

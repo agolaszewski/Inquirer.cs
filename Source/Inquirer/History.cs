@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace InquirerCS
 {
-    public static class History
+    internal static class History
     {
         public static Dictionary<int, List<BaseNode>> ScopedStack = new Dictionary<int, List<BaseNode>>();
 

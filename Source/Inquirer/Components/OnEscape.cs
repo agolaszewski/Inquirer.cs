@@ -3,7 +3,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class OnEscape : IOnKey
+    internal class OnEscape : IOnKey
     {
         public OnEscape()
         {

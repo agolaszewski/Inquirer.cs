@@ -6,7 +6,7 @@ namespace InquirerCS.Builders
 {
     public class InputStructBuilder<TResult> : InputBuilder<Input<TResult>, string, TResult> where TResult : struct
     {
-        public InputStructBuilder(string message, IConsole console) : base(console)
+        internal InputStructBuilder(string message, IConsole console) : base(console)
         {
             this.RenderQuestion(message, this, this, console);
             this.Parse(value => { return value.To<TResult>(); });

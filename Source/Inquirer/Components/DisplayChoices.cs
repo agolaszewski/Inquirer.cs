@@ -5,7 +5,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
-    public class DisplayChoices<TResult> : IRenderChoices<TResult>
+    internal class DisplayChoices<TResult> : IRenderChoices<TResult>
     {
         private List<TResult> _choices;
 

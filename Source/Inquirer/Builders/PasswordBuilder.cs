@@ -6,7 +6,7 @@ namespace InquirerCS.Builders
 {
     public class PasswordBuilder : InputBuilder<Input<string>, string, string>
     {
-        public PasswordBuilder(string message, IConsole console) : base(console)
+        internal PasswordBuilder(string message, IConsole console) : base(console)
         {
             this.Confirm();
             this.RenderQuestion(message, this, this, console);
