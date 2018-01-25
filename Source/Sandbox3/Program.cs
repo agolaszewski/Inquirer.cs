@@ -12,13 +12,12 @@ namespace ConsoleApp1
         public static void XXXX(string name)
         {
             string test = string.Empty;
-            Inquirer.Prompt(Question.Input(name).WithDefaultValue("Asdasd"));
+            Inquirer.Prompt(Question.Input(name).WithDefaultValue("Menu test")).Then(ref test);
         }
 
         private static void SetClientActiveStatus()
         {
-            Inquirer.Prompt(Question.Menu("ASdasda").AddOption("asdasda", () => { XXXX("1"); }));
-            XXXX("1");
+            //Inquirer.Prompt(Question.Menu("ASdasda").AddOption("asdasda", () => { XXXX("1"); }));
             Inquirer.Prompt(Question.Input("2")).Then(x =>
             {
                 Inquirer.Prompt(Question.Input("2.1")).Then(answer =>

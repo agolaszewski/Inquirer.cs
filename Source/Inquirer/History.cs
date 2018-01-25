@@ -1,88 +1,81 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace InquirerCS
+﻿namespace InquirerCS
 {
     internal static class History
     {
-        public static Dictionary<int, List<BaseNode>> ScopedStack = new Dictionary<int, List<BaseNode>>();
-
-        private static BaseNode _currentRoot;
+        private static BaseNode _root;
 
         public static int Scope { get; set; }
 
         public static BaseNode Next(BaseNode node)
         {
-            if (ScopedStack.ContainsKey(Scope))
-            {
-                var next = ScopedStack[Scope].SkipWhile(x => x.Id != node.Id).Skip(1).FirstOrDefault();
-                return next;
-            }
-
-            return null;
+            return node.Next;
         }
 
         public static BaseNode Pop(BaseNode node)
         {
-            return node.Parent ?? node;
+            if (node.Previous != null)
+            {
+                return node.Previous;
+            }
+
+            if (node.Parent != null)
+            {
+                Scope--;
+                var parent = node.Parent;
+                parent.Child = null;
+                parent.IsCurrent = true;
+                return parent;
+            }
+
+            return _root;
         }
 
         public static void Push(BaseNode node)
         {
-            if (node.Parent == null)
+            node.ScopeLevel = Scope;
+
+            if (_root == null)
             {
-                node.Parent = _currentRoot;
-                _currentRoot = node;
+                _root = node;
+                _root.IsCurrent = true;
+                return;
             }
 
-            if (ScopedStack.ContainsKey(Scope))
+            var currentNode = GetCurrent(_root, Scope);
+
+            if (currentNode.ScopeLevel == Scope)
             {
-                if (ScopedStack[Scope].All(x => x.Id != node.Id))
-                {
-                    ScopedStack[Scope].Add(node);
-                }
+                currentNode.Next = node;
+                node.Previous = currentNode;
             }
             else
             {
-                var list = new List<BaseNode>();
-                list.Add(node);
-                ScopedStack.Add(Scope, list);
+                currentNode.Child = node;
+                node.Parent = currentNode;
             }
+
+            currentNode.IsCurrent = false;
+            node.IsCurrent = true;
         }
 
-        internal static void DecreaseScope()
+        private static BaseNode GetCurrent(BaseNode node, int scope)
         {
-            int nextScope = Scope + 1;
-            while (ScopedStack.ContainsKey(nextScope))
+            if (node.IsCurrent)
             {
-                ScopedStack[nextScope].Clear();
-                nextScope++;
+                return GetLocalRoot(node, scope);
             }
 
-            Scope--;
+            return GetCurrent(node.Next ?? node.Child, scope);
         }
 
-        internal static void IncreaseScope()
+        private static BaseNode GetLocalRoot(BaseNode node, int scope)
         {
-            Scope++;
-        }
-
-        private static BaseNode Pop()
-        {
-            if (Scope < 1)
+            if (node.ScopeLevel <= scope)
             {
-                Scope = 1;
-                return ScopedStack[Scope].FirstOrDefault();
+                return node;
             }
 
-            if (ScopedStack.ContainsKey(Scope))
-            {
-                int lastIndex = ScopedStack[Scope].Count - 1;
-                return ScopedStack[Scope][lastIndex];
-            }
-
-            --Scope;
-            return Pop();
+            return GetLocalRoot(node.Previous ?? node.Parent, scope);
         }
     }
 }

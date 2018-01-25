@@ -4,10 +4,20 @@ namespace InquirerCS
 {
     public abstract class BaseNode
     {
+        public BaseNode Child { get; set; }
+
         public Guid Id { get; set; } = Guid.NewGuid();
+
+        public bool IsCurrent { get; internal set; }
+
+        public BaseNode Next { get; set; }
 
         public BaseNode Parent { get; set; }
 
-        public abstract void Run();
+        public BaseNode Previous { get; set; }
+
+        public int ScopeLevel { get; internal set; }
+
+        public abstract void Run(bool back = false);
     }
 }
