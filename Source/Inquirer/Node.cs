@@ -21,6 +21,7 @@ namespace InquirerCS
         public override void Run()
         {
             var answer = _builder.Build().Prompt();
+            IsDone = true;
             if (_builder.OnKey.IsInterrupted)
             {
                 History.Pop(this).Run();
@@ -44,8 +45,6 @@ namespace InquirerCS
             Run();
             History.ScopeLevel = ScopeLevel - 1;
             Child = null;
-
-            IsCurrent = true;
         }
 
         public void Then(ref TResult toBind)
@@ -56,7 +55,6 @@ namespace InquirerCS
             History.Push(this);
             Run();
             History.ScopeLevel = ScopeLevel - 1;
-            IsCurrent = true;
             Child = null;
 
             toBind = temp;
@@ -70,7 +68,6 @@ namespace InquirerCS
             History.Push(this);
             Run();
             History.ScopeLevel = ScopeLevel - 1;
-            IsCurrent = true;
             Child = null;
 
             toBind = temp;

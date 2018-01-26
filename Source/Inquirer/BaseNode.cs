@@ -8,7 +8,7 @@ namespace InquirerCS
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public bool IsCurrent { get; internal set; }
+        public bool IsDone { get; internal set; }
 
         public BaseNode Next { get; set; }
 

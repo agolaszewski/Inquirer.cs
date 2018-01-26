@@ -4,33 +4,39 @@
     {
         private static BaseNode _root;
 
+        public static BaseNode CurrentNode { get; set; }
+
         public static int ScopeLevel { get; set; }
 
         public static BaseNode Next(BaseNode node)
         {
-            return node.Next;
+            if (!node.IsDone)
+            {
+                return node.Next;
+            }
+
+            return null;
         }
 
         public static BaseNode Pop(BaseNode node)
         {
-            node.IsCurrent = false;
-
             if (node.Previous != null)
             {
-                node.Previous.IsCurrent = true;
+                CurrentNode = node.Previous;
+                node.Previous.IsDone = false;
                 return node.Previous;
             }
 
             if (node.Parent != null)
             {
+                CurrentNode = node.Parent;
                 var parent = node.Parent;
-                History.ScopeLevel = parent.ScopeLevel;
+                ScopeLevel = parent.ScopeLevel;
                 parent.Child = null;
-                parent.IsCurrent = true;
                 return parent;
             }
 
-            _root.IsCurrent = true;
+            CurrentNode = _root;
             return _root;
         }
 
@@ -41,11 +47,11 @@
             if (_root == null)
             {
                 _root = node;
-                _root.IsCurrent = true;
+                CurrentNode = _root;
                 return;
             }
 
-            var currentNode = GetCurrent(_root, ScopeLevel);
+            var currentNode = GetLocalRoot(CurrentNode, ScopeLevel);
 
             if (currentNode.ScopeLevel == node.ScopeLevel)
             {
@@ -58,18 +64,7 @@
                 node.Parent = currentNode;
             }
 
-            currentNode.IsCurrent = false;
-            node.IsCurrent = true;
-        }
-
-        private static BaseNode GetCurrent(BaseNode node, int scope)
-        {
-            if (node.IsCurrent)
-            {
-                return GetLocalRoot(node, scope);
-            }
-
-            return GetCurrent(node.Child ?? node.Next, scope);
+            CurrentNode = node;
         }
 
         private static BaseNode GetLocalRoot(BaseNode node, int scope)
