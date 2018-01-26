@@ -16,8 +16,8 @@ namespace InquirerCS
 
         public BaseNode Previous { get; set; }
 
-        public int ScopeLevel { get; internal set; }
+        public int ScopeLevel { get; set; }
 
-        public abstract void Run(bool back = false);
+        public abstract void Run();
     }
 }

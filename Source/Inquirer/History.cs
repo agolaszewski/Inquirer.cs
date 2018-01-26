@@ -4,7 +4,7 @@
     {
         private static BaseNode _root;
 
-        public static int Scope { get; set; }
+        public static int ScopeLevel { get; set; }
 
         public static BaseNode Next(BaseNode node)
         {
@@ -13,26 +13,30 @@
 
         public static BaseNode Pop(BaseNode node)
         {
+            node.IsCurrent = false;
+
             if (node.Previous != null)
             {
+                node.Previous.IsCurrent = true;
                 return node.Previous;
             }
 
             if (node.Parent != null)
             {
-                Scope--;
                 var parent = node.Parent;
+                History.ScopeLevel = parent.ScopeLevel;
                 parent.Child = null;
                 parent.IsCurrent = true;
                 return parent;
             }
 
+            _root.IsCurrent = true;
             return _root;
         }
 
         public static void Push(BaseNode node)
         {
-            node.ScopeLevel = Scope;
+            node.ScopeLevel = ScopeLevel;
 
             if (_root == null)
             {
@@ -41,9 +45,9 @@
                 return;
             }
 
-            var currentNode = GetCurrent(_root, Scope);
+            var currentNode = GetCurrent(_root, ScopeLevel);
 
-            if (currentNode.ScopeLevel == Scope)
+            if (currentNode.ScopeLevel == node.ScopeLevel)
             {
                 currentNode.Next = node;
                 node.Previous = currentNode;
@@ -65,7 +69,7 @@
                 return GetLocalRoot(node, scope);
             }
 
-            return GetCurrent(node.Next ?? node.Child, scope);
+            return GetCurrent(node.Child ?? node.Next, scope);
         }
 
         private static BaseNode GetLocalRoot(BaseNode node, int scope)

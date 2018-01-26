@@ -18,17 +18,12 @@ namespace InquirerCS
             _builder.OnKey = new OnEscape();
         }
 
-        public override void Run(bool back = false)
+        public override void Run()
         {
-            if (!back)
-            {
-                History.Push(this);
-            }
-
             var answer = _builder.Build().Prompt();
             if (_builder.OnKey.IsInterrupted)
             {
-                History.Pop(this).Run(true);
+                History.Pop(this).Run();
             }
             else
             {
@@ -36,7 +31,7 @@ namespace InquirerCS
                 BaseNode nextNode = History.Next(this);
                 if (nextNode != null)
                 {
-                    nextNode.Run(true);
+                    nextNode.Run();
                 }
             }
         }
@@ -44,18 +39,26 @@ namespace InquirerCS
         public void Then(Action<TResult> toBind)
         {
             _then = toBind;
-            History.Scope += 1;
+            History.ScopeLevel++;
+            History.Push(this);
             Run();
-            //History.Scope -= 1;
+            History.ScopeLevel = ScopeLevel - 1;
+            Child = null;
+
+            IsCurrent = true;
         }
 
         public void Then(ref TResult toBind)
         {
             TResult temp = toBind;
             _then = answer => { temp = answer; };
-            History.Scope += 1;
+            History.ScopeLevel++;
+            History.Push(this);
             Run();
-            //History.Scope -= 1;
+            History.ScopeLevel = ScopeLevel - 1;
+            IsCurrent = true;
+            Child = null;
+
             toBind = temp;
         }
 
@@ -63,9 +66,13 @@ namespace InquirerCS
         {
             TResult temp = toBind;
             _then = answer => { temp = answer; };
-            History.Scope += 1;
+            History.ScopeLevel++;
+            History.Push(this);
             Run();
-            History.Scope -= 1;
+            History.ScopeLevel = ScopeLevel - 1;
+            IsCurrent = true;
+            Child = null;
+
             toBind = temp;
         }
     }
