@@ -18,14 +18,25 @@ namespace InquirerCS
 
         public override bool Run()
         {
-            var node = Inquirer.Prompt<TBuilder, TQuestion, TResult>(_fn());
-            node.Then(_toBind);
+            var node = CreateNode(_fn());
             return node.Run();
         }
 
         public void Then(Action<TResult> toBind)
         {
             _toBind = toBind;
+        }
+
+        public BaseNode CreateNode(TBuilder builder)
+        {
+            if (builder != null)
+            {
+                var node = new Node<TBuilder, TQuestion, TResult>(builder, addHistory: false);
+                node.Then(_toBind);
+                return node;
+            }
+
+            return new EmptyNode();
         }
     }
 }

@@ -60,12 +60,7 @@ namespace InquirerCS
 
         public static Node<TBuilder, TQuestion, TResult> Prompt<TBuilder, TQuestion, TResult>(TBuilder builder) where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
         {
-            if (builder != null)
-            {
-                return new Node<TBuilder, TQuestion, TResult>(builder);
-            }
-
-            return new EmptyNode<TBuilder, TQuestion, TResult>();
+            return new Node<TBuilder, TQuestion, TResult>(builder);
         }
 
         public static void Go()

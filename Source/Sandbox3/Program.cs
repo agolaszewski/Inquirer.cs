@@ -15,7 +15,7 @@ namespace ConsoleApp1
         {
             Inquirer.Prompt(() =>
             {
-                if (test.Length > 3)
+                if (test.Length > -1)
                 {
                     return Question.Input(name).WithDefaultValue("Menu test");
                 }
@@ -25,7 +25,7 @@ namespace ConsoleApp1
 
         private static void SetClientActiveStatus()
         {
-            //Inquirer.Prompt(Question.Menu("ASdasda").AddOption("asdasda", () => { XXXX("1"); }));
+            Inquirer.Prompt(Question.Menu("ASdasda").AddOption("asdasda", () => { XXXX("1"); }));
             XXXX("1");
             Inquirer.Prompt(Question.Input("2")).Then(x =>
             {

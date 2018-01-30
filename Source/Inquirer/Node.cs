@@ -15,12 +15,16 @@ namespace InquirerCS
         {
         }
 
-        internal Node(TBuilder builder)
+        internal Node(TBuilder builder, bool addHistory = true)
         {
             _builder = builder;
             _builder.Input.IntteruptedKeys.Add(ConsoleKey.Escape);
             _builder.OnKey = new OnEscape();
-            History.CurrentScope.Add(this);
+
+            if (addHistory)
+            {
+                History.CurrentScope.Add(this);
+            }
         }
 
         public override bool Run()

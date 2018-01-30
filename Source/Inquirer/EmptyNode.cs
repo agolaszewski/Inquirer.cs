@@ -4,7 +4,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS
 {
-    public class EmptyNode<TBuilder, TQuestion, TResult> : Node<TBuilder, TQuestion, TResult> where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
+    public class EmptyNode : BaseNode
     {
         public EmptyNode() : base()
         {
