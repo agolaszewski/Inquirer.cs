@@ -22,24 +22,24 @@ namespace InquirerCS
             return Prompt<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>>(builder);
         }
 
-        public static Node<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(Func<CheckboxBuilder<TResult>> fn)
+        public static LazyNode<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(Func<CheckboxBuilder<TResult>> fn)
         {
             return Prompt<CheckboxBuilder<TResult>, Checkbox<List<TResult>, TResult>, List<TResult>>(fn);
         }
 
-        public static Node<InputBuilder<TQuestion, TInput, TResult>, TQuestion, TResult> Prompt<TQuestion, TInput, TResult>(Func<InputBuilder<TQuestion, TInput, TResult>> fn) where TQuestion : IQuestion<TResult>
+        public static LazyNode<InputBuilder<TQuestion, TInput, TResult>, TQuestion, TResult> Prompt<TQuestion, TInput, TResult>(Func<InputBuilder<TQuestion, TInput, TResult>> fn) where TQuestion : IQuestion<TResult>
         {
             return Prompt<InputBuilder<TQuestion, TInput, TResult>, TQuestion, TResult>(fn);
         }
 
-        public static Node<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(Func<PagedCheckboxBuilder<TResult>> fn)
+        public static LazyNode<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>> Prompt<TResult>(Func<PagedCheckboxBuilder<TResult>> fn)
         {
             return Prompt<PagedCheckboxBuilder<TResult>, PagedCheckbox<List<TResult>, TResult>, List<TResult>>(fn);
         }
 
-        public static Node<TBuilder, TQuestion, TResult> Prompt<TBuilder, TQuestion, TResult>(Func<TBuilder> fn) where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
+        public static LazyNode<TBuilder, TQuestion, TResult> Prompt<TBuilder, TQuestion, TResult>(Func<TBuilder> fn) where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
         {
-            return Prompt<TBuilder, TQuestion, TResult>(fn());
+            return new LazyNode<TBuilder, TQuestion, TResult>(fn);
         }
 
         public static Node<InputBuilder<TQuestion, TInput, TResult>, TQuestion, TResult> Prompt<TQuestion, TInput, TResult>(InputBuilder<TQuestion, TInput, TResult> inputBuilder) where TQuestion : IQuestion<TResult>
@@ -60,12 +60,17 @@ namespace InquirerCS
 
         public static Node<TBuilder, TQuestion, TResult> Prompt<TBuilder, TQuestion, TResult>(TBuilder builder) where TBuilder : IWaitForInputTrait<StringOrKey>, IOnKeyTrait, IBuilder<TQuestion, TResult> where TQuestion : IQuestion<TResult>
         {
-            return new Node<TBuilder, TQuestion, TResult>(builder);
+            if (builder != null)
+            {
+                return new Node<TBuilder, TQuestion, TResult>(builder);
+            }
+
+            return new EmptyNode<TBuilder, TQuestion, TResult>();
         }
 
-        public static RawListBuilder<TResult> RawList<TResult>(string message, IEnumerable<TResult> choices)
+        public static void Go()
         {
-            return new RawListBuilder<TResult>(message, choices, _console);
+            History.Process(History.CurrentScope.Current);
         }
     }
 }

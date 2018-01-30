@@ -11,67 +11,35 @@ namespace InquirerCS
 
         private Action<TResult> _then;
 
+        internal Node()
+        {
+        }
+
         internal Node(TBuilder builder)
         {
             _builder = builder;
             _builder.Input.IntteruptedKeys.Add(ConsoleKey.Escape);
             _builder.OnKey = new OnEscape();
+            History.CurrentScope.Add(this);
         }
 
-        public override void Run()
+        public override bool Run()
         {
-            if (History.GetRoot(this))
+            var answer = _builder.Build().Prompt();
+            if (_builder.OnKey.IsInterrupted)
             {
-                var answer = _builder.Build().Prompt();
-
-                if (_builder.OnKey.IsInterrupted)
-                {
-                    History.Pop(this).Run();
-                }
-                else
-                {
-                    _then(answer);
-                    BaseNode nextNode = History.Next(this);
-                    if (nextNode != null)
-                    {
-                        nextNode.Run();
-                    }
-                }
+                return false;
             }
+
+            History.Push();
+            _then(answer);
+            History.Pop();
+            return true;
         }
 
-        public void Then(Action<TResult> toBind)
+        public virtual void Then(Action<TResult> toBind)
         {
-            _then = toBind;
-        }
-
-        public void Then(ref TResult toBind)
-        {
-            TResult temp = toBind;
-            _then = answer => { temp = answer; };
-            toBind = temp;
-        }
-
-        public void Then(TResult toBind)
-        {
-            TResult temp = toBind;
-            _then = answer => { temp = answer; };
-            toBind = temp;
-        }
-
-        private void Then(BaseNode node)
-        {
-            History.ScopeLevel++;
-            History.Push(this);
-            Run();
-            History.ScopeLevel = ScopeLevel - 1;
-
-            if (Child != null)
-            {
-                Child.Parent = null;
-                Child = null;
-                History.CurrentNode = this;
-            }
+            _then = answer => { toBind(answer); History.Process(History.CurrentScope.Current); };
         }
     }
 }

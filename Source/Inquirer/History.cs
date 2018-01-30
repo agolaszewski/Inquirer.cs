@@ -1,91 +1,65 @@
-﻿namespace InquirerCS
+﻿using System.Collections.Generic;
+
+namespace InquirerCS
 {
-    internal static class History
+    public static class History
     {
-        private static BaseNode _root;
+        private static int _current = 0;
 
-        public static BaseNode CurrentNode { get; set; }
-
-        public static int ScopeLevel { get; set; }
-
-        public static bool GetRoot(BaseNode node)
+        public static NavigationList<BaseNode> CurrentScope
         {
-            if (node == null)
+            get
             {
-                return false;
-            }
+                if (Scopes.ContainsKey(_current))
+                {
+                    return Scopes[_current];
+                }
 
-            if (_root == null || _root.Id == node.Id)
-            {
-                return true;
+                Scopes.Add(_current, new NavigationList<BaseNode>());
+                return Scopes[_current];
             }
-
-            return GetRoot(node.Previous ?? node.Parent);
         }
 
-        public static BaseNode Next(BaseNode node)
+        public static Dictionary<int, NavigationList<BaseNode>> Scopes { get; set; } = new Dictionary<int, NavigationList<BaseNode>>();
+
+        public static void Pop()
         {
-            return node.Next;
+            if (_current > 0)
+            {
+                Scopes.Remove(_current);
+                _current -= 1;
+            }
         }
 
-        public static BaseNode Pop(BaseNode node)
+        public static void Process(BaseNode node)
         {
-            if (node.Previous != null)
+            if (node != null)
             {
-                CurrentNode = node.Previous;
-                return node.Previous;
-            }
+                var result = node.Run();
 
-            if (node.Parent != null)
-            {
-                CurrentNode = node.Parent;
-                var parent = node.Parent;
-                ScopeLevel = parent.ScopeLevel;
-                parent.Child = null;
-                node.Parent = null;
-                return parent;
+                if (result)
+                {
+                    Process(CurrentScope.Next);
+                }
+                else
+                {
+                    var previous = CurrentScope.Previous;
+                    if (previous != null)
+                    {
+                        Process(previous);
+                    }
+                    else
+                    {
+                        Pop();
+                        Process(CurrentScope.Current);
+                    }
+                }
             }
-
-            CurrentNode = _root;
-            return _root;
         }
 
-        public static void Push(BaseNode node)
+        public static void Push()
         {
-            node.ScopeLevel = ScopeLevel;
-
-            if (_root == null)
-            {
-                _root = node;
-                CurrentNode = _root;
-                return;
-            }
-
-            var currentNode = GetLocalRoot(CurrentNode, ScopeLevel);
-
-            if (currentNode.ScopeLevel == node.ScopeLevel)
-            {
-                currentNode.Next = node;
-                node.Previous = currentNode;
-            }
-            else
-            {
-                currentNode.Child = node;
-                node.Parent = currentNode;
-            }
-
-            CurrentNode = node;
-            return;
-        }
-
-        private static BaseNode GetLocalRoot(BaseNode node, int scope)
-        {
-            if (node.ScopeLevel <= scope)
-            {
-                return node;
-            }
-
-            return GetLocalRoot(node.Previous ?? node.Parent, scope);
+            _current += 1;
         }
     }
 }
