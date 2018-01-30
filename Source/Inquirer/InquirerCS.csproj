@@ -103,6 +103,7 @@
     <Compile Include="Components\DisplayExtendedChoices.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="History.cs" />
+    <Compile Include="History2.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="Inquirer.cs" />
     <Compile Include="Interfaces\IBuilder.cs" />

@@ -8,14 +8,24 @@
 
         public static int ScopeLevel { get; set; }
 
-        public static BaseNode Next(BaseNode node)
+        public static bool GetRoot(BaseNode node)
         {
-            if (!node.IsDone)
+            if (node == null)
             {
-                return node.Next;
+                return false;
             }
 
-            return null;
+            if (_root == null || _root.Id == node.Id)
+            {
+                return true;
+            }
+
+            return GetRoot(node.Previous ?? node.Parent);
+        }
+
+        public static BaseNode Next(BaseNode node)
+        {
+            return node.Next;
         }
 
         public static BaseNode Pop(BaseNode node)
@@ -23,7 +33,6 @@
             if (node.Previous != null)
             {
                 CurrentNode = node.Previous;
-                node.Previous.IsDone = false;
                 return node.Previous;
             }
 
@@ -33,6 +42,7 @@
                 var parent = node.Parent;
                 ScopeLevel = parent.ScopeLevel;
                 parent.Child = null;
+                node.Parent = null;
                 return parent;
             }
 
@@ -65,6 +75,7 @@
             }
 
             CurrentNode = node;
+            return;
         }
 
         private static BaseNode GetLocalRoot(BaseNode node, int scope)

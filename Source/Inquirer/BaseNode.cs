@@ -8,8 +8,6 @@ namespace InquirerCS
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public bool IsDone { get; internal set; }
-
         public BaseNode Next { get; set; }
 
         public BaseNode Parent { get; set; }

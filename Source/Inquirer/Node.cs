@@ -20,19 +20,22 @@ namespace InquirerCS
 
         public override void Run()
         {
-            var answer = _builder.Build().Prompt();
-            IsDone = true;
-            if (_builder.OnKey.IsInterrupted)
+            if (History.GetRoot(this))
             {
-                History.Pop(this).Run();
-            }
-            else
-            {
-                _then(answer);
-                BaseNode nextNode = History.Next(this);
-                if (nextNode != null)
+                var answer = _builder.Build().Prompt();
+
+                if (_builder.OnKey.IsInterrupted)
                 {
-                    nextNode.Run();
+                    History.Pop(this).Run();
+                }
+                else
+                {
+                    _then(answer);
+                    BaseNode nextNode = History.Next(this);
+                    if (nextNode != null)
+                    {
+                        nextNode.Run();
+                    }
                 }
             }
         }
@@ -40,23 +43,12 @@ namespace InquirerCS
         public void Then(Action<TResult> toBind)
         {
             _then = toBind;
-            History.ScopeLevel++;
-            History.Push(this);
-            Run();
-            History.ScopeLevel = ScopeLevel - 1;
-            Child = null;
         }
 
         public void Then(ref TResult toBind)
         {
             TResult temp = toBind;
             _then = answer => { temp = answer; };
-            History.ScopeLevel++;
-            History.Push(this);
-            Run();
-            History.ScopeLevel = ScopeLevel - 1;
-            Child = null;
-
             toBind = temp;
         }
 
@@ -64,13 +56,22 @@ namespace InquirerCS
         {
             TResult temp = toBind;
             _then = answer => { temp = answer; };
+            toBind = temp;
+        }
+
+        private void Then(BaseNode node)
+        {
             History.ScopeLevel++;
             History.Push(this);
             Run();
             History.ScopeLevel = ScopeLevel - 1;
-            Child = null;
 
-            toBind = temp;
+            if (Child != null)
+            {
+                Child.Parent = null;
+                Child = null;
+                History.CurrentNode = this;
+            }
         }
     }
 }
