@@ -2,7 +2,7 @@
 
 namespace InquirerCS.Components
 {
-    public class DefaultValueComponent<TResult> : IDefaultValueComponent<TResult>
+    internal class DefaultValueComponent<TResult> : IDefaultValueComponent<TResult>
     {
         public DefaultValueComponent()
         {

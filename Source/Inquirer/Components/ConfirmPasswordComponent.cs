@@ -2,7 +2,7 @@
 
 namespace InquirerCS.Components
 {
-    public class ConfirmPasswordComponent : IConfirmComponent<string>
+    internal class ConfirmPasswordComponent : IConfirmComponent<string>
     {
         private IConsole _console;
 

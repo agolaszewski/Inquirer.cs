@@ -3,7 +3,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class DisplayErrorCompnent : IDisplayErrorComponent
+    internal class DisplayErrorCompnent : IDisplayErrorComponent
     {
         private IConsole _console;
 

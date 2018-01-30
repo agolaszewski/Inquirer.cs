@@ -4,7 +4,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
-    public class DisplaySelectablePagedChoices<TResult> : IRenderChoices<TResult>
+    internal class DisplaySelectablePagedChoices<TResult> : IRenderChoices<TResult>
     {
         private IConsole _console;
 

@@ -121,7 +121,7 @@ namespace InquirerCS.Questions
                 }
             }
 
-        Escape:
+            Escape:
             TList result = _parseComponent.Parse(_choices);
             var validationResult = _validationComponent.Run(result);
             if (validationResult.HasError)

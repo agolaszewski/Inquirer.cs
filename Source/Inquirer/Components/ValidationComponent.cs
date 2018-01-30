@@ -4,7 +4,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class ValidationComponent<T> : IValidateComponent<T>
+    internal class ValidationComponent<T> : IValidateComponent<T>
     {
         private List<Tuple<Func<T, bool>, Func<T, string>>> _validators = new List<Tuple<Func<T, bool>, Func<T, string>>>();
 

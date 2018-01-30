@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq.Expressions;
+using System.Reflection;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
@@ -11,58 +13,67 @@ namespace InquirerCS
 
         private Action<TResult> _then;
 
-        public Node(TBuilder builder)
+        internal Node()
+        {
+        }
+
+        internal Node(TBuilder builder, bool addHistory = true)
         {
             _builder = builder;
             _builder.Input.IntteruptedKeys.Add(ConsoleKey.Escape);
             _builder.OnKey = new OnEscape();
+
+            if (addHistory)
+            {
+                History.CurrentScope.Add(this);
+            }
         }
 
-        public override void Run()
+        public override bool Run()
         {
-            History.Push(this);
             var answer = _builder.Build().Prompt();
             if (_builder.OnKey.IsInterrupted)
             {
-                History.Pop(this).Run();
+                return false;
             }
-            else
+
+            History.Push();
+            _then(answer);
+            History.Pop();
+            return true;
+        }
+
+        public virtual void Then(Action<TResult> toBind)
+        {
+            _then = answer => { toBind(answer); History.Process(History.CurrentScope.Current); };
+        }
+
+        public virtual void Then(TResult toBind)
+        {
+            _then = answer => { toBind = answer; };
+        }
+
+        public virtual void Then(Expression<Func<TResult>> action)
+        {
+            if (((MemberExpression)action.Body).Member is PropertyInfo)
             {
-                _then(answer);
-                BaseNode nextNode = History.Next(this);
-                if (nextNode != null)
-                {
-                    nextNode.Run();
-                }
+                var propertyInfo = ((MemberExpression)action.Body).Member as PropertyInfo;
+
+                var body = action.Body as MemberExpression;
+                object projection = Expression.Lambda<Func<object>>(body.Expression).Compile()();
+
+                _then = answer => { propertyInfo.SetValue(projection, answer); };
             }
-        }
 
-        public void Then(Action<TResult> toBind)
-        {
-            _then = toBind;
-            History.IncreaseScope();
-            Run();
-            History.DecreaseScope();
-        }
+            if (((MemberExpression)action.Body).Member is FieldInfo)
+            {
+                var fieldInfo = ((MemberExpression)action.Body).Member as FieldInfo;
 
-        public void Then(ref TResult toBind)
-        {
-            TResult temp = toBind;
-            _then = answer => { temp = answer; };
-            History.IncreaseScope();
-            Run();
-            History.DecreaseScope();
-            toBind = temp;
-        }
+                var body = action.Body as MemberExpression;
+                object projection = Expression.Lambda<Func<object>>(body.Expression).Compile()();
 
-        public void Then(TResult toBind)
-        {
-            TResult temp = toBind;
-            _then = answer => { temp = answer; };
-            History.IncreaseScope();
-            Run();
-            History.DecreaseScope();
-            toBind = temp;
+                _then = answer => { fieldInfo.SetValue(projection, answer); };
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Selectable<T>
     {
-        public Selectable(bool isSelected, T item)
+        internal Selectable(bool isSelected, T item)
         {
             Item = item;
             IsSelected = isSelected;

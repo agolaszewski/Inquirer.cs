@@ -4,7 +4,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class ParseListComponent<TResult> : IParseComponent<int, TResult>
+    internal class ParseListComponent<TResult> : IParseComponent<int, TResult>
     {
         private List<TResult> _choices;
 

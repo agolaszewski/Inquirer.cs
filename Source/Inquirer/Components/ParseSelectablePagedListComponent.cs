@@ -6,7 +6,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
-    public class ParseSelectablePagedListComponent<TList, TResult> : IParseComponent<Dictionary<int, List<Selectable<TResult>>>, TList> where TList : List<TResult>
+    internal class ParseSelectablePagedListComponent<TList, TResult> : IParseComponent<Dictionary<int, List<Selectable<TResult>>>, TList> where TList : List<TResult>
     {
         public ParseSelectablePagedListComponent(IPagingTrait<Selectable<TResult>> paging)
         {

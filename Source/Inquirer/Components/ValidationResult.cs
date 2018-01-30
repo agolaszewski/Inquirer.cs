@@ -2,7 +2,7 @@
 
 namespace InquirerCS.Components
 {
-    public class ValidationResult : IValidationResult
+    internal class ValidationResult : IValidationResult
     {
         public ValidationResult()
         {

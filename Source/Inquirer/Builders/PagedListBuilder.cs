@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
@@ -8,7 +9,7 @@ namespace InquirerCS.Builders
 {
     public class PagedListBuilder<TResult> : InputBuilder<PagedList<TResult>, int, TResult>, IRenderChoicesTrait<TResult>, IPagingTrait<TResult>
     {
-        public PagedListBuilder(ListBuilder<TResult> listBuilder, int pageSize) : base(listBuilder.Console)
+        internal PagedListBuilder(ListBuilder<TResult> listBuilder, int pageSize) : base(listBuilder.Console)
         {
             Choices = listBuilder.Choices;
             Console = listBuilder.Console;
@@ -32,10 +33,13 @@ namespace InquirerCS.Builders
             this.Paging(listBuilder.Choices, pageSize);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public List<TResult> Choices { get; private set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IPagingComponent<TResult> Paging { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IRenderChoices<TResult> RenderChoices { get; set; }
 
         public override PagedList<TResult> Build()

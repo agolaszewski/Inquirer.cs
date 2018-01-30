@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InquirerCS
 {
-    public class AppConsole : IConsole
+    internal class AppConsole : IConsole
     {
         public int CursorLeft
         {

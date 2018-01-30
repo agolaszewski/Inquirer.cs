@@ -2,7 +2,7 @@
 
 namespace InquirerCS.Components
 {
-    public class NoConfirmationComponent<TResult> : IConfirmComponent<TResult>
+    internal class NoConfirmationComponent<TResult> : IConfirmComponent<TResult>
     {
         public bool Confirm(TResult result)
         {

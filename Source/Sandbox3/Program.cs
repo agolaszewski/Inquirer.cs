@@ -1,7 +1,13 @@
-﻿using InquirerCS;
+﻿using System;
+using InquirerCS;
 
 namespace ConsoleApp1
 {
+    public class Answers
+    {
+        public string Test { get; set; }
+    }
+
     internal class Program
     {
         private static void Main(string[] args)
@@ -9,36 +15,30 @@ namespace ConsoleApp1
             SetClientActiveStatus();
         }
 
+        private static string test = string.Empty;
+
         public static void XXXX(string name)
         {
-            string test = string.Empty;
-            Question.Prompt(Question.Input(name)).Then(ref test);
+            Inquirer.Prompt(() =>
+            {
+                if (test.Length > -1)
+                {
+                    return Question.Input(name).WithDefaultValue("Menu test");
+                }
+                return null;
+            }).Then(answer => test = answer);
         }
 
         private static void SetClientActiveStatus()
         {
-            Question.Prompt(Question.Menu("ASdasda").AddOption("asdasda", () => { XXXX("1"); }));
 
-            XXXX("1");
-            Question.Prompt(Question.Input("2")).Then(x =>
-            {
-                Question.Prompt(Question.Input("2.1")).Then(answer =>
-                {
-                    XXXX("2.1.1");
-                    XXXX("2.1.2");
-                    XXXX("2.1.3");
-                });
-                Question.Prompt(Question.Input("2.2")).Then(answer =>
-                {
-                    XXXX("2.2.1");
-                    XXXX("2.2.2");
-                    XXXX("2.2.3");
-                });
-            });
-            XXXX("3");
-            XXXX("4");
-            XXXX("5");
-            XXXX("6");
+            var aaaa = new Answers();
+            string test = string.Empty;
+
+            Inquirer.Prompt(Question.Input("2")).Then(() => aaaa.Test);
+            Inquirer.Prompt(Question.Input("2")).Then(() => test);
+            Inquirer.Go();
+            Console.WriteLine(aaaa.Test);
         }
     }
 }

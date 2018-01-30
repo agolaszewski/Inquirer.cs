@@ -7,7 +7,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
-    public class ConfirmListComponent<TList, TResult> : IConfirmComponent<TList> where TList : IEnumerable<TResult>
+    internal class ConfirmListComponent<TList, TResult> : IConfirmComponent<TList> where TList : IEnumerable<TResult>
     {
         private IConsole _console;
 

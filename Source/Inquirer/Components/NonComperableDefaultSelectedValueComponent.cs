@@ -5,7 +5,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class NonComperableDefaultSelectedValueComponent<TResult> : IDefaultValueComponent<List<TResult>>
+    internal class NonComperableDefaultSelectedValueComponent<TResult> : IDefaultValueComponent<List<TResult>>
     {
         public NonComperableDefaultSelectedValueComponent(List<Selectable<TResult>> selectedChoices, Func<TResult, bool> compareTo)
         {

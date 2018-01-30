@@ -7,7 +7,7 @@ using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
-    public class DisplayListQuestion<TList, TResult> : IRenderQuestionComponent where TList : IEnumerable<TResult>
+    internal class DisplayListQuestion<TList, TResult> : IRenderQuestionComponent where TList : IEnumerable<TResult>
     {
         private IConsole _console;
 

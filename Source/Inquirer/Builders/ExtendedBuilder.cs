@@ -7,7 +7,7 @@ namespace InquirerCS.Builders
 {
     public class ExtendedBuilder : InputBuilder<InputKey<ConsoleKey>, ConsoleKey, ConsoleKey>
     {
-        public ExtendedBuilder(string message, IConsole console, params ConsoleKey[] @params) : base(console)
+        internal ExtendedBuilder(string message, IConsole console, params ConsoleKey[] @params) : base(console)
         {
             this.RenderQuestion(message, this, this, Console);
 

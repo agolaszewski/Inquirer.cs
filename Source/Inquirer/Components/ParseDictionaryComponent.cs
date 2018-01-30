@@ -4,7 +4,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class ParseDictionaryComponent<TKey, TResult> : IParseComponent<TKey, TResult>
+    internal class ParseDictionaryComponent<TKey, TResult> : IParseComponent<TKey, TResult>
     {
         private Dictionary<TKey, TResult> _choices;
 

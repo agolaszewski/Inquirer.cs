@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
 using InquirerCS.Traits;
@@ -10,7 +10,7 @@ namespace InquirerCS.Builders
 {
     public class ListBuilder<TResult> : InputBuilder<ConsoleList<TResult>, int, TResult>, IRenderChoicesTrait<TResult>
     {
-        public ListBuilder(string message, IEnumerable<TResult> choices, IConsole console) : base(console)
+        internal ListBuilder(string message, IEnumerable<TResult> choices, IConsole console) : base(console)
         {
             Choices = choices.ToList();
             Console = console;
@@ -22,8 +22,10 @@ namespace InquirerCS.Builders
             this.Input(Console, true, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.UpArrow);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public List<TResult> Choices { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IRenderChoices<TResult> RenderChoices { get; set; }
 
         public override ConsoleList<TResult> Build()

@@ -5,7 +5,7 @@ using InquirerCS.Interfaces;
 
 namespace InquirerCS.Components
 {
-    public class StringOrKeyInputComponent : IWaitForInputComponent<StringOrKey>
+    internal class StringOrKeyInputComponent : IWaitForInputComponent<StringOrKey>
     {
         private IConsole _console;
 

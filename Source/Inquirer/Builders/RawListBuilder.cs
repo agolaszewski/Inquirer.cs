@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using InquirerCS.Interfaces;
 using InquirerCS.Questions;
@@ -9,7 +10,7 @@ namespace InquirerCS.Builders
 {
     public class RawListBuilder<TResult> : InputBuilder<RawList<TResult>, string, TResult>, IRenderChoicesTrait<TResult>
     {
-        public RawListBuilder(string message, IEnumerable<TResult> choices, IConsole console) : base(console)
+        internal RawListBuilder(string message, IEnumerable<TResult> choices, IConsole console) : base(console)
         {
             Choices = choices.ToList();
             Console = console;
@@ -38,8 +39,10 @@ namespace InquirerCS.Builders
             this.Input(Console, value => { return char.IsNumber(value); });
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public List<TResult> Choices { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public IRenderChoices<TResult> RenderChoices { get; set; }
 
         public override RawList<TResult> Build()
