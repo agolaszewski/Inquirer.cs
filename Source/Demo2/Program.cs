@@ -13,15 +13,15 @@ namespace Demo2
             {
                 if (answer.Length > 5)
                 {
-                    return Question.Input("2");
+                    return Question.Input("3");
                 }
 
                 return null;
             }).Then(answer2 =>
             {
-                Inquirer.Prompt(Question.Input("2.1")).Bind(() => answer);
-                Inquirer.Prompt(Question.Input("2.2")).Bind(() => answer);
-                Inquirer.Prompt(Question.Input("2.3")).Bind(() => answer);
+                Inquirer.Prompt(Question.Input("3.1")).Bind(() => answer);
+                Inquirer.Prompt(Question.Input("3.2")).Bind(() => answer);
+                Inquirer.Prompt(Question.Input("3.3")).Bind(() => answer);
             });
             Inquirer.Go();
         }
