@@ -57,5 +57,10 @@ namespace InquirerCS
         {
             return new PasswordBuilder(message, _console);
         }
+
+        public static RawListBuilder<TResult> RawList<TResult>(string message, IEnumerable<TResult> choices)
+        {
+            return new RawListBuilder<TResult>(message, choices, _console);
+        }
     }
 }

@@ -39,5 +39,12 @@ namespace InquirerCS.Builders
         {
             return new ConsoleList<MenuAction>(Choices, Confirm, RenderQuestion, Input, Parse, RenderChoices, ResultValidators, DisplayError, OnKey);
         }
+
+        public override MenuAction Prompt()
+        {
+            var result = Build().Prompt();
+            result.Action();
+            return result;
+        }
     }
 }

@@ -68,7 +68,7 @@ namespace InquirerCS.Builders
 
         public abstract TQuestion Build();
 
-        public TResult Prompt()
+        public virtual TResult Prompt()
         {
             return Build().Prompt();
         }

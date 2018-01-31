@@ -23,7 +23,7 @@ namespace InquirerCS.Builders
 
         public InputBuilder<Input<string>, string, string> WithConfirmation()
         {
-            Confirm = new ConfirmPasswordComponent(Console);
+            Confirm = new ConfirmPasswordComponent(Console, Input);
             return this;
         }
     }
