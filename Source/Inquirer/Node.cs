@@ -38,7 +38,7 @@ namespace InquirerCS
             }
 
             History.Push();
-            _then(answer);
+            _then?.Invoke(answer);
             History.Pop();
             return true;
         }
@@ -53,7 +53,7 @@ namespace InquirerCS
             _then = answer => { toBind = answer; };
         }
 
-        public virtual void Then(Expression<Func<TResult>> action)
+        public virtual void Bind(Expression<Func<TResult>> action)
         {
             if (((MemberExpression)action.Body).Member is PropertyInfo)
             {

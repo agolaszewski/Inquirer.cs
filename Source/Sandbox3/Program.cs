@@ -31,12 +31,11 @@ namespace ConsoleApp1
 
         private static void SetClientActiveStatus()
         {
-
             var aaaa = new Answers();
             string test = string.Empty;
 
-            Inquirer.Prompt(Question.Input("2")).Then(() => aaaa.Test);
-            Inquirer.Prompt(Question.Input("2")).Then(() => test);
+            Inquirer.Prompt(Question.Input("2")).Bind(() => aaaa.Test);
+            Inquirer.Prompt(Question.Input("2")).Bind(() => test);
             Inquirer.Go();
             Console.WriteLine(aaaa.Test);
         }

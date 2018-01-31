@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
@@ -40,11 +41,12 @@ namespace Tests
         }
     }
 
-    public class ConfirmPasswordFixture<TResult> : IConfirmTrait<string>, IConvertToStringTrait<TResult>
+    public class ConfirmPasswordFixture<TResult> : IConfirmTrait<string>, IConvertToStringTrait<TResult>, IWaitForInputTrait<StringOrKey>
     {
         public ConfirmPasswordFixture()
         {
-            Confirm = new ConfirmPasswordComponent(Console);
+            Input = new StringOrKeyInputComponent(Console);
+            Confirm = new ConfirmPasswordComponent(Console, this);
             this.ConvertToString();
         }
 
@@ -53,5 +55,10 @@ namespace Tests
         public AssertConsole Console { get; set; } = new AssertConsole();
 
         public IConvertToStringComponent<TResult> Convert { get; set; }
+
+        public IWaitForInputComponent<StringOrKey> Input { get; set; }
+        
+
+      
     }
 }

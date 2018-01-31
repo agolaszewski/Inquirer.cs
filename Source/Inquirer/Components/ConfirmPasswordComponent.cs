@@ -1,13 +1,14 @@
 ﻿using InquirerCS.Interfaces;
+using InquirerCS.Traits;
 
 namespace InquirerCS.Components
 {
     internal class ConfirmPasswordComponent : IConfirmComponent<string>
     {
         private IConsole _console;
-        private IWaitForInputComponent<StringOrKey> _input;
+        private IWaitForInputTrait<StringOrKey> _input;
 
-        public ConfirmPasswordComponent(IConsole console, IWaitForInputComponent<StringOrKey> input)
+        public ConfirmPasswordComponent(IConsole console, IWaitForInputTrait<StringOrKey> input)
         {
             _console = console;
             _input = input;
@@ -18,10 +19,11 @@ namespace InquirerCS.Components
             _console.Clear();
             _console.Write("Type again : ");
 
-            StringOrKey repeated = _input.WaitForInput();
+            StringOrKey repeated = _input.Input.WaitForInput();
             if (repeated.Value != result)
             {
                 _console.WriteError("Strings don't match");
+                _console.ReadKey();
                 return true;
             }
 
