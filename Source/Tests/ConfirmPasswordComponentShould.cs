@@ -36,6 +36,7 @@ namespace Tests
         public void Returns_True_When_Strings_Doesnt_Match()
         {
             _fixture.Console.ReadValue = "12345678";
+            _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo('A', ConsoleKey.A, false, false, false));
 
             _fixture.Confirm.Confirm("1234567").ShouldBeTrue();
         }
