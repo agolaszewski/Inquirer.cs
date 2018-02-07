@@ -81,34 +81,60 @@ Question.Password("Type password");
 ```
 ![][password-img]
 
+#### Menu
+
+```csharp
+private static void MenuTest()
+        {
+            Question.Menu("Choose")
+               .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
+               .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
+               .AddOption("PagingListTest", () => { PagingListTest(); })
+               .AddOption("InputTest", () => { InputTest(); })
+               .AddOption("PasswordTest", () => { PasswordTest(); })
+               .AddOption("ListTest", () => { ListTest(); })
+               .AddOption("ListRawTest", () => { ListRawTest(); })
+               .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
+               .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
+               .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
+        }
+```
+
 ## Extensions
 
+Change the number of lines that will be rendered when using list, rawList, or checkbox.
 ```csharp
 .Page(int pageSize)
 ```
-Change the number of lines that will be rendered when using list, rawList, or checkbox.
 
-```csharp
-.WithDefaultValue(TResult defaultValue, Func<TResult, TResult, int> compareFn = null)
-```
 Default value(s) to use if nothing is entered.
-compareFn must
+```csharp
+.WithDefaultValue(...)
+args:
+TResult defaultValue
+List<TResult> defaultValues : for list types and types implementing IComparable
+Func<TResult, bool> compareTo : for list types not implementing IComparable
+
+```
+Chosen value displayed for final confirmation
+
+For password type, user have to confirm password by typing it again
 
 ```csharp
 .WithConfirmation()
 ```
-Choosen value is displayed for final confirmation
 
+Set display name for complex type
 ```csharp
-.ConvertToString(Func<TResult, string> fn)
+.WithConvertToString(Func<TResult, string> fn)
 ```
-Choose display name for complex type
+
+Should return true if the value is valid, and an error message (String) otherwise. If false is returned, a default error message is provided.
 
 ```csharp
 .WithValidation(Func<TResult, bool> fn, string errorMessage)
 .WithValidation(Func<TResult, bool> fn, Func<TResult, string> errorMessageFn)
 ```
-Should return true if the value is valid, and an error message (String) otherwise. If false is returned, a default error message is provided.
 
 ## Inquirer
 
@@ -133,23 +159,6 @@ private static void PagingCheckboxTest()
 ```
 
 
-#### Menu
 
-```csharp
-private static void MenuTest()
-        {
-            _test.Menu("Choose")
-               .AddOption("PagingCheckboxTest", () => { PagingCheckboxTest(); })
-               .AddOption("PagingRawListTest", () => { PagingRawListTest(); })
-               .AddOption("PagingListTest", () => { PagingListTest(); })
-               .AddOption("InputTest", () => { InputTest(); })
-               .AddOption("PasswordTest", () => { PasswordTest(); })
-               .AddOption("ListTest", () => { ListTest(); })
-               .AddOption("ListRawTest", () => { ListRawTest(); })
-               .AddOption("ListCheckboxTest", () => { ListCheckboxTest(); })
-               .AddOption("ListExtendedTest", () => { ListExtendedTest(); })
-               .AddOption("ConfirmTest", () => { ConfirmTest(); }).Prompt();
-        }
-```
 
 
