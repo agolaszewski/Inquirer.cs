@@ -142,20 +142,31 @@ Should return true if the value is valid, and an error message (String) otherwis
 _test = new Inquirer();
 ```
 Inquirer is for preserving history
-It works by wrapping  ```csharp Prompt ``` or ```csharp Menu ``` methods in another method.
+It supports 
+- navigation
+- optional prompts
+- hierarchical prompts
+
 
 ```csharp
-private static void PagingCheckboxTest()
-        {
-            var colors = Enum.GetValues(typeof(ConsoleColor)).Cast<ConsoleColor>().ToList();
-            var answer = _test.Prompt(Question.Checkbox("Choose favourite colors", colors)
-                .Page(3)
-                .WithDefaultValue(new List<ConsoleColor>() { ConsoleColor.Black, ConsoleColor.DarkGray })
-                .WithConfirmation()
-                .WithValidation(values => values.Any(item => item == ConsoleColor.Black), "Choose black"));
+string answer = string.Empty;
+Inquirer.Prompt(Question.Input("1")).Bind(() => answer);
+Inquirer.Prompt(Question.Input("2")).Bind(() => answer);
+Inquirer.Prompt(() =>
+{
+    if (answer.Length > 5)
+    {
+        return Question.Input("3");
+    }
 
-            _test.Next(() => MenuTest());
-        }
+    return null;
+}).Then(answer2 =>
+{
+    Inquirer.Prompt(Question.Input("3.1")).Bind(() => answer);
+    Inquirer.Prompt(Question.Input("3.2")).Bind(() => answer);
+    Inquirer.Prompt(Question.Input("3.3")).Bind(() => answer);
+});
+Inquirer.Go();
 ```
 
 
