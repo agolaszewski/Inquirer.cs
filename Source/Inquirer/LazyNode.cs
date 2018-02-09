@@ -11,6 +11,7 @@ namespace InquirerCS
     {
         private Func<TBuilder> _fn;
         private Action<TResult> _then;
+        private Action _after;
 
         public LazyNode(Func<TBuilder> fn) : base()
         {
@@ -24,9 +25,10 @@ namespace InquirerCS
             return node.Run();
         }
 
-        public void Then(Action<TResult> then)
+        public IThen Then(Action<TResult> then)
         {
             _then = then;
+            return new ThenComponent(this);
         }
 
         public BaseNode CreateNode(TBuilder builder)
@@ -35,6 +37,7 @@ namespace InquirerCS
             {
                 var node = new Node<TBuilder, TQuestion, TResult>(builder, addHistory: false);
                 node.Then(_then);
+                node.After(_after);
                 return node;
             }
 
@@ -62,6 +65,11 @@ namespace InquirerCS
 
                 _then = answer => { fieldInfo.SetValue(projection, answer); };
             }
+        }
+
+        internal override void After(Action after)
+        {
+            _after = after;
         }
     }
 }
