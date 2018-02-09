@@ -7,5 +7,7 @@ namespace InquirerCS
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public abstract bool Run();
+
+        internal abstract void After(Action after);
     }
 }

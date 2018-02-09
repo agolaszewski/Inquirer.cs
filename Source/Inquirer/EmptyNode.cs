@@ -1,6 +1,4 @@
-﻿using InquirerCS.Components;
-using InquirerCS.Interfaces;
-using InquirerCS.Traits;
+﻿using System;
 
 namespace InquirerCS
 {
@@ -13,6 +11,10 @@ namespace InquirerCS
         public override bool Run()
         {
             return true;
+        }
+
+        internal override void After(Action after)
+        {
         }
     }
 }
