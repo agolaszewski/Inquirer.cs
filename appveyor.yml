@@ -9,15 +9,14 @@ init:
               Set-AppveyorBuildVariable -Name "IsPreRelease" -Value False
             }
 
+image: Visual Studio 2019
+
 branches:
   only:
   - master
 
 build:
   verbosity: minimal
-
-cache:
-  - Source\packages -> **\packages.config
   
 platform: Any CPU
 configuration: Release
@@ -34,13 +33,13 @@ artifacts:
 
 
 before_build:
-  - nuget restore Source\Inquirer.sln
+  - dotnet restore Source\Inquirer.sln
 
 after_build:
 - ps: >-
     if($env:APPVEYOR_REPO_TAG_NAME)
     {
-        nuget pack Inquirer.nuspec -Version $env:APPVEYOR_REPO_TAG_NAME
+        dotnet pack Source\Inquirer\InquirerCS.csproj -p:PackageVersion $env:APPVEYOR_REPO_TAG_NAME
     }
   
 nuget:
