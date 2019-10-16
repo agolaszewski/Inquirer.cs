@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
-using Should;
 using Xunit;
 
 namespace Tests
@@ -35,17 +35,17 @@ namespace Tests
         [Fact]
         public void Be_Type_DefaultListValueComponent()
         {
-            _fixture.Default.ShouldBeType<DefaultSelectedValueComponent<ConsoleColor>>();
+            _fixture.Default.Should().BeOfType<DefaultSelectedValueComponent<ConsoleColor>>();
         }
 
         [Fact]
         public void Has_Default_Value()
         {
-            _fixture.Default.HasDefault.ShouldBeTrue();
-            _fixture.Colors.Where(x => x.Item == ConsoleColor.Red).First().IsSelected.ShouldBeTrue();
-            _fixture.Colors.Where(x => x.Item == ConsoleColor.Yellow).First().IsSelected.ShouldBeTrue();
+            _fixture.Default.HasDefault.Should().BeTrue();
+            _fixture.Colors.Where(x => x.Item == ConsoleColor.Red).First().IsSelected.Should().BeTrue();
+            _fixture.Colors.Where(x => x.Item == ConsoleColor.Yellow).First().IsSelected.Should().BeTrue();
             _fixture.Colors.Where(x => x.Item != ConsoleColor.Red || x.Item != ConsoleColor.Yellow).All(x => x.IsSelected == false);
-            _fixture.Colors.Where(x => x.IsSelected).Count().ShouldEqual(2);
+            _fixture.Colors.Where(x => x.IsSelected).Count().Should().Be(2);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Tests
             }
             catch (Exception ex)
             {
-                ex.ShouldBeType<ArgumentNullException>();
+                ex.Should().BeOfType<ArgumentNullException>();
             }
         }
     }

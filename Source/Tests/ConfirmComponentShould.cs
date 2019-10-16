@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using FluentAssertions;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
-using Should;
 using Xunit;
 
 namespace Tests
@@ -22,21 +22,21 @@ namespace Tests
         public void Always_Return_False_When_NoConfirmationComponent()
         {
             _fixture.Confirm();
-            _fixture.Confirm.Confirm("Test").ShouldBeFalse();
+            _fixture.Confirm.Confirm("Test").Should().BeFalse();
         }
 
         [Fact]
         public void Be_Type_ConfirmComponent()
         {
             _fixture.Confirm(_fixture, _fixture.Console);
-            _fixture.Confirm.ShouldBeType(typeof(ConfirmComponent<string>));
+            _fixture.Confirm.Should().BeOfType(typeof(ConfirmComponent<string>));
         }
 
         [Fact]
         public void Be_Type_NoConfirmationComponent()
         {
             _fixture.Confirm();
-            _fixture.Confirm.ShouldBeType(typeof(NoConfirmationComponent<string>));
+            _fixture.Confirm.Should().BeOfType(typeof(NoConfirmationComponent<string>));
         }
 
         [Theory]
@@ -50,7 +50,7 @@ namespace Tests
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
             _fixture.Confirm.Confirm("Test");
-            _fixture.Console.ExceptedResult.ShouldEqual("Are you sure? [y/n] : Test");
+            _fixture.Console.ExceptedResult.Should().Be("Are you sure? [y/n] : Test");
         }
 
         [Theory]
@@ -63,7 +63,7 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm("Test").ShouldBeFalse();
+            _fixture.Confirm.Confirm("Test").Should().BeFalse();
         }
 
         [Theory]
@@ -76,7 +76,7 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm("Test").ShouldBeTrue();
+            _fixture.Confirm.Confirm("Test").Should().BeTrue();
         }
 
         [Fact]
@@ -94,8 +94,8 @@ namespace Tests
 
             _fixture.Confirm.Confirm("Test");
 
-            _fixture.Console.ReadKeyValue.Count.ShouldEqual(1);
-            _fixture.Console.ReadKeyValue.Peek().Key.ShouldEqual(ConsoleKey.B);
+            _fixture.Console.ReadKeyValue.Count.Should().Be(1);
+            _fixture.Console.ReadKeyValue.Peek().Key.Should().Be(ConsoleKey.B);
         }
     }
 
