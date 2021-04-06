@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
-using Should;
 using Xunit;
 
 namespace Tests
 {
     [Category("Confirm")]
-    public class ConfirmListComponentShould : IClassFixture<ConfirmListFixture<string>>
+    public class ConfirmComponentShould : IClassFixture<ConfirmFixture<string>>
     {
-        private ConfirmListFixture<string> _fixture;
+        private ConfirmFixture<string> _fixture;
 
-        public ConfirmListComponentShould(ConfirmListFixture<string> fixture)
+        public ConfirmComponentShould(ConfirmFixture<string> fixture)
         {
             _fixture = fixture;
         }
@@ -23,14 +21,21 @@ namespace Tests
         public void Always_Return_False_When_NoConfirmationComponent()
         {
             _fixture.Confirm();
-            _fixture.Confirm.Confirm(_fixture.TestValues).ShouldBeFalse();
+            Assert.False(_fixture.Confirm.Confirm("Test"));
         }
 
         [Fact]
-        public void Be_Type_ConfirmListComponent()
+        public void Be_Type_ConfirmComponent()
         {
             _fixture.Confirm(_fixture, _fixture.Console);
-            _fixture.Confirm.ShouldBeType(typeof(ConfirmListComponent<List<string>, string>));
+            Assert.IsType<ConfirmComponent<string>>(_fixture.Confirm);
+        }
+
+        [Fact]
+        public void Be_Type_NoConfirmationComponent()
+        {
+            _fixture.Confirm();
+            Assert.IsType<NoConfirmationComponent<string>>(_fixture.Confirm);
         }
 
         [Theory]
@@ -43,8 +48,8 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm(_fixture.TestValues);
-            _fixture.Console.ExceptedResult.ShouldEqual("Are you sure? [y/n] : [Yes, No, Maybe, Not Sure]");
+            _fixture.Confirm.Confirm("Test");
+            Assert.Equal("Are you sure? [y/n] : Test", _fixture.Console.ExceptedResult);
         }
 
         [Theory]
@@ -57,7 +62,7 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm(_fixture.TestValues).ShouldBeFalse();
+            Assert.False(_fixture.Confirm.Confirm("Test"));
         }
 
         [Theory]
@@ -70,7 +75,7 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm(_fixture.TestValues).ShouldBeTrue();
+            Assert.True(_fixture.Confirm.Confirm("Test"));
         }
 
         [Fact]
@@ -86,22 +91,20 @@ namespace Tests
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)ConsoleKey.Enter, ConsoleKey.Enter, false, false, false));
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)ConsoleKey.B, ConsoleKey.B, false, false, false));
 
-            _fixture.Confirm.Confirm(_fixture.TestValues);
+            _fixture.Confirm.Confirm("Test");
 
-            _fixture.Console.ReadKeyValue.Count.ShouldEqual(1);
-            _fixture.Console.ReadKeyValue.Peek().Key.ShouldEqual(ConsoleKey.B);
+            Assert.Single(_fixture.Console.ReadKeyValue);
+            Assert.Equal(ConsoleKey.B, _fixture.Console.ReadKeyValue.Peek().Key);
         }
     }
 
-    public class ConfirmListFixture<TResult> : IConfirmTrait<List<TResult>>, IConvertToStringTrait<TResult>
+    public class ConfirmFixture<TResult> : IConfirmTrait<TResult>, IConvertToStringTrait<TResult>
     {
-        public List<string> TestValues = new List<string>() { "Yes", "No", "Maybe", "Not Sure" };
-
-        public ConfirmListFixture()
+        public ConfirmFixture()
         {
         }
 
-        public IConfirmComponent<List<TResult>> Confirm { get; set; }
+        public IConfirmComponent<TResult> Confirm { get; set; }
 
         public AssertConsole Console { get; set; } = new AssertConsole();
 

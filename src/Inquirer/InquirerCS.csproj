@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <ProjectGuid>{D9EFEA4B-C3A8-4237-82C7-4A91B8341BE8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>InquirerCS</RootNamespace>
+    <AssemblyName>InquirerCS</AssemblyName>
+    <PackageId>phu.Inquirer.cs</PackageId>
+    <Description>Inquirer.cs provides the user interface and the inquiry session flow</Description>
+    <ProjectUrl>https://github.com/hayer/Inquirer.cs</ProjectUrl>
+    <RepositoryUrl>https://github.com/hayer/Inquirer.cs.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Tags>Inquirer</Tags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Graph" Version="3.29.0" />
+    <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.6" />
+  </ItemGroup>
+
+</Project>

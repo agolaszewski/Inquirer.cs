@@ -1,5 +1,5 @@
 [build]:     https://ci.appveyor.com/project/agolaszewski/inquirer-cs
-[build-img]: https://img.shields.io/appveyor/ci/agolaszewski/inquirer-cs.svg
+[build-img]: https://ci.appveyor.com/api/projects/status/ou95jchcrvug0e9g/branch/master?svg=true
 [nuget-img]: https://img.shields.io/nuget/v/Inquirer.cs.svg
 [nuget]:     https://www.nuget.org/packages/Inquirer.cs/
 
@@ -15,9 +15,12 @@ Inquirer.cs
 ===========
 
 [![][build-img]][build]
-[![][nuget-img]][nuget]
+
 
 A collection of common interactive command line user interfaces.
+
+
+Forked from https://github.com/agolaszewski/Inquirer.cs and updated.
 
 Clone of [Inquirer.js](https://github.com/SBoudrias/Inquirer.js)
 

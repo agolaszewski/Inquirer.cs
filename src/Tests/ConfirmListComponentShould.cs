@@ -1,19 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
-using Should;
 using Xunit;
 
 namespace Tests
 {
     [Category("Confirm")]
-    public class ConfirmComponentShould : IClassFixture<ConfirmFixture<string>>
+    public class ConfirmListComponentShould : IClassFixture<ConfirmListFixture<string>>
     {
-        private ConfirmFixture<string> _fixture;
+        private ConfirmListFixture<string> _fixture;
 
-        public ConfirmComponentShould(ConfirmFixture<string> fixture)
+        public ConfirmListComponentShould(ConfirmListFixture<string> fixture)
         {
             _fixture = fixture;
         }
@@ -22,21 +22,14 @@ namespace Tests
         public void Always_Return_False_When_NoConfirmationComponent()
         {
             _fixture.Confirm();
-            _fixture.Confirm.Confirm("Test").ShouldBeFalse();
+            Assert.False(_fixture.Confirm.Confirm(_fixture.TestValues));
         }
 
         [Fact]
-        public void Be_Type_ConfirmComponent()
+        public void Be_Type_ConfirmListComponent()
         {
             _fixture.Confirm(_fixture, _fixture.Console);
-            _fixture.Confirm.ShouldBeType(typeof(ConfirmComponent<string>));
-        }
-
-        [Fact]
-        public void Be_Type_NoConfirmationComponent()
-        {
-            _fixture.Confirm();
-            _fixture.Confirm.ShouldBeType(typeof(NoConfirmationComponent<string>));
+            Assert.IsType<ConfirmListComponent<List<string>, string>>(_fixture.Confirm);
         }
 
         [Theory]
@@ -49,8 +42,8 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm("Test");
-            _fixture.Console.ExceptedResult.ShouldEqual("Are you sure? [y/n] : Test");
+            _fixture.Confirm.Confirm(_fixture.TestValues);
+            Assert.Equal("Are you sure? [y/n] : [Yes, No, Maybe, Not Sure]", _fixture.Console.ExceptedResult);
         }
 
         [Theory]
@@ -63,7 +56,7 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm("Test").ShouldBeFalse();
+            Assert.False(_fixture.Confirm.Confirm(_fixture.TestValues));
         }
 
         [Theory]
@@ -76,7 +69,7 @@ namespace Tests
 
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)key, key, false, false, false));
 
-            _fixture.Confirm.Confirm("Test").ShouldBeTrue();
+            Assert.True(_fixture.Confirm.Confirm(_fixture.TestValues));
         }
 
         [Fact]
@@ -92,20 +85,22 @@ namespace Tests
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)ConsoleKey.Enter, ConsoleKey.Enter, false, false, false));
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo((char)ConsoleKey.B, ConsoleKey.B, false, false, false));
 
-            _fixture.Confirm.Confirm("Test");
+            _fixture.Confirm.Confirm(_fixture.TestValues);
 
-            _fixture.Console.ReadKeyValue.Count.ShouldEqual(1);
-            _fixture.Console.ReadKeyValue.Peek().Key.ShouldEqual(ConsoleKey.B);
+            Assert.Single(_fixture.Console.ReadKeyValue);
+            Assert.Equal(ConsoleKey.B, _fixture.Console.ReadKeyValue.Peek().Key);
         }
     }
 
-    public class ConfirmFixture<TResult> : IConfirmTrait<TResult>, IConvertToStringTrait<TResult>
+    public class ConfirmListFixture<TResult> : IConfirmTrait<List<TResult>>, IConvertToStringTrait<TResult>
     {
-        public ConfirmFixture()
+        public List<string> TestValues = new List<string>() { "Yes", "No", "Maybe", "Not Sure" };
+
+        public ConfirmListFixture()
         {
         }
 
-        public IConfirmComponent<TResult> Confirm { get; set; }
+        public IConfirmComponent<List<TResult>> Confirm { get; set; }
 
         public AssertConsole Console { get; set; } = new AssertConsole();
 

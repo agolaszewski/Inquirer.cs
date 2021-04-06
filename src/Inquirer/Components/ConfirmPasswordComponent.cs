@@ -1,6 +1,8 @@
-﻿using InquirerCS.Interfaces;
+﻿using System.Runtime.CompilerServices;
+using InquirerCS.Interfaces;
 using InquirerCS.Traits;
 
+[assembly: InternalsVisibleTo("Tests")]
 namespace InquirerCS.Components
 {
     internal class ConfirmPasswordComponent : IConfirmComponent<string>

@@ -4,7 +4,6 @@ using System.Linq;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
-using Should;
 using Xunit;
 
 namespace Tests
@@ -35,17 +34,20 @@ namespace Tests
         [Fact]
         public void Be_Type_DefaultListValueComponent()
         {
-            _fixture.Default.ShouldBeType<DefaultSelectedValueComponent<ConsoleColor>>();
+            Assert.IsType<DefaultSelectedValueComponent<ConsoleColor>>(_fixture.Default);
         }
 
         [Fact]
         public void Has_Default_Value()
         {
-            _fixture.Default.HasDefault.ShouldBeTrue();
-            _fixture.Colors.Where(x => x.Item == ConsoleColor.Red).First().IsSelected.ShouldBeTrue();
-            _fixture.Colors.Where(x => x.Item == ConsoleColor.Yellow).First().IsSelected.ShouldBeTrue();
-            _fixture.Colors.Where(x => x.Item != ConsoleColor.Red || x.Item != ConsoleColor.Yellow).All(x => x.IsSelected == false);
-            _fixture.Colors.Where(x => x.IsSelected).Count().ShouldEqual(2);
+            Assert.True(_fixture.Default.HasDefault);
+            Assert.True(_fixture.Colors.Where(x => x.Item == ConsoleColor.Red).First().IsSelected);
+            Assert.True(_fixture.Colors.Where(x => x.Item == ConsoleColor.Yellow).First().IsSelected);
+            Assert.All(
+                _fixture.Colors
+                    .Where(x => x.Item != ConsoleColor.Red && x.Item != ConsoleColor.Yellow),
+                i => Assert.False(i.IsSelected));
+            Assert.Equal(2, _fixture.Colors.Where(x => x.IsSelected).Count());
         }
 
         [Fact]
@@ -59,7 +61,7 @@ namespace Tests
             }
             catch (Exception ex)
             {
-                ex.ShouldBeType<ArgumentNullException>();
+                Assert.IsType<ArgumentNullException>(ex);
             }
         }
     }

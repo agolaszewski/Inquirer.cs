@@ -1,0 +1,11 @@
+assembly-versioning-scheme: MajorMinorPatch
+mode: Mainline
+next-version: 4.0.0
+branches:
+  master:
+    regex: ^master$
+  pull-request:
+    tag: pr
+ignore:
+  sha: []
+merge-message-formats: {}

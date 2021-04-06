@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <ProjectGuid>{1FD6E1F8-EB8C-439B-9C8C-B9BB27EECD62}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Demo2</RootNamespace>
+    <AssemblyName>Demo2</AssemblyName>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Inquirer\InquirerCS.csproj" />
+  </ItemGroup>
+</Project>

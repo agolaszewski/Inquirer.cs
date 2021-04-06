@@ -2,7 +2,6 @@
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
-using Should;
 using Xunit;
 
 namespace Tests
@@ -31,14 +30,14 @@ namespace Tests
         [Fact]
         public void Be_Type_DefaultListValueComponent()
         {
-            _fixture.Default.ShouldBeType<DefaultValueComponent<ConsoleColor>>();
+            Assert.IsType<DefaultValueComponent<ConsoleColor>>(_fixture.Default);
         }
 
         [Fact]
         public void Has_Default_Value()
         {
-            _fixture.Default.HasDefault.ShouldBeTrue();
-            _fixture.Default.Value.ShouldEqual(ConsoleColor.Red);
+            Assert.True(_fixture.Default.HasDefault);
+            Assert.Equal(ConsoleColor.Red, _fixture.Default.Value);
         }
     }
 }

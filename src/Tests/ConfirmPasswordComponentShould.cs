@@ -3,7 +3,6 @@ using System.ComponentModel;
 using InquirerCS.Components;
 using InquirerCS.Interfaces;
 using InquirerCS.Traits;
-using Should;
 using Xunit;
 
 namespace Tests
@@ -21,7 +20,7 @@ namespace Tests
         [Fact]
         public void Be_Type_ConfirmPasswordComponent()
         {
-            _fixture.Confirm.ShouldBeType(typeof(ConfirmPasswordComponent));
+            Assert.IsType<ConfirmPasswordComponent>(_fixture.Confirm);
         }
 
         [Fact]
@@ -29,7 +28,7 @@ namespace Tests
         {
             _fixture.Console.ReadValue = "1234567";
 
-            _fixture.Confirm.Confirm("1234567").ShouldBeFalse();
+            Assert.False(_fixture.Confirm.Confirm("1234567"));
         }
 
         [Fact]
@@ -38,7 +37,7 @@ namespace Tests
             _fixture.Console.ReadValue = "12345678";
             _fixture.Console.ReadKeyValue.Enqueue(new ConsoleKeyInfo('A', ConsoleKey.A, false, false, false));
 
-            _fixture.Confirm.Confirm("1234567").ShouldBeTrue();
+            Assert.True(_fixture.Confirm.Confirm("1234567"));
         }
     }
 

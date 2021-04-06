@@ -1,15 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InquirerCS", "Inquirer\InquirerCS.csproj", "{D9EFEA4B-C3A8-4237-82C7-4A91B8341BE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InquirerCS", "src\Inquirer\InquirerCS.csproj", "{D9EFEA4B-C3A8-4237-82C7-4A91B8341BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9BF5C636-F53C-4B5B-9D21-9171CF9FC98C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "src\Tests\Tests.csproj", "{9BF5C636-F53C-4B5B-9D21-9171CF9FC98C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{1AD97866-C0AC-45FF-9355-E290E309FA5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo", "src\Demo\Demo.csproj", "{1AD97866-C0AC-45FF-9355-E290E309FA5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo2", "Demo2\Demo2.csproj", "{1FD6E1F8-EB8C-439B-9C8C-B9BB27EECD62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo2", "src\Demo2\Demo2.csproj", "{1FD6E1F8-EB8C-439B-9C8C-B9BB27EECD62}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{05A5CE0F-770D-4396-B22D-78CCAA5A486C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		Inquirer.nuspec = Inquirer.nuspec
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +46,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E141206-2562-4012-AD88-5C1227384ED3}
 	EndGlobalSection
 EndGlobal
